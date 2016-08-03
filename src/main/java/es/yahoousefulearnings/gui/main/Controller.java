@@ -35,8 +35,6 @@ public class Controller implements Initializable{
       ));
     }
 
-
-
     ObservableList<String> symbols = FXCollections.observableArrayList(stocks.get(0).getSymbols().keySet());
 
     ObservableList<String> stocksNames = FXCollections.observableArrayList();

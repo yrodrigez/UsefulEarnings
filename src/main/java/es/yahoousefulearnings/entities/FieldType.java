@@ -1,4 +1,4 @@
-package es.yahoousefulearnings.engine.plugins;
+package es.yahoousefulearnings.entities;
 
 
 public enum FieldType {
@@ -8,4 +8,5 @@ public enum FieldType {
   LONG,
   BOOLEAN,
   CHARACTER;
+
 }

@@ -1,4 +1,4 @@
 package es.yahoousefulearnings.entities;
 
-public class Contract {
+public interface FieldExtractorPlugin {
 }
