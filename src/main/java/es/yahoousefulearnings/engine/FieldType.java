@@ -1,12 +1,11 @@
-package es.yahoousefulearnings.entities;
+package es.yahoousefulearnings.engine;
 
 
 public enum FieldType {
   DOUBLE,
   STRING,
   INTEGER,
-  LONG,
   BOOLEAN,
-  CHARACTER;
-
+  CHARACTER,
+  DATE
 }

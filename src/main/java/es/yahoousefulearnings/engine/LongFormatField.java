@@ -1,4 +1,4 @@
-package es.yahoousefulearnings.entities;
+package es.yahoousefulearnings.engine;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
