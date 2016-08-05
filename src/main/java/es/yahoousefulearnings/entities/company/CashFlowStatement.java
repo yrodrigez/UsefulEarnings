@@ -53,4 +53,156 @@ public class CashFlowStatement {
   private LongFormatField totalCashFromFinancingActivities; // { LongFormatField },
   @JsonProperty("changeInCash")
   private LongFormatField changeInCash; // { LongFormatField }
+
+  public Field getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(Field endDate) {
+    this.endDate = endDate;
+  }
+
+  public LongFormatField getNetIncome() {
+    return netIncome;
+  }
+
+  public void setNetIncome(LongFormatField netIncome) {
+    this.netIncome = netIncome;
+  }
+
+  public LongFormatField getDepreciation() {
+    return depreciation;
+  }
+
+  public void setDepreciation(LongFormatField depreciation) {
+    this.depreciation = depreciation;
+  }
+
+  public LongFormatField getChangeToNetincome() {
+    return changeToNetincome;
+  }
+
+  public void setChangeToNetincome(LongFormatField changeToNetincome) {
+    this.changeToNetincome = changeToNetincome;
+  }
+
+  public LongFormatField getChangeToAccountReceivables() {
+    return changeToAccountReceivables;
+  }
+
+  public void setChangeToAccountReceivables(LongFormatField changeToAccountReceivables) {
+    this.changeToAccountReceivables = changeToAccountReceivables;
+  }
+
+  public LongFormatField getChangeToLiabilities() {
+    return changeToLiabilities;
+  }
+
+  public void setChangeToLiabilities(LongFormatField changeToLiabilities) {
+    this.changeToLiabilities = changeToLiabilities;
+  }
+
+  public LongFormatField getChangeToInventory() {
+    return changeToInventory;
+  }
+
+  public void setChangeToInventory(LongFormatField changeToInventory) {
+    this.changeToInventory = changeToInventory;
+  }
+
+  public LongFormatField getChangeToOperatingActivities() {
+    return changeToOperatingActivities;
+  }
+
+  public void setChangeToOperatingActivities(LongFormatField changeToOperatingActivities) {
+    this.changeToOperatingActivities = changeToOperatingActivities;
+  }
+
+  public LongFormatField getTotalCashFromOperatingActivities() {
+    return totalCashFromOperatingActivities;
+  }
+
+  public void setTotalCashFromOperatingActivities(LongFormatField totalCashFromOperatingActivities) {
+    this.totalCashFromOperatingActivities = totalCashFromOperatingActivities;
+  }
+
+  public LongFormatField getCapitalExpenditures() {
+    return capitalExpenditures;
+  }
+
+  public void setCapitalExpenditures(LongFormatField capitalExpenditures) {
+    this.capitalExpenditures = capitalExpenditures;
+  }
+
+  public LongFormatField getInvestments() {
+    return investments;
+  }
+
+  public void setInvestments(LongFormatField investments) {
+    this.investments = investments;
+  }
+
+  public LongFormatField getOtherCashflowsFromInvestingActivities() {
+    return otherCashflowsFromInvestingActivities;
+  }
+
+  public void setOtherCashflowsFromInvestingActivities(LongFormatField otherCashflowsFromInvestingActivities) {
+    this.otherCashflowsFromInvestingActivities = otherCashflowsFromInvestingActivities;
+  }
+
+  public LongFormatField getTotalCashflowsFromInvestingActivities() {
+    return totalCashflowsFromInvestingActivities;
+  }
+
+  public void setTotalCashflowsFromInvestingActivities(LongFormatField totalCashflowsFromInvestingActivities) {
+    this.totalCashflowsFromInvestingActivities = totalCashflowsFromInvestingActivities;
+  }
+
+  public LongFormatField getDividendsPaid() {
+    return dividendsPaid;
+  }
+
+  public void setDividendsPaid(LongFormatField dividendsPaid) {
+    this.dividendsPaid = dividendsPaid;
+  }
+
+  public LongFormatField getSalePurchaseOfStock() {
+    return salePurchaseOfStock;
+  }
+
+  public void setSalePurchaseOfStock(LongFormatField salePurchaseOfStock) {
+    this.salePurchaseOfStock = salePurchaseOfStock;
+  }
+
+  public LongFormatField getNetBorrowings() {
+    return netBorrowings;
+  }
+
+  public void setNetBorrowings(LongFormatField netBorrowings) {
+    this.netBorrowings = netBorrowings;
+  }
+
+  public LongFormatField getOtherCashflowsFromFinancingActivities() {
+    return otherCashflowsFromFinancingActivities;
+  }
+
+  public void setOtherCashflowsFromFinancingActivities(LongFormatField otherCashflowsFromFinancingActivities) {
+    this.otherCashflowsFromFinancingActivities = otherCashflowsFromFinancingActivities;
+  }
+
+  public LongFormatField getTotalCashFromFinancingActivities() {
+    return totalCashFromFinancingActivities;
+  }
+
+  public void setTotalCashFromFinancingActivities(LongFormatField totalCashFromFinancingActivities) {
+    this.totalCashFromFinancingActivities = totalCashFromFinancingActivities;
+  }
+
+  public LongFormatField getChangeInCash() {
+    return changeInCash;
+  }
+
+  public void setChangeInCash(LongFormatField changeInCash) {
+    this.changeInCash = changeInCash;
+  }
 }
