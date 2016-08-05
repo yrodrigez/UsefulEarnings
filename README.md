@@ -4,6 +4,6 @@
 
 Desktop application that will provide financial data from the Yahoo! Finance API and the possibility to apply filters on that data...
 
-This project is a End of Degree Project developed to the [Universidad de Vigo](http://www.uvigo.gal/uvigo_en/index.html)
+This project is a End of Degree Project developed to  [Universidad de Vigo](http://www.uvigo.gal/uvigo_en/index.html)
 
 
