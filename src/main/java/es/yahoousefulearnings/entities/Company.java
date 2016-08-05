@@ -9,7 +9,18 @@ import es.yahoousefulearnings.engine.LongFormatField;
  * @author Yago Rodríguez
  */
 public class Company {
-
+  private class Profile {
+    private String address; //"address1": "3100 Ocean Park Boulevard"
+    private String city; // "city": "Santa Monica",
+    private String state; // "state": "CA"
+    private String zip; //  "zip": "90405"
+    private String country; // "country": "United States"
+    private String phone; // "phone": "310-255-2000"
+    private String website; // "website": "http://www.activisionblizzard.com"
+    private String industry; // "industry": "Multimedia & Graphics Software"
+    private String sector; // "sector": "Technology"
+    private int fullTimeEmployees; // "fullTimeEmployees": 7190
+  }
 
   private class FinancialData {
     @JsonProperty("maxAge") private long maxAge; //86400,
@@ -268,8 +279,6 @@ public class Company {
       this.operatingCashflow = operatingCashflow;
     }
   }
-
-
 
   @JsonProperty private FinancialData financialData;
 

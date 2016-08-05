@@ -1,0 +1,135 @@
+{
+  "assetProfile": {
+    "address1": "3100 Ocean Park Boulevard", // this
+    "city": "Santa Monica", // this
+    "state": "CA", // this
+    "zip": "90405", // this
+    "country": "United States", // this
+    "phone": "310-255-2000",  // this
+    "website": "http://www.activisionblizzard.com", // this
+    "industry": "Multimedia & Graphics Software", // this
+    "sector": "Technology", // this
+    "longBusinessSummary": "Activision Blizzard, Inc. develops and publishes online, personal computer (PC), video game console, handheld, mobile, and tablet games. The company operates through two segments, Activision Publishing, Inc. and Blizzard Entertainment, Inc. The company develops, publishes, and sells interactive software products and content through retail channels or digital downloads; and downloadable content to a range of gamers. It also publishes subscription-based massively multiplayer online role-playing games; and strategy and role-playing games. In addition, the company maintains a proprietary online gaming service, Battle.net that facilitates the creation of user generated content, digital distribution, and online social connectivity in its games. Further, it engages in creating original film and television content; and provides warehousing, logistical, and sales distribution services to third-party publishers of interactive entertainment software, as well as manufacturers of interactive entertainment hardware products. The company serves retailers and distributors, including mass-market retailers, consumer electronics stores, discount warehouses, game specialty stores, and consumers through third-party distribution, licensing arrangements, and direct digital purchases in the United States, Canada, Canada, the United Kingdom, France, Germany, Ireland, Italy, Sweden, Spain, the Netherlands, Australia, South Korea, China, and internationally. Activision Blizzard, Inc. is headquartered in Santa Monica, California.",
+    "fullTimeEmployees": 7190, // this
+    "companyOfficers": [
+      {
+        "maxAge": 1,
+        "name": "Mr. Robert A. Kotick",
+        "age": 53,
+        "title": "Chief Exec. Officer, Pres and Director",
+        "fiscalYear": 2015,
+        "totalPay": {
+          "raw": 7225930,
+          "fmt": "7.23M",
+          "longFmt": "7,225,930"
+        },
+        "exercisedValue": {
+          "raw": 0,
+          "fmt": null,
+          "longFmt": "0"
+        },
+        "unexercisedValue": {
+          "raw": 101718000,
+          "fmt": "101.72M",
+          "longFmt": "101,718,000"
+        }
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Dennis  Durkin",
+        "age": 45,
+        "title": "Chief Financial Officer",
+        "fiscalYear": 2015,
+        "totalPay": {
+          "raw": 1876680,
+          "fmt": "1.88M",
+          "longFmt": "1,876,680"
+        },
+        "exercisedValue": {
+          "raw": 0,
+          "fmt": null,
+          "longFmt": "0"
+        },
+        "unexercisedValue": {
+          "raw": 3035250,
+          "fmt": "3.04M",
+          "longFmt": "3,035,250"
+        }
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Thomas  Tippl",
+        "age": 49,
+        "title": "Chief Operating Officer",
+        "fiscalYear": 2015,
+        "totalPay": {
+          "raw": 3709000,
+          "fmt": "3.71M",
+          "longFmt": "3,709,000"
+        },
+        "exercisedValue": {
+          "raw": 0,
+          "fmt": null,
+          "longFmt": "0"
+        },
+        "unexercisedValue": {
+          "raw": 1235960,
+          "fmt": "1.24M",
+          "longFmt": "1,235,960"
+        }
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Michael  Morhaime",
+        "age": 48,
+        "title": "Chief Exec. Officer of Blizzard Entertainment Inc and Pres Blizzard Entertainment Inc",
+        "fiscalYear": 2015,
+        "totalPay": {
+          "raw": 4360010,
+          "fmt": "4.36M",
+          "longFmt": "4,360,010"
+        },
+        "exercisedValue": {
+          "raw": 0,
+          "fmt": null,
+          "longFmt": "0"
+        },
+        "unexercisedValue": {
+          "raw": 27721200,
+          "fmt": "27.72M",
+          "longFmt": "27,721,200"
+        }
+      },
+      {
+        "maxAge": 1,
+        "name": "Mr. Eric  Hirshberg",
+        "age": 48,
+        "title": "Chief Exec. Officer of Activision Publishing Inc",
+        "fiscalYear": 2015,
+        "totalPay": {
+          "raw": 1961170,
+          "fmt": "1.96M",
+          "longFmt": "1,961,170"
+        },
+        "exercisedValue": {
+          "raw": 9390500,
+          "fmt": "9.39M",
+          "longFmt": "9,390,500"
+        },
+        "unexercisedValue": {
+          "raw": 0,
+          "fmt": null,
+          "longFmt": "0"
+        }
+      }
+    ],
+    "auditRisk": 1,
+    "boardRisk": 10,
+    "compensationRisk": 9,
+    "shareHolderRightsRisk": 1,
+    "overallRisk": 7,
+    "governanceEpochDate": 1470009600,
+    "compensationAsOfEpochDate": 1451520000,
+    "maxAge": 86400
+  }
+}
