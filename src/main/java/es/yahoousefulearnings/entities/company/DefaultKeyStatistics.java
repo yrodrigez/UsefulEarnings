@@ -288,7 +288,8 @@ public class DefaultKeyStatistics {
 
 
 
-  /* *** NULL DATA ***
+  /*
+  * *** NULL DATA ***
   @JsonProperty("revenueQuarterlyGrowth")
   private Field revenueQuarterlyGrowth; // {},
   @JsonProperty("morningStarOverallRating")
