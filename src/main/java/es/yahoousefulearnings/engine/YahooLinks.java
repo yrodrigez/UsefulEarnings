@@ -22,14 +22,12 @@ public class YahooLinks {
   public static Map<String, String> quoteSummaryModules = new HashMap<>();
   static {
     quoteSummaryModules.put("Asset Profile", "assetProfile"); // solo para info específica...
-
     quoteSummaryModules.put("Financial Data", "financialData"); // *** IMPORTANTE ***
     quoteSummaryModules.put("Default Key Statistics", "defaultKeyStatistics"); // *** IMPORTANTE ***
     quoteSummaryModules.put("Calendar Events", "calendarEvents"); // *** IMPORTANTE ***
     quoteSummaryModules.put("Income Statement History", "incomeStatementHistory"); // *** IMPORTANTE ***
     quoteSummaryModules.put("Cashflow Statement History", "cashflowStatementHistory");// *** IMPORTANTE ***
     quoteSummaryModules.put("Balance Sheet History", "balanceSheetHistory");// *** IMPORTANTE ***
-
 
     /* ***REVISAR DESPUES***
     quoteSummaryModules.put("Upgrade Downgrade History", "upgradeDowngradeHistory");// datos para los gráficos del sumario...

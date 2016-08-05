@@ -2,68 +2,68 @@
   "defaultKeyStatistics": {
     "maxAge": 1,
     "enterpriseValue": {
-      "raw": 33110837248,
-      "fmt": "33.11B",
-      "longFmt": "33,110,837,248"
+      "raw": 592797433856,
+      "fmt": "592.8B",
+      "longFmt": "592,797,433,856"
     },
     "forwardPE": {
-      "raw": 19.056074,
-      "fmt": "19.06"
+      "raw": 11.895507,
+      "fmt": "11.90"
     },
     "profitMargins": {
-      "raw": 0.17228001,
-      "fmt": "17.23%"
+      "raw": 0.21698,
+      "fmt": "21.70%"
     },
     "floatShares": {
-      "raw": 663459964,
-      "fmt": "663.46M",
-      "longFmt": "663,459,964"
+      "raw": 5374863995,
+      "fmt": "5.37B",
+      "longFmt": "5,374,863,995"
     },
     "sharesOutstanding": {
-      "raw": 738228000,
-      "fmt": "738.23M",
-      "longFmt": "738,228,000"
+      "raw": 5388440000,
+      "fmt": "5.39B",
+      "longFmt": "5,388,440,000"
     },
     "sharesShort": {
-      "raw": 23070100,
-      "fmt": "23.07M",
-      "longFmt": "23,070,100"
+      "raw": 44254000,
+      "fmt": "44.25M",
+      "longFmt": "44,254,000"
     },
     "sharesShortPriorMonth": {
-      "raw": 17946300,
-      "fmt": "17.95M",
-      "longFmt": "17,946,300"
+      "raw": 53943200,
+      "fmt": "53.94M",
+      "longFmt": "53,943,200"
     },
     "heldPercentInsiders": {
-      "raw": 0.30354,
-      "fmt": "30.35%"
+      "raw": 3.3E-4,
+      "fmt": "0.03%"
     },
     "heldPercentInstitutions": {
-      "raw": 0.695,
-      "fmt": "69.50%"
+      "raw": 0.602,
+      "fmt": "60.20%"
     },
     "shortRatio": {
-      "raw": 2.4,
-      "fmt": "2.4"
+      "raw": 1.27,
+      "fmt": "1.27"
     },
     "shortPercentOfFloat": {
-      "raw": 0.041419,
-      "fmt": "4.14%"
+      "raw": 0.007987,
+      "fmt": "0.80%"
     },
     "beta": {
-      "raw": 1.00559,
-      "fmt": "1.01"
+      "raw": 1.3839,
+      "fmt": "1.38"
     },
     "morningStarOverallRating": {},
     "morningStarRiskRating": {},
     "category": null,
     "bookValue": {
-      "raw": 11.312,
-      "fmt": "11.31"
+      "raw": 23.463,
+      "fmt": "23.46"
     },
     "priceToBook": {
-      "raw": 3.605021,
-      "fmt": "3.61"
+      "raw": 4.512211,
+      "fmt": "4.51"
     },
     "annualReportExpenseRatio": {},
     "ytdReturn": {},
@@ -78,55 +78,55 @@
     "fiveYearAverageReturn": {},
     "priceToSalesTrailing12Months": {},
     "lastFiscalYearEnd": {
-      "raw": 1451520000,
-      "fmt": "2015-12-31"
+      "raw": 1443225600,
+      "fmt": "2015-09-26"
     },
     "nextFiscalYearEnd": {
-      "raw": 1514678400,
-      "fmt": "2017-12-31"
+      "raw": 1506384000,
+      "fmt": "2017-09-26"
     },
     "mostRecentQuarter": {
-      "raw": 1459382400,
-      "fmt": "2016-03-31"
+      "raw": 1466812800,
+      "fmt": "2016-06-25"
     },
     "earningsQuarterlyGrowth": {
-      "raw": -0.147,
-      "fmt": "-14.70%"
+      "raw": -0.27,
+      "fmt": "-27.00%"
     },
     "revenueQuarterlyGrowth": {},
     "netIncomeToCommon": {
-      "raw": 827000000,
-      "fmt": "827M",
-      "longFmt": "827,000,000"
+      "raw": 47796998144,
+      "fmt": "47.8B",
+      "longFmt": "47,796,998,144"
     },
     "trailingEps": {
-      "raw": 1.114,
-      "fmt": "1.11"
+      "raw": 8.576,
+      "fmt": "8.58"
     },
     "forwardEps": {
-      "raw": 2.14,
-      "fmt": "2.14"
+      "raw": 8.9,
+      "fmt": "8.9"
     },
     "pegRatio": {
-      "raw": 0.94,
-      "fmt": "0.94"
+      "raw": 1.63,
+      "fmt": "1.63"
     },
-    "lastSplitFactor": "2/1",
+    "lastSplitFactor": "7/1",
     "lastSplitDate": {
-      "raw": 1220832000,
-      "fmt": "2008-09-08"
+      "raw": 1402272000,
+      "fmt": "2014-06-09"
     },
     "enterpriseToRevenue": {
-      "raw": 6.84,
-      "fmt": "6.84"
+      "raw": 2.691,
+      "fmt": "2.69"
     },
     "enterpriseToEbitda": {
-      "raw": 20.785,
-      "fmt": "20.78"
+      "raw": 8.015,
+      "fmt": "8.02"
     },
     "52WeekChange": {
-      "raw": 0.40647864,
-      "fmt": "40.65%"
+      "raw": -0.08112568,
+      "fmt": "-8.11%"
     },
     "SandP52WeekChange": {
       "raw": 0.03850615,
