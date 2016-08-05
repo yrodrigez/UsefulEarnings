@@ -12,25 +12,41 @@ public class Option {
   @JsonIgnore
   private OptionType type;
 
-  @JsonIgnore private Company company;
+  @JsonIgnore
+  private Company company;
 
-  @JsonProperty("contractSymbol") private String contractSymbol;
-  @JsonProperty("contractSize") private String contractSize;
-  @JsonProperty("currency") private String currency;
+  @JsonProperty("contractSymbol")
+  private String contractSymbol;
+  @JsonProperty("contractSize")
+  private String contractSize;
+  @JsonProperty("currency")
+  private String currency;
 
-  @JsonProperty("inTheMoney") private boolean inTheMoney;
-  @JsonProperty("percentChange") private Field percentChange;
-  @JsonProperty("strike") private Field strike;
-  @JsonProperty("change") private Field change;
-  @JsonProperty("impliedVolatility") private Field impliedVolatility;
-  @JsonProperty("ask") private Field ask;
-  @JsonProperty("bid") private Field bid;
-  @JsonProperty("lastPrice") private Field lastPrice;
+  @JsonProperty("inTheMoney")
+  private boolean inTheMoney;
+  @JsonProperty("percentChange")
+  private Field percentChange;
+  @JsonProperty("strike")
+  private Field strike;
+  @JsonProperty("change")
+  private Field change;
+  @JsonProperty("impliedVolatility")
+  private Field impliedVolatility;
+  @JsonProperty("ask")
+  private Field ask;
+  @JsonProperty("bid")
+  private Field bid;
+  @JsonProperty("lastPrice")
+  private Field lastPrice;
 
-  @JsonProperty("volume") private LongFormatField volume;
-  @JsonProperty("lastTradeDate") private LongFormatField lastTradeDate;
-  @JsonProperty("expiration") private LongFormatField expiration;
-  @JsonProperty("openInterest") private LongFormatField openInterest;
+  @JsonProperty("volume")
+  private LongFormatField volume;
+  @JsonProperty("lastTradeDate")
+  private LongFormatField lastTradeDate;
+  @JsonProperty("expiration")
+  private LongFormatField expiration;
+  @JsonProperty("openInterest")
+  private LongFormatField openInterest;
 
 
   public String getContractSymbol() {

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Clase static para la construcción de links a Yahoo Finance
+ * Contains methods that will generate links to the known Yahoo! finance API
  * @author Yago.
  */
 public class YahooLinks {
@@ -65,6 +65,7 @@ public class YahooLinks {
    */
   public static String getYahooquoteSummaryLink(String companySymbol, Collection<String> quoteSummaryModules) throws IllegalArgumentException {
     if(quoteSummaryModules.isEmpty()) throw new IllegalArgumentException("Quote Summary modules cannot bew empty");
+    if(companySymbol.isEmpty()) throw new IllegalArgumentException("Symbol can't be empty");
     StringBuilder sb = new StringBuilder("https://query2.finance.yahoo.com/v10/finance/quoteSummary/");
     sb.append(companySymbol);
     sb.append("?/formatted=true&modules=");
@@ -83,8 +84,10 @@ public class YahooLinks {
    * Generates a link to the Company's options
    * @param companySymbol company's symbol to search it's options in Yahoo! Finance
    * @return link to the company's options
+   * @throws IllegalArgumentException if companySymbol is empty
    */
-  public static String getYahooOptionsLink(String companySymbol){
+  public static String getYahooOptionsLink(String companySymbol) throws IllegalArgumentException {
+    if(companySymbol.isEmpty()) throw new IllegalArgumentException("Company symbol can't be empty");
     return "https://query2.finance.yahoo.com/v7/finance/options/" + companySymbol + "/?formatted=true";
   }
 
@@ -92,9 +95,11 @@ public class YahooLinks {
    * Generates a link to the Company's options with an specific date
    * @param companySymbol company's symbol to search it's options in Yahoo! Finance
    * @param date link to the company's options
+   * @throws IllegalArgumentException if company symbol is empty or date is not a valid unix timestamp
    * @return link to the company's options with the specified date
    */
-  public static String getYahooOptionsLink(String companySymbol, long date){
+  public static String getYahooOptionsLink(String companySymbol, long date) throws IllegalArgumentException {
+    if (date > Integer.MAX_VALUE) throw new IllegalArgumentException("That's not a valid raw date");
     return getYahooOptionsLink(companySymbol) + dateQuery + date ;
   }
 
