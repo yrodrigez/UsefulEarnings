@@ -1,0 +1,52 @@
+{
+  "calendarEvents": {
+    "maxAge": 1,
+    "earnings": {
+      "earningsDate": [
+        {
+          "raw": 1477872000,
+          "fmt": "2016-10-31"
+        },
+        {
+          "raw": 1478217600,
+          "fmt": "2016-11-04"
+        }
+      ],
+      "earningsAverage": {
+        "raw": 0.36,
+        "fmt": "0.36"
+      },
+      "earningsLow": {
+        "raw": 0.26,
+        "fmt": "0.26"
+      },
+      "earningsHigh": {
+        "raw": 0.44,
+        "fmt": "0.44"
+      },
+      "revenueAverage": {
+        "raw": 1508630000,
+        "fmt": "1.51B",
+        "longFmt": "1,508,630,000"
+      },
+      "revenueLow": {
+        "raw": 1396000000,
+        "fmt": "1.4B",
+        "longFmt": "1,396,000,000"
+      },
+      "revenueHigh": {
+        "raw": 1666900000,
+        "fmt": "1.67B",
+        "longFmt": "1,666,900,000"
+      }
+    },
+    "exDividendDate": {
+      "raw": 1459123200,
+      "fmt": "2016-03-28"
+    },
+    "dividendDate": {
+      "raw": 1462924800,
+      "fmt": "2016-05-11"
+    }
+  }
+}

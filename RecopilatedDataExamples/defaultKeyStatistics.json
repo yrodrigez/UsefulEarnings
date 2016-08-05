@@ -1,0 +1,139 @@
+{
+  "defaultKeyStatistics": {
+    "maxAge": 1,
+    "enterpriseValue": {
+      "raw": 33110837248,
+      "fmt": "33.11B",
+      "longFmt": "33,110,837,248"
+    },
+    "forwardPE": {
+      "raw": 19.056074,
+      "fmt": "19.06"
+    },
+    "profitMargins": {
+      "raw": 0.17228001,
+      "fmt": "17.23%"
+    },
+    "floatShares": {
+      "raw": 663459964,
+      "fmt": "663.46M",
+      "longFmt": "663,459,964"
+    },
+    "sharesOutstanding": {
+      "raw": 738228000,
+      "fmt": "738.23M",
+      "longFmt": "738,228,000"
+    },
+    "sharesShort": {
+      "raw": 23070100,
+      "fmt": "23.07M",
+      "longFmt": "23,070,100"
+    },
+    "sharesShortPriorMonth": {
+      "raw": 17946300,
+      "fmt": "17.95M",
+      "longFmt": "17,946,300"
+    },
+    "heldPercentInsiders": {
+      "raw": 0.30354,
+      "fmt": "30.35%"
+    },
+    "heldPercentInstitutions": {
+      "raw": 0.695,
+      "fmt": "69.50%"
+    },
+    "shortRatio": {
+      "raw": 2.4,
+      "fmt": "2.4"
+    },
+    "shortPercentOfFloat": {
+      "raw": 0.041419,
+      "fmt": "4.14%"
+    },
+    "beta": {
+      "raw": 1.00559,
+      "fmt": "1.01"
+    },
+    "morningStarOverallRating": {},
+    "morningStarRiskRating": {},
+    "category": null,
+    "bookValue": {
+      "raw": 11.312,
+      "fmt": "11.31"
+    },
+    "priceToBook": {
+      "raw": 3.605021,
+      "fmt": "3.61"
+    },
+    "annualReportExpenseRatio": {},
+    "ytdReturn": {},
+    "beta3Year": {},
+    "totalAssets": {},
+    "yield": {},
+    "fundFamily": null,
+    "fundInceptionDate": {},
+    "legalType": null,
+    "ytdReturn": {},
+    "threeYearAverageReturn": {},
+    "fiveYearAverageReturn": {},
+    "priceToSalesTrailing12Months": {},
+    "lastFiscalYearEnd": {
+      "raw": 1451520000,
+      "fmt": "2015-12-31"
+    },
+    "nextFiscalYearEnd": {
+      "raw": 1514678400,
+      "fmt": "2017-12-31"
+    },
+    "mostRecentQuarter": {
+      "raw": 1459382400,
+      "fmt": "2016-03-31"
+    },
+    "earningsQuarterlyGrowth": {
+      "raw": -0.147,
+      "fmt": "-14.70%"
+    },
+    "revenueQuarterlyGrowth": {},
+    "netIncomeToCommon": {
+      "raw": 827000000,
+      "fmt": "827M",
+      "longFmt": "827,000,000"
+    },
+    "trailingEps": {
+      "raw": 1.114,
+      "fmt": "1.11"
+    },
+    "forwardEps": {
+      "raw": 2.14,
+      "fmt": "2.14"
+    },
+    "pegRatio": {
+      "raw": 0.94,
+      "fmt": "0.94"
+    },
+    "lastSplitFactor": "2/1",
+    "lastSplitDate": {
+      "raw": 1220832000,
+      "fmt": "2008-09-08"
+    },
+    "enterpriseToRevenue": {
+      "raw": 6.84,
+      "fmt": "6.84"
+    },
+    "enterpriseToEbitda": {
+      "raw": 20.785,
+      "fmt": "20.78"
+    },
+    "52WeekChange": {
+      "raw": 0.40647864,
+      "fmt": "40.65%"
+    },
+    "SandP52WeekChange": {
+      "raw": 0.03850615,
+      "fmt": "3.85%"
+    },
+    "lastDividendValue": {},
+    "lastCapGain": {},
+    "annualHoldingsTurnover": {}
+  }
+}

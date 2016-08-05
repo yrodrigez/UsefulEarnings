@@ -1,0 +1,54 @@
+{
+  "netSharePurchaseActivity": {
+    "maxAge": 1,
+    "period": "6m",
+    "buyInfoCount": {
+      "raw": 0,
+      "fmt": null,
+      "longFmt": "0"
+    },
+    "buyInfoShares": {
+      "raw": 0,
+      "fmt": null,
+      "longFmt": "0"
+    },
+    "sellInfoCount": {
+      "raw": 3,
+      "fmt": "3",
+      "longFmt": "3"
+    },
+    "sellInfoShares": {
+      "raw": 90769,
+      "fmt": "90.77k",
+      "longFmt": "90,769"
+    },
+    "netInfoCount": {
+      "raw": 3,
+      "fmt": "3",
+      "longFmt": "3"
+    },
+    "netInfoShares": {
+      "raw": -90769,
+      "fmt": "-90.77k",
+      "longFmt": "-90,769"
+    },
+    "netPercentInsiderShares": {
+      "raw": -0.0,
+      "fmt": "-0.00%"
+    },
+    "netInstSharesBuying": {
+      "raw": -22592500,
+      "fmt": "-22.59M",
+      "longFmt": "-22,592,500"
+    },
+    "netInstBuyingPercent": {
+      "raw": -0.0461,
+      "fmt": "-4.61%"
+    },
+    "totalInsiderShares": {
+      "raw": 224081712,
+      "fmt": "224.08M",
+      "longFmt": "224,081,712"
+    }
+  }
+}

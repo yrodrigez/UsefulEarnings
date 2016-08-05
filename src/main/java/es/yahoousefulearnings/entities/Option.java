@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.engine.Field;
 import es.yahoousefulearnings.engine.LongFormatField;
-
+/**
+ *  @author Yago Rodríguez
+ */
 public class Option {
 
   @JsonIgnore

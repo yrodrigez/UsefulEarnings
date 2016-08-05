@@ -22,30 +22,34 @@ public class YahooLinks {
   public static Map<String, String> quoteSummaryModules = new HashMap<>();
   static {
     // modules=summaryProfile,financialData,recommendationTrend,upgradeDowngradeHistory,earnings,defaultKeyStatistics,calendarEvents
-    quoteSummaryModules.put("Summary Profile", "summaryProfile"); // usar assetsProfile para que sea completo...
-    quoteSummaryModules.put("Financial Data", "financialData");
-    quoteSummaryModules.put("Recommendation Trend", "recommendationTrend");
-    quoteSummaryModules.put("Upgrade Downgrade History", "upgradeDowngradeHistory");
-    quoteSummaryModules.put("Earnings", "earnings");
-    quoteSummaryModules.put("Default Key Statistics", "defaultKeyStatistics");
-    quoteSummaryModules.put("Calendar Events", "calendarEvents");
+    quoteSummaryModules.put("Summary Profile", "summaryProfile"); // datos de localización de la empresa... Mejor utilizar la página para esto...
+    quoteSummaryModules.put("Financial Data", "financialData"); // *** IMPORTANTE ***
+    quoteSummaryModules.put("Recommendation Trend", "recommendationTrend");// datos para los gráficos del sumario... *** BASURA ***
+    quoteSummaryModules.put("Upgrade Downgrade History", "upgradeDowngradeHistory");// datos para los gráficos del sumario...
+    quoteSummaryModules.put("Earnings", "earnings");// datos para los gráficos del sumario...
+    quoteSummaryModules.put("Default Key Statistics", "defaultKeyStatistics"); // *** IMPORTANTE ***
+    quoteSummaryModules.put("Calendar Events", "calendarEvents"); // *** IMPORTANTE ***
+
     // modules=assetProfile,secFilings
-    quoteSummaryModules.put("Asset Profile", "assetProfile");
-    quoteSummaryModules.put("Sec Filings", "secFilings");
+    quoteSummaryModules.put("Asset Profile", "assetProfile"); //datos de localización de la empresa... Mejor utilizar la página para esto...
+    quoteSummaryModules.put("Sec Filings", "secFilings"); // *** BASURA ***
+
     // modules=incomeStatementHistory,cashflowStatementHistory,balanceSheetHistory,incomeStatementHistoryQuarterly,cashflowStatementHistoryQuarterly,balanceSheetHistoryQuarterly
-    quoteSummaryModules.put("Income Statement History", "incomeStatementHistory");
-    quoteSummaryModules.put("Cashflow Statement History", "cashflowStatementHistory");
-    quoteSummaryModules.put("Balance Sheet History", "balanceSheetHistory");
+    quoteSummaryModules.put("Income Statement History", "incomeStatementHistory"); // *** IMPORTANTE ***
+    quoteSummaryModules.put("Cashflow Statement History", "cashflowStatementHistory");// *** IMPORTANTE ***
+    quoteSummaryModules.put("Balance Sheet History", "balanceSheetHistory");// *** IMPORTANTE ***
     quoteSummaryModules.put("Income Statement History Quarterly", "incomeStatementHistoryQuarterly");
     quoteSummaryModules.put("Cashflow Statement History Quarterly", "cashflowStatementHistoryQuarterly");
     quoteSummaryModules.put("Balance Sheet History Quarterly", "balanceSheetHistoryQuarterly");
+
     // modules=institutionOwnership,fundOwnership,majorDirectHolders,majorHoldersBreakdown,insiderTransactions,insiderHolders,netSharePurchaseActivity
-    quoteSummaryModules.put("Institution Ownership", "institutionOwnership");
-    quoteSummaryModules.put("Major Direct Holders", "majorDirectHolders");
-    quoteSummaryModules.put("Major Holders Breakdown", "majorHoldersBreakdown");
-    quoteSummaryModules.put("Insider Transactions", "insiderTransactions");
-    quoteSummaryModules.put("Insider Holders", "insiderHolders");
-    quoteSummaryModules.put("Net Share Purchase Activity", "netSharePurchaseActivity");
+    quoteSummaryModules.put("Institution Ownership", "institutionOwnership"); // *** ¿Basura? ***
+    quoteSummaryModules.put("Major Direct Holders", "majorDirectHolders"); // *** ¿BASURA? ***
+    quoteSummaryModules.put("Major Holders Breakdown", "majorHoldersBreakdown");// *** ¿BASURA? ***
+    quoteSummaryModules.put("Insider Transactions", "insiderTransactions");// *** ¿BASURA? ***
+    quoteSummaryModules.put("Insider Holders", "insiderHolders");// *** ¿BASURA? ***
+    quoteSummaryModules.put("Net Share Purchase Activity", "netSharePurchaseActivity");// *** ¿BASURA? ***
+
     // modules=earningsHistory,earningsTrend,industryTrend
     quoteSummaryModules.put("Earnings History", "earningsHistory");
     quoteSummaryModules.put("Earnings Trend", "earningsTrend");

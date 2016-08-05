@@ -5,7 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.engine.Field;
 import es.yahoousefulearnings.engine.LongFormatField;
 
+/**
+ * @author Yago Rodríguez
+ */
 public class Company {
+
+
   private class FinancialData {
     @JsonProperty("maxAge") private long maxAge; //86400,
 
@@ -264,4 +269,15 @@ public class Company {
     }
   }
 
+
+
+  @JsonProperty private FinancialData financialData;
+
+  public FinancialData getFinancialData() {
+    return financialData;
+  }
+
+  public void setFinancialData(FinancialData financialData) {
+    this.financialData = financialData;
+  }
 }

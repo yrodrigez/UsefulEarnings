@@ -1,0 +1,227 @@
+{
+  "institutionOwnership": {
+    "ownershipList": [
+      {
+        "maxAge": 1,
+        "reportDate": {
+          "raw": 1459382400,
+          "fmt": "2016-03-31"
+        },
+        "organization": "FMR, LLC",
+        "pctHeld": {
+          "raw": 0.0756,
+          "fmt": "7.56%"
+        },
+        "position": {
+          "raw": 55831619,
+          "fmt": "55.83M",
+          "longFmt": "55,831,619"
+        },
+        "value": {
+          "raw": 1889341986,
+          "fmt": "1.89B",
+          "longFmt": "1,889,341,986"
+        }
+      },
+      {
+        "maxAge": 1,
+        "reportDate": {
+          "raw": 1459382400,
+          "fmt": "2016-03-31"
+        },
+        "organization": "Vanguard Group, Inc. (The)",
+        "pctHeld": {
+          "raw": 0.0435,
+          "fmt": "4.35%"
+        },
+        "position": {
+          "raw": 32111861,
+          "fmt": "32.11M",
+          "longFmt": "32,111,861"
+        },
+        "value": {
+          "raw": 1086665376,
+          "fmt": "1.09B",
+          "longFmt": "1,086,665,376"
+        }
+      },
+      {
+        "maxAge": 1,
+        "reportDate": {
+          "raw": 1459382400,
+          "fmt": "2016-03-31"
+        },
+        "organization": "Ameriprise Financial, Inc.",
+        "pctHeld": {
+          "raw": 0.028299998,
+          "fmt": "2.83%"
+        },
+        "position": {
+          "raw": 20886463,
+          "fmt": "20.89M",
+          "longFmt": "20,886,463"
+        },
+        "value": {
+          "raw": 706797907,
+          "fmt": "706.8M",
+          "longFmt": "706,797,907"
+        }
+      },
+      {
+        "maxAge": 1,
+        "reportDate": {
+          "raw": 1459382400,
+          "fmt": "2016-03-31"
+        },
+        "organization": "State Street Corporation",
+        "pctHeld": {
+          "raw": 0.0255,
+          "fmt": "2.55%"
+        },
+        "position": {
+          "raw": 18856574,
+          "fmt": "18.86M",
+          "longFmt": "18,856,574"
+        },
+        "value": {
+          "raw": 638106464,
+          "fmt": "638.11M",
+          "longFmt": "638,106,464"
+        }
+      },
+      {
+        "maxAge": 1,
+        "reportDate": {
+          "raw": 1459382400,
+          "fmt": "2016-03-31"
+        },
+        "organization": "Boston Partners",
+        "pctHeld": {
+          "raw": 0.024600001,
+          "fmt": "2.46%"
+        },
+        "position": {
+          "raw": 18165266,
+          "fmt": "18.17M",
+          "longFmt": "18,165,266"
+        },
+        "value": {
+          "raw": 614712601,
+          "fmt": "614.71M",
+          "longFmt": "614,712,601"
+        }
+      },
+      {
+        "maxAge": 1,
+        "reportDate": {
+          "raw": 1459382400,
+          "fmt": "2016-03-31"
+        },
+        "organization": "Invesco Ltd.",
+        "pctHeld": {
+          "raw": 0.0223,
+          "fmt": "2.23%"
+        },
+        "position": {
+          "raw": 16498685,
+          "fmt": "16.5M",
+          "longFmt": "16,498,685"
+        },
+        "value": {
+          "raw": 558315500,
+          "fmt": "558.32M",
+          "longFmt": "558,315,500"
+        }
+      },
+      {
+        "maxAge": 1,
+        "reportDate": {
+          "raw": 1459382400,
+          "fmt": "2016-03-31"
+        },
+        "organization": "Coatue Management, LLC",
+        "pctHeld": {
+          "raw": 0.0196,
+          "fmt": "1.96%"
+        },
+        "position": {
+          "raw": 14479821,
+          "fmt": "14.48M",
+          "longFmt": "14,479,821"
+        },
+        "value": {
+          "raw": 489997142,
+          "fmt": "490M",
+          "longFmt": "489,997,142"
+        }
+      },
+      {
+        "maxAge": 1,
+        "reportDate": {
+          "raw": 1459382400,
+          "fmt": "2016-03-31"
+        },
+        "organization": "BlackRock Institutional Trust Company, N.A.",
+        "pctHeld": {
+          "raw": 0.0185,
+          "fmt": "1.85%"
+        },
+        "position": {
+          "raw": 13629022,
+          "fmt": "13.63M",
+          "longFmt": "13,629,022"
+        },
+        "value": {
+          "raw": 461206104,
+          "fmt": "461.21M",
+          "longFmt": "461,206,104"
+        }
+      },
+      {
+        "maxAge": 1,
+        "reportDate": {
+          "raw": 1459382400,
+          "fmt": "2016-03-31"
+        },
+        "organization": "Primecap Management Company",
+        "pctHeld": {
+          "raw": 0.0139999995,
+          "fmt": "1.40%"
+        },
+        "position": {
+          "raw": 10334800,
+          "fmt": "10.33M",
+          "longFmt": "10,334,800"
+        },
+        "value": {
+          "raw": 349729632,
+          "fmt": "349.73M",
+          "longFmt": "349,729,632"
+        }
+      },
+      {
+        "maxAge": 1,
+        "reportDate": {
+          "raw": 1459382400,
+          "fmt": "2016-03-31"
+        },
+        "organization": "Northern Trust Corporation",
+        "pctHeld": {
+          "raw": 0.0137,
+          "fmt": "1.37%"
+        },
+        "position": {
+          "raw": 10109567,
+          "fmt": "10.11M",
+          "longFmt": "10,109,567"
+        },
+        "value": {
+          "raw": 342107747,
+          "fmt": "342.11M",
+          "longFmt": "342,107,747"
+        }
+      }
+    ],
+    "maxAge": 1
+  }
+}

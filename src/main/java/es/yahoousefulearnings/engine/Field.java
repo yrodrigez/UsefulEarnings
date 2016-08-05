@@ -48,7 +48,16 @@ public class Field  {
   }
 
   public Number getRaw() {
-    return raw;
+    switch (this.fieldType){
+      case DATE:
+        return raw.longValue();
+      case DOUBLE:
+        return raw.doubleValue();
+      case INTEGER:
+        return raw.intValue();
+      default:
+        return raw;
+    }
   }
 
   public void setRaw(final Number raw) {
@@ -82,4 +91,5 @@ public class Field  {
       "\n\t\tfmt='" + fmt + '\'' +
       "\n\t}";
   }
+
 }

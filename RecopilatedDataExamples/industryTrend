@@ -1,0 +1,55 @@
+{
+  "industryTrend": {
+    "maxAge": 1,
+    "symbol": "0408NA",
+    "peRatio": {
+      "raw": 21.3534,
+      "fmt": "21.35"
+    },
+    "pegRatio": {
+      "raw": 138.261,
+      "fmt": "138.26"
+    },
+    "estimates": [
+      {
+        "period": "0q",
+        "growth": {
+          "raw": -0.309,
+          "fmt": "-0.31"
+        }
+      },
+      {
+        "period": "+1q",
+        "growth": {
+          "raw": -0.259,
+          "fmt": "-0.26"
+        }
+      },
+      {
+        "period": "0y",
+        "growth": {
+          "raw": -0.56,
+          "fmt": "-0.56"
+        }
+      },
+      {
+        "period": "+1y",
+        "growth": {
+          "raw": 0.29,
+          "fmt": "0.29"
+        }
+      },
+      {
+        "period": "+5y",
+        "growth": {
+          "raw": 0.169092,
+          "fmt": "0.17"
+        }
+      },
+      {
+        "period": "-5y",
+        "growth": {}
+      }
+    ]
+  }
+}

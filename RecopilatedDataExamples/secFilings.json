@@ -1,0 +1,205 @@
+{ // basura
+  "secFilings": {
+    "filings": [
+      {
+        "date": "2016-08-04",
+        "epochDate": 1470268800,
+        "type": "8-K",
+        "title": "Results of Operations and Financial Condition, Financial Statements and",
+        "url": "http://biz.yahoo.com/e/160804/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-16-137046&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2016-08-04",
+        "epochDate": 1470268800,
+        "type": "10-Q",
+        "title": "Quarterly Report",
+        "url": "http://biz.yahoo.com/e/160804/atvi10-q.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-16-137102&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2016-06-06",
+        "epochDate": 1465171200,
+        "type": "8-K",
+        "title": "Submission of Matters to a Vote of Security Holders",
+        "url": "http://biz.yahoo.com/e/160606/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-16-125666&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2016-05-09",
+        "epochDate": 1462752000,
+        "type": "8-K/A",
+        "title": "Completion of Acquisition or Disposition of Assets, Financial Stateme",
+        "url": "http://biz.yahoo.com/e/160509/atvi8-k_a.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-16-119290&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2016-05-09",
+        "epochDate": 1462752000,
+        "type": "10-Q",
+        "title": "Quarterly Report",
+        "url": "http://biz.yahoo.com/e/160509/atvi10-q.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-16-119270&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2016-05-05",
+        "epochDate": 1462406400,
+        "type": "8-K",
+        "title": "Results of Operations and Financial Condition, Financial Statements and",
+        "url": "http://biz.yahoo.com/e/160505/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-16-118323&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2016-04-12",
+        "epochDate": 1460419200,
+        "type": "8-K",
+        "title": "Change in Directors or Principal Officers",
+        "url": "http://biz.yahoo.com/e/160412/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-16-111037&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2016-04-01",
+        "epochDate": 1459468800,
+        "type": "8-K",
+        "title": "Entry into a Material Definitive Agreement, Creation of a Direct Financ",
+        "url": "http://biz.yahoo.com/e/160401/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-16-109325&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2016-02-29",
+        "epochDate": 1456704000,
+        "type": "8-K",
+        "title": "Completion of Acquisition or Disposition of Assets, Creation of a Direc",
+        "url": "http://biz.yahoo.com/e/160229/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-16-101119&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2016-02-29",
+        "epochDate": 1456704000,
+        "type": "10-K",
+        "title": "Annual Report",
+        "url": "http://biz.yahoo.com/e/160229/atvi10-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001047469-16-010584&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2016-02-12",
+        "epochDate": 1455235200,
+        "type": "8-K",
+        "title": "Other Events",
+        "url": "http://biz.yahoo.com/e/160212/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-16-096507&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2016-02-11",
+        "epochDate": 1455148800,
+        "type": "8-K",
+        "title": "Results of Operations and Financial Condition, Other Events, Financial",
+        "url": "http://biz.yahoo.com/e/160211/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-16-095949&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2016-02-08",
+        "epochDate": 1454889600,
+        "type": "8-K",
+        "title": "Other Events",
+        "url": "http://biz.yahoo.com/e/160208/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-16-094722&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2015-12-14",
+        "epochDate": 1450051200,
+        "type": "8-K",
+        "title": "Entry into a Material Definitive Agreement, Creation of a Direct Financ",
+        "url": "http://biz.yahoo.com/e/151214/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-15-084685&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2015-12-07",
+        "epochDate": 1449446400,
+        "type": "8-K",
+        "title": "Regulation FD Disclosure",
+        "url": "http://biz.yahoo.com/e/151207/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-15-083278&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2015-11-30",
+        "epochDate": 1448841600,
+        "type": "8-K",
+        "title": "Regulation FD Disclosure",
+        "url": "http://biz.yahoo.com/e/151130/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-15-081990&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2015-11-17",
+        "epochDate": 1447718400,
+        "type": "8-K",
+        "title": "Entry into a Material Definitive Agreement, Creation of a Direct Financ",
+        "url": "http://biz.yahoo.com/e/151117/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-15-079610&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2015-11-06",
+        "epochDate": 1446768000,
+        "type": "10-Q",
+        "title": "Quarterly Report",
+        "url": "http://biz.yahoo.com/e/151106/atvi10-q.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-15-076727&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2015-11-03",
+        "epochDate": 1446508800,
+        "type": "8-K",
+        "title": "Entry into a Material Definitive Agreement, Results of Operations and F",
+        "url": "http://biz.yahoo.com/e/151103/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-15-075068&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2015-08-04",
+        "epochDate": 1438646400,
+        "type": "8-K",
+        "title": "Results of Operations and Financial Condition, Financial Statements and",
+        "url": "http://biz.yahoo.com/e/150804/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-15-055892&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2015-08-04",
+        "epochDate": 1438646400,
+        "type": "10-Q",
+        "title": "Quarterly Report",
+        "url": "http://biz.yahoo.com/e/150804/atvi10-q.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-15-055909&nav=1&src=Yahoo",
+        "maxAge": 1
+      },
+      {
+        "date": "2015-07-17",
+        "epochDate": 1437091200,
+        "type": "8-K",
+        "title": "Change in Directors or Principal Officers",
+        "url": "http://biz.yahoo.com/e/150717/atvi8-k.html",
+        "edgarUrl": "http://yahoo.brand.edgar-online.com/DisplayFiling.aspx?TabIndex=2&dcn=0001104659-15-051720&nav=1&src=Yahoo",
+        "maxAge": 1
+      }
+    ],
+    "maxAge": 86400
+  }
+}
