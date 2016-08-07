@@ -16,43 +16,43 @@ import es.yahoousefulearnings.engine.LongFormatField;
 public class CashFlowStatement {
 
   @JsonProperty("endDate")
-  private Field endDate; // { Field },
+  private Field endDate;
   @JsonProperty("netIncome")
-  private LongFormatField netIncome; // { LongFormatField },
+  private LongFormatField netIncome;
   @JsonProperty("depreciation")
-  private LongFormatField depreciation; // { LongFormatField },
+  private LongFormatField depreciation;
   @JsonProperty("changeToNetincome")
-  private LongFormatField changeToNetincome; // { LongFormatField },
+  private LongFormatField changeToNetincome;
   @JsonProperty("changeToAccountReceivables")
-  private LongFormatField changeToAccountReceivables; // { LongFormatField },
+  private LongFormatField changeToAccountReceivables;
   @JsonProperty("changeToLiabilities")
-  private LongFormatField changeToLiabilities; // { LongFormatField },
+  private LongFormatField changeToLiabilities;
   @JsonProperty("changeToInventory")
-  private LongFormatField changeToInventory; // { LongFormatField },
+  private LongFormatField changeToInventory;
   @JsonProperty("changeToOperatingActivities")
-  private LongFormatField changeToOperatingActivities; // { LongFormatField },
+  private LongFormatField changeToOperatingActivities;
   @JsonProperty("totalCashFromOperatingActivities")
-  private LongFormatField totalCashFromOperatingActivities; // { LongFormatField },
+  private LongFormatField totalCashFromOperatingActivities;
   @JsonProperty("capitalExpenditures")
-  private LongFormatField capitalExpenditures; // { LongFormatField },
+  private LongFormatField capitalExpenditures;
   @JsonProperty("investments")
-  private LongFormatField investments; // { LongFormatField },
+  private LongFormatField investments;
   @JsonProperty("otherCashflowsFromInvestingActivities")
-  private LongFormatField otherCashflowsFromInvestingActivities; // { LongFormatField },
+  private LongFormatField otherCashflowsFromInvestingActivities;
   @JsonProperty("totalCashflowsFromInvestingActivities")
-  private LongFormatField totalCashflowsFromInvestingActivities; // { LongFormatField },
+  private LongFormatField totalCashflowsFromInvestingActivities;
   @JsonProperty("dividendsPaid")
-  private LongFormatField dividendsPaid; // { LongFormatField },
+  private LongFormatField dividendsPaid;
   @JsonProperty("salePurchaseOfStock")
-  private LongFormatField salePurchaseOfStock; // { LongFormatField },
+  private LongFormatField salePurchaseOfStock;
   @JsonProperty("netBorrowings")
-  private LongFormatField netBorrowings; // { LongFormatField },
+  private LongFormatField netBorrowings;
   @JsonProperty("otherCashflowsFromFinancingActivities")
-  private LongFormatField otherCashflowsFromFinancingActivities; // { LongFormatField },
+  private LongFormatField otherCashflowsFromFinancingActivities;
   @JsonProperty("totalCashFromFinancingActivities")
-  private LongFormatField totalCashFromFinancingActivities; // { LongFormatField },
+  private LongFormatField totalCashFromFinancingActivities;
   @JsonProperty("changeInCash")
-  private LongFormatField changeInCash; // { LongFormatField }
+  private LongFormatField changeInCash;
 
   public Field getEndDate() {
     return endDate;

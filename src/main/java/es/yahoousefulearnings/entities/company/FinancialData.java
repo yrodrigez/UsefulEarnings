@@ -13,60 +13,60 @@ import es.yahoousefulearnings.engine.LongFormatField;
 public class FinancialData {
 
   @JsonProperty("currentPrice")
-  private Field currentPrice; //{"raw"40.9741,"fmt""40.97"}
+  private Field currentPrice;
   @JsonProperty("targetHighPrice")
-  private Field targetHighPrice; //{"raw"50.0,"fmt""50.00"}
+  private Field targetHighPrice;
   @JsonProperty("targetLowPrice")
-  private Field targetLowPrice; //{"raw"34.0,"fmt""34.00"}
+  private Field targetLowPrice;
   @JsonProperty("targetMeanPrice")
-  private Field targetMeanPrice; //{"raw"43.34,"fmt""43.34"}
+  private Field targetMeanPrice;
   @JsonProperty("targetMedianPrice")
-  private Field targetMedianPrice; //{"raw"43.0,"fmt""43.00"}
+  private Field targetMedianPrice;
   @JsonProperty("recommendationMean")
-  private Field recommendationMean; //{"raw"1.9,"fmt""1.90"}
+  private Field recommendationMean;
   @JsonProperty("recommendationKey")
-  private String recommendationKey; //"buy"
+  private String recommendationKey;
   @JsonProperty("totalCashPerShare")
-  private Field totalCashPerShare; //{"raw"3.89,"fmt""3.89"}
+  private Field totalCashPerShare;
   @JsonProperty("quickRatio")
-  private Field quickRatio; //{"raw"1.402,"fmt""1.40"}
+  private Field quickRatio;
   @JsonProperty("currentRatio")
-  private Field currentRatio; //{"raw"1.726,"fmt""1.73"}
+  private Field currentRatio;
   @JsonProperty("returnOnAssets")
-  private Field returnOnAssets; //{"raw"0.05136,"fmt""5.14%"}
+  private Field returnOnAssets;
   @JsonProperty("returnOnEquity")
-  private Field returnOnEquity; //{"raw"0.10702,"fmt""10.70%"}
+  private Field returnOnEquity;
   @JsonProperty("earningsGrowth")
-  private Field earningsGrowth; //{"raw"-0.151,"fmt""-15.10%"}
+  private Field earningsGrowth;
   @JsonProperty("revenueGrowth")
-  private Field revenueGrowth; //{"raw"0.138,"fmt""13.80%"}
+  private Field revenueGrowth;
   @JsonProperty("grossMargins")
-  private Field grossMargins; //{"raw"0.65647006,"fmt""65.65%"}
+  private Field grossMargins;
   @JsonProperty("ebitdaMargins")
-  private Field ebitdaMargins; //{"raw"0.32906,"fmt""32.91%"}
+  private Field ebitdaMargins;
   @JsonProperty("operatingMargins")
-  private Field operatingMargins; //{"raw"0.26379,"fmt""26.38%"}
+  private Field operatingMargins;
   @JsonProperty("profitMargins")
-  private Field profitMargins; //{"raw"0.17228001,"fmt""17.23%"}
+  private Field profitMargins;
 
   @JsonProperty("numberOfAnalystOpinions")
-  private LongFormatField numberOfAnalystOpinions; // {"raw"19,"fmt""19","longFmt""19"}
+  private LongFormatField numberOfAnalystOpinions;
   @JsonProperty("totalCash")
-  private LongFormatField totalCash; //{"raw"2872000000,"fmt""2.87B","longFmt""2,872,000,000"}
+  private LongFormatField totalCash;
   @JsonProperty("ebitda")
-  private LongFormatField ebitda; //{"raw"1592999936,"fmt""1.59B","longFmt""1,592,999,936"}
+  private LongFormatField ebitda;
   @JsonProperty("totalDebt")
-  private LongFormatField totalDebt; //{"raw"5840999936,"fmt""5.84B","longFmt""5,840,999,936"}
+  private LongFormatField totalDebt;
   @JsonProperty("totalRevenue")
-  private LongFormatField totalRevenue; //{"raw"4840999936,"fmt""4.84B","longFmt""4,840,999,936"}
+  private LongFormatField totalRevenue;
   @JsonProperty("debtToEquity")
-  private LongFormatField debtToEquity; //{"raw"69.969,"fmt""69.97"},"revenuePerShare"{"raw"6.622,"fmt""6.62"}
+  private LongFormatField debtToEquity;
   @JsonProperty("grossProfits")
-  private LongFormatField grossProfits; //{"raw"3079000000,"fmt""3.08B", "longFmt""3,079,000,000"}
+  private LongFormatField grossProfits;
   @JsonProperty("freeCashflow")
-  private LongFormatField freeCashflow; //{"raw"1875374976,"fmt""1.88B","longFmt""1,875,374,976"}
+  private LongFormatField freeCashflow;
   @JsonProperty("operatingCashflow")
-  private LongFormatField operatingCashflow; //{"raw"1292000000,"fmt""1.29B","longFmt""1,292,000,000"}
+  private LongFormatField operatingCashflow;
 
 
   public Field getCurrentPrice() {

@@ -14,57 +14,57 @@ import es.yahoousefulearnings.engine.LongFormatField;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BalanceSheetStatement {
   @JsonProperty("endDate")
-  private Field endDate; // { Field },
+  private Field endDate; 
   @JsonProperty("cash")
-  private LongFormatField cash; // { LongFormatField },
+  private LongFormatField cash; 
   @JsonProperty("shortTermInvestments")
-  private LongFormatField shortTermInvestments; // { LongFormatField },
+  private LongFormatField shortTermInvestments; 
   @JsonProperty("netReceivables")
-  private LongFormatField netReceivables; // { LongFormatField },
+  private LongFormatField netReceivables; 
   @JsonProperty("inventory")
-  private LongFormatField inventory; // { LongFormatField },
+  private LongFormatField inventory; 
   @JsonProperty("otherCurrentAssets")
-  private LongFormatField otherCurrentAssets; // { LongFormatField },
+  private LongFormatField otherCurrentAssets; 
   @JsonProperty("totalCurrentAssets")
-  private LongFormatField totalCurrentAssets; // { LongFormatField },
+  private LongFormatField totalCurrentAssets; 
   @JsonProperty("longTermInvestments")
-  private LongFormatField longTermInvestments; // { LongFormatField },
+  private LongFormatField longTermInvestments; 
   @JsonProperty("propertyPlantEquipment")
-  private LongFormatField propertyPlantEquipment; // { LongFormatField },
+  private LongFormatField propertyPlantEquipment; 
   @JsonProperty("goodWill")
-  private LongFormatField goodWill; // { LongFormatField },
+  private LongFormatField goodWill; 
   @JsonProperty("intangibleAssets")
-  private LongFormatField intangibleAssets; // { LongFormatField },
+  private LongFormatField intangibleAssets; 
   @JsonProperty("otherAssets")
-  private LongFormatField otherAssets; // { LongFormatField },
+  private LongFormatField otherAssets; 
   @JsonProperty("totalAssets")
-  private LongFormatField totalAssets; // { LongFormatField },
+  private LongFormatField totalAssets; 
   @JsonProperty("accountsPayable")
-  private LongFormatField accountsPayable; // { LongFormatField },
+  private LongFormatField accountsPayable; 
   @JsonProperty("shortLongTermDebt")
-  private LongFormatField shortLongTermDebt; // { LongFormatField },
+  private LongFormatField shortLongTermDebt; 
   @JsonProperty("otherCurrentLiab")
-  private LongFormatField otherCurrentLiab; // { LongFormatField },
+  private LongFormatField otherCurrentLiab; 
   @JsonProperty("longTermDebt")
-  private LongFormatField longTermDebt; // { LongFormatField },
+  private LongFormatField longTermDebt; 
   @JsonProperty("otherLiab")
-  private LongFormatField otherLiab; // { LongFormatField },
+  private LongFormatField otherLiab; 
   @JsonProperty("deferredLongTermLiab")
-  private LongFormatField deferredLongTermLiab; // { LongFormatField },
+  private LongFormatField deferredLongTermLiab; 
   @JsonProperty("totalCurrentLiabilities")
-  private LongFormatField totalCurrentLiabilities; // { LongFormatField },
+  private LongFormatField totalCurrentLiabilities; 
   @JsonProperty("totalLiab")
-  private LongFormatField totalLiab; // { LongFormatField },
+  private LongFormatField totalLiab; 
   @JsonProperty("commonStock")
-  private LongFormatField commonStock; // { LongFormatField },
+  private LongFormatField commonStock; 
   @JsonProperty("retainedEarnings")
-  private LongFormatField retainedEarnings; // { LongFormatField },
+  private LongFormatField retainedEarnings; 
   @JsonProperty("otherStockholderEquity")
-  private LongFormatField otherStockholderEquity; // { LongFormatField },
+  private LongFormatField otherStockholderEquity; 
   @JsonProperty("totalStockholderEquity")
-  private LongFormatField totalStockholderEquity; // { LongFormatField },
+  private LongFormatField totalStockholderEquity; 
   @JsonProperty("netTangibleAssets")
-  private LongFormatField netTangibleAssets; // { LongFormatField }
+  private LongFormatField netTangibleAssets; 
 
   public Field getEndDate() {
     return endDate;

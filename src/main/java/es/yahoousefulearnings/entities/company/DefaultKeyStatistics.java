@@ -17,58 +17,58 @@ public class DefaultKeyStatistics {
   private String lastSplitFactor; // "7/1",
 
   @JsonProperty("forwardPE")
-  private Field forwardPE; // {Field},
+  private Field forwardPE;
   @JsonProperty("profitMargins")
-  private Field profitMargins; // {Field},
+  private Field profitMargins;
   @JsonProperty("heldPercentInsiders")
-  private Field heldPercentInsiders; // { Field},
+  private Field heldPercentInsiders;
   @JsonProperty("heldPercentInstitutions")
-  private Field heldPercentInstitutions; // { Field},
+  private Field heldPercentInstitutions;
   @JsonProperty("shortRatio")
-  private Field shortRatio; // { Field},
+  private Field shortRatio;
   @JsonProperty("shortPercentOfFloat")
-  private Field shortPercentOfFloat; // { Field},
+  private Field shortPercentOfFloat;
   @JsonProperty("beta")
-  private Field beta; // { Field},
+  private Field beta;
   @JsonProperty("bookValue")
-  private Field bookValue; // { Field},
+  private Field bookValue;
   @JsonProperty("priceToBook")
-  private Field priceToBook; // { Field},
+  private Field priceToBook;
   @JsonProperty("lastFiscalYearEnd")
-  private Field lastFiscalYearEnd; // { Field},
+  private Field lastFiscalYearEnd;
   @JsonProperty("nextFiscalYearEnd")
-  private Field nextFiscalYearEnd; // { Field},
+  private Field nextFiscalYearEnd;
   @JsonProperty("mostRecentQuarter")
-  private Field mostRecentQuarter; // { Field},
+  private Field mostRecentQuarter;
   @JsonProperty("earningsQuarterlyGrowth")
-  private Field earningsQuarterlyGrowth; // {Field},
+  private Field earningsQuarterlyGrowth;
   @JsonProperty("trailingEps")
-  private Field trailingEps; // { Field},
+  private Field trailingEps;
   @JsonProperty("forwardEps")
-  private Field forwardEps; // { Field},
+  private Field forwardEps;
   @JsonProperty("pegRatio")
-  private Field pegRatio; // { Field},
+  private Field pegRatio;
   @JsonProperty("lastSplitDate")
-  private Field lastSplitDate; // { Field},
+  private Field lastSplitDate;
   @JsonProperty("enterpriseToRevenue")
-  private Field enterpriseToRevenue; // { Field},
+  private Field enterpriseToRevenue;
   @JsonProperty("enterpriseToEbitda")
-  private Field enterpriseToEbitda; // { Field},
+  private Field enterpriseToEbitda;
   @JsonProperty("SandP52WeekChange")
-  private Field sandP52WeekChange; // { Field},
+  private Field sandP52WeekChange;
 
   @JsonProperty("floatShares")
-  private LongFormatField floatShares; // {LongFormatField},
+  private LongFormatField floatShares;
   @JsonProperty("sharesOutstanding")
-  private LongFormatField sharesOutstanding; // {LongFormatField},
+  private LongFormatField sharesOutstanding;
   @JsonProperty("sharesShort")
-  private LongFormatField sharesShort; // {LongFormatField},
+  private LongFormatField sharesShort;
   @JsonProperty("sharesShortPriorMonth")
-  private LongFormatField sharesShortPriorMonth; // {LongFormatField},
+  private LongFormatField sharesShortPriorMonth;
   @JsonProperty("netIncomeToCommon")
-  private LongFormatField netIncomeToCommon; // { LongFormatField },
+  private LongFormatField netIncomeToCommon;
   @JsonProperty("enterpriseValue")
-  private LongFormatField enterpriseValue; // {LongFormatField},
+  private LongFormatField enterpriseValue;
 
   public String getLastSplitFactor() {
     return lastSplitFactor;
@@ -291,41 +291,41 @@ public class DefaultKeyStatistics {
   /*
   * *** NULL DATA ***
   @JsonProperty("revenueQuarterlyGrowth")
-  private Field revenueQuarterlyGrowth; // {},
+  private Field revenueQuarterlyGrowth;
   @JsonProperty("morningStarOverallRating")
-  private Field morningStarOverallRating; // {},
+  private Field morningStarOverallRating;
   @JsonProperty("morningStarRiskRating")
-  private Field morningStarRiskRating; // {},
+  private Field morningStarRiskRating;
   @JsonProperty("category")
   private Field category; // null,
   @JsonProperty("annualReportExpenseRatio")
-  private Field annualReportExpenseRatio; // {},
+  private Field annualReportExpenseRatio;
   @JsonProperty("ytdReturn")
-  private Field ytdReturn; // {},
+  private Field ytdReturn;
   @JsonProperty("beta3Year")
-  private Field beta3Year; // {},
+  private Field beta3Year;
   @JsonProperty("totalAssets")
-  private Field totalAssets; // {},
+  private Field totalAssets;
   @JsonProperty("yield")
-  private Field yield; // {},
+  private Field yield;
   @JsonProperty("fundFamily")
   private Field fundFamily; // null,
   @JsonProperty("fundInceptionDate")
-  private Field fundInceptionDate; // {},
+  private Field fundInceptionDate;
   @JsonProperty("legalType")
   private Field legalType; // null,
   @JsonProperty("threeYearAverageReturn")
-  private Field threeYearAverageReturn; // {},
+  private Field threeYearAverageReturn;
   @JsonProperty("fiveYearAverageReturn")
-  private Field fiveYearAverageReturn; // {},
+  private Field fiveYearAverageReturn;
   @JsonProperty("priceToSalesTrailing12Months")
-  private Field priceToSalesTrailing12Months; // {},
+  private Field priceToSalesTrailing12Months;
   @JsonProperty("lastDividendValue")
-  private Field lastDividendValue; // {},
+  private Field lastDividendValue;
   @JsonProperty("lastCapGain")
-  private Field lastCapGain; // {},
+  private Field lastCapGain;
   @JsonProperty("annualHoldingsTurnover")
-  private Field annualHoldingsTurnover; // {}
+  private Field annualHoldingsTurnover;
    */
 
 }

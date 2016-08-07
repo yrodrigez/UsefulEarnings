@@ -16,34 +16,34 @@ import es.yahoousefulearnings.engine.LongFormatField;
 public class IncomeStatement {
 
   @JsonProperty("endDate")
-  private Field endDate; // { Field },
+  private Field endDate;
   @JsonProperty("totalRevenue")
-  private Field totalRevenue; // { LongFormatField },
+  private Field totalRevenue;
 
   @JsonProperty("costOfRevenue")
-  private LongFormatField costOfRevenue; // { LongFormatField },
+  private LongFormatField costOfRevenue;
   @JsonProperty("grossProfit")
-  private LongFormatField grossProfit; // { LongFormatField },
+  private LongFormatField grossProfit;
   @JsonProperty("researchDevelopment")
-  private LongFormatField researchDevelopment; // { LongFormatField },
+  private LongFormatField researchDevelopment;
   @JsonProperty("sellingGeneralAdministrative")
-  private LongFormatField sellingGeneralAdministrative; // { LongFormatField },
+  private LongFormatField sellingGeneralAdministrative;
   @JsonProperty("operatingIncome")
-  private LongFormatField operatingIncome; // { LongFormatField },
+  private LongFormatField operatingIncome;
   @JsonProperty("totalOtherIncomeExpenseNet")
-  private LongFormatField totalOtherIncomeExpenseNet; // { LongFormatField },
+  private LongFormatField totalOtherIncomeExpenseNet;
   @JsonProperty("ebit")
-  private LongFormatField ebit; // { LongFormatField },
+  private LongFormatField ebit;
   @JsonProperty("incomeBeforeTax")
-  private LongFormatField incomeBeforeTax; // { LongFormatField },
+  private LongFormatField incomeBeforeTax;
   @JsonProperty("incomeTaxExpense")
-  private LongFormatField incomeTaxExpense; // { LongFormatField },
+  private LongFormatField incomeTaxExpense;
   @JsonProperty("netIncome")
-  private LongFormatField netIncome; // { LongFormatField },
+  private LongFormatField netIncome;
   @JsonProperty("netIncomeApplicableToCommonShares")
-  private LongFormatField netIncomeApplicableToCommonShares; // { LongFormatField }
+  private LongFormatField netIncomeApplicableToCommonShares;
   @JsonProperty("netIncomeFromContinuingOps")
-  private LongFormatField netIncomeFromContinuingOps; // { LongFormatField },
+  private LongFormatField netIncomeFromContinuingOps;
 
 
   public Field getEndDate() {
@@ -161,15 +161,15 @@ public class IncomeStatement {
   /*
   *** NULL DATA ***
 
-  @JsonProperty("discontinuedOperations") private Field discontinuedOperations; // {},
-  @JsonProperty("extraordinaryItems") private Field extraordinaryItems; // {},
-  @JsonProperty("effectOfAccountingCharges") private Field effectOfAccountingCharges; // {},
-  @JsonProperty("otherItems") private Field otherItems; // {},
-  @JsonProperty("nonRecurring") private Field nonRecurring; // {},
-  @JsonProperty("otherOperatingExpenses") private Field otherOperatingExpenses; // {},
-  @JsonProperty("totalOperatingExpenses") private Field totalOperatingExpenses; // {},
-  @JsonProperty("interestExpense") private Field interestExpense; // {},
-  @JsonProperty("minorityInterest") private Field minorityInterest; // {},
+  @JsonProperty("discontinuedOperations") private Field discontinuedOperations;
+  @JsonProperty("extraordinaryItems") private Field extraordinaryItems;
+  @JsonProperty("effectOfAccountingCharges") private Field effectOfAccountingCharges;
+  @JsonProperty("otherItems") private Field otherItems;
+  @JsonProperty("nonRecurring") private Field nonRecurring;
+  @JsonProperty("otherOperatingExpenses") private Field otherOperatingExpenses;
+  @JsonProperty("totalOperatingExpenses") private Field totalOperatingExpenses;
+  @JsonProperty("interestExpense") private Field interestExpense;
+  @JsonProperty("minorityInterest") private Field minorityInterest;
   */
 
 }
