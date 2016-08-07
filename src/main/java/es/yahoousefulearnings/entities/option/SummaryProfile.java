@@ -48,4 +48,140 @@ public class SummaryProfile {
   private LongFormatField volume;
   @JsonProperty("regularMarketVolume")
   private LongFormatField regularMarketVolume;
+
+  public Field getPreviousClose() {
+    return previousClose;
+  }
+
+  public void setPreviousClose(Field previousClose) {
+    this.previousClose = previousClose;
+  }
+
+  public Field getOpen() {
+    return open;
+  }
+
+  public void setOpen(Field open) {
+    this.open = open;
+  }
+
+  public Field getDayLow() {
+    return dayLow;
+  }
+
+  public void setDayLow(Field dayLow) {
+    this.dayLow = dayLow;
+  }
+
+  public Field getDayHigh() {
+    return dayHigh;
+  }
+
+  public void setDayHigh(Field dayHigh) {
+    this.dayHigh = dayHigh;
+  }
+
+  public Field getRegularMarketPreviousClose() {
+    return regularMarketPreviousClose;
+  }
+
+  public void setRegularMarketPreviousClose(Field regularMarketPreviousClose) {
+    this.regularMarketPreviousClose = regularMarketPreviousClose;
+  }
+
+  public Field getRegularMarketOpen() {
+    return regularMarketOpen;
+  }
+
+  public void setRegularMarketOpen(Field regularMarketOpen) {
+    this.regularMarketOpen = regularMarketOpen;
+  }
+
+  public Field getRegularMarketDayLow() {
+    return regularMarketDayLow;
+  }
+
+  public void setRegularMarketDayLow(Field regularMarketDayLow) {
+    this.regularMarketDayLow = regularMarketDayLow;
+  }
+
+  public Field getRegularMarketDayHigh() {
+    return regularMarketDayHigh;
+  }
+
+  public void setRegularMarketDayHigh(Field regularMarketDayHigh) {
+    this.regularMarketDayHigh = regularMarketDayHigh;
+  }
+
+  public Field getBid() {
+    return bid;
+  }
+
+  public void setBid(Field bid) {
+    this.bid = bid;
+  }
+
+  public Field getAsk() {
+    return ask;
+  }
+
+  public void setAsk(Field ask) {
+    this.ask = ask;
+  }
+
+  public Field getExpireDate() {
+    return expireDate;
+  }
+
+  public void setExpireDate(Field expireDate) {
+    this.expireDate = expireDate;
+  }
+
+  public Field getStrikePrice() {
+    return strikePrice;
+  }
+
+  public void setStrikePrice(Field strikePrice) {
+    this.strikePrice = strikePrice;
+  }
+
+  public Field getFiftyTwoWeekLow() {
+    return fiftyTwoWeekLow;
+  }
+
+  public void setFiftyTwoWeekLow(Field fiftyTwoWeekLow) {
+    this.fiftyTwoWeekLow = fiftyTwoWeekLow;
+  }
+
+  public Field getFiftyTwoWeekHigh() {
+    return fiftyTwoWeekHigh;
+  }
+
+  public void setFiftyTwoWeekHigh(Field fiftyTwoWeekHigh) {
+    this.fiftyTwoWeekHigh = fiftyTwoWeekHigh;
+  }
+
+  public LongFormatField getOpenInterest() {
+    return openInterest;
+  }
+
+  public void setOpenInterest(LongFormatField openInterest) {
+    this.openInterest = openInterest;
+  }
+
+  public LongFormatField getVolume() {
+    return volume;
+  }
+
+  public void setVolume(LongFormatField volume) {
+    this.volume = volume;
+  }
+
+  public LongFormatField getRegularMarketVolume() {
+    return regularMarketVolume;
+  }
+
+  public void setRegularMarketVolume(LongFormatField regularMarketVolume) {
+    this.regularMarketVolume = regularMarketVolume;
+  }
 }
