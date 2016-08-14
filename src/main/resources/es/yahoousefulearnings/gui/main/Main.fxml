@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.yahoousefulearnings.gui.main.Controller">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.yahoousefulearnings.gui.main.Controller">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -32,7 +32,7 @@
       </MenuBar>
    </top>
    <center>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+
    </center>
    <left>
       <BorderPane prefHeight="743.0" prefWidth="236.0" BorderPane.alignment="CENTER">
@@ -42,7 +42,7 @@
          <top>
             <AnchorPane prefHeight="30.0" prefWidth="236.0" BorderPane.alignment="CENTER">
                <children>
-                  <ChoiceBox fx:id="availableStocks" layoutY="2.0" prefHeight="25.0" prefWidth="241.0" />
+                  <ChoiceBox fx:id="stocksChoiceBox" layoutY="2.0" prefHeight="25.0" prefWidth="241.0" />
                </children>
             </AnchorPane>
          </top>

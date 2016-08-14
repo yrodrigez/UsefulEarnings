@@ -1,9 +1,6 @@
 package es.yahoousefulearnings.engine;
 
-import es.yahoousefulearnings.entities.Company;
-
 import java.util.Collection;
-import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,53 +12,63 @@ public class YahooLinks {
 
   public static final String dateQuery = "&date=";
   /**
-   * quoteSummaryModules
+   * companyQuoteSummaryModules
    * Permitted modules to generate a link to get a company summary
    * @see "https://query2.finance.yahoo.com/v10/finance/quoteSummary/COMPANY_SYMBOL?formatted=true&modules=ANY_QUOTESUMMARYMODULES_SEPPARATED_BY_COMMAS&corsDomain=finance.yahoo.com"
    */
-  public static Map<String, String> quoteSummaryModules = new HashMap<>();
+  public static Map<String, String> companyQuoteSummaryModules = new HashMap<>();
   static {
-    quoteSummaryModules.put("Asset Profile", "assetProfile"); // solo para info específica...
-    quoteSummaryModules.put("Financial Data", "financialData"); // *** IMPORTANTE ***
-    quoteSummaryModules.put("Default Key Statistics", "defaultKeyStatistics"); // *** IMPORTANTE ***
-    quoteSummaryModules.put("Calendar Events", "calendarEvents"); // *** IMPORTANTE ***
-    quoteSummaryModules.put("Income Statement History", "incomeStatementHistory"); // *** IMPORTANTE ***
-    quoteSummaryModules.put("Cashflow Statement History", "cashflowStatementHistory");// *** IMPORTANTE ***
-    quoteSummaryModules.put("Balance Sheet History", "balanceSheetHistory");// *** IMPORTANTE ***
+    companyQuoteSummaryModules.put("Asset Profile", "assetProfile"); // solo para info específica...
+    companyQuoteSummaryModules.put("Financial Data", "financialData"); // *** IMPORTANTE ***
+    companyQuoteSummaryModules.put("Default Key Statistics", "defaultKeyStatistics"); // *** IMPORTANTE ***
+    companyQuoteSummaryModules.put("Calendar Events", "calendarEvents"); // *** IMPORTANTE ***
+    companyQuoteSummaryModules.put("Income Statement History", "incomeStatementHistory"); // *** IMPORTANTE ***
+    companyQuoteSummaryModules.put("Cashflow Statement History", "cashflowStatementHistory");// *** IMPORTANTE ***
+    companyQuoteSummaryModules.put("Balance Sheet History", "balanceSheetHistory");// *** IMPORTANTE ***
 
     /* ***REVISAR DESPUES***
-    quoteSummaryModules.put("Upgrade Downgrade History", "upgradeDowngradeHistory");// datos para los gráficos del sumario...
-    quoteSummaryModules.put("Earnings", "earnings");// datos para los gráficos del sumario...
-    quoteSummaryModules.put("Summary Profile", "summaryProfile"); // como assetsProfile pero menos extenso....
+    companyQuoteSummaryModules.put("Upgrade Downgrade History", "upgradeDowngradeHistory");// datos para los gráficos del sumario...
+    companyQuoteSummaryModules.put("Earnings", "earnings");// datos para los gráficos del sumario...
+    companyQuoteSummaryModules.put("Summary Profile", "summaryProfile"); // como assetsProfile pero menos extenso....
 
-    quoteSummaryModules.put("Income Statement History Quarterly", "incomeStatementHistoryQuarterly"); //igual al anterior pero qutrimestral
-    quoteSummaryModules.put("Cashflow Statement History Quarterly", "cashflowStatementHistoryQuarterly"); //igual al anterior pero qutrimestral
-    quoteSummaryModules.put("Balance Sheet History Quarterly", "balanceSheetHistoryQuarterly"); //igual al anterior pero qutrimestral
+    companyQuoteSummaryModules.put("Income Statement History Quarterly", "incomeStatementHistoryQuarterly"); //igual al anterior pero qutrimestral
+    companyQuoteSummaryModules.put("Cashflow Statement History Quarterly", "cashflowStatementHistoryQuarterly"); //igual al anterior pero qutrimestral
+    companyQuoteSummaryModules.put("Balance Sheet History Quarterly", "balanceSheetHistoryQuarterly"); //igual al anterior pero qutrimestral
 
     // modules=earningsHistory,earningsTrend,industryTrend
-    quoteSummaryModules.put("Earnings History", "earningsHistory"); // sin definir
-    quoteSummaryModules.put("Earnings Trend", "earningsTrend"); // sin definir
-    quoteSummaryModules.put("Industry Trend", "industryTrend"); // sin definir
+    companyQuoteSummaryModules.put("Earnings History", "earningsHistory"); // sin definir
+    companyQuoteSummaryModules.put("Earnings Trend", "earningsTrend"); // sin definir
+    companyQuoteSummaryModules.put("Industry Trend", "industryTrend"); // sin definir
 
-    quoteSummaryModules.put("Institution Ownership", "institutionOwnership"); // *** ¿Basura? ***
-    quoteSummaryModules.put("Major Direct Holders", "majorDirectHolders"); // *** ¿BASURA? ***
-    quoteSummaryModules.put("Major Holders Breakdown", "majorHoldersBreakdown");// *** ¿BASURA? ***
-    quoteSummaryModules.put("Insider Transactions", "insiderTransactions");// *** ¿BASURA? ***
-    quoteSummaryModules.put("Insider Holders", "insiderHolders");// *** ¿BASURA? ***
-    quoteSummaryModules.put("Net Share Purchase Activity", "netSharePurchaseActivity");// *** ¿BASURA? ***
+    companyQuoteSummaryModules.put("Institution Ownership", "institutionOwnership"); // *** ¿Basura? ***
+    companyQuoteSummaryModules.put("Major Direct Holders", "majorDirectHolders"); // *** ¿BASURA? ***
+    companyQuoteSummaryModules.put("Major Holders Breakdown", "majorHoldersBreakdown");// *** ¿BASURA? ***
+    companyQuoteSummaryModules.put("Insider Transactions", "insiderTransactions");// *** ¿BASURA? ***
+    companyQuoteSummaryModules.put("Insider Holders", "insiderHolders");// *** ¿BASURA? ***
+    companyQuoteSummaryModules.put("Net Share Purchase Activity", "netSharePurchaseActivity");// *** ¿BASURA? ***
 
-    quoteSummaryModules.put("Sec Filings", "secFilings"); // *** BASURA ***
-    quoteSummaryModules.put("Recommendation Trend", "recommendationTrend");// datos para los gráficos del sumario... *** BASURA de verdad ***
+    companyQuoteSummaryModules.put("Sec Filings", "secFilings"); // *** BASURA ***
+    companyQuoteSummaryModules.put("Recommendation Trend", "recommendationTrend");// datos para los gráficos del sumario... *** BASURA de verdad ***
     */
+  }
+  /**
+   * companyQuoteSummaryModules
+   * Permitted modules to generate a link to get a option summary
+   * @see "https://query1.finance.yahoo.com/v10/finance/quoteSummary/OPTION_SYMBOL?modules=ANY_QUOTESUMMARYMODULES_SEPPARATED_BY_COMMAS"
+   */
+  public static Map<String, String> optionQuoteSummaryModules = new HashMap<>();
+  static {
+    optionQuoteSummaryModules.put("Asset Profile", "assetProfile");
+    optionQuoteSummaryModules.put("Financial Data", "financialData");
   }
 
   /**
-   * Generates a link to the Yahoo Finance API to get the specific modules on YahooLinks.quoteSummaryModules Map
+   * Generates a link to the Yahoo Finance API to get the specific modules on YahooLinks.companyQuoteSummaryModules Map
    * @param companySymbol company's symbol to search in Yahoo! Finance
    * @param quoteSummaryModules Collection that contains the specific modules to generate the link
-   * @return Link to quote summary with the specified modules in quoteSummaryModules
-   * @throws IllegalArgumentException if quoteSummaryModules is empty or modules in that collection doesn't match with
-   * the modules on YahooLinks.quoteSummaryModules Map
+   * @return Link to quote summary with the specified modules in companyQuoteSummaryModules
+   * @throws IllegalArgumentException if companyQuoteSummaryModules is empty or modules in that collection doesn't match with
+   * the modules on YahooLinks.companyQuoteSummaryModules Map
    */
   public static String getYahooquoteSummaryLink(String companySymbol, Collection<String> quoteSummaryModules) throws IllegalArgumentException {
     if(quoteSummaryModules.isEmpty()) throw new IllegalArgumentException("Quote Summary modules cannot bew empty");
@@ -70,7 +77,7 @@ public class YahooLinks {
     sb.append(companySymbol);
     sb.append("?/formatted=true&modules=");
     for(String module : quoteSummaryModules){
-      if(!YahooLinks.quoteSummaryModules.containsKey(module)) {
+      if(!YahooLinks.companyQuoteSummaryModules.containsKey(module)) {
         throw new IllegalArgumentException("I don't have that module");
       } else {
         sb.append(module);

@@ -7,7 +7,7 @@ import es.yahoousefulearnings.entities.company.*;
 import java.util.ArrayList;
 
 /**
- * Representation of a company or stock in this application
+ * Representation of a company in this application
  * @author Yago Rodríguez
  */
 

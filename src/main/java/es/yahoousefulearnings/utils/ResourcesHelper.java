@@ -1,6 +1,12 @@
 package es.yahoousefulearnings.utils;
 
+import es.yahoousefulearnings.entities.Stock;
+import sun.reflect.generics.tree.Tree;
+
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 public class ResourcesHelper {
@@ -9,19 +15,35 @@ public class ResourcesHelper {
 
   private final String stocksPath;
 
-  private ResourcesHelper() {
+  private final TreeMap<String, Stock> stockMap;
 
+  private ResourcesHelper() {
     stocksPath = System.getProperty("user.home")
       + File.separator + "YahooUsefulEarnings"
       + File.separator + "resources"
       + File.separator + "Stocks";
 
     createStocksFile();
+    stockMap = createAvailableStocks();
   }
 
-  public File[] getAvailableStocks(){
+  public TreeMap<String, Stock> getAvailableStocks(){
+    return stockMap;
+  }
+
+  private TreeMap<String, Stock> createAvailableStocks(){
     File stocksFile = new File(stocksPath);
-    return stocksFile.listFiles();
+    TreeMap<String, Stock> stocks = new TreeMap<>();
+    try {
+      for (File csvStock : stocksFile.listFiles()) {
+        Stock stock = CSVStockReader.createStockFromPath(csvStock.getPath());
+        stocks.put(stock.getName(), stock);
+      }
+    } catch (NullPointerException ne) {
+      System.err.println("No files available at: " + stocksPath);
+    }
+
+    return stocks;
   }
 
   private void createStocksFile(){

@@ -1,20 +1,20 @@
 package es.yahoousefulearnings.utils;
 
+import es.yahoousefulearnings.entities.Stock;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CSVStockReader {
 
-
-  public static Map<String, String> getStock(String path){
-    if (!path.substring(path.length()-3, path.length()).equals("csv"))
+  public static Stock createStockFromPath(String path){
+    if (!path.substring(path.length() - 3, path.length()).equals("csv"))
       throw new IllegalArgumentException("That's not a csv file");
 
-    Map<String, String> stock = new HashMap<>();
+    String stockName = path.substring(path.lastIndexOf(File.separator) + 1, path.lastIndexOf(".csv"));
 
-    if( path.contains("/") ) path = getRealPath(path, "/");
-    if( path.contains("\\") ) path = getRealPath(path, "\"\\\"");
+    Map<String, String> stockMap = new HashMap<>();
 
     BufferedReader br = null;
     String line;
@@ -24,11 +24,14 @@ public class CSVStockReader {
 
       br = new BufferedReader(new FileReader(path));
       while ((line = br.readLine()) != null) {
+        String[] splittedLine = line.split(splitBy);
 
-        String[] action = line.split(splitBy);
-
-        stock.put(action[0], action[1]);
+        stockMap.put(
+          splittedLine[0], // company symbol
+          splittedLine[1] // Company name
+        );
       }
+
     } catch (IOException e) {
       e.printStackTrace();
     }  finally {
@@ -41,25 +44,7 @@ public class CSVStockReader {
       }
     }
 
-    return stock;
-  }
-
-
-
-  private static String getRealPath(String path, String token){
-
-    StringBuilder realPath = new StringBuilder();
-    String [] splitedPath = path.split(token);
-
-    for (int i = 0 ; i < splitedPath.length ; i++) {
-      realPath.append(splitedPath[i]);
-
-      if( i < splitedPath.length-1 ) {
-        realPath.append(File.separator);
-      }
-    }
-
-    return realPath.toString();
+    return new Stock(stockName, stockMap);
   }
 
 
