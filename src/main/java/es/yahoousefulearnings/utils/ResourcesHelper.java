@@ -1,11 +1,8 @@
 package es.yahoousefulearnings.utils;
 
 import es.yahoousefulearnings.entities.Stock;
-import sun.reflect.generics.tree.Tree;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeMap;
 
 
@@ -40,7 +37,7 @@ public class ResourcesHelper {
         stocks.put(stock.getName(), stock);
       }
     } catch (NullPointerException ne) {
-      System.err.println("No files available at: " + stocksPath);
+      System.err.println("ResourcesHelper: No files available at: " + stocksPath + '\n');
     }
 
     return stocks;
@@ -49,14 +46,12 @@ public class ResourcesHelper {
   private void createStocksFile(){
     File stocksFile = new File(stocksPath);
     if(!stocksFile.exists())
-      if(stocksFile.mkdir())
+      if(stocksFile.mkdirs())
         System.out.printf("File succesfully created at "+ stocksFile);
       else System.err.println("Could not create file stocks at " + stocksPath);
-    else System.out.println("File " + stocksFile.getAbsolutePath() + ", already exists");
   }
 
   public static ResourcesHelper getInstance() {
-    System.out.println("instnciando");
     if (instance == null) instance = new ResourcesHelper();
     return instance;
   }

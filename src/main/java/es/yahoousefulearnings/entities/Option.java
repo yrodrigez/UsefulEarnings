@@ -1,6 +1,5 @@
 package es.yahoousefulearnings.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.entities.option.Price;
@@ -26,6 +25,7 @@ public class Option {
 
   public void setPrice(Price price) {
     this.price = price;
+    this.price.set();
   }
 
   public SummaryProfile getSummaryProfile() {
@@ -34,6 +34,7 @@ public class Option {
 
   public void setSummaryProfile(SummaryProfile summaryProfile) {
     this.summaryProfile = summaryProfile;
+    this.summaryProfile.set();
   }
 
   public String getOptionSymbol() {

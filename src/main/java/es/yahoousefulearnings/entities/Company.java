@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 /**
  * Representation of a company in this application
+ *
  * @author Yago Rodríguez
  */
 
@@ -15,6 +16,7 @@ public class Company {
 
   private String symbol;
 
+  private Profile profile;
   private CalendarEvents calendarEvents;
   private FinancialData financialData;
   private DefaultKeyStatistics defaultKeyStatistics;
@@ -31,7 +33,7 @@ public class Company {
     this.symbol = symbol;
   }
 
-  public ArrayList<Field> getEarningsDates(){
+  public ArrayList<Field> getEarningsDates() {
     return this.calendarEvents.getEarningsDate();
   }
 
@@ -41,6 +43,7 @@ public class Company {
 
   public void setCalendarEvents(CalendarEvents calendarEvents) {
     this.calendarEvents = calendarEvents;
+    this.calendarEvents.set();
   }
 
   public FinancialData getFinancialData() {
@@ -49,6 +52,7 @@ public class Company {
 
   public void setFinancialData(FinancialData financialData) {
     this.financialData = financialData;
+    this.financialData.set();
   }
 
   public DefaultKeyStatistics getDefaultKeyStatistics() {
@@ -57,6 +61,7 @@ public class Company {
 
   public void setDefaultKeyStatistics(DefaultKeyStatistics defaultKeyStatistics) {
     this.defaultKeyStatistics = defaultKeyStatistics;
+    this.defaultKeyStatistics.set();
   }
 
   public ArrayList<CashFlowStatement> getCashFlowStatements() {
@@ -65,6 +70,7 @@ public class Company {
 
   public void setCashFlowStatements(ArrayList<CashFlowStatement> cashFlowStatements) {
     this.cashFlowStatements = cashFlowStatements;
+    this.calendarEvents.set();
   }
 
   public ArrayList<IncomeStatement> getIncomeStatements() {
@@ -73,6 +79,7 @@ public class Company {
 
   public void setIncomeStatements(ArrayList<IncomeStatement> incomeStatements) {
     this.incomeStatements = incomeStatements;
+    this.incomeStatements.forEach(incomeStatement -> incomeStatement.set());
   }
 
   public ArrayList<BalanceSheetStatement> getBalanceSheetStatements() {
@@ -81,5 +88,16 @@ public class Company {
 
   public void setBalanceSheetStatements(ArrayList<BalanceSheetStatement> balanceSheetStatements) {
     this.balanceSheetStatements = balanceSheetStatements;
+    this.balanceSheetStatements.forEach(balanceSheetStatement -> balanceSheetStatement.set());
+
+  }
+
+  public Profile getProfile() {
+    return profile;
+  }
+
+  public void setProfile(Profile profile) {
+    this.profile = profile;
+    this.profile.set();
   }
 }

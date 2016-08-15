@@ -1,6 +1,5 @@
 package es.yahoousefulearnings.engine;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,17 +69,17 @@ public class YahooLinks {
    * @throws IllegalArgumentException if companyQuoteSummaryModules is empty or modules in that collection doesn't match with
    * the modules on YahooLinks.companyQuoteSummaryModules Map
    */
-  public static String getYahooquoteSummaryLink(String companySymbol, Collection<String> quoteSummaryModules) throws IllegalArgumentException {
-    if(quoteSummaryModules.isEmpty()) throw new IllegalArgumentException("Quote Summary modules cannot bew empty");
-    if(companySymbol.isEmpty()) throw new IllegalArgumentException("Symbol can't be empty");
+  public static String getYahooquoteSummaryLink(String companySymbol, String ... quoteSummaryModules) throws IllegalArgumentException {
+    if(quoteSummaryModules.length == 0) throw new IllegalArgumentException("Quote Summary modules cannot bew empty");
+    if(companySymbol.isEmpty() || companySymbol.equals("")) throw new IllegalArgumentException("Symbol can't be empty");
     StringBuilder sb = new StringBuilder("https://query2.finance.yahoo.com/v10/finance/quoteSummary/");
     sb.append(companySymbol);
-    sb.append("?/formatted=true&modules=");
+    sb.append("?formatted=true&modules=");
     for(String module : quoteSummaryModules){
-      if(!YahooLinks.companyQuoteSummaryModules.containsKey(module)) {
+      if(!companyQuoteSummaryModules.containsKey(module)) {
         throw new IllegalArgumentException("I don't have that module");
       } else {
-        sb.append(module);
+        sb.append(companyQuoteSummaryModules.get(module));
         sb.append(",");
       }
     }

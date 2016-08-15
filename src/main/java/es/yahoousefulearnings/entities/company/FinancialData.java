@@ -1,6 +1,7 @@
 package es.yahoousefulearnings.entities.company;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.engine.Field;
 import es.yahoousefulearnings.engine.LongFormatField;
@@ -10,7 +11,8 @@ import es.yahoousefulearnings.engine.LongFormatField;
  * @author Yago Rodríguez
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FinancialData {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class FinancialData extends CompanyData {
 
   @JsonProperty("currentPrice")
   private Field currentPrice;
@@ -55,7 +57,7 @@ public class FinancialData {
   private LongFormatField totalCash;
   @JsonProperty("ebitda")
   private LongFormatField ebitda;
-  @JsonProperty("totalDebt")
+ @JsonProperty("totalDebt")
   private LongFormatField totalDebt;
   @JsonProperty("totalRevenue")
   private LongFormatField totalRevenue;

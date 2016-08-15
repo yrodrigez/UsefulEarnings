@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.yahoousefulearnings.gui.main.Controller">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.yahoousefulearnings.gui.controller.Main">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -23,6 +25,11 @@
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Control">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+              </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
@@ -42,10 +49,19 @@
          <top>
             <AnchorPane prefHeight="30.0" prefWidth="236.0" BorderPane.alignment="CENTER">
                <children>
-                  <ChoiceBox fx:id="stocksChoiceBox" layoutY="2.0" prefHeight="25.0" prefWidth="241.0" />
+                  <ChoiceBox fx:id="stocksChoiceBox" layoutX="42.0" layoutY="2.0" prefHeight="25.0" prefWidth="199.0" />
+                  <Label layoutX="7.0" layoutY="6.0" text="Stock: " />
                </children>
             </AnchorPane>
          </top>
       </BorderPane>
    </left>
+   <center>
+      <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab fx:id="webTab" text="Web" />
+          <Tab fx:id="dataTab" text="Data" />
+        </tabs>
+      </TabPane>
+   </center>
 </BorderPane>

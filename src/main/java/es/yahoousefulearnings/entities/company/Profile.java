@@ -1,5 +1,7 @@
 package es.yahoousefulearnings.entities.company;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -8,27 +10,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Yago Rodríguez
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Profile {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class Profile extends CompanyData {
+
   @JsonProperty("address1")
-  private String address; //"address1": "3100 Ocean Park Boulevard"
+  private String address;
   @JsonProperty("city")
-  private String city; // "city": "Santa Monica",
+  private String city;
   @JsonProperty("state")
-  private String state; // "state": "CA"
+  private String state;
   @JsonProperty("zip")
-  private String zip; //  "zip": "90405"
+  private String zip;
   @JsonProperty("country")
-  private String country; // "country": "United States"
+  private String country;
   @JsonProperty("phone")
-  private String phone; // "phone": "310-255-2000"
+  private String phone;
   @JsonProperty("website")
-  private String website; // "website": "http://www.activisionblizzard.com"
+  private String website;
   @JsonProperty("industry")
-  private String industry; // "industry": "Multimedia & Graphics Software"
+  private String industry;
   @JsonProperty("sector")
-  private String sector; // "sector": "Technology"
+  private String sector;
   @JsonProperty("fullTimeEmployees")
-  private int fullTimeEmployees; // "fullTimeEmployees": 7190
+  private int fullTimeEmployees;
 
   public String getAddress() {
     return address;

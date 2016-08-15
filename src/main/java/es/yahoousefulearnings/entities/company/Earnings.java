@@ -1,6 +1,7 @@
 package es.yahoousefulearnings.entities.company;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.engine.Field;
 import es.yahoousefulearnings.engine.LongFormatField;
@@ -16,7 +17,8 @@ import java.util.ArrayList;
  * @author Yago Rodríguez
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Earnings {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class Earnings extends CompanyData {
   @JsonProperty("earningsDate")
   private ArrayList<Field> earningsDate;
 

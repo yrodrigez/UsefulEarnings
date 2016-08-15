@@ -1,17 +1,17 @@
 package es.yahoousefulearnings.engine;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Field  {
-
   @JsonProperty("raw") private Number raw;
   @JsonProperty("fmt") private String fmt;
   @JsonIgnore private FieldType fieldType;
+
 
   @JsonCreator
   public Field(

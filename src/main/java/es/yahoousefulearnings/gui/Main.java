@@ -1,4 +1,4 @@
-package es.yahoousefulearnings.gui.main;
+package es.yahoousefulearnings.gui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,8 +9,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
   @Override
-  public void start(Stage stage) throws Exception{
-    Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+  public void start(Stage stage) throws Exception {
+    Parent root = FXMLLoader.load(getClass().getResource("view/Main.fxml"));
     stage.setTitle("UsefulEarnings");
     stage.setScene(new Scene(root, 1024, 768));
     stage.setMaximized(Boolean.TRUE);

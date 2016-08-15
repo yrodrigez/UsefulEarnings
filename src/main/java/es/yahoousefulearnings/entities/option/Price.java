@@ -10,7 +10,7 @@ import es.yahoousefulearnings.engine.LongFormatField;
  *
  * @author Yago Rodríguez
  */
-public class Price {
+public class Price extends OptionData {
   @JsonProperty("exchange")
   private String exchange; // "OPR",
   @JsonProperty("exchangeName")
