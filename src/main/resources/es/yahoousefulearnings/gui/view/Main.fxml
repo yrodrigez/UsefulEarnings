@@ -8,8 +8,10 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.yahoousefulearnings.gui.controller.Main">
    <top>
@@ -44,15 +46,20 @@
    <left>
       <BorderPane prefHeight="743.0" prefWidth="236.0" BorderPane.alignment="CENTER">
          <center>
-            <ListView fx:id="companies" prefHeight="709.0" prefWidth="268.0" BorderPane.alignment="CENTER" />
+            <ListView fx:id="companies" prefHeight="682.0" prefWidth="237.0" BorderPane.alignment="CENTER" />
          </center>
          <top>
-            <AnchorPane prefHeight="30.0" prefWidth="236.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="52.0" prefWidth="236.0" BorderPane.alignment="CENTER">
                <children>
-                  <ChoiceBox fx:id="stocksChoiceBox" layoutX="42.0" layoutY="2.0" prefHeight="25.0" prefWidth="199.0" />
-                  <Label layoutX="7.0" layoutY="6.0" text="Stock: " />
+                  <HBox prefHeight="34.0" prefWidth="237.0">
+                     <children>
+                        <Label text="Stock: " />
+                        <ChoiceBox fx:id="stocksChoiceBox" prefHeight="25.0" prefWidth="190.0" />
+                     </children>
+                  </HBox>
+                  <TextField fx:id="textFilter" prefHeight="25.0" prefWidth="206.0" promptText="Filter" />
                </children>
-            </AnchorPane>
+            </VBox>
          </top>
       </BorderPane>
    </left>

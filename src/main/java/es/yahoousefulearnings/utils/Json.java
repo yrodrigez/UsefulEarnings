@@ -15,10 +15,17 @@ public class Json {
    * @param jsonNode the node to find the empty classes in it
    * @return the new JsonNode with no empty classes luckily
    */
-
   public static JsonNode removeEmptyClasses(JsonNode jsonNode) {
+    // "declaration":
+    String variableDeclaration = "\"[A-z]+\":";
+    // {}
+    String emptyClass = "(\\{\\})";
+    // {"raw":0,"fmt":null,"longFmt":"0"}
+    String nullClass = "(\\{\\\"raw\\\":0,\\\"fmt\\\":null,\\\"longFmt\\\":\\\"0\\\"\\})";
+    String OR = "|";
+
     String json = jsonNode.toString();
-    json = json.replaceAll("\"[A-z]+\":\\{\\},?", "");
+    json = json.replaceAll(variableDeclaration + "(" + emptyClass + OR + nullClass + "),?", "");
     json = json.replaceAll(",{2,}", "");
     json = json.replaceAll(",\\}", "}");
     ObjectMapper mapper = new ObjectMapper();
