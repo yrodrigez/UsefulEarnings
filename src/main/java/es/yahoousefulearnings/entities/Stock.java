@@ -1,17 +1,20 @@
 package es.yahoousefulearnings.entities;
 
+import java.util.List;
 
-import java.util.Map;
-
+/**
+ * @author Yago Rodríguez
+ */
 public class Stock {
   private String name;
-  private Map<String, String> symbols;
+  private List<String> symbols;
 
-  public Stock(String name, Map<String, String> symbols){
+  public Stock(
+    String name,
+    List<String> symbols) {
     this.setName(name);
     this.setSymbols(symbols);
   }
-
 
   public String getName() {
     return name;
@@ -21,11 +24,11 @@ public class Stock {
     this.name = name;
   }
 
-  public Map<String, String> getSymbols() {
+  public List<String> getSymbols() {
     return symbols;
   }
 
-  public void setSymbols(Map<String, String> symbols) {
+  public void setSymbols(List<String> symbols) {
     this.symbols = symbols;
   }
 

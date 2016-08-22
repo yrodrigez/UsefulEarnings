@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class CalendarEvents extends CompanyData{
+public class CalendarEvents extends CompanyData {
 
   @JsonProperty("earnings")
   private Earnings earnings;
@@ -68,6 +68,10 @@ public class CalendarEvents extends CompanyData{
 
   public LongFormatField getRevenueLow() {
     return this.earnings.getRevenueLow();
+  }
+
+  public LongFormatField getRevenueHigh() {
+    return this.earnings.getRevenueHigh();
   }
 
   public void setRevenueLow(LongFormatField revenueLow) {

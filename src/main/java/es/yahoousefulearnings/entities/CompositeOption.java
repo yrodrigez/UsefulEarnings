@@ -2,8 +2,10 @@ package es.yahoousefulearnings.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import es.yahoousefulearnings.entities.option.OptionType;
 
 /**
+ *
  *  @author Yago Rodríguez
  */
 public class CompositeOption {

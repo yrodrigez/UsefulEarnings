@@ -1,6 +1,8 @@
 package es.yahoousefulearnings.entities.company;
 
-
+/**
+ * @author Yago Rodríguez
+ */
 public class CompanyData {
 
   private boolean isSet = false;

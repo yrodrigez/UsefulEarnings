@@ -1,22 +1,44 @@
 package es.yahoousefulearnings.engine;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Contains methods that will generate links to the known Yahoo! finance API
+ *
  * @author Yago.
  */
 public class YahooLinks {
 
-  public static final String dateQuery = "&date=";
+  public static final String COMPANY_ASSET_PROFILE = "assetProfile";
+  public static final String COMPANY_FINANCIAL_DATA = "financialData";
+  public static final String COMPANY_DEFAULT_KEY_STATISTICS = "defaultKeyStatistics";
+  public static final String COMPANY_CALENDAR_EVENTS = "calendarEvents";
+  public static final String COMPANY_INCOME_STATEMENT_HISTORY = "incomeStatementHistory";
+  public static final String COMPANY_CASHFLOW_STATEMENT_HISTORY = "cashflowStatementHistory";
+  public static final String COMPANY_BALANCE_SHEET_HISTORY = "balanceSheetHistory";
+
+  public static final String OPTION_PRICE = "price";
+  public static final String OPTION_SUMMARY_DETAIL = "summaryDetail";
+
+  private static final String DATE_QUERY = "?date=";
+
   /**
    * companyQuoteSummaryModules
    * Permitted modules to generate a link to get a company summary
-   * @see "https://query2.finance.yahoo.com/v10/finance/quoteSummary/COMPANY_SYMBOL?formatted=true&modules=ANY_QUOTESUMMARYMODULES_SEPPARATED_BY_COMMAS&corsDomain=finance.yahoo.com"
+   * "https://query2.finance.yahoo.com/v10/finance/quoteSummary/COMPANY_SYMBOL?formatted=true&modules=ANY_QUOTESUMMARYMODULES_SEPPARATED_BY_COMMAS&corsDomain=finance.yahoo.com"
    */
-  public static Map<String, String> companyQuoteSummaryModules = new HashMap<>();
+  private static List<String> companyQuoteSummaryModules = new LinkedList<>();
   static {
+    companyQuoteSummaryModules.add(COMPANY_CASHFLOW_STATEMENT_HISTORY);
+    companyQuoteSummaryModules.add(COMPANY_ASSET_PROFILE);
+    companyQuoteSummaryModules.add(COMPANY_BALANCE_SHEET_HISTORY);
+    companyQuoteSummaryModules.add(COMPANY_DEFAULT_KEY_STATISTICS);
+    companyQuoteSummaryModules.add(COMPANY_FINANCIAL_DATA);
+    companyQuoteSummaryModules.add(COMPANY_INCOME_STATEMENT_HISTORY);
+    companyQuoteSummaryModules.add(COMPANY_CALENDAR_EVENTS);
+
+    /*
     companyQuoteSummaryModules.put("Asset Profile", "assetProfile"); // solo para info específica...
     companyQuoteSummaryModules.put("Financial Data", "financialData"); // *** IMPORTANTE ***
     companyQuoteSummaryModules.put("Default Key Statistics", "defaultKeyStatistics"); // *** IMPORTANTE ***
@@ -25,7 +47,7 @@ public class YahooLinks {
     companyQuoteSummaryModules.put("Cashflow Statement History", "cashflowStatementHistory");// *** IMPORTANTE ***
     companyQuoteSummaryModules.put("Balance Sheet History", "balanceSheetHistory");// *** IMPORTANTE ***
 
-    /* ***REVISAR DESPUES***
+     ***REVISAR DESPUES***
     companyQuoteSummaryModules.put("Upgrade Downgrade History", "upgradeDowngradeHistory");// datos para los gráficos del sumario...
     companyQuoteSummaryModules.put("Earnings", "earnings");// datos para los gráficos del sumario...
     companyQuoteSummaryModules.put("Summary Profile", "summaryProfile"); // como assetsProfile pero menos extenso....
@@ -50,15 +72,16 @@ public class YahooLinks {
     companyQuoteSummaryModules.put("Recommendation Trend", "recommendationTrend");// datos para los gráficos del sumario... *** BASURA de verdad ***
     */
   }
+
   /**
    * companyQuoteSummaryModules
    * Permitted modules to generate a link to get a option summary
-   * @see "https://query1.finance.yahoo.com/v10/finance/quoteSummary/OPTION_SYMBOL?modules=ANY_QUOTESUMMARYMODULES_SEPPARATED_BY_COMMAS"
+   *  "https://query1.finance.yahoo.com/v10/finance/quoteSummary/OPTION_SYMBOL?modules=ANY_QUOTESUMMARYMODULES_SEPPARATED_BY_COMMAS"
    */
-  public static Map<String, String> optionQuoteSummaryModules = new HashMap<>();
+  private static List<String> optionQuoteSummaryModules = new LinkedList<>();
   static {
-    optionQuoteSummaryModules.put("Asset Profile", "assetProfile");
-    optionQuoteSummaryModules.put("Financial Data", "financialData");
+    optionQuoteSummaryModules.add(OPTION_SUMMARY_DETAIL);
+    optionQuoteSummaryModules.add(OPTION_PRICE);
   }
 
   /**
@@ -69,44 +92,69 @@ public class YahooLinks {
    * @throws IllegalArgumentException if companyQuoteSummaryModules is empty or modules in that collection doesn't match with
    * the modules on YahooLinks.companyQuoteSummaryModules Map
    */
-  public static String getYahooquoteSummaryLink(String companySymbol, String ... quoteSummaryModules) throws IllegalArgumentException {
+  public static String getYahooQuoteSummaryLink(String companySymbol, String ... quoteSummaryModules) throws IllegalArgumentException {
     if(quoteSummaryModules.length == 0) throw new IllegalArgumentException("Quote Summary modules cannot bew empty");
     if(companySymbol.isEmpty() || companySymbol.equals("")) throw new IllegalArgumentException("Symbol can't be empty");
     StringBuilder sb = new StringBuilder("https://query2.finance.yahoo.com/v10/finance/quoteSummary/");
     sb.append(companySymbol);
     sb.append("?formatted=true&modules=");
     for(String module : quoteSummaryModules){
-      if(!companyQuoteSummaryModules.containsKey(module)) {
+      if(!companyQuoteSummaryModules.contains(module)) {
         throw new IllegalArgumentException("I don't have that module");
       } else {
-        sb.append(companyQuoteSummaryModules.get(module));
+        sb.append(module);
         sb.append(",");
       }
     }
+
     return sb.toString();
   }
 
   /**
-   * Generates a link to the Company's options
+   * Generates a link to the Company's options Chain
    * @param companySymbol company's symbol to search it's options in Yahoo! Finance
    * @return link to the company's options
    * @throws IllegalArgumentException if companySymbol is empty
    */
-  public static String getYahooOptionsLink(String companySymbol) throws IllegalArgumentException {
-    if(companySymbol.isEmpty()) throw new IllegalArgumentException("Company symbol can't be empty");
-    return "https://query2.finance.yahoo.com/v7/finance/options/" + companySymbol + "/?formatted=true";
+  public static String getYahooCompanysOptionChainLink(String companySymbol) throws IllegalArgumentException {
+    if(companySymbol.isEmpty()) throw new IllegalArgumentException("Company's symbol can't be empty");
+
+    return "https://query2.finance.yahoo.com/v7/finance/options/" + companySymbol;
   }
 
   /**
-   * Generates a link to the Company's options with an specific date
+   * Generates a link to the Company Options Chain with an specific date
    * @param companySymbol company's symbol to search it's options in Yahoo! Finance
    * @param date link to the company's options
    * @throws IllegalArgumentException if company symbol is empty or date is not a valid unix timestamp
    * @return link to the company's options with the specified date
    */
-  public static String getYahooOptionsLink(String companySymbol, long date) throws IllegalArgumentException {
+  public static String getYahooCompanysOptionChainLink(String companySymbol, long date) throws IllegalArgumentException {
     if (date > Integer.MAX_VALUE) throw new IllegalArgumentException("That's not a valid raw date");
-    return getYahooOptionsLink(companySymbol) + dateQuery + date ;
+
+    return getYahooCompanysOptionChainLink(companySymbol) + DATE_QUERY + date ;
+  }
+
+  /**
+   * Generates a link to the quoteSummary of an company's option
+   * @param optionSymbol key, it can be generated by it's company's symbol expiration date, it's type and strike
+   * @param modules must be specified on quoteSummaryOptions.
+   * @return Link to the option specified modules.
+   * @throws IllegalArgumentException if modules or optionSymbol are null
+   */
+  public static String getYahooOptionQuoteSummaryLink(String optionSymbol, String ... modules) throws IllegalArgumentException {
+    if(optionSymbol == null || optionSymbol.isEmpty()) throw new IllegalArgumentException("Option Symbol can't be empty");
+    if(modules == null || modules.length < 1) throw new IllegalArgumentException("Modules are empty");
+
+    StringBuilder sb = new StringBuilder("https://query1.finance.yahoo.com/v10/finance/quoteSummary/");
+    sb.append(optionSymbol);
+    sb.append("?modules=");
+    for(String module : modules){
+      sb.append(module);
+      sb.append(',');
+    }
+
+    return sb.toString();
   }
 
 }

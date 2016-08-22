@@ -1,9 +1,11 @@
 package es.yahoousefulearnings.gui.controller;
 
 import es.yahoousefulearnings.engine.SearchEngine;
+import es.yahoousefulearnings.engine.YahooLinks;
 import es.yahoousefulearnings.entities.Company;
 import es.yahoousefulearnings.entities.Stock;
-import es.yahoousefulearnings.entities.company.Profile;
+import es.yahoousefulearnings.gui.view.CompanyViewController;
+import es.yahoousefulearnings.utils.NoStocksFoundException;
 import es.yahoousefulearnings.utils.ResourcesHelper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -11,17 +13,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.TreeMap;
 
 public class Main implements Initializable {
 
@@ -31,8 +32,6 @@ public class Main implements Initializable {
   private ListView<String> companies;
   @FXML
   private Tab webTab;
-  @FXML
-  private Tab dataTab;
   @FXML
   private TabPane tabPane;
   @FXML
@@ -44,23 +43,36 @@ public class Main implements Initializable {
 
   public void initialize(URL location, ResourceBundle resources) {
 
-    ResourcesHelper resourcesHelper = ResourcesHelper.getInstance();
-    TreeMap<String, Stock> stocksMap = resourcesHelper.getAvailableStocks();
+    ResourcesHelper resourcesHelper = null;
+    try {
+      resourcesHelper = ResourcesHelper.getInstance();
+    } catch (NoStocksFoundException e) {
+      //TODO Mostrar ventana avisando de que debe añadir stocks a la carpeta stocksPath
+    }
+    List<Stock> stocks = resourcesHelper.getAvailableStocks();
 
-    symbols = FXCollections.observableArrayList(stocksMap.firstEntry().getValue().getSymbols().keySet()).sorted();
+    symbols = FXCollections.observableArrayList(stocks.get(0).getSymbols()).sorted();
     companies.setItems(symbols);
 
-    ObservableList<String> stocksNames = FXCollections.observableArrayList(stocksMap.keySet());
+    ObservableList<String> stocksNames = FXCollections.observableArrayList();
+    stocks.forEach(stock -> stocksNames.add(stock.getName()));
     stocksChoiceBox.setItems(stocksNames);
     stocksChoiceBox.getSelectionModel().select(0);
 
     stocksChoiceBox.getSelectionModel().selectedItemProperty().addListener(
       (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-        symbols = FXCollections.observableArrayList(stocksMap.get(newValue).getSymbols().keySet()).sorted();
+        symbols = FXCollections.observableArrayList();
+        stocks.forEach(stock -> {
+          if (stock.getName().equals(newValue)){
+            symbols.addAll(stock.getSymbols());
+          }
+        });
         companies.setItems(symbols);
       }
     );
 
+    tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+    webTab.setClosable(false);
     WebView webView = new WebView();
     webTab.setContent(webView);
     webEngine = webView.getEngine();
@@ -68,7 +80,6 @@ public class Main implements Initializable {
     textFilter.textProperty().addListener(getSymbolFilterListener());
     companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
   }
-
 
   /**
    *
@@ -86,57 +97,38 @@ public class Main implements Initializable {
         }
       }
 
-      dataTab.setContent(setCompanyData(newSymbol));
+      Tab cTab = new Tab(newSymbol);
+      cTab.setContent(setCompanyData(newSymbol));
+      tabPane.getTabs().add(cTab);
     };
   }
 
   private Node setCompanyData(String symbol) {
-    ScrollPane scrollPane = new ScrollPane();
     VBox vBox = new VBox();
     // insertDataHere!!
     Company company = SearchEngine.getCompanyData(
       symbol,
-      "Asset Profile",
-      "Financial Data",
-      "Default Key Statistics",
-      "Calendar Events",
-      "Income Statement History",
-      "Cashflow Statement History",
-      "Balance Sheet History"
+      YahooLinks.COMPANY_ASSET_PROFILE,
+      YahooLinks.COMPANY_FINANCIAL_DATA,
+      YahooLinks.COMPANY_DEFAULT_KEY_STATISTICS,
+      YahooLinks.COMPANY_CALENDAR_EVENTS,
+      YahooLinks.COMPANY_INCOME_STATEMENT_HISTORY,
+      YahooLinks.COMPANY_CASHFLOW_STATEMENT_HISTORY,
+      YahooLinks.COMPANY_BALANCE_SHEET_HISTORY
     );
-    vBox.getChildren().add(new Label("Company Symbol: " + company.getSymbol()));
-    ArrayList<Node> assetProfile = getCompanyAssetProfileNodes(company.getProfile());
-    vBox.getChildren().addAll(assetProfile);
-    scrollPane.setContent(vBox);
-    return scrollPane;
+
+    vBox.getChildren().addAll(
+      new Label("Company's Symbol: " + company.getSymbol()),
+      new Separator(Orientation.HORIZONTAL)
+    );
+
+    CompanyViewController companyViewManager = new CompanyViewController(company, webEngine);
+    vBox.getChildren().addAll(companyViewManager.setView());
+
+    return new ScrollPane(vBox);
   }
 
-  private ArrayList<Node> getCompanyAssetProfileNodes(Profile profile) {
-    ArrayList<Node> nodes = new ArrayList<>();
-    if (profile.isSet()) {
-      nodes.add(new Label("Address: " + profile.getAddress()));
-      nodes.add(new Label("City: " + profile.getCity()));
-      nodes.add(new Label("State: " + profile.getState()));
-      nodes.add(new Label("ZipCode: " + profile.getZip()));
-      nodes.add(new Label("Country: " + profile.getCountry()));
-      nodes.add(new Label("Phone: " + profile.getPhone()));
-      HBox website = new HBox();
-      Hyperlink hyperlink = new Hyperlink(profile.getWebsite());
-      hyperlink.setOnAction(event -> {
-        webEngine.load(profile.getWebsite());
-        tabPane.getSelectionModel().select(0);
-      });
-      website.getChildren().addAll(new Label("Website: "), hyperlink);
-      nodes.add(website);
-      nodes.add(new Label("Industry: " + profile.getIndustry()));
-      nodes.add(new Label("Sector: " + profile.getSector()));
-      nodes.add(new Label("Full-Time Employees: " + profile.getFullTimeEmployees()));
-    } else {
-      nodes.add(new Label("No profile found..."));
-    }
 
-    return nodes;
-  }
 
   /**
    * Listener to a TextField that filters the main Symbols ListView but first removes the listener from it
@@ -144,13 +136,14 @@ public class Main implements Initializable {
    * @return ChangeListener
    */
   private ChangeListener<String> getSymbolFilterListener() {
-    return (observable, oldVal, newVal) -> {
+    return (observable, oldSymbolEntry, newSymbolEntry) -> {
       //remove the listener from the ListView so when it change don't crash
       companies.getSelectionModel().selectedItemProperty().removeListener(stockListener);
-      if (oldVal != null && (newVal.length() < oldVal.length())) {
+      if (oldSymbolEntry != null && (newSymbolEntry.length() < oldSymbolEntry.length())) {
         companies.setItems(symbols);
       }
-      String value = newVal.toUpperCase();
+
+      String value = newSymbolEntry.toUpperCase();
       ObservableList<String> filteredSymbols = FXCollections.observableArrayList();
       companies.getItems().forEach( symbol -> {
         if (symbol.toUpperCase().contains(value)) {

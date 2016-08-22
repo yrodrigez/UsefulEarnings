@@ -6,8 +6,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CSVStockReader {
 
@@ -17,24 +17,21 @@ public class CSVStockReader {
 
     String stockName = path.substring(path.lastIndexOf(File.separator) + 1, path.lastIndexOf(".csv"));
 
-    Map<String, String> stockMap = new HashMap<>();
+    List<String> symbols = new ArrayList<>();
 
     BufferedReader br = null;
     String line;
     String splitBy = ",";
 
     try {
-
       br = new BufferedReader(new FileReader(path));
       while ((line = br.readLine()) != null) {
         String[] splittedLine = line.split(splitBy);
 
-        stockMap.put(
-          splittedLine[0], // company symbol
-          splittedLine[1] // Company name
+        symbols.add(
+          splittedLine[0] // company's symbol
         );
       }
-
     } catch (IOException e) {
       e.printStackTrace();
     }  finally {
@@ -47,7 +44,7 @@ public class CSVStockReader {
       }
     }
 
-    return new Stock(stockName, stockMap);
+    return new Stock(stockName, symbols);
   }
 
 

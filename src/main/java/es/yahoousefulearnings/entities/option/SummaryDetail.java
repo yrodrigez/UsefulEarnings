@@ -12,7 +12,7 @@ import es.yahoousefulearnings.engine.LongFormatField;
  * @author Yago Rodríguez
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SummaryProfile extends OptionData {
+public class SummaryDetail extends OptionData {
   @JsonProperty("previousClose")
   private Field previousClose;
   @JsonProperty("open")

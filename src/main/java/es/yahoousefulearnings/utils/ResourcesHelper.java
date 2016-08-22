@@ -3,38 +3,48 @@ package es.yahoousefulearnings.utils;
 import es.yahoousefulearnings.entities.Stock;
 
 import java.io.File;
-import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.List;
 
-
+/**
+ *
+ *
+ * @author Yago Rodríguez
+ */
 public class ResourcesHelper {
 
   private static ResourcesHelper instance;
 
   private final String stocksPath;
 
-  private final TreeMap<String, Stock> stockMap;
+  private final List<Stock> stocks;
 
-  private ResourcesHelper() {
+  private ResourcesHelper() throws NoStocksFoundException {
     stocksPath = System.getProperty("user.home")
       + File.separator + "YahooUsefulEarnings"
       + File.separator + "resources"
       + File.separator + "Stocks";
 
     createStocksFile();
-    stockMap = createAvailableStocks();
+    stocks = createAvailableStocks();
   }
 
-  public TreeMap<String, Stock> getAvailableStocks(){
-    return stockMap;
+  public  List<Stock> getAvailableStocks(){
+    return stocks;
   }
 
-  private TreeMap<String, Stock> createAvailableStocks(){
+  private  List<Stock> createAvailableStocks() throws NoStocksFoundException {
     File stocksFile = new File(stocksPath);
-    TreeMap<String, Stock> stocks = new TreeMap<>();
+    List<Stock> stocks = new ArrayList<>();
+
     try {
-      for (File csvStock : stocksFile.listFiles()) {
-        Stock stock = CSVStockReader.createStockFromPath(csvStock.getPath());
-        stocks.put(stock.getName(), stock);
+      if(stocksFile.listFiles().length > 0) {
+        for (File csvStock : stocksFile.listFiles()) {
+          Stock stock = CSVStockReader.createStockFromPath(csvStock.getPath());
+          stocks.add(stock);
+        }
+      } else {
+        throw new NoStocksFoundException();
       }
     } catch (NullPointerException ne) {
       System.err.println("ResourcesHelper: No files available at: " + stocksPath + '\n');
@@ -51,7 +61,7 @@ public class ResourcesHelper {
       else System.err.println("Could not create file stocks at " + stocksPath);
   }
 
-  public static ResourcesHelper getInstance() {
+  public static ResourcesHelper getInstance() throws NoStocksFoundException {
     if (instance == null) instance = new ResourcesHelper();
     return instance;
   }
