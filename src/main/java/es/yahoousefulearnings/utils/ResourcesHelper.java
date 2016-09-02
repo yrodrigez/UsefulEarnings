@@ -15,15 +15,27 @@ public class ResourcesHelper {
 
   private static ResourcesHelper instance;
 
+  private final String resourcesPath;
   private final String stocksPath;
+  private final String serializationPath;
+
+  private final File stocksFile;
+  private final File serializationFile;
 
   private final List<Stock> stocks;
 
   private ResourcesHelper() throws NoStocksFoundException {
-    stocksPath = System.getProperty("user.home")
+    resourcesPath = System.getProperty("user.home")
       + File.separator + "YahooUsefulEarnings"
-      + File.separator + "resources"
-      + File.separator + "Stocks";
+      + File.separator + "resources";
+
+    stocksPath = resourcesPath
+      + File.separator + "stocks";
+    stocksFile = new File(stocksPath);
+
+    serializationPath = resourcesPath
+      +File.separator + "serialization";
+    serializationFile = new File(serializationPath);
 
     createStocksFile();
     stocks = createAvailableStocks();
@@ -69,4 +81,21 @@ public class ResourcesHelper {
   public String getStocksPath() {
     return stocksPath;
   }
+
+  public String getResourcesPath() {
+    return resourcesPath;
+  }
+
+  public String getSerializationPath() {
+    return serializationPath;
+  }
+
+  public File getStocksFile() {
+    return stocksFile;
+  }
+
+  public File getSerializationFile() {
+    return serializationFile;
+  }
+
 }

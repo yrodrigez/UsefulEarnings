@@ -8,6 +8,6 @@ import java.util.Collection;
 /**
  * @author Yago Rodríguez
  */
-public interface ViewManager {
+interface ViewHelper {
   Collection<Node> setView();
 }

@@ -1,5 +1,6 @@
 package es.yahoousefulearnings.gui.view;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.engine.Field;
 import es.yahoousefulearnings.entities.Company;
 import es.yahoousefulearnings.entities.company.CalendarEvents;
@@ -13,18 +14,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * View manager of CompanyViewController's data
+ * View manager of CompanyViewHelper's data
  * @author Yago Rodríguez
  */
-public class CompanyViewController implements ViewManager {
+public class CompanyViewHelper implements ViewHelper {
   private Company company;
   private WebEngine webEngine;
 
-  public CompanyViewController(Company company, WebEngine webEngine) {
+  public CompanyViewHelper(Company company, WebEngine webEngine) {
     this.setCompany(company);
     this.webEngine = webEngine;
   }
@@ -37,26 +40,42 @@ public class CompanyViewController implements ViewManager {
   private Collection<Node> getProfileNodes(Profile profile) {
     Collection<Node> nodes = new ArrayList<>();
 
-    if (profile.isSet()) {
-      nodes.add(new Label("Address: " + profile.getAddress()));
-      nodes.add(new Label("City: " + profile.getCity()));
-      nodes.add(new Label("State: " + profile.getState()));
-      nodes.add(new Label("ZipCode: " + profile.getZip()));
-      nodes.add(new Label("Country: " + profile.getCountry()));
-      nodes.add(new Label("Phone: " + profile.getPhone()));
-      HBox website = new HBox();
-      Hyperlink hyperlink = new Hyperlink(profile.getWebsite());
-      hyperlink.setOnAction( event -> webEngine.load(profile.getWebsite()) );
-      website.getChildren().addAll(new Label("Website: "), hyperlink);
-      nodes.add(website);
-      nodes.add(new Label("Industry: " + profile.getIndustry()));
-      nodes.add(new Label("Sector: " + profile.getSector()));
-      nodes.add(new Label("Full-Time Employees: " + profile.getFullTimeEmployees()));
-    } else {
-      nodes.add(new Label("No profile found..."));
-    }
+    try {
+      //codigo dinamico de ejemplo
+      for (java.lang.reflect.Field field : profile.getClass().getDeclaredFields()) {
+        System.out.println("nombre de campo: " + field.getDeclaredAnnotation(JsonProperty.class).value());
+        for (PropertyDescriptor pd : Introspector.getBeanInfo(Profile.class).getPropertyDescriptors()) {
+          if (pd.getName().equals(field.getName())) {
+            Object propertyValue = pd.getReadMethod().invoke(profile);
+            System.out.println("valor del campo: " + propertyValue);
+            break;
+          }
+        }
 
-    return nodes;
+      }
+      if (profile.isSet()) {
+        nodes.add(new Label("Address: " + profile.getAddress()));
+        nodes.add(new Label("City: " + profile.getCity()));
+        nodes.add(new Label("State: " + profile.getState()));
+        nodes.add(new Label("ZipCode: " + profile.getZip()));
+        nodes.add(new Label("Country: " + profile.getCountry()));
+        nodes.add(new Label("Phone: " + profile.getPhone()));
+        HBox website = new HBox();
+        Hyperlink hyperlink = new Hyperlink(profile.getWebsite());
+        hyperlink.setOnAction(event -> webEngine.load(profile.getWebsite()));
+        website.getChildren().addAll(new Label("Website: "), hyperlink);
+        nodes.add(website);
+        nodes.add(new Label("Industry: " + profile.getIndustry()));
+        nodes.add(new Label("Sector: " + profile.getSector()));
+        nodes.add(new Label("Full-Time Employees: " + profile.getFullTimeEmployees()));
+      } else {
+        nodes.add(new Label("No profile found..."));
+      }
+
+      return nodes;
+    } catch(Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private Collection<Node> getCalendarEventsNodes(CalendarEvents calendarEvents) {
