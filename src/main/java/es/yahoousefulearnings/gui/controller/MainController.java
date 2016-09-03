@@ -4,6 +4,7 @@ import es.yahoousefulearnings.engine.SearchEngine;
 import es.yahoousefulearnings.engine.YahooLinks;
 import es.yahoousefulearnings.entities.Company;
 import es.yahoousefulearnings.entities.Stock;
+import es.yahoousefulearnings.gui.Main;
 import es.yahoousefulearnings.gui.view.AlertHelper;
 import es.yahoousefulearnings.gui.view.CompanyViewHelper;
 import es.yahoousefulearnings.utils.NoStocksFoundException;
@@ -30,13 +31,13 @@ import javafx.scene.web.WebView;
 
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class Main implements Initializable {
+public class MainController implements Initializable {
 
   @FXML
   private ChoiceBox<String> stocksChoiceBox;
@@ -50,6 +51,10 @@ public class Main implements Initializable {
   private TextField textFilter;
   @FXML
   private Button refresh;
+  @FXML
+  private VBox verticalMenu;
+  @FXML
+  private VBox verticalOptions;
 
   private ObservableList<String> symbols;
   private ChangeListener<String> stockListener;
@@ -57,7 +62,13 @@ public class Main implements Initializable {
   private ResourcesHelper resourcesHelper;
 
   public void initialize(URL location, ResourceBundle resources) {
-    ImageView refreshIcon = new ImageView(new Image(getClass().getResourceAsStream("refresh.png"), 20, 20, true, true));
+    //Vertical menu
+    verticalOptions.setSpacing(10);
+    verticalOptions.getChildren().addAll(setOptionsIcons());
+    verticalMenu.setSpacing(10);
+    verticalMenu.getChildren().addAll(setMenuIcons());
+
+    ImageView refreshIcon = new ImageView(new Image(Main.class.getResourceAsStream("icons/refresh.png"), 20, 20, true, true));
     refresh.setGraphic(refreshIcon);
 
     webTab.setClosable(false);
@@ -75,8 +86,57 @@ public class Main implements Initializable {
     getStocks();
   }
 
+  private ArrayList<Button> setMenuIcons() {
+    ArrayList<Button> ret = new ArrayList<>();
+    ImageView navigateIcon = new ImageView(new Image(
+      Main.class.getResourceAsStream("icons/navigate-white.png")
+    ));
+    Button navigateButton = new Button("", navigateIcon);
+    navigateButton.getStyleClass().add("vertical-button");
+    navigateButton.setTooltip(new Tooltip("Navigate"));
+    ret.add(navigateButton);
+
+    ImageView downloadIcon = new ImageView(new Image(
+      Main.class.getResourceAsStream("icons/download-white.png")
+    ));
+    Button downloadButton = new Button("", downloadIcon);
+    downloadButton.getStyleClass().add("vertical-button");
+    downloadButton.setTooltip(new Tooltip("Download"));
+    ret.add(downloadButton);
+
+    ImageView historyIcon = new ImageView(new Image(
+      Main.class.getResourceAsStream("icons/history-white.png")
+    ));
+    Button historyButton = new Button("", historyIcon);
+    historyButton.getStyleClass().add("vertical-button");
+    historyButton.setTooltip(new Tooltip("History"));
+    ret.add(historyButton);
+
+    return ret;
+  }
+
+  private ArrayList<Button> setOptionsIcons() {
+    ArrayList<Button> ret = new ArrayList<>();
+    ImageView optionsIcon = new ImageView(new Image(
+      Main.class.getResourceAsStream("icons/gear-white.png")
+    ));
+    Button optionsButton = new Button("", optionsIcon);
+    optionsButton.getStyleClass().add("vertical-button");
+    optionsButton.setTooltip(new Tooltip("Options"));
+    ret.add(optionsButton);
+
+    ImageView helpIcon = new ImageView(new Image(
+      Main.class.getResourceAsStream("icons/info-white.png")
+    ));
+    Button aboutButton = new Button("", helpIcon);
+    aboutButton.getStyleClass().add("vertical-button");
+    aboutButton.setTooltip(new Tooltip("About"));
+    ret.add(aboutButton);
+
+    return ret;
+  }
+
   /**
-   *
    * @return Listener that handle the press event on the main ListView (companies)
    * it will add the content of the
    */
@@ -123,10 +183,10 @@ public class Main implements Initializable {
   }
 
 
-
   /**
    * Listener to a TextField that filters the main Symbols ListView but first removes the listener from it
    * so it won't crash
+   *
    * @return ChangeListener
    */
   private ChangeListener<String> getSymbolFilterListener() {
@@ -139,7 +199,7 @@ public class Main implements Initializable {
 
       String value = newSymbolEntry.toUpperCase();
       ObservableList<String> filteredSymbols = FXCollections.observableArrayList();
-      companies.getItems().forEach( symbol -> {
+      companies.getItems().forEach(symbol -> {
         if (symbol.toUpperCase().contains(value)) {
           filteredSymbols.add(symbol);
         }
@@ -166,7 +226,7 @@ public class Main implements Initializable {
         (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
           symbols = FXCollections.observableArrayList();
           stocks.forEach(stock -> {
-            if (stock.getName().equals(newValue)){
+            if (stock.getName().equals(newValue)) {
               symbols.addAll(stock.getSymbols());
             }
           });
@@ -186,11 +246,11 @@ public class Main implements Initializable {
 
       ButtonType buttonTypeCancel = new ButtonType("I don't care!", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-      alert.getButtonTypes().setAll(openFolderButton,  buttonTypeCancel);
+      alert.getButtonTypes().setAll(openFolderButton, buttonTypeCancel);
 
       Optional<ButtonType> result = alert.showAndWait();
-      if (result.isPresent() && result.get() == openFolderButton){
-        if(Desktop.isDesktopSupported()){
+      if (result.isPresent() && result.get() == openFolderButton) {
+        if (Desktop.isDesktopSupported()) {
           try {
             File resourcesFile = new File(resourcesHelper.getResourcesPath());
             Desktop.getDesktop().open(resourcesFile.getAbsoluteFile());

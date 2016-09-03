@@ -6,16 +6,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javax.tools.JavaFileManager;
-
-public class
-Main extends Application {
+public class Main extends Application {
 
   @Override
   public void start(Stage stage) throws Exception {
-    Parent root = FXMLLoader.load(getClass().getResource("view/Main.fxml"));
+    Parent root = FXMLLoader.load(getClass().getResource("fxml/main.fxml"));
+
     stage.setTitle("UsefulEarnings");
-    stage.setScene(new Scene(root, 1024, 768));
+    Scene scene = new Scene(root, 1024, 768);
+    scene.getStylesheets().add(getClass().getResource("css/main.css").toString());
+    stage.setScene(scene);
     stage.setMaximized(Boolean.TRUE);
     stage.show();
   }

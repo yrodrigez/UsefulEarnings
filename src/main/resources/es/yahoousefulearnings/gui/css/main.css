@@ -1,0 +1,6 @@
+.vertical-button {
+    -fx-background-color: transparent;
+}
+.vertical-button:hover, .vertical-button:selected {
+    -fx-background-color: #180063;
+}
