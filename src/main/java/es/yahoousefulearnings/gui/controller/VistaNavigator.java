@@ -13,7 +13,6 @@ import java.util.TreeMap;
  */
 public class VistaNavigator {
 
-
   public static final String MAIN     = "fxml/main.fxml";
   public static final String NAVIGATE = "fxml/navigate.fxml";
   static final String FILTER          = "fxml/filter.fxml";

@@ -109,7 +109,7 @@ public class MainController implements Initializable{
       Alert alert = new Alert(Alert.AlertType.INFORMATION);
       alert.setTitle("About");
       alert.setHeaderText(null);
-      alert.setContentText("UsefulEarnings is is a End of Degre e Project developed to Universidad de Vigo");
+      alert.setContentText("UsefulEarnings is is a End of Degree Project developed to Universidad de Vigo");
       alert.showAndWait();
       event.consume();
     });
