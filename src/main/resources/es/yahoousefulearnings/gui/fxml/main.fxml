@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
+<?import javafx.scene.layout.HBox?>
 <BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.yahoousefulearnings.gui.controller.MainController">
    <center>
 
    </center>
    <left>
-      <BorderPane prefHeight="768.0" prefWidth="33.0" style="-fx-background-color: #400090;" BorderPane.alignment="CENTER">
+      <BorderPane prefHeight="768.0" prefWidth="35.0" style="-fx-background-color: #400090;" BorderPane.alignment="CENTER">
          <top>
             <VBox fx:id="verticalMenu" prefHeight="421.0" prefWidth="44.0" BorderPane.alignment="CENTER" />
          </top>
@@ -21,14 +19,6 @@
       </BorderPane>
    </left>
    <top>
-      <Pane prefHeight="63.0" prefWidth="1024.0" style="-fx-background-color: #400090;" BorderPane.alignment="CENTER">
-         <children>
-            <Text fill="WHITE" fontSmoothingType="LCD" layoutX="82.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Useful Earnings" wrappingWidth="218.13671875">
-               <font>
-                  <Font name="Verdana Bold" size="24.0" />
-               </font>
-            </Text>
-         </children>
-      </Pane>
+      <HBox fx:id="topMenu" prefHeight="35.0" style="-fx-background-color: #400090;" BorderPane.alignment="CENTER" />
    </top>
 </BorderPane>

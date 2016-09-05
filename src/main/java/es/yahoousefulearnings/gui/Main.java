@@ -7,18 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
 public class Main extends Application {
-
-  @Override
-  public void start(Stage stage) throws Exception {
-    stage.setTitle("UsefulEarnings");
-    stage.setScene(createScene(loadMainPane()));
-    stage.setMaximized(Boolean.TRUE);
-    stage.show();
-  }
 
   /**
    * Loads the main fxml layout.
@@ -60,6 +53,15 @@ public class Main extends Application {
     );
 
     return scene;
+  }
+
+  @Override
+  public void start(Stage stage) throws Exception {
+    stage.setTitle("UsefulEarnings");
+    stage.setScene(createScene(loadMainPane()));
+    stage.initStyle(StageStyle.UNDECORATED);
+    //stage.setMaximized(Boolean.TRUE);
+    stage.show();
   }
 
 

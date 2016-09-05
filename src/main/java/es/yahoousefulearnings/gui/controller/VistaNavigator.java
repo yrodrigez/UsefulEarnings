@@ -77,7 +77,6 @@ public class VistaNavigator {
    * @param fxml the fxml file to be loaded.
    */
   public static void loadVista(String fxml) {
-
     try {
       Vista vista = vistas.get(fxml);
       mainController.setVista(
