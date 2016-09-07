@@ -41,8 +41,6 @@ public class MainController implements Initializable {
   ImageView restoreIcon;
 
 
-
-
   public void initialize(URL location, ResourceBundle resources) {
     isMaximized = false;
     boundary = new Boundary();
@@ -61,7 +59,7 @@ public class MainController implements Initializable {
     Button minimize = new Button("", minimizeIcon);
     minimize.getStyleClass().addAll("main-controller-button", "no-radius");
     minimize.setOnAction(event -> {
-      //mainPane.getScene().getWindow().hide(); this is closing the window...
+      ((Stage)mainPane.getScene().getWindow()).setIconified(true);
       event.consume();
     });
     topMenu.getChildren().add(minimize);
