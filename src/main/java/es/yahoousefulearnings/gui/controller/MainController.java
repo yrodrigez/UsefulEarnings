@@ -171,7 +171,7 @@ public class MainController implements Initializable {
     navigateButton.getStyleClass().add("main-controller-button");
     navigateButton.setTooltip(new Tooltip("Navigate"));
     navigateButton.setOnAction(event -> {
-      VistaNavigator.loadVista(VistaNavigator.NAVIGATE);
+      VistaNavigator.getInstance().loadVista(VistaNavigator.NAVIGATE);
       event.consume();
     });
     ret.add(navigateButton);
@@ -183,7 +183,7 @@ public class MainController implements Initializable {
     filterButton.getStyleClass().add("main-controller-button");
     filterButton.setTooltip(new Tooltip("Filter"));
     filterButton.setOnAction(event -> {
-      VistaNavigator.loadVista(VistaNavigator.FILTER);
+      VistaNavigator.getInstance().loadVista(VistaNavigator.FILTER);
       event.consume();
     });
     ret.add(filterButton);
@@ -195,7 +195,7 @@ public class MainController implements Initializable {
     downloadButton.getStyleClass().add("main-controller-button");
     downloadButton.setTooltip(new Tooltip("Download"));
     downloadButton.setOnAction(event -> {
-      VistaNavigator.loadVista(VistaNavigator.DOWNLOAD);
+      VistaNavigator.getInstance().loadVista(VistaNavigator.DOWNLOAD);
       event.consume();
     });
     ret.add(downloadButton);
@@ -207,7 +207,7 @@ public class MainController implements Initializable {
     historyButton.getStyleClass().add("main-controller-button");
     historyButton.setTooltip(new Tooltip("History"));
     historyButton.setOnAction(event -> {
-      VistaNavigator.loadVista(VistaNavigator.HISTORY);
+      VistaNavigator.getInstance().loadVista(VistaNavigator.HISTORY);
       event.consume();
     });
     ret.add(historyButton);

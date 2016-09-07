@@ -37,6 +37,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
+ * First on the Vistas to be shown
+ * it will contan
  * @author Yago on 04/09/2016.
  */
 public class NavigateController implements Initializable {

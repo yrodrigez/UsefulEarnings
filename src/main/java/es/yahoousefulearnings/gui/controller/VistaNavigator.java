@@ -13,16 +13,22 @@ import java.util.TreeMap;
  */
 public class VistaNavigator {
 
+
   public static final String MAIN     = "fxml/main.fxml";
   public static final String NAVIGATE = "fxml/navigate.fxml";
   static final String FILTER          = "fxml/filter.fxml";
   static final String DOWNLOAD        = "fxml/download.fxml";
   static final String HISTORY         = "fxml/history.fxml";
 
+  private static VistaNavigator singleton = new VistaNavigator();
+
+  public static VistaNavigator getInstance() {
+    return singleton;
+  }
   /**
    * private class that will only have the nodes of a loaded vista only if it was previously loaded
    */
-  private static class Vista {
+  private class Vista {
     private boolean isLoaded;
     private Node node;
 
@@ -49,8 +55,9 @@ public class VistaNavigator {
   /**
    * This is the VistaNavigator's cache, it will have all vistas and will know if they are loaded or not
    */
-  private static Map<String, Vista> vistas = new TreeMap<>();
-  static {
+  private Map<String, Vista> vistas = new TreeMap<>();
+
+  private VistaNavigator() {
     vistas.put(MAIN,     new Vista());
     vistas.put(NAVIGATE, new Vista());
     vistas.put(FILTER,   new Vista());
@@ -59,15 +66,15 @@ public class VistaNavigator {
   }
 
   /** The main application layout controller. */
-  private static MainController mainController;
+  private MainController mainController;
 
   /**
    * Stores the main controller for later use in navigation tasks.
    *
    * @param mainController the main application layout controller.
    */
-  public static void setMainController(MainController mainController) {
-    VistaNavigator.mainController = mainController;
+  public void setMainController(MainController mainController) {
+    this.mainController = mainController;
   }
 
   /**
@@ -76,13 +83,12 @@ public class VistaNavigator {
    *
    * @param fxml the fxml file to be loaded.
    */
-  public static void loadVista(String fxml) {
+  public void loadVista(String fxml) {
+
     try {
       Vista vista = vistas.get(fxml);
       mainController.setVista(
-        vista.isLoaded() ?
-          vista.getNode() :
-          vista.load(FXMLLoader.load(Main.class.getResource(fxml)))
+        vista.isLoaded() ? vista.getNode() : vista.load(FXMLLoader.load(Main.class.getResource(fxml)))
       );
     } catch (IOException e) {
       e.printStackTrace();
