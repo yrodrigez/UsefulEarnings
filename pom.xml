@@ -77,5 +77,10 @@
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>8.40.12</version>
+        </dependency>
     </dependencies>
 </project>
