@@ -10,17 +10,15 @@ import java.util.Collection;
  *
  * Created by yago on 5/09/16.
  */
-public class Downloader <E> extends Task<E> {
+public class DownloaderTask<E> extends Task<E> {
   /**
    * can be an Option, Company or CompositeOption
    */
   private E entity;
   private double workDone;
 
-  public Downloader (E entity, String ... symbols) {
+  public DownloaderTask() {
     workDone = 0d;
-    this.entity = entity;
-
   }
 
   @Override

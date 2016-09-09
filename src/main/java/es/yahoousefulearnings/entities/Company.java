@@ -1,7 +1,6 @@
 package es.yahoousefulearnings.entities;
 
 
-import es.yahoousefulearnings.engine.Field;
 import es.yahoousefulearnings.entities.company.*;
 
 import java.util.ArrayList;

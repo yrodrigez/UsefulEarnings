@@ -5,5 +5,5 @@ package es.yahoousefulearnings.annotation;
  * Created by yago on 9/09/16.
  */
 public @interface Entity {
-  String getName();
+  String name();
 }

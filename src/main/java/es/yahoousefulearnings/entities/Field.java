@@ -1,4 +1,4 @@
-package es.yahoousefulearnings.engine;
+package es.yahoousefulearnings.entities;
 
 import com.fasterxml.jackson.annotation.*;
 

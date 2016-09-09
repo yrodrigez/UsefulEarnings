@@ -14,38 +14,38 @@ import es.yahoousefulearnings.annotation.UEField;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@Entity(getName = "Profile")
+@Entity(name = "Profile")
 public class Profile extends CompanyData {
 
   @JsonProperty("address1")
-  @UEField(getFieldName = "Address")
+  @UEField(fieldName = "Address")
   private String address;
   @JsonProperty("city")
-  @UEField(getFieldName = "City")
+  @UEField(fieldName = "City")
   private String city;
   @JsonProperty("state")
-  @UEField(getFieldName = "State")
+  @UEField(fieldName = "State")
   private String state;
   @JsonProperty("zip")
-  @UEField(getFieldName = "PO-Box")
+  @UEField(fieldName = "PO-Box")
   private String zip;
   @JsonProperty("country")
-  @UEField(getFieldName = "Country")
+  @UEField(fieldName = "Country")
   private String country;
   @JsonProperty("phone")
-  @UEField(getFieldName = "Phone")
+  @UEField(fieldName = "Phone")
   private String phone;
   @JsonProperty("website")
-  @UEField(getFieldName = "WebSite")
+  @UEField(fieldName = "WebSite")
   private String website;
   @JsonProperty("industry")
-  @UEField(getFieldName = "Industry")
+  @UEField(fieldName = "Industry")
   private String industry;
   @JsonProperty("sector")
-  @UEField(getFieldName = "Sector")
+  @UEField(fieldName = "Sector")
   private String sector;
   @JsonProperty("fullTimeEmployees")
-  @UEField(getFieldName = "Employees")
+  @UEField(fieldName = "Employees")
   private int fullTimeEmployees;
 
   public String getAddress() {

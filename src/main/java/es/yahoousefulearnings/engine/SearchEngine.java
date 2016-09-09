@@ -8,13 +8,24 @@ import es.yahoousefulearnings.entities.Company;
 import es.yahoousefulearnings.entities.CompositeOption;
 import es.yahoousefulearnings.entities.company.*;
 import es.yahoousefulearnings.utils.Json;
+import javafx.concurrent.Task;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchEngine {
+public class SearchEngine <E> {
+
+  private final int MAX_THREADS_NUMBER = Runtime.getRuntime().availableProcessors() * 2;
+
+  private ArrayList<DownloaderTask<E>> tasks;
+
+  SearchEngine(){
+    for(int i = 0 ; i< MAX_THREADS_NUMBER; i++){
+      tasks.add(new DownloaderTask<>());
+    }
+  }
 
   /**
    * Sets all Company's data depending on it's modules.
@@ -29,8 +40,8 @@ public class SearchEngine {
     company.setSymbol(symbol);
     try {
       ObjectMapper mapper = new ObjectMapper();
-      String link = YahooLinks.getYahooQuoteSummaryLink(symbol, modules);
-      JsonNode jsonRoot = mapper.readTree(new URL(link));
+      URL url = YahooLinks.getYahooQuoteSummaryLink(symbol, modules);
+      JsonNode jsonRoot = mapper.readTree(url);
       for (String module : modules) {
         switch (module) {
           case YahooLinks.COMPANY_ASSET_PROFILE:

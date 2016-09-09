@@ -37,8 +37,8 @@ public class MainController implements Initializable {
   private class Boundary{private double x, y, height, width;}
   private Boundary boundary;
   private Button maximizeRestore;
-  ImageView maximizeIcon;
-  ImageView restoreIcon;
+  private ImageView maximizeIcon;
+  private ImageView restoreIcon;
 
 
   public void initialize(URL location, ResourceBundle resources) {

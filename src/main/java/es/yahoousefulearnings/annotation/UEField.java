@@ -14,5 +14,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface UEField {
-  String getFieldName();
+  String fieldName();
 }
