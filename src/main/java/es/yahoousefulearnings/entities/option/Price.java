@@ -1,6 +1,7 @@
 package es.yahoousefulearnings.entities.option;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import es.yahoousefulearnings.annotation.Entity;
 import es.yahoousefulearnings.engine.Field;
 import es.yahoousefulearnings.engine.LongFormatField;
 
@@ -10,6 +11,7 @@ import es.yahoousefulearnings.engine.LongFormatField;
  *
  * @author Yago Rodríguez
  */
+@Entity(getName = "Price")
 public class Price extends OptionData {
   @JsonProperty("exchange")
   private String exchange; // "OPR",

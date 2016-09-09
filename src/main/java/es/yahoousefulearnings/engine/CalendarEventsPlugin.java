@@ -10,10 +10,12 @@ import es.yahoousefulearnings.entities.company.CalendarEvents;
 public class CalendarEventsPlugin implements Plugin {
 
   private CalendarEvents calendarEvents;
+  private String mModule = YahooLinks.COMPANY_CALENDAR_EVENTS;
+
 
   @Override
   public void addInfo(Company company) {
-    String module = YahooLinks.COMPANY_CALENDAR_EVENTS;
+
     company.setCalendarEvents(calendarEvents);
   }
 }

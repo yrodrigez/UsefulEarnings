@@ -2,6 +2,7 @@ package es.yahoousefulearnings.entities.option;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import es.yahoousefulearnings.annotation.Entity;
 import es.yahoousefulearnings.engine.Field;
 import es.yahoousefulearnings.engine.LongFormatField;
 
@@ -12,6 +13,7 @@ import es.yahoousefulearnings.engine.LongFormatField;
  * @author Yago Rodríguez
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity(getName = "Summary")
 public class SummaryDetail extends OptionData {
   @JsonProperty("previousClose")
   private Field previousClose;

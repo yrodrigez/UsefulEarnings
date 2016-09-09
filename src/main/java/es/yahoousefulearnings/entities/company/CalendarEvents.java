@@ -3,6 +3,7 @@ package es.yahoousefulearnings.entities.company;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import es.yahoousefulearnings.annotation.Entity;
 import es.yahoousefulearnings.engine.Field;
 import es.yahoousefulearnings.engine.LongFormatField;
 
@@ -16,6 +17,7 @@ import java.util.ArrayList;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Entity(getName = "Calendar Events")
 public class CalendarEvents extends CompanyData {
 
   @JsonProperty("earnings")

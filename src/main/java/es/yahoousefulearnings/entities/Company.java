@@ -89,7 +89,6 @@ public class Company {
   public void setBalanceSheetStatements(ArrayList<BalanceSheetStatement> balanceSheetStatements) {
     this.balanceSheetStatements = balanceSheetStatements;
     this.balanceSheetStatements.forEach(balanceSheetStatement -> balanceSheetStatement.set());
-
   }
 
   public Profile getProfile() {

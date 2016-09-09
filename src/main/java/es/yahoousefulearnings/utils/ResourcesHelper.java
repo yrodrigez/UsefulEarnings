@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class ResourcesHelper {
 
-  private static ResourcesHelper instance;
+  private static ResourcesHelper mInstance;
 
   private final String resourcesPath;
   private final String stocksPath;
@@ -73,9 +73,9 @@ public class ResourcesHelper {
       else System.err.println("Could not create file stocks at " + stocksPath);
   }
 
-  public static ResourcesHelper getInstance() throws NoStocksFoundException {
-    if (instance == null) instance = new ResourcesHelper();
-    return instance;
+  public static ResourcesHelper getmInstance() throws NoStocksFoundException {
+    if (mInstance == null) mInstance = new ResourcesHelper();
+    return mInstance;
   }
 
   public String getStocksPath() {

@@ -1,6 +1,8 @@
 package es.yahoousefulearnings.gui.view;
 
+import com.fasterxml.jackson.annotation.JacksonAnnotation;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import es.yahoousefulearnings.annotation.UEField;
 import es.yahoousefulearnings.engine.Field;
 import es.yahoousefulearnings.entities.Company;
 import es.yahoousefulearnings.entities.company.CalendarEvents;
@@ -43,11 +45,11 @@ public class CompanyViewHelper implements ViewHelper {
     try {
       //codigo dinamico de ejemplo
       for (java.lang.reflect.Field field : profile.getClass().getDeclaredFields()) {
-        System.out.println("nombre de campo: " + field.getDeclaredAnnotation(JsonProperty.class).value());
+        System.out.print(field.getDeclaredAnnotation(UEField.class).getFieldName() + ": ");
         for (PropertyDescriptor pd : Introspector.getBeanInfo(Profile.class).getPropertyDescriptors()) {
           if (pd.getName().equals(field.getName())) {
             Object propertyValue = pd.getReadMethod().invoke(profile);
-            System.out.println("valor del campo: " + propertyValue);
+            System.out.println(propertyValue.toString());
             break;
           }
         }
