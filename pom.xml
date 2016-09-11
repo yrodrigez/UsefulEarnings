@@ -35,7 +35,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>8.5.0</version>
                 <configuration>
-                    <mainClass>es.yahoousefulearnings.gui.Main</mainClass>
+                    <mainClass>es.usefulearnings.gui.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>
