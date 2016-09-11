@@ -23,7 +23,7 @@ public enum FieldType {
    * to be treated as an Object {@link es.yahoousefulearnings.entities.company.CalendarEvents},
    * {@link es.yahoousefulearnings.entities.company.Earnings}
    */
-  CLASS,
+  INNER_CLASS,
 
   /**
    * Enum type {@link es.yahoousefulearnings.entities.option.OptionType}
@@ -35,8 +35,14 @@ public enum FieldType {
    * Boolean type {@link Boolean}
    */
   BOOLEAN,
+
   /**
-   * For now it will be to identify a Field Collection {@link es.yahoousefulearnings.entities.Field}.
+   * Represents a raw numeric value (not wrapped in a class)
    */
-  COLLECTION
+  RAW_NUMERIC,
+
+  /**
+   * Only to identify a Field Collection {@link es.yahoousefulearnings.entities.Field}.
+   */
+  FIELD_ARRAY_LIST
 }

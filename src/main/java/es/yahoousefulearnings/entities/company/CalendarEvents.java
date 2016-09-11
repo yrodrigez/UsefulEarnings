@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class CalendarEvents extends CompanyData {
 
   @JsonProperty("earnings")
-  @ObservableField(name = "Earnings", fieldType = FieldType.CLASS)
+  @ObservableField(name = "Earnings", fieldType = FieldType.INNER_CLASS)
   private Earnings earnings;
 
   @JsonProperty("exDividendDate")

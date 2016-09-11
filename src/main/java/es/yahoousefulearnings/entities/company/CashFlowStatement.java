@@ -1,5 +1,6 @@
 package es.yahoousefulearnings.entities.company;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.annotation.Entity;
@@ -15,8 +16,10 @@ import es.yahoousefulearnings.entities.LongFormatField;
  *
  * @author Yago Rodríguez
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+
 @Entity(name = "Cash Flow Statement")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CashFlowStatement extends CompanyData {
 
   @JsonProperty("endDate")
@@ -88,11 +91,10 @@ public class CashFlowStatement extends CompanyData {
   private LongFormatField otherCashflowsFromFinancingActivities;
 
   @JsonProperty("totalCashFromFinancingActivities")
-  @ObservableField(name = "Total cashflow financing activities", fieldType = FieldType.NUMERIC)
+  @ObservableField(name = "Totalca", fieldType = FieldType.NUMERIC)
   private LongFormatField totalCashFromFinancingActivities;
 
   @JsonProperty("changeInCash")
-  @ObservableField(name = "Change in cash", fieldType = FieldType.NUMERIC)
   private LongFormatField changeInCash;
 
   public Field getEndDate() {

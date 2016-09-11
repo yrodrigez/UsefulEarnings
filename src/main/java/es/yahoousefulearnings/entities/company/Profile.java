@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.annotation.Entity;
+import es.yahoousefulearnings.annotation.FieldType;
 import es.yahoousefulearnings.annotation.ObservableField;
 
 /**
@@ -45,7 +46,7 @@ public class Profile extends CompanyData {
   @ObservableField(name = "Sector")
   private String sector;
   @JsonProperty("fullTimeEmployees")
-  @ObservableField(name = "Employees")
+  @ObservableField(name = "Employees", fieldType = FieldType.RAW_NUMERIC)
   private int fullTimeEmployees;
 
   public String getAddress() {

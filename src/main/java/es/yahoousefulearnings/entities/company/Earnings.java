@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class Earnings extends CompanyData {
 
   @JsonProperty("earningsDate")
-  @ObservableField(name = "Earnings date", fieldType = FieldType.COLLECTION)
+  @ObservableField(name = "Earnings date", fieldType = FieldType.FIELD_ARRAY_LIST)
   private ArrayList<Field> earningsDate;
 
   @JsonProperty("earningsAverage")

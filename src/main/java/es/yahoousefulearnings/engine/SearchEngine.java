@@ -5,15 +5,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.yahoousefulearnings.entities.Company;
-import es.yahoousefulearnings.entities.CompositeOption;
 import es.yahoousefulearnings.entities.company.*;
 import es.yahoousefulearnings.utils.Json;
-import javafx.concurrent.Task;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchEngine <E> {
 
@@ -40,7 +37,7 @@ public class SearchEngine <E> {
     company.setSymbol(symbol);
     try {
       ObjectMapper mapper = new ObjectMapper();
-      URL url = YahooLinks.getYahooQuoteSummaryLink(symbol, modules);
+      URL url = YahooLinks.getInstance().getYahooQuoteSummaryLink(symbol, modules);
       JsonNode jsonRoot = mapper.readTree(url);
       for (String module : modules) {
         switch (module) {
@@ -146,14 +143,5 @@ public class SearchEngine <E> {
     return company;
   }
 
-  /**
-   * Creates a list of Options
-   * @param symbol Company's symbol to find it's Option Chain
-   * @return
-   */
-  public List<CompositeOption> getCompanysOptionChain(String symbol) {
-
-    return null;
-  }
 
 }

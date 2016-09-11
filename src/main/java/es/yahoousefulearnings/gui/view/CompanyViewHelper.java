@@ -1,7 +1,9 @@
 package es.yahoousefulearnings.gui.view;
 
+import es.yahoousefulearnings.annotation.FieldType;
 import es.yahoousefulearnings.annotation.ObservableField;
 import es.yahoousefulearnings.entities.Company;
+import es.yahoousefulearnings.entities.Field;
 import es.yahoousefulearnings.entities.company.CalendarEvents;
 import es.yahoousefulearnings.entities.company.Profile;
 import javafx.geometry.Orientation;
@@ -13,8 +15,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 
+import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -40,18 +44,11 @@ public class CompanyViewHelper implements ViewHelper {
     Collection<Node> nodes = new ArrayList<>();
 
     try {
+      System.out.println("----Profile----");
       //codigo dinamico de ejemplo
-      for (java.lang.reflect.Field field : profile.getClass().getDeclaredFields()) {
-        System.out.print(field.getDeclaredAnnotation(ObservableField.class).name() + ": ");
-        for (PropertyDescriptor pd : Introspector.getBeanInfo(Profile.class).getPropertyDescriptors()) {
-          if (pd.getName().equals(field.getName())) {
-            Object propertyValue = pd.getReadMethod().invoke(profile);
-            System.out.println(propertyValue.toString());
-            break;
-          }
-        }
+      invokeMethods(profile);
 
-      }
+
       if (profile.isSet()) {
         nodes.add(new Label("Address: " + profile.getAddress()));
         nodes.add(new Label("City: " + profile.getCity()));
@@ -72,14 +69,14 @@ public class CompanyViewHelper implements ViewHelper {
       }
 
       return nodes;
-    } catch(Exception e) {
+    } catch(NullPointerException e) {
       throw new RuntimeException(e);
     }
   }
 
   private Collection<Node> getCalendarEventsNodes(CalendarEvents calendarEvents) {
     Collection<Node> nodes = new ArrayList<>();
-    if(calendarEvents.isSet()){
+    /*if(calendarEvents.isSet()){
       if(calendarEvents.getEarningsDate().size() > 1) {
         nodes.add(new Label("Earnings date: " + calendarEvents.getEarningsDate().get(0).getFmt() + " - " + calendarEvents.getEarningsDate().get(1).getFmt()));
       } else {
@@ -123,8 +120,56 @@ public class CompanyViewHelper implements ViewHelper {
     } else {
       nodes.add(new Label("No calendar events found..."));
     }
-
+    */
+    invokeMethods(calendarEvents);
     return nodes;
+  }
+
+  private <E> void invokeMethods(E entity) {
+    try {
+      for (java.lang.reflect.Field field : entity.getClass().getDeclaredFields()) {
+        String name = field.getDeclaredAnnotation(ObservableField.class).name() + ": ";
+        FieldType fieldType = field.getDeclaredAnnotation(ObservableField.class).fieldType();
+        System.out.print(name);
+        for (PropertyDescriptor pd : Introspector.getBeanInfo(entity.getClass()).getPropertyDescriptors()){
+          if (pd.getName().equals(field.getName())) {
+            if (fieldType.equals(FieldType.DATE)) {
+              Field propertyValue = (Field) pd.getReadMethod().invoke(entity);
+              System.out.println(propertyValue.getFmt());
+            }
+            if (fieldType.equals(FieldType.STRING)) {
+              String propertyValue = (String) pd.getReadMethod().invoke(entity);
+              System.out.println(propertyValue);
+            }
+            if (fieldType.equals(FieldType.NUMERIC)) {
+              Field propertyValue = (Field) pd.getReadMethod().invoke(entity);
+              System.out.println(propertyValue.getRaw());
+            }
+            if (fieldType.equals(FieldType.RAW_NUMERIC)){
+              Number number = (Number) pd.getReadMethod().invoke(entity);
+              System.out.println(number.toString());
+            }
+            if (fieldType.equals(FieldType.FIELD_ARRAY_LIST)) {
+              ArrayList<Field> fields = (ArrayList<Field>) pd.getReadMethod().invoke(entity);
+              fields.forEach(field1 -> System.out.println(field1.getFmt()));
+            }
+            if (fieldType.equals(FieldType.INNER_CLASS)) {
+              Object newEntity = pd.getReadMethod().invoke(entity);
+              System.out.println("---This is an inner "+ newEntity.getClass().getName() +" class---");
+              invokeMethods(newEntity);
+            }
+            if (fieldType.equals(FieldType.BOOLEAN)) {
+              System.out.println("This is a boolean value");
+            }
+            break;
+          }
+        }
+      }
+
+    }catch(NullPointerException | IntrospectionException | IllegalAccessException | InvocationTargetException e) {
+      throw new RuntimeException(e);
+    }
+
   }
 
   private Label getFieldLabel(String msj, es.yahoousefulearnings.entities.Field field){
