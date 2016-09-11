@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.annotation.Entity;
+import es.yahoousefulearnings.annotation.FieldType;
+import es.yahoousefulearnings.annotation.ObservableField;
 import es.yahoousefulearnings.entities.Field;
 import es.yahoousefulearnings.entities.LongFormatField;
 
@@ -21,11 +23,15 @@ import java.util.ArrayList;
 public class CalendarEvents extends CompanyData {
 
   @JsonProperty("earnings")
+  @ObservableField(name = "Earnings", fieldType = FieldType.CLASS)
   private Earnings earnings;
 
   @JsonProperty("exDividendDate")
+  @ObservableField(name = "Ex dividend date", fieldType = FieldType.DATE)
   private Field exDividendDate;
+
   @JsonProperty("dividendDate")
+  @ObservableField(name = "Dividend date", fieldType = FieldType.DATE)
   private Field dividendDate;
 
   public ArrayList<Field> getEarningsDate() {

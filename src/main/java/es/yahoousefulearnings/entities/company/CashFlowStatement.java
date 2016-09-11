@@ -1,9 +1,10 @@
 package es.yahoousefulearnings.entities.company;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.annotation.Entity;
+import es.yahoousefulearnings.annotation.FieldType;
+import es.yahoousefulearnings.annotation.ObservableField;
 import es.yahoousefulearnings.entities.Field;
 import es.yahoousefulearnings.entities.LongFormatField;
 
@@ -14,48 +15,84 @@ import es.yahoousefulearnings.entities.LongFormatField;
  *
  * @author Yago Rodríguez
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Entity(name = "Cash Flow Statement")
 public class CashFlowStatement extends CompanyData {
 
   @JsonProperty("endDate")
+  @ObservableField(name = "End date", fieldType = FieldType.NUMERIC)
   private Field endDate;
-  @JsonProperty("netIncome")
+  
+  @JsonProperty("netIncome")  
+  @ObservableField(name = "Net income", fieldType = FieldType.NUMERIC)
   private LongFormatField netIncome;
+  
   @JsonProperty("depreciation")
+  @ObservableField(name = "Depreciation", fieldType = FieldType.NUMERIC)
   private LongFormatField depreciation;
+  
   @JsonProperty("changeToNetincome")
+  @ObservableField(name = "Change to net income", fieldType = FieldType.NUMERIC)
   private LongFormatField changeToNetincome;
+  
   @JsonProperty("changeToAccountReceivables")
+  @ObservableField(name = "Change to Account Receivables", fieldType = FieldType.NUMERIC)
   private LongFormatField changeToAccountReceivables;
+  
   @JsonProperty("changeToLiabilities")
+  @ObservableField(name = "Change to liabilities", fieldType = FieldType.NUMERIC)
   private LongFormatField changeToLiabilities;
+  
   @JsonProperty("changeToInventory")
+  @ObservableField(name = "Change to inventory", fieldType = FieldType.NUMERIC)
   private LongFormatField changeToInventory;
+  
   @JsonProperty("changeToOperatingActivities")
+  @ObservableField(name = "Change to operating activities", fieldType = FieldType.NUMERIC)
   private LongFormatField changeToOperatingActivities;
+  
   @JsonProperty("totalCashFromOperatingActivities")
+  @ObservableField(name = "Total cash from operating activities", fieldType = FieldType.NUMERIC)
   private LongFormatField totalCashFromOperatingActivities;
+  
   @JsonProperty("capitalExpenditures")
+  @ObservableField(name = "Capital Expenditures", fieldType = FieldType.NUMERIC)
   private LongFormatField capitalExpenditures;
+  
   @JsonProperty("investments")
+  @ObservableField(name = "Investments", fieldType = FieldType.NUMERIC)
   private LongFormatField investments;
+  
   @JsonProperty("otherCashflowsFromInvestingActivities")
+  @ObservableField(name = "Other cashflows from investing", fieldType = FieldType.NUMERIC)
   private LongFormatField otherCashflowsFromInvestingActivities;
+
   @JsonProperty("totalCashflowsFromInvestingActivities")
+  @ObservableField(name = "Total cashflow from investing activities", fieldType = FieldType.NUMERIC)
   private LongFormatField totalCashflowsFromInvestingActivities;
+
   @JsonProperty("dividendsPaid")
+  @ObservableField(name = "Dividends paid", fieldType = FieldType.NUMERIC)
   private LongFormatField dividendsPaid;
+
   @JsonProperty("salePurchaseOfStock")
+  @ObservableField(name = "Sale purchase of stock", fieldType = FieldType.NUMERIC)
   private LongFormatField salePurchaseOfStock;
+
   @JsonProperty("netBorrowings")
+  @ObservableField(name = "Net borrowings", fieldType = FieldType.NUMERIC)
   private LongFormatField netBorrowings;
+
   @JsonProperty("otherCashflowsFromFinancingActivities")
+  @ObservableField(name = "Other cashflows from financing activities", fieldType = FieldType.NUMERIC)
   private LongFormatField otherCashflowsFromFinancingActivities;
+
   @JsonProperty("totalCashFromFinancingActivities")
+  @ObservableField(name = "Total cashflow financing activities", fieldType = FieldType.NUMERIC)
   private LongFormatField totalCashFromFinancingActivities;
+
   @JsonProperty("changeInCash")
+  @ObservableField(name = "Change in cash", fieldType = FieldType.NUMERIC)
   private LongFormatField changeInCash;
 
   public Field getEndDate() {

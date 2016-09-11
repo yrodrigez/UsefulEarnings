@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.annotation.Entity;
-import es.yahoousefulearnings.annotation.UEField;
+import es.yahoousefulearnings.annotation.ObservableField;
+import es.yahoousefulearnings.annotation.FieldType;
 import es.yahoousefulearnings.entities.Field;
 import es.yahoousefulearnings.entities.LongFormatField;
 
@@ -21,36 +22,58 @@ import es.yahoousefulearnings.entities.LongFormatField;
 public class IncomeStatement extends CompanyData {
 
   @JsonProperty("endDate")
-  @UEField(fieldName = "End Date")
+  @ObservableField(name = "End Date", fieldType = FieldType.DATE)
   private Field endDate;
+
   @JsonProperty("totalRevenue")
-  @UEField(fieldName = "Total Revenue")
+  @ObservableField(name = "Total Revenue", fieldType = FieldType.NUMERIC)
   private Field totalRevenue;
 
   @JsonProperty("costOfRevenue")
-  @UEField(fieldName = "Cost of Revenue")
+  @ObservableField(name = "Cost of Revenue", fieldType = FieldType.NUMERIC)
   private LongFormatField costOfRevenue;
+
   @JsonProperty("grossProfit")
+  @ObservableField(name = "Gross Profit", fieldType = FieldType.NUMERIC)
   private LongFormatField grossProfit;
+
   @JsonProperty("researchDevelopment")
+  @ObservableField(name = "Research Development", fieldType = FieldType.NUMERIC)
   private LongFormatField researchDevelopment;
+
   @JsonProperty("sellingGeneralAdministrative")
+  @ObservableField(name = "Selling General Administrative", fieldType = FieldType.NUMERIC)
   private LongFormatField sellingGeneralAdministrative;
+
   @JsonProperty("operatingIncome")
+  @ObservableField(name = "Operating Income", fieldType = FieldType.NUMERIC)
   private LongFormatField operatingIncome;
+
   @JsonProperty("totalOtherIncomeExpenseNet")
+  @ObservableField(name = "Total Other Income Expense Net", fieldType = FieldType.NUMERIC)
   private LongFormatField totalOtherIncomeExpenseNet;
+
   @JsonProperty("ebit")
+  @ObservableField(name = "e bit", fieldType = FieldType.NUMERIC)
   private LongFormatField ebit;
+
   @JsonProperty("incomeBeforeTax")
+  @ObservableField(name = "Income before Tax", fieldType = FieldType.NUMERIC)
   private LongFormatField incomeBeforeTax;
+
   @JsonProperty("incomeTaxExpense")
+  @ObservableField(name = "Income Tax Expense", fieldType = FieldType.NUMERIC)
   private LongFormatField incomeTaxExpense;
+
   @JsonProperty("netIncome")
+  @ObservableField(name = "Net income", fieldType = FieldType.NUMERIC)
   private LongFormatField netIncome;
+
   @JsonProperty("netIncomeApplicableToCommonShares")
   private LongFormatField netIncomeApplicableToCommonShares;
+
   @JsonProperty("netIncomeFromContinuingOps")
+  @ObservableField(name = "Net Income From Continuing Ops", fieldType = FieldType.NUMERIC)
   private LongFormatField netIncomeFromContinuingOps;
 
 
@@ -169,15 +192,15 @@ public class IncomeStatement extends CompanyData {
   /*
   *** NULL DATA ***
 
-  @JsonProperty("discontinuedOperations") private Field discontinuedOperations;
-  @JsonProperty("extraordinaryItems") private Field extraordinaryItems;
-  @JsonProperty("effectOfAccountingCharges") private Field effectOfAccountingCharges;
-  @JsonProperty("otherItems") private Field otherItems;
-  @JsonProperty("nonRecurring") private Field nonRecurring;
-  @JsonProperty("otherOperatingExpenses") private Field otherOperatingExpenses;
-  @JsonProperty("totalOperatingExpenses") private Field totalOperatingExpenses;
-  @JsonProperty("interestExpense") private Field interestExpense;
-  @JsonProperty("minorityInterest") private Field minorityInterest;
+  @JsonProperty("discontinuedOperations") private ObservableField discontinuedOperations;
+  @JsonProperty("extraordinaryItems") private ObservableField extraordinaryItems;
+  @JsonProperty("effectOfAccountingCharges") private ObservableField effectOfAccountingCharges;
+  @JsonProperty("otherItems") private ObservableField otherItems;
+  @JsonProperty("nonRecurring") private ObservableField nonRecurring;
+  @JsonProperty("otherOperatingExpenses") private ObservableField otherOperatingExpenses;
+  @JsonProperty("totalOperatingExpenses") private ObservableField totalOperatingExpenses;
+  @JsonProperty("interestExpense") private ObservableField interestExpense;
+  @JsonProperty("minorityInterest") private ObservableField minorityInterest;
   */
 
 }

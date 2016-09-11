@@ -2,6 +2,8 @@ package es.yahoousefulearnings.entities.option;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.annotation.Entity;
+import es.yahoousefulearnings.annotation.FieldType;
+import es.yahoousefulearnings.annotation.ObservableField;
 import es.yahoousefulearnings.entities.Field;
 import es.yahoousefulearnings.entities.LongFormatField;
 
@@ -14,47 +16,87 @@ import es.yahoousefulearnings.entities.LongFormatField;
 @Entity(name = "Price")
 public class Price extends OptionData {
   @JsonProperty("exchange")
+  @ObservableField(name = "Exchange")
   private String exchange; // "OPR",
+
   @JsonProperty("exchangeName")
+  @ObservableField(name = "Exchange name")
   private String exchangeName; // "OPR",
+
   @JsonProperty("marketState")
+  @ObservableField(name = "Market state")
   private String marketState; // "REGULAR",
+
   @JsonProperty("quoteType")
+  @ObservableField(name = "Quote type")
   private String quoteType; // "OPTION",
+
   @JsonProperty("symbol")
+  @ObservableField(name = "Symbol")
   private String symbol; // "AAPL160812C00070000",
+
   @JsonProperty("underlyingSymbol")
+  @ObservableField(name = "Company's symbol")
   private String underlyingSymbol; // "AAPL",
+
   @JsonProperty("currency")
+  @ObservableField(name = "Currency")
   private String currency; // "USD",
+
   @JsonProperty("currencySymbol")
+  @ObservableField(name = "Currency symbol")
   private String currencySymbol; // "$"
 
   @JsonProperty("regularMarketChangePercent")
+  @ObservableField(name = "Regular market change percent", fieldType = FieldType.NUMERIC)
   private Field regularMarketChangePercent;
+
   @JsonProperty("regularMarketChange")
+  @ObservableField(name = "Regular market change", fieldType = FieldType.NUMERIC)
   private Field regularMarketChange;
+
   @JsonProperty("regularMarketTime")
+  @ObservableField(name = "Regular market time", fieldType = FieldType.DATE)
   private Field regularMarketTime; // 1470439901,
+
   @JsonProperty("regularMarketPrice")
+  @ObservableField(name = "Regular market price", fieldType = FieldType.NUMERIC)
   private Field regularMarketPrice;
+
   @JsonProperty("regularMarketDayHigh")
+  @ObservableField(name = "Regular market day high", fieldType = FieldType.NUMERIC)
   private Field regularMarketDayHigh;
+
   @JsonProperty("regularMarketDayLow")
+  @ObservableField(name = "Regular market day low", fieldType = FieldType.NUMERIC)
   private Field regularMarketDayLow;
+
   @JsonProperty("regularMarketVolume")
+  @ObservableField(name = "Regular market volume", fieldType = FieldType.NUMERIC)
   private LongFormatField regularMarketVolume;
+
   @JsonProperty("regularMarketPreviousClose")
+  @ObservableField(name = "Regular market previous close", fieldType = FieldType.NUMERIC)
   private Field regularMarketPreviousClose;
+
   @JsonProperty("regularMarketSource")
+  @ObservableField(name = "Regular market source", fieldType = FieldType.STRING)
   private Field regularMarketSource; // "DELAYED",
+
   @JsonProperty("regularMarketOpen")
+  @ObservableField(name = "regular market open", fieldType = FieldType.NUMERIC)
   private Field regularMarketOpen;
+
   @JsonProperty("strikePrice")
+  @ObservableField(name = "Strike price", fieldType = FieldType.NUMERIC)
   private Field strikePrice;
+
   @JsonProperty("openInterest")
+  @ObservableField(name = "Open interest", fieldType = FieldType.NUMERIC)
   private LongFormatField openInterest;
+
   @JsonProperty("expireDate")
+  @ObservableField(name = "Expiration date", fieldType = FieldType.DATE)
   private Field expireDate;
 
   public String getExchange() {

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.annotation.Entity;
+import es.yahoousefulearnings.annotation.FieldType;
+import es.yahoousefulearnings.annotation.ObservableField;
 import es.yahoousefulearnings.entities.Field;
 import es.yahoousefulearnings.entities.LongFormatField;
 
@@ -19,28 +21,49 @@ import es.yahoousefulearnings.entities.LongFormatField;
 public class DefaultKeyStatistics extends CompanyData {
 
   @JsonProperty("lastSplitFactor")
+  @ObservableField(name = "Last split factor", fieldType = FieldType.STRING)
   private String lastSplitFactor;
 
   @JsonProperty("forwardPE")
+  @ObservableField(name = "Forward price to earnings", fieldType = FieldType.NUMERIC)
   private Field forwardPE;
+
   @JsonProperty("profitMargins")
+  @ObservableField(name = "Profit margins", fieldType = FieldType.NUMERIC)
   private Field profitMargins;
+
   @JsonProperty("heldPercentInsiders")
+  @ObservableField(name = "Held percent insiders", fieldType = FieldType.NUMERIC)
   private Field heldPercentInsiders;
+
   @JsonProperty("heldPercentInstitutions")
+  @ObservableField(name = "Held percent institutions", fieldType = FieldType.NUMERIC)
   private Field heldPercentInstitutions;
+
   @JsonProperty("shortRatio")
+  @ObservableField(name = "Short ratio", fieldType = FieldType.NUMERIC)
   private Field shortRatio;
+
   @JsonProperty("shortPercentOfFloat")
+  @ObservableField(name = "Short percent of float", fieldType = FieldType.NUMERIC)
   private Field shortPercentOfFloat;
+
   @JsonProperty("beta")
+  @ObservableField(name = "Beta", fieldType = FieldType.NUMERIC)
   private Field beta;
+
   @JsonProperty("bookValue")
+  @ObservableField(name = "Book value", fieldType = FieldType.NUMERIC)
   private Field bookValue;
+
   @JsonProperty("priceToBook")
+  @ObservableField(name = "Price to book", fieldType = FieldType.NUMERIC)
   private Field priceToBook;
+
   @JsonProperty("lastFiscalYearEnd")
+  @ObservableField(name = "Last fiscal Year End", fieldType = FieldType.NUMERIC)
   private Field lastFiscalYearEnd;
+
   @JsonProperty("nextFiscalYearEnd")
   private Field nextFiscalYearEnd;
   @JsonProperty("mostRecentQuarter")
@@ -296,41 +319,41 @@ public class DefaultKeyStatistics extends CompanyData {
   /*
   * *** NULL DATA ***
   @JsonProperty("revenueQuarterlyGrowth")
-  private Field revenueQuarterlyGrowth;
+  private ObservableField revenueQuarterlyGrowth;
   @JsonProperty("morningStarOverallRating")
-  private Field morningStarOverallRating;
+  private ObservableField morningStarOverallRating;
   @JsonProperty("morningStarRiskRating")
-  private Field morningStarRiskRating;
+  private ObservableField morningStarRiskRating;
   @JsonProperty("category")
-  private Field category; // null,
+  private ObservableField category; // null,
   @JsonProperty("annualReportExpenseRatio")
-  private Field annualReportExpenseRatio;
+  private ObservableField annualReportExpenseRatio;
   @JsonProperty("ytdReturn")
-  private Field ytdReturn;
+  private ObservableField ytdReturn;
   @JsonProperty("beta3Year")
-  private Field beta3Year;
+  private ObservableField beta3Year;
   @JsonProperty("totalAssets")
-  private Field totalAssets;
+  private ObservableField totalAssets;
   @JsonProperty("yield")
-  private Field yield;
+  private ObservableField yield;
   @JsonProperty("fundFamily")
-  private Field fundFamily; // null,
+  private ObservableField fundFamily; // null,
   @JsonProperty("fundInceptionDate")
-  private Field fundInceptionDate;
+  private ObservableField fundInceptionDate;
   @JsonProperty("legalType")
-  private Field legalType; // null,
+  private ObservableField legalType; // null,
   @JsonProperty("threeYearAverageReturn")
-  private Field threeYearAverageReturn;
+  private ObservableField threeYearAverageReturn;
   @JsonProperty("fiveYearAverageReturn")
-  private Field fiveYearAverageReturn;
+  private ObservableField fiveYearAverageReturn;
   @JsonProperty("priceToSalesTrailing12Months")
-  private Field priceToSalesTrailing12Months;
+  private ObservableField priceToSalesTrailing12Months;
   @JsonProperty("lastDividendValue")
-  private Field lastDividendValue;
+  private ObservableField lastDividendValue;
   @JsonProperty("lastCapGain")
-  private Field lastCapGain;
+  private ObservableField lastCapGain;
   @JsonProperty("annualHoldingsTurnover")
-  private Field annualHoldingsTurnover;
+  private ObservableField annualHoldingsTurnover;
    */
 
 }

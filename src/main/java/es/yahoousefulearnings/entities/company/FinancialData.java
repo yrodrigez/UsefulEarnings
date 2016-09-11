@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.annotation.Entity;
+import es.yahoousefulearnings.annotation.FieldType;
+import es.yahoousefulearnings.annotation.ObservableField;
 import es.yahoousefulearnings.entities.Field;
 import es.yahoousefulearnings.entities.LongFormatField;
 /**
@@ -18,59 +20,111 @@ import es.yahoousefulearnings.entities.LongFormatField;
 public class FinancialData extends CompanyData {
 
   @JsonProperty("currentPrice")
+  @ObservableField(name = "Current price", fieldType = FieldType.NUMERIC)
   private Field currentPrice;
+
   @JsonProperty("targetHighPrice")
+  @ObservableField(name = "Target high price", fieldType = FieldType.NUMERIC)
   private Field targetHighPrice;
+
   @JsonProperty("targetLowPrice")
+  @ObservableField(name = "Target low price", fieldType = FieldType.NUMERIC)
   private Field targetLowPrice;
+
   @JsonProperty("targetMeanPrice")
+  @ObservableField(name = "Target mean price", fieldType = FieldType.NUMERIC)
   private Field targetMeanPrice;
+
   @JsonProperty("targetMedianPrice")
+  @ObservableField(name = "Target median price", fieldType = FieldType.NUMERIC)
   private Field targetMedianPrice;
+
   @JsonProperty("recommendationMean")
+  @ObservableField(name = "Recommendation mean", fieldType = FieldType.NUMERIC)
   private Field recommendationMean;
+
   @JsonProperty("recommendationKey")
+  @ObservableField(name = "Recommendation key", fieldType = FieldType.STRING)
   private String recommendationKey;
+
   @JsonProperty("totalCashPerShare")
+  @ObservableField(name = "Total cash per share", fieldType = FieldType.NUMERIC)
   private Field totalCashPerShare;
+
   @JsonProperty("quickRatio")
+  @ObservableField(name = "Quick ratio", fieldType = FieldType.NUMERIC)
   private Field quickRatio;
+
   @JsonProperty("currentRatio")
+  @ObservableField(name = "Current ratio", fieldType = FieldType.NUMERIC)
   private Field currentRatio;
+
   @JsonProperty("returnOnAssets")
+  @ObservableField(name = "Return on assets", fieldType = FieldType.NUMERIC)
   private Field returnOnAssets;
+
   @JsonProperty("returnOnEquity")
+  @ObservableField(name = "Return on Equity", fieldType = FieldType.NUMERIC)
   private Field returnOnEquity;
+
   @JsonProperty("earningsGrowth")
+  @ObservableField(name = "Earnings growth", fieldType = FieldType.NUMERIC)
   private Field earningsGrowth;
+
   @JsonProperty("revenueGrowth")
+  @ObservableField(name = "Revenue growth", fieldType = FieldType.NUMERIC)
   private Field revenueGrowth;
+
   @JsonProperty("grossMargins")
+  @ObservableField(name = "Gross margins", fieldType = FieldType.NUMERIC)
   private Field grossMargins;
+
   @JsonProperty("ebitdaMargins")
+  @ObservableField(name = "EBITDA margins", fieldType = FieldType.NUMERIC)
   private Field ebitdaMargins;
+
   @JsonProperty("operatingMargins")
+  @ObservableField(name = "Operating margins", fieldType = FieldType.NUMERIC)
   private Field operatingMargins;
+
   @JsonProperty("profitMargins")
+  @ObservableField(name = "Profit margins", fieldType = FieldType.NUMERIC)
   private Field profitMargins;
 
   @JsonProperty("numberOfAnalystOpinions")
+  @ObservableField(name = "Number of analyst opinions", fieldType = FieldType.NUMERIC)
   private LongFormatField numberOfAnalystOpinions;
+
   @JsonProperty("totalCash")
+  @ObservableField(name = "", fieldType = FieldType.NUMERIC)
   private LongFormatField totalCash;
+
   @JsonProperty("ebitda")
+  @ObservableField(name = "EBITDA", fieldType = FieldType.NUMERIC)
   private LongFormatField ebitda;
+
  @JsonProperty("totalDebt")
+ @ObservableField(name = "Total debt", fieldType = FieldType.NUMERIC)
   private LongFormatField totalDebt;
+
   @JsonProperty("totalRevenue")
+  @ObservableField(name = "Total revenue", fieldType = FieldType.NUMERIC)
   private LongFormatField totalRevenue;
+
   @JsonProperty("debtToEquity")
+  @ObservableField(name = "Debt to equity", fieldType = FieldType.NUMERIC)
   private LongFormatField debtToEquity;
+
   @JsonProperty("grossProfits")
+  @ObservableField(name = "Gross profits", fieldType = FieldType.NUMERIC)
   private LongFormatField grossProfits;
+
   @JsonProperty("freeCashflow")
+  @ObservableField(name = "Free cashflow", fieldType = FieldType.NUMERIC)
   private LongFormatField freeCashflow;
+
   @JsonProperty("operatingCashflow")
+  @ObservableField(name = "Operating cashflow", fieldType = FieldType.NUMERIC)
   private LongFormatField operatingCashflow;
 
 

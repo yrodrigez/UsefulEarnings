@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.annotation.Entity;
+import es.yahoousefulearnings.annotation.FieldType;
+import es.yahoousefulearnings.annotation.ObservableField;
 import es.yahoousefulearnings.entities.Field;
 import es.yahoousefulearnings.entities.LongFormatField;
 /**
@@ -19,56 +21,107 @@ import es.yahoousefulearnings.entities.LongFormatField;
 public class BalanceSheetStatement extends CompanyData {
   
   @JsonProperty("endDate")
+  @ObservableField(name = "End date", fieldType = FieldType.DATE)
   private Field endDate;
+
   @JsonProperty("cash")
+  @ObservableField(name = "Cash", fieldType = FieldType.NUMERIC)
   private LongFormatField cash;
+
   @JsonProperty("shortTermInvestments")
+  @ObservableField(name = "Short term investments", fieldType = FieldType.NUMERIC)
   private LongFormatField shortTermInvestments;
+
   @JsonProperty("netReceivables")
+  @ObservableField(name = "Net receivables", fieldType = FieldType.NUMERIC)
   private LongFormatField netReceivables;
+
   @JsonProperty("inventory")
+  @ObservableField(name = "Inventory", fieldType = FieldType.NUMERIC)
   private LongFormatField inventory;
+
   @JsonProperty("otherCurrentAssets")
+  @ObservableField(name = "Other current assets", fieldType = FieldType.NUMERIC)
   private LongFormatField otherCurrentAssets;
+
   @JsonProperty("totalCurrentAssets")
+  @ObservableField(name = "Total current assets", fieldType = FieldType.NUMERIC)
   private LongFormatField totalCurrentAssets;
+
   @JsonProperty("longTermInvestments")
+  @ObservableField(name = "Long term investments", fieldType = FieldType.NUMERIC)
   private LongFormatField longTermInvestments;
+
   @JsonProperty("propertyPlantEquipment")
+  @ObservableField(name = "Property plan equipment", fieldType = FieldType.NUMERIC)
   private LongFormatField propertyPlantEquipment;
+
   @JsonProperty("goodWill")
+  @ObservableField(name = "Good will", fieldType = FieldType.NUMERIC)
   private LongFormatField goodWill;
+
   @JsonProperty("intangibleAssets")
+  @ObservableField(name = "Intangible assets", fieldType = FieldType.NUMERIC)
   private LongFormatField intangibleAssets;
+
   @JsonProperty("otherAssets")
+  @ObservableField(name = "Other assets", fieldType = FieldType.NUMERIC)
   private LongFormatField otherAssets;
+
   @JsonProperty("totalAssets")
+  @ObservableField(name = "Total assets", fieldType = FieldType.NUMERIC)
   private LongFormatField totalAssets;
+
   @JsonProperty("accountsPayable")
+  @ObservableField(name = "Accounts payable", fieldType = FieldType.NUMERIC)
   private LongFormatField accountsPayable;
+
   @JsonProperty("shortLongTermDebt")
+  @ObservableField(name = "Short/Long term debt", fieldType = FieldType.NUMERIC)
   private LongFormatField shortLongTermDebt;
+
   @JsonProperty("otherCurrentLiab")
+  @ObservableField(name = "Other current liability", fieldType = FieldType.NUMERIC)
   private LongFormatField otherCurrentLiab;
+
   @JsonProperty("longTermDebt")
+  @ObservableField(name = "Long term debt", fieldType = FieldType.NUMERIC)
   private LongFormatField longTermDebt;
+
   @JsonProperty("otherLiab")
+  @ObservableField(name = "Other liabilities", fieldType = FieldType.NUMERIC)
   private LongFormatField otherLiab;
+
   @JsonProperty("deferredLongTermLiab")
+  @ObservableField(name = "Deferred long term liability", fieldType = FieldType.NUMERIC)
   private LongFormatField deferredLongTermLiab;
+
   @JsonProperty("totalCurrentLiabilities")
+  @ObservableField(name = "Total current liabilities", fieldType = FieldType.NUMERIC)
   private LongFormatField totalCurrentLiabilities;
+
   @JsonProperty("totalLiab")
+  @ObservableField(name = "Total liability", fieldType = FieldType.NUMERIC)
   private LongFormatField totalLiab;
+
   @JsonProperty("commonStock")
+  @ObservableField(name = "Common stock", fieldType = FieldType.NUMERIC)
   private LongFormatField commonStock;
+
   @JsonProperty("retainedEarnings")
+  @ObservableField(name = "Retained earnings", fieldType = FieldType.NUMERIC)
   private LongFormatField retainedEarnings;
+
   @JsonProperty("otherStockholderEquity")
+  @ObservableField(name = "Other stock holder equity", fieldType = FieldType.NUMERIC)
   private LongFormatField otherStockholderEquity;
+
   @JsonProperty("totalStockholderEquity")
+  @ObservableField(name = "Total stock holder equity", fieldType = FieldType.NUMERIC)
   private LongFormatField totalStockholderEquity;
+
   @JsonProperty("netTangibleAssets")
+  @ObservableField(name = "Net tangible assets", fieldType = FieldType.NUMERIC)
   private LongFormatField netTangibleAssets; 
 
   public Field getEndDate() {

@@ -1,7 +1,6 @@
 package es.yahoousefulearnings.gui.view;
 
-import es.yahoousefulearnings.annotation.UEField;
-import es.yahoousefulearnings.entities.Field;
+import es.yahoousefulearnings.annotation.ObservableField;
 import es.yahoousefulearnings.entities.Company;
 import es.yahoousefulearnings.entities.company.CalendarEvents;
 import es.yahoousefulearnings.entities.company.Profile;
@@ -43,7 +42,7 @@ public class CompanyViewHelper implements ViewHelper {
     try {
       //codigo dinamico de ejemplo
       for (java.lang.reflect.Field field : profile.getClass().getDeclaredFields()) {
-        System.out.print(field.getDeclaredAnnotation(UEField.class).fieldName() + ": ");
+        System.out.print(field.getDeclaredAnnotation(ObservableField.class).name() + ": ");
         for (PropertyDescriptor pd : Introspector.getBeanInfo(Profile.class).getPropertyDescriptors()) {
           if (pd.getName().equals(field.getName())) {
             Object propertyValue = pd.getReadMethod().invoke(profile);
@@ -128,7 +127,7 @@ public class CompanyViewHelper implements ViewHelper {
     return nodes;
   }
 
-  private Label getFieldLabel(String msj, Field field){
+  private Label getFieldLabel(String msj, es.yahoousefulearnings.entities.Field field){
     Label label = new Label();
     try {
       label.setText(msj + field.getFmt());

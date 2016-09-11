@@ -2,6 +2,8 @@ package es.yahoousefulearnings.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import es.yahoousefulearnings.annotation.FieldType;
+import es.yahoousefulearnings.annotation.ObservableField;
 import es.yahoousefulearnings.entities.option.OptionType;
 
 /**
@@ -11,36 +13,67 @@ import es.yahoousefulearnings.entities.option.OptionType;
 public class CompositeOption {
 
   @JsonIgnore
+  @ObservableField(name = "Type", fieldType = FieldType.OPTION_TYPE)
   public OptionType type;
+
   @JsonProperty("contractSymbol")
+  @ObservableField(name = "Symbol", fieldType = FieldType.STRING)
   private String contractSymbol;
+
   @JsonProperty("strike")
+  @ObservableField(name = "Strike", fieldType = FieldType.NUMERIC)
   private double strike;
+
   @JsonProperty("currency")
+  @ObservableField(name = "Currency", fieldType = FieldType.NUMERIC)
   private String currency;
+
   @JsonProperty("lastPrice")
+  @ObservableField(name = "Last price", fieldType = FieldType.NUMERIC)
   private double lastPrice;
+
   @JsonProperty("change")
+  @ObservableField(name = "Change", fieldType = FieldType.NUMERIC)
   private double change;
+
   @JsonProperty("percentChange")
+  @ObservableField(name = "% Change", fieldType = FieldType.NUMERIC)
   private double percentChange;
+
   @JsonProperty("volume")
+  @ObservableField(name = "Volume", fieldType = FieldType.NUMERIC)
   private double volume;
+
   @JsonProperty("openInterest")
+  @ObservableField(name = "Open interest", fieldType = FieldType.NUMERIC)
   private double openInterest;
+
   @JsonProperty("bid")
+  @ObservableField(name = "Bid", fieldType = FieldType.NUMERIC)
   private double bid;
+
   @JsonProperty("ask")
+  @ObservableField(name = "Ask", fieldType = FieldType.NUMERIC)
   private double ask;
+
   @JsonProperty("contractSize")
+  @ObservableField(name = "Size", fieldType = FieldType.NUMERIC)
   private String contractSize;
+
   @JsonProperty("expiration")
+  @ObservableField(name = "Expiration", fieldType = FieldType.DATE)
   private long expiration;
+
   @JsonProperty("lastTradeDate")
+  @ObservableField(name = "Last trade", fieldType = FieldType.DATE)
   private long lastTradeDate;
+
   @JsonProperty("impliedVolatility")
+  @ObservableField(name = "Implied volatility", fieldType = FieldType.NUMERIC)
   private double impliedVolatility;
+
   @JsonProperty("inTheMoney")
+  @ObservableField(name = "In the money", fieldType = FieldType.BOOLEAN) // this is not important maybe?
   private boolean inTheMoney;
 
   public OptionType getType() {

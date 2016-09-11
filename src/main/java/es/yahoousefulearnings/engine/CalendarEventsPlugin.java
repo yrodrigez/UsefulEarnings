@@ -12,7 +12,6 @@ public class CalendarEventsPlugin implements Plugin {
   private CalendarEvents calendarEvents;
   private String mModule = YahooLinks.COMPANY_CALENDAR_EVENTS;
 
-
   @Override
   public void addInfo(Company company) {
     //hacer peticion HTTP para obtener el JSON y parsearlo para

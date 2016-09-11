@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.yahoousefulearnings.annotation.Entity;
+import es.yahoousefulearnings.annotation.FieldType;
+import es.yahoousefulearnings.annotation.ObservableField;
 import es.yahoousefulearnings.entities.Field;
 import es.yahoousefulearnings.entities.LongFormatField;
 
@@ -20,21 +22,33 @@ import java.util.ArrayList;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Entity(name = "Earnings")
 public class Earnings extends CompanyData {
+
   @JsonProperty("earningsDate")
+  @ObservableField(name = "Earnings date", fieldType = FieldType.COLLECTION)
   private ArrayList<Field> earningsDate;
 
   @JsonProperty("earningsAverage")
+  @ObservableField(name = "Earnings average", fieldType = FieldType.NUMERIC)
   private Field earningsAverage;
+
   @JsonProperty("earningsLow")
+  @ObservableField(name = "Earnings low", fieldType = FieldType.NUMERIC)
   private Field earningsLow;
+
   @JsonProperty("earningsHigh")
+  @ObservableField(name = "Earnings high", fieldType = FieldType.NUMERIC)
   private Field earningsHigh;
 
   @JsonProperty("revenueAverage")
+  @ObservableField(name = "Revenue average", fieldType = FieldType.NUMERIC)
   private LongFormatField revenueAverage;
+
   @JsonProperty("revenueLow")
+  @ObservableField(name = "Revenue low", fieldType = FieldType.NUMERIC)
   private LongFormatField revenueLow;
+
   @JsonProperty("revenueHigh")
+  @ObservableField(name = "Revenue high", fieldType = FieldType.NUMERIC)
   private LongFormatField revenueHigh;
 
   public ArrayList<Field> getEarningsDate() {

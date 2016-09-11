@@ -78,7 +78,7 @@ public class MainController implements Initializable {
     });
     topMenu.getChildren().add(maximizeRestore);
 
-    ImageView closeIcon = new ImageView(new Image(Main.class.getResourceAsStream("icons/close-white.png")));
+    ImageView closeIcon = new ImageView(new Image(Main.class.getResourceAsStream("icons/window-close.png")));
     Button closeButton = new Button("", closeIcon);
     closeButton.getStyleClass().addAll("main-controller-button", "close-button", "no-radius");
     closeButton.setOnAction(event -> {
