@@ -81,6 +81,7 @@ public class CompanyViewHelper implements ViewHelper {
               }
 
               if (fieldType.equals(FieldType.FIELD_ARRAY_LIST)) {
+                @SuppressWarnings("unchecked") // this is indeed an ArrayList
                 ArrayList<Field> fields = (ArrayList<Field>) pd.getReadMethod().invoke(entity);
                 fields.forEach(field1 -> nodes.add(new Label(fieldName + field1.getFmt())));
               }
@@ -106,10 +107,7 @@ public class CompanyViewHelper implements ViewHelper {
 
     } catch (NullPointerException | IntrospectionException | IllegalAccessException | InvocationTargetException e) {
       System.out.println(e.getMessage());
-     /*nodes.add(getNullLabel(entity.getClass().getName().substring(
-       entity.getClass().getName().lastIndexOf(".") + 1,
-       entity.getClass().getName().length()
-     )));*/
+      System.out.println(e.getCause() != null? e.getCause() : "cause is null" );
     }
     return nodes;
   }
@@ -139,6 +137,7 @@ public class CompanyViewHelper implements ViewHelper {
           if (pd.getName().equals(field.getName())) {
 
             if (type.equals(EntityParameterType.ARRAY_LIST)) {
+              @SuppressWarnings("unchecked")// this is indeed an ArrayList
               ArrayList<Object> entities = (ArrayList<Object>) pd.getReadMethod().invoke(company);
               entities.forEach(entity -> {
                 entityBox.getChildren().add(new Separator(Orientation.HORIZONTAL));
