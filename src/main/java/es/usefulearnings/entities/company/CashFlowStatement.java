@@ -89,7 +89,7 @@ public class CashFlowStatement extends CompanyData {
   private LongFormatField otherCashflowsFromFinancingActivities;
 
   @JsonProperty("totalCashFromFinancingActivities")
-  @ObservableField(name = "Totalca", fieldType = FieldType.NUMERIC)
+  @ObservableField(name = "Total cash from financing activities", fieldType = FieldType.NUMERIC)
   private LongFormatField totalCashFromFinancingActivities;
 
   @JsonProperty("changeInCash")

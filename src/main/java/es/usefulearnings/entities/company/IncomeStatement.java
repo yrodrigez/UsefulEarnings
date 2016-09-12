@@ -68,6 +68,7 @@ public class IncomeStatement extends CompanyData {
   private LongFormatField netIncome;
 
   @JsonProperty("netIncomeApplicableToCommonShares")
+  @ObservableField(name = "Net income applicable to common shares")
   private LongFormatField netIncomeApplicableToCommonShares;
 
   @JsonProperty("netIncomeFromContinuingOps")
