@@ -1,4 +1,4 @@
-package es.usefulearnings.engine;
+package es.usefulearnings.engine.connection;
 
 import java.net.MalformedURLException;
 import java.net.URL;

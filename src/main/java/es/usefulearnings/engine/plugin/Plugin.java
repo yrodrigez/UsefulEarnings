@@ -1,4 +1,4 @@
-package es.usefulearnings.engine;
+package es.usefulearnings.engine.plugin;
 
 import es.usefulearnings.entities.Company;
 

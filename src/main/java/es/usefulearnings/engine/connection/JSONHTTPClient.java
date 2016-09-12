@@ -1,4 +1,4 @@
-package es.usefulearnings.engine;
+package es.usefulearnings.engine.connection;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +13,7 @@ import java.util.TreeMap;
  * ${PATH}
  * Created by yago on 9/09/16.
  */
-class JSONHTTPClient {
+public class JSONHTTPClient {
 
   private Map<URL, JsonNode> cache;
   private ObjectMapper mapper;
@@ -23,21 +23,20 @@ class JSONHTTPClient {
     mapper = new ObjectMapper();
   }
 
-
-
   private static JSONHTTPClient mInstance = new JSONHTTPClient();
 
   public static JSONHTTPClient getInstance() {
     return mInstance;
   }
 
-  public JsonNode getJSON(URL url) throws IOException{
+  public JsonNode getJSON(URL url) throws IOException {
 
-    synchronized (url.toString().intern()) { //for the same URL, only one thread at a time
+    synchronized (url.toString().intern()) { // for the same URL, only one thread at a time
       if (!cache.containsKey(url)) {
         JsonNode jsonObject = getJsonFromJackson(url);
         cache.put(url, jsonObject);
       }
+
       return cache.get(url);
     }
   }

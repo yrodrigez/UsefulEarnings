@@ -1,7 +1,7 @@
 package es.usefulearnings.gui.controller;
 
 import es.usefulearnings.engine.SearchEngine;
-import es.usefulearnings.engine.YahooLinks;
+import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.Stock;
 import es.usefulearnings.gui.Main;

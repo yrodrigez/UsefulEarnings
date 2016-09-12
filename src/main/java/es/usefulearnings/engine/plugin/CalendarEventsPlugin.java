@@ -1,5 +1,6 @@
-package es.usefulearnings.engine;
+package es.usefulearnings.engine.plugin;
 
+import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.CalendarEvents;
 
