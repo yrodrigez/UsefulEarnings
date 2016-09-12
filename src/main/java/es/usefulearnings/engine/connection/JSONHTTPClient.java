@@ -15,7 +15,7 @@ import java.util.TreeMap;
  */
 public class JSONHTTPClient {
 
-  private Map<URL, JsonNode> cache;
+  private Map<String, JsonNode> cache;
   private ObjectMapper mapper;
 
   private JSONHTTPClient() {
@@ -32,12 +32,12 @@ public class JSONHTTPClient {
   public JsonNode getJSON(URL url) throws IOException {
 
     synchronized (url.toString().intern()) { // for the same URL, only one thread at a time
-      if (!cache.containsKey(url)) {
+      if (!cache.containsKey(url.toString())) {
         JsonNode jsonObject = getJsonFromJackson(url);
-        cache.put(url, jsonObject);
+        cache.put(url.toString(), jsonObject);
       }
 
-      return cache.get(url);
+      return cache.get(url.toString());
     }
   }
 

@@ -25,10 +25,8 @@ public class ProfilePlugin implements Plugin {
   private String mCompanySymbol;
   private String mModule = YahooLinks.COMPANY_ASSET_PROFILE;
 
-  public ProfilePlugin(String companySymbol) {
-    mCompanySymbol = companySymbol;
+  public ProfilePlugin() {
     mapper = new ObjectMapper();
-    mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
   }
 
   public String getCompanySymbol() {
@@ -37,6 +35,7 @@ public class ProfilePlugin implements Plugin {
 
   public void setCompanySymbol(String mCompanySymbol) {
     this.mCompanySymbol = mCompanySymbol;
+    mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
   }
 
   @Override

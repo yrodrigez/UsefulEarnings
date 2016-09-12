@@ -25,10 +25,9 @@ public class FinancialDataPlugin implements Plugin {
   private String mCompanySymbol;
   private String mModule = YahooLinks.COMPANY_FINANCIAL_DATA;
 
-  public FinancialDataPlugin(String companySymbol) {
-    mCompanySymbol = companySymbol;
+  public FinancialDataPlugin() {
     mapper = new ObjectMapper();
-    mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
+
   }
 
   public String getCompanySymbol() {
@@ -37,6 +36,7 @@ public class FinancialDataPlugin implements Plugin {
 
   public void setCompanySymbol(String mCompanySymbol) {
     this.mCompanySymbol = mCompanySymbol;
+    mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
   }
 
   @Override
@@ -47,7 +47,7 @@ public class FinancialDataPlugin implements Plugin {
 
       mFinancialData = mapper.readValue(calendarEventsNode.traverse(), FinancialData.class);
     } catch (IOException ne) {
-      System.err.println("Something Happened trying to set Profile data of " + mCompanySymbol);
+      System.err.println("Something Happened trying to set FinancialData of " + mCompanySymbol);
       System.err.println(ne.getMessage());
       // TODO something with this exception!!
     }

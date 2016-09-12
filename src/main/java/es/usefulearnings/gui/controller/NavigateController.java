@@ -175,16 +175,7 @@ public class NavigateController implements Initializable {
   private Node setCompanyData(String symbol) {
     VBox vBox = new VBox();
     // insertDataHere!!
-    Company company = SearchEngine.getCompanyData(
-      symbol,
-      YahooLinks.COMPANY_ASSET_PROFILE,
-      YahooLinks.COMPANY_FINANCIAL_DATA,
-      YahooLinks.COMPANY_DEFAULT_KEY_STATISTICS,
-      YahooLinks.COMPANY_CALENDAR_EVENTS,
-      YahooLinks.COMPANY_INCOME_STATEMENT_HISTORY,
-      YahooLinks.COMPANY_CASHFLOW_STATEMENT_HISTORY,
-      YahooLinks.COMPANY_BALANCE_SHEET_HISTORY
-    );
+    Company company = SearchEngine.getInstance().getCompanyData(symbol);
 
     vBox.getChildren().addAll(
       new Label("Company's Symbol: " + company.getSymbol()),

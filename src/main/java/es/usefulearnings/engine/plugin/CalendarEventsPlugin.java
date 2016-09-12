@@ -24,10 +24,8 @@ public class CalendarEventsPlugin implements Plugin {
   private String mCompanySymbol;
   private String mModule = YahooLinks.COMPANY_CALENDAR_EVENTS;
 
-  public CalendarEventsPlugin(String companySymbol) {
-    mCompanySymbol = companySymbol;
+  public CalendarEventsPlugin() {
     mapper = new ObjectMapper();
-    mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
   }
 
   public String getCompanySymbol() {
@@ -36,6 +34,7 @@ public class CalendarEventsPlugin implements Plugin {
 
   public void setCompanySymbol(String mCompanySymbol) {
     this.mCompanySymbol = mCompanySymbol;
+    mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
   }
 
   @Override
@@ -45,7 +44,7 @@ public class CalendarEventsPlugin implements Plugin {
       JsonNode calendarEventsNode = Json.removeEmptyClasses(root.findValue(mModule));
       mCalendarEvents = mapper.readValue(calendarEventsNode.traverse(), CalendarEvents.class);
     } catch (IOException ne) {
-      System.err.println("Something Happened trying to set Profile data of " + mCompanySymbol);
+      System.err.println("Something Happened trying to set CalendarEvents data of " + mCompanySymbol);
       System.err.println(ne.getMessage());
       // TODO something with this exception!!
     }

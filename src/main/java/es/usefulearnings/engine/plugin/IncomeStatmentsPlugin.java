@@ -25,10 +25,8 @@ public class IncomeStatmentsPlugin implements Plugin {
   private String mCompanySymbol;
   private String mModule = YahooLinks.COMPANY_INCOME_STATEMENT_HISTORY;
 
-  public IncomeStatmentsPlugin(String companySymbol) {
-    mCompanySymbol = companySymbol;
+  public IncomeStatmentsPlugin() {
     mapper = new ObjectMapper();
-    mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
   }
 
   public String getCompanySymbol() {
@@ -37,6 +35,7 @@ public class IncomeStatmentsPlugin implements Plugin {
 
   public void setCompanySymbol(String mCompanySymbol) {
     this.mCompanySymbol = mCompanySymbol;
+    mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
   }
 
   @Override

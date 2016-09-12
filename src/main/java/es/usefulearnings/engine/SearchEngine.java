@@ -1,28 +1,34 @@
 package es.usefulearnings.engine;
 
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import es.usefulearnings.engine.connection.YahooLinks;
+import es.usefulearnings.engine.plugin.*;
 import es.usefulearnings.entities.Company;
-import es.usefulearnings.entities.company.*;
-import es.usefulearnings.utils.Json;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
-public class SearchEngine <E> {
+public class SearchEngine {
 
   private final int MAX_THREADS_NUMBER = Runtime.getRuntime().availableProcessors() * 2;
 
-  private ArrayList<DownloaderTask<E>> tasks;
 
-  SearchEngine(){
-    for(int i = 0 ; i< MAX_THREADS_NUMBER; i++){
-      tasks.add(new DownloaderTask<>());
-    }
+  private ArrayList<Plugin> plugins;
+
+  public static SearchEngine getInstance() {
+    return instance;
+  }
+
+  private static SearchEngine instance = new SearchEngine();
+
+  private SearchEngine (){
+    plugins = new ArrayList<>();
+    plugins.add(new ProfilePlugin());
+    plugins.add(new BalanceSheetStatementsPlugin());
+    plugins.add(new CalendarEventsPlugin());
+    plugins.add(new CashFlowStatementsPlugin());
+    plugins.add(new DefaultKeyStatisticsPlugin());
+    plugins.add(new IncomeStatmentsPlugin());
+    plugins.add(new FinancialDataPlugin());
   }
 
   /**
@@ -30,13 +36,28 @@ public class SearchEngine <E> {
    * @see YahooLinks for modules.
    * @see Company
    * @param symbol Company's symbol in the selected stock.
-   * @param modules Allowed modules for the Yahoo's Finance API
    * @return a new Company with it's modules set.
    */
-  public static Company getCompanyData(String symbol, String ... modules) {
+  public Company getCompanyData(String symbol) {
     Company company = new Company();
     company.setSymbol(symbol);
     try {
+      instance.plugins.forEach(plugin -> {
+        plugin.setCompanySymbol(symbol);
+        plugin.addInfo(company);
+      });
+
+      return company;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return company;
+  }
+
+
+}
+
+/*try {
       ObjectMapper mapper = new ObjectMapper();
       URL url = YahooLinks.getInstance().getYahooQuoteSummaryLink(symbol, modules);
       JsonNode jsonRoot = mapper.readTree(url);
@@ -136,13 +157,4 @@ public class SearchEngine <E> {
             break;
         }// end switch
       }// end foreach
-
-      return company;
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return company;
-  }
-
-
-}
+*/

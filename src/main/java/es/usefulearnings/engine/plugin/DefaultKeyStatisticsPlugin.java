@@ -25,18 +25,17 @@ public class DefaultKeyStatisticsPlugin implements Plugin {
   private String mCompanySymbol;
   private String mModule = YahooLinks.COMPANY_DEFAULT_KEY_STATISTICS;
 
-  public DefaultKeyStatisticsPlugin(String companySymbol) {
-    mCompanySymbol = companySymbol;
+  public DefaultKeyStatisticsPlugin() {
     mapper = new ObjectMapper();
-    mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
   }
 
   public String getCompanySymbol() {
     return mCompanySymbol;
   }
 
-  public void setCompanySymbol(String mCompanySymbol) {
-    this.mCompanySymbol = mCompanySymbol;
+  public void setCompanySymbol(String companySymbol) {
+    mCompanySymbol = companySymbol;
+    mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
   }
 
   @Override
@@ -47,7 +46,7 @@ public class DefaultKeyStatisticsPlugin implements Plugin {
 
       mDefaultKeyStatistics = mapper.readValue(calendarEventsNode.traverse(), DefaultKeyStatistics.class);
     } catch (IOException ne) {
-      System.err.println("Something Happened trying to set Profile data of " + mCompanySymbol);
+      System.err.println("Something Happened trying to set DefaultKeyStatistics data of " + mCompanySymbol);
       System.err.println(ne.getMessage());
       // TODO something with this exception!!
     }
