@@ -223,6 +223,10 @@ public class MainController implements Initializable {
     Button optionsButton = new Button("", optionsIcon);
     optionsButton.getStyleClass().add("main-controller-button");
     optionsButton.setTooltip(new Tooltip("Options"));
+    optionsButton.setOnAction(event -> {
+      VistaNavigator.getInstance().loadVista(VistaNavigator.OPTIONS);
+      event.consume();
+    });
     ret.add(optionsButton);
 
     ImageView helpIcon = new ImageView(new Image(

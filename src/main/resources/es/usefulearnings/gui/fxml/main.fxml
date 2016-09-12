@@ -5,9 +5,10 @@
 
 <?import javafx.scene.layout.HBox?>
 <BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.usefulearnings.gui.controller.MainController">
-   <center>
+   <top>
+      <HBox fx:id="topMenu" prefHeight="35.0" style="-fx-background-color: #400090;" BorderPane.alignment="CENTER" />
+   </top>
 
-   </center>
    <left>
       <BorderPane prefHeight="768.0" prefWidth="35.0" style="-fx-background-color: #400090;" BorderPane.alignment="CENTER">
          <top>
@@ -18,7 +19,5 @@
          </bottom>
       </BorderPane>
    </left>
-   <top>
-      <HBox fx:id="topMenu" prefHeight="35.0" style="-fx-background-color: #400090;" BorderPane.alignment="CENTER" />
-   </top>
+
 </BorderPane>

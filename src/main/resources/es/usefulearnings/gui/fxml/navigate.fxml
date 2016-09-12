@@ -1,6 +1,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane fx:id="navigatePane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.usefulearnings.gui.controller.NavigateController">
+<BorderPane fx:id="navigatePane" BorderPane.alignment="CENTER" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.usefulearnings.gui.controller.NavigateController">
     <center>
         <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
             <tabs>

@@ -94,7 +94,7 @@ public class FinancialData extends CompanyData {
   private LongFormatField numberOfAnalystOpinions;
 
   @JsonProperty("totalCash")
-  @ObservableField(name = "", fieldType = FieldType.NUMERIC)
+  @ObservableField(name = "Total cash", fieldType = FieldType.NUMERIC)
   private LongFormatField totalCash;
 
   @JsonProperty("ebitda")

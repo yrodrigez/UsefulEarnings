@@ -13,12 +13,12 @@ import java.util.TreeMap;
  */
 public class VistaNavigator {
 
-
   public static final String MAIN     = "fxml/main.fxml";
   public static final String NAVIGATE = "fxml/navigate.fxml";
   static final String FILTER          = "fxml/filter.fxml";
   static final String DOWNLOAD        = "fxml/download.fxml";
   static final String HISTORY         = "fxml/history.fxml";
+  static final String OPTIONS         = "fxml/options.fxml";
 
   private static VistaNavigator singleton = new VistaNavigator();
 
@@ -63,6 +63,7 @@ public class VistaNavigator {
     vistas.put(FILTER,   new Vista());
     vistas.put(DOWNLOAD, new Vista());
     vistas.put(HISTORY,  new Vista());
+    vistas.put(OPTIONS,  new Vista());
   }
 
   /** The main application layout controller. */
@@ -84,7 +85,6 @@ public class VistaNavigator {
    * @param fxml the fxml file to be loaded.
    */
   public void loadVista(String fxml) {
-
     try {
       Vista vista = vistas.get(fxml);
       mainController.setVista(

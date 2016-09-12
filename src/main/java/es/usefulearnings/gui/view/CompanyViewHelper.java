@@ -123,7 +123,6 @@ public class CompanyViewHelper implements ViewHelper {
     ArrayList<VBox> vBoxes = new ArrayList<>();
     try {
 
-
       for (java.lang.reflect.Field field : company.getClass().getDeclaredFields()) {
         String entityName = field.getDeclaredAnnotation(EntityParameter.class).name();
         EntityParameterType type = field.getDeclaredAnnotation(EntityParameter.class).entityType();

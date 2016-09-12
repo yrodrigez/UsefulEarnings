@@ -33,6 +33,17 @@ public class Company {
   @EntityParameter(name = "Balance sheet statement" , entityType = EntityParameterType.ARRAY_LIST)
   private ArrayList<BalanceSheetStatement> balanceSheetStatements;
 
+  public Company() {
+    this.profile = new Profile();
+    this.calendarEvents = new CalendarEvents();
+    this.financialData = new FinancialData();
+    this.defaultKeyStatistics = new DefaultKeyStatistics();
+    this.cashFlowStatements = new ArrayList<>();
+    this.incomeStatements = new ArrayList<>();
+    this.balanceSheetStatements = new ArrayList<>();
+  }
+
+
   public String getSymbol() {
     return symbol;
   }
