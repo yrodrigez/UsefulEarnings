@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -18,9 +19,11 @@ class JSONHTTPClient {
   private ObjectMapper mapper;
 
   private JSONHTTPClient() {
-    cache = new TreeMap<>();
+    cache = Collections.synchronizedMap(new TreeMap<>());
     mapper = new ObjectMapper();
   }
+
+
 
   private static JSONHTTPClient mInstance = new JSONHTTPClient();
 
@@ -29,11 +32,14 @@ class JSONHTTPClient {
   }
 
   public JsonNode getJSON(URL url) throws IOException{
-    if (!cache.containsKey(url)) {
-      JsonNode jsonObject = getJsonFromJackson(url);
-      cache.put(url, jsonObject);
+
+    synchronized (url.toString().intern()) { //for the same URL, only one thread at a time
+      if (!cache.containsKey(url)) {
+        JsonNode jsonObject = getJsonFromJackson(url);
+        cache.put(url, jsonObject);
+      }
+      return cache.get(url);
     }
-    return cache.get(url);
   }
 
   private JsonNode getJsonFromJackson(URL url) throws IOException {

@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="_borderPane" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.usefulearnings.gui.controller.OptionsController">
-   <center>
-      <TreeView fx:id="_treeView" BorderPane.alignment="CENTER" />
-   </center>
+<BorderPane fx:id="_borderPane" prefHeight="500.0" prefWidth="661.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.usefulearnings.gui.controller.OptionsController">
+   <top>
+      <HBox prefHeight="20.0" prefWidth="661.0" style="-fx-background-color: transparent;" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select the data that to be shown" wrappingWidth="290.7294921875" />
+         </children>
+      </HBox>
+   </top>
 </BorderPane>

@@ -63,37 +63,68 @@ public class DefaultKeyStatistics extends CompanyData {
   private Field lastFiscalYearEnd;
 
   @JsonProperty("nextFiscalYearEnd")
+  @ObservableField(name = "Next fiscal year End", fieldType = FieldType.NUMERIC)
   private Field nextFiscalYearEnd;
+
+
   @JsonProperty("mostRecentQuarter")
+  @ObservableField(name = "Most recent quarter", fieldType = FieldType.NUMERIC)
   private Field mostRecentQuarter;
+
   @JsonProperty("earningsQuarterlyGrowth")
+  @ObservableField(name = "Earnings quarterly growth", fieldType = FieldType.NUMERIC)
   private Field earningsQuarterlyGrowth;
+
   @JsonProperty("trailingEps")
+  @ObservableField(name = "Trailing EPS", fieldType = FieldType.NUMERIC)
   private Field trailingEps;
+
   @JsonProperty("forwardEps")
+  @ObservableField(name = "Forward EPS", fieldType = FieldType.NUMERIC)
   private Field forwardEps;
+
   @JsonProperty("pegRatio")
+  @ObservableField(name = "PEG ratio", fieldType = FieldType.NUMERIC)
   private Field pegRatio;
+
   @JsonProperty("lastSplitDate")
+  @ObservableField(name = "Last split date", fieldType = FieldType.DATE)
   private Field lastSplitDate;
+
   @JsonProperty("enterpriseToRevenue")
+  @ObservableField(name = "Enterprise to revenue", fieldType = FieldType.NUMERIC)
   private Field enterpriseToRevenue;
+
   @JsonProperty("enterpriseToEbitda")
+  @ObservableField(name = "Entrprise EBITDA", fieldType = FieldType.NUMERIC)
   private Field enterpriseToEbitda;
+
   @JsonProperty("SandP52WeekChange")
+  @ObservableField(name = "Sand 52 week change", fieldType = FieldType.NUMERIC)
   private Field sandP52WeekChange;
 
   @JsonProperty("floatShares")
+  @ObservableField(name = "Float shares", fieldType = FieldType.NUMERIC)
   private LongFormatField floatShares;
+
   @JsonProperty("sharesOutstanding")
+  @ObservableField(name = "Shares outstanding", fieldType = FieldType.NUMERIC)
   private LongFormatField sharesOutstanding;
+
   @JsonProperty("sharesShort")
+  @ObservableField(name = "Shares short", fieldType = FieldType.NUMERIC)
   private LongFormatField sharesShort;
+
   @JsonProperty("sharesShortPriorMonth")
+  @ObservableField(name = "Shares short prior month", fieldType = FieldType.NUMERIC)
   private LongFormatField sharesShortPriorMonth;
+
   @JsonProperty("netIncomeToCommon")
+  @ObservableField(name = "Net income to common", fieldType = FieldType.NUMERIC)
   private LongFormatField netIncomeToCommon;
+
   @JsonProperty("enterpriseValue")
+  @ObservableField(name = "Enterprise value", fieldType = FieldType.NUMERIC)
   private LongFormatField enterpriseValue;
 
   public String getLastSplitFactor() {

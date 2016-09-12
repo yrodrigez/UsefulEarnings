@@ -34,13 +34,19 @@ public class Company {
   private ArrayList<BalanceSheetStatement> balanceSheetStatements;
 
   public Company() {
-    this.profile = new Profile();
-    this.calendarEvents = new CalendarEvents();
-    this.financialData = new FinancialData();
-    this.defaultKeyStatistics = new DefaultKeyStatistics();
-    this.cashFlowStatements = new ArrayList<>();
-    this.incomeStatements = new ArrayList<>();
-    this.balanceSheetStatements = new ArrayList<>();
+    profile = new Profile();
+    calendarEvents = new CalendarEvents();
+    financialData = new FinancialData();
+    defaultKeyStatistics = new DefaultKeyStatistics();
+
+    cashFlowStatements = new ArrayList<>();
+    cashFlowStatements.add(new CashFlowStatement());
+
+    incomeStatements = new ArrayList<>();
+    incomeStatements.add(new IncomeStatement());
+
+    balanceSheetStatements = new ArrayList<>();
+    balanceSheetStatements.add(new BalanceSheetStatement());
   }
 
 
