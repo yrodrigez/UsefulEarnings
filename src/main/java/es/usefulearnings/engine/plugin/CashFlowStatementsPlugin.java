@@ -1,30 +1,32 @@
 package es.usefulearnings.engine.plugin;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.usefulearnings.engine.connection.JSONHTTPClient;
 import es.usefulearnings.engine.connection.MultiModuleYahooFinanceURLProvider;
 import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
-import es.usefulearnings.entities.company.CalendarEvents;
+import es.usefulearnings.entities.company.BalanceSheetStatement;
+import es.usefulearnings.entities.company.CashFlowStatement;
 import es.usefulearnings.utils.Json;
 
-import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  *
- * Created by yago on 7/09/16.
+ * Created by yago on 12/09/16.
  */
-public class CalendarEventsPlugin implements Plugin {
-  private CalendarEvents mCalendarEvents;
+public class CashFlowStatementsPlugin implements Plugin {
+  private ArrayList<CashFlowStatement> mCashflowStatemnts;
   private URL mUrl;
   private ObjectMapper mapper;
 
   private String mCompanySymbol;
-  private String mModule = YahooLinks.COMPANY_CALENDAR_EVENTS;
+  private String mModule = YahooLinks.COMPANY_CASHFLOW_STATEMENT_HISTORY;
 
-  public CalendarEventsPlugin(String companySymbol) {
+  public CashFlowStatementsPlugin(String companySymbol) {
     mCompanySymbol = companySymbol;
     mapper = new ObjectMapper();
     mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
@@ -42,14 +44,18 @@ public class CalendarEventsPlugin implements Plugin {
   public void addInfo(Company company) {
     try {
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
-      JsonNode calendarEventsNode = Json.removeEmptyClasses(root.findValue(mModule));
-      mCalendarEvents = mapper.readValue(calendarEventsNode.traverse(), CalendarEvents.class);
-    } catch (IOException ne) {
-      System.err.println("Something Happened trying to set Profile data of " + mCompanySymbol);
+      JsonNode jsonBalanceSheetStatements = Json.removeEmptyClasses(root.findValue(mModule));
+      mCashflowStatemnts = mapper.readValue(
+        jsonBalanceSheetStatements.traverse(),
+        new TypeReference<ArrayList<BalanceSheetStatement>>() {
+        }
+      );
+      company.setCashFlowStatements(mCashflowStatemnts);
+    } catch (Exception ne) {
+      System.err.println("Something Happened trying to set balanceSheetStatements data of " + mCompanySymbol);
       System.err.println(ne.getMessage());
       // TODO something with this exception!!
     }
 
-    company.setCalendarEvents(mCalendarEvents);
   }
 }

@@ -44,8 +44,8 @@ public class ProfilePlugin implements Plugin {
     try {
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode profileNode = Json.removeEmptyClasses(root.findValue(mModule));
+
       mProfile = mapper.readValue(profileNode.traverse(), Profile.class);
-      company.setProfile(mProfile);
     } catch (IOException ne) {
       System.err.println("Something Happened trying to set Profile data of " + mCompanySymbol);
       System.err.println(ne.getMessage());

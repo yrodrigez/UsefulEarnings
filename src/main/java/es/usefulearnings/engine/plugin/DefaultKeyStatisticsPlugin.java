@@ -6,25 +6,26 @@ import es.usefulearnings.engine.connection.JSONHTTPClient;
 import es.usefulearnings.engine.connection.MultiModuleYahooFinanceURLProvider;
 import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
-import es.usefulearnings.entities.company.CalendarEvents;
+import es.usefulearnings.entities.company.DefaultKeyStatistics;
 import es.usefulearnings.utils.Json;
 
 import java.io.IOException;
 import java.net.URL;
 
 /**
- *
- * Created by yago on 7/09/16.
+ * ${PATH}
+ * Created by yago on 12/09/16.
  */
-public class CalendarEventsPlugin implements Plugin {
-  private CalendarEvents mCalendarEvents;
+public class DefaultKeyStatisticsPlugin implements Plugin {
+
+  private DefaultKeyStatistics mDefaultKeyStatistics;
   private URL mUrl;
   private ObjectMapper mapper;
 
   private String mCompanySymbol;
-  private String mModule = YahooLinks.COMPANY_CALENDAR_EVENTS;
+  private String mModule = YahooLinks.COMPANY_DEFAULT_KEY_STATISTICS;
 
-  public CalendarEventsPlugin(String companySymbol) {
+  public DefaultKeyStatisticsPlugin(String companySymbol) {
     mCompanySymbol = companySymbol;
     mapper = new ObjectMapper();
     mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
@@ -43,13 +44,14 @@ public class CalendarEventsPlugin implements Plugin {
     try {
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode calendarEventsNode = Json.removeEmptyClasses(root.findValue(mModule));
-      mCalendarEvents = mapper.readValue(calendarEventsNode.traverse(), CalendarEvents.class);
+
+      mDefaultKeyStatistics = mapper.readValue(calendarEventsNode.traverse(), DefaultKeyStatistics.class);
     } catch (IOException ne) {
       System.err.println("Something Happened trying to set Profile data of " + mCompanySymbol);
       System.err.println(ne.getMessage());
       // TODO something with this exception!!
     }
 
-    company.setCalendarEvents(mCalendarEvents);
+    company.setDefaultKeyStatistics(mDefaultKeyStatistics);
   }
 }

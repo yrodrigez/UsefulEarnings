@@ -13,15 +13,15 @@ import java.util.List;
 public class YahooLinks {
 
   //Company
-  public static final String COMPANY_ASSET_PROFILE = "assetProfile";
-  public static final String COMPANY_FINANCIAL_DATA = "financialData";
-  public static final String COMPANY_DEFAULT_KEY_STATISTICS = "defaultKeyStatistics";
-  public static final String COMPANY_CALENDAR_EVENTS = "calendarEvents";
-  public static final String COMPANY_INCOME_STATEMENT_HISTORY = "incomeStatementHistory";
+  public static final String COMPANY_ASSET_PROFILE              = "assetProfile";
+  public static final String COMPANY_FINANCIAL_DATA             = "financialData";
+  public static final String COMPANY_DEFAULT_KEY_STATISTICS     = "defaultKeyStatistics";
+  public static final String COMPANY_CALENDAR_EVENTS            = "calendarEvents";
+  public static final String COMPANY_INCOME_STATEMENT_HISTORY   = "incomeStatementHistory";
   public static final String COMPANY_CASHFLOW_STATEMENT_HISTORY = "cashflowStatementHistory";
-  public static final String COMPANY_BALANCE_SHEET_HISTORY = "balanceSheetHistory";
+  public static final String COMPANY_BALANCE_SHEET_HISTORY      = "balanceSheetHistory";
   //Options
-  public static final String OPTION_PRICE = "price";
+  public static final String OPTION_PRICE          = "price";
   public static final String OPTION_SUMMARY_DETAIL = "summaryDetail";
 
   private static final String DATE_QUERY = "?date=";
@@ -165,4 +165,4 @@ public class YahooLinks {
 
     companyQuoteSummaryModules.put("Sec Filings", "secFilings"); // *** BASURA ***
     companyQuoteSummaryModules.put("Recommendation Trend", "recommendationTrend");// datos para los gráficos del sumario... *** BASURA de verdad ***
-    */
+*/
