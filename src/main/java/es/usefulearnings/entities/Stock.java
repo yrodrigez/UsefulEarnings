@@ -1,18 +1,18 @@
 package es.usefulearnings.entities;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Yago Rodríguez
  */
-public class Stock implements Serializable {
+public class Stock {
   private String name;
-  private List<String> symbols;
+  private ArrayList<String> symbols;
 
   public Stock(
     String name,
-    List<String> symbols) {
+    ArrayList<String> symbols) {
     this.setName(name);
     this.setSymbols(symbols);
   }
@@ -29,7 +29,7 @@ public class Stock implements Serializable {
     return symbols;
   }
 
-  public void setSymbols(List<String> symbols) {
+  public void setSymbols(ArrayList<String> symbols) {
     this.symbols = symbols;
   }
 

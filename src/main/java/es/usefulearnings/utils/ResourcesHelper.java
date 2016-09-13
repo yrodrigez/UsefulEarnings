@@ -38,14 +38,14 @@ public class ResourcesHelper {
     serializationFile = new File(serializationPath);
 
     createStocksFile();
-    stocks = createAvailableStocks();
+    stocks = createAvailableStocksFromFolder();
   }
 
-  public  List<Stock> getAvailableStocks(){
+  public List<Stock> getAvailableStocks(){
     return stocks;
   }
 
-  private  List<Stock> createAvailableStocks() throws NoStocksFoundException {
+  private  List<Stock> createAvailableStocksFromFolder() throws NoStocksFoundException {
     File stocksFile = new File(stocksPath);
     List<Stock> stocks = new ArrayList<>();
 
@@ -73,7 +73,7 @@ public class ResourcesHelper {
       else System.err.println("Could not create file stocks at " + stocksPath);
   }
 
-  public static ResourcesHelper getmInstance() throws NoStocksFoundException {
+  public static ResourcesHelper getInstance() throws NoStocksFoundException {
     if (mInstance == null) mInstance = new ResourcesHelper();
     return mInstance;
   }

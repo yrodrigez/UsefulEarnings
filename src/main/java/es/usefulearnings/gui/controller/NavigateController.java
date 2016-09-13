@@ -1,7 +1,6 @@
 package es.usefulearnings.gui.controller;
 
 import es.usefulearnings.engine.SearchEngine;
-import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.Stock;
 import es.usefulearnings.gui.Main;
@@ -85,13 +84,10 @@ public class NavigateController implements Initializable {
 
   }
 
-  Node getFragment(){
-    return navigatePane;
-  }
 
   private void getStocks() {
     try {
-      resourcesHelper = ResourcesHelper.getmInstance();
+      resourcesHelper = ResourcesHelper.getInstance();
       List<Stock> stocks = resourcesHelper.getAvailableStocks();
       symbols = FXCollections.observableArrayList(stocks.get(0).getSymbols()).sorted();
       companies.setItems(symbols);
@@ -141,8 +137,9 @@ public class NavigateController implements Initializable {
   }
 
   @FXML
-  public void refreshStocks(ActionEvent actionEvent) {
+  public void refreshStocks(ActionEvent event) {
     getStocks();
+    event.consume();
   }
 
   /**
@@ -175,7 +172,7 @@ public class NavigateController implements Initializable {
   private Node setCompanyData(String symbol) {
     VBox vBox = new VBox();
     // insertDataHere!!
-    Company company = SearchEngine.getInstance().getCompanyData(symbol);
+    Company company = SearchEngine.getInstance().getSingleCompanyData(symbol);
 
     vBox.getChildren().addAll(
       new Label("Company's Symbol: " + company.getSymbol()),

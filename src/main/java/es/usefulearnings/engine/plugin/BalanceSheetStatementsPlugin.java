@@ -33,15 +33,13 @@ public class BalanceSheetStatementsPlugin implements Plugin {
     return mCompanySymbol;
   }
 
-  @Override
-  public void setCompanySymbol(String mCompanySymbol) {
-    this.mCompanySymbol = mCompanySymbol;
-    mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(this.mCompanySymbol, mModule);
-  }
 
   @Override
   public void addInfo(Company company) {
     try {
+      mCompanySymbol = company.getSymbol();
+      mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
+
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode balanceSheetStatementsNode = Json.removeEmptyClasses(root.findValue("balanceSheetStatements"));
       mBalanceSheetStatements = mapper.readValue(
@@ -49,11 +47,14 @@ public class BalanceSheetStatementsPlugin implements Plugin {
         new TypeReference<ArrayList<BalanceSheetStatement>>() {
         }
       );
+
       company.setBalanceSheetStatements(mBalanceSheetStatements);
+
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set BalanceSheetStatements data of " + mCompanySymbol);
-      System.err.println(ne.getMessage());
+      System.err.println(ne.getClass().getName());
       // TODO something with this exception!!
+      // ne.printStackTrace();
     }
   }
 }

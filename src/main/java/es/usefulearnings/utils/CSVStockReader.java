@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CSVStockReader {
 
@@ -17,7 +16,7 @@ public class CSVStockReader {
 
     String stockName = path.substring(path.lastIndexOf(File.separator) + 1, path.lastIndexOf(".csv"));
 
-    List<String> symbols = new ArrayList<>();
+    ArrayList<String> symbols = new ArrayList<>();
 
     BufferedReader br = null;
     String line;
@@ -26,10 +25,10 @@ public class CSVStockReader {
     try {
       br = new BufferedReader(new FileReader(path));
       while ((line = br.readLine()) != null) {
-        String[] splittedLine = line.split(splitBy);
+        String[] splitedLine = line.split(splitBy);
 
         symbols.add(
-          splittedLine[0] // company's symbol
+          splitedLine[0] // company's symbol
         );
       }
     } catch (IOException e) {

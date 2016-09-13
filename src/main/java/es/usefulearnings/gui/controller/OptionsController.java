@@ -53,8 +53,6 @@ public class OptionsController implements Initializable {
             if (!type.equals(EntityParameterType.IGNORE) && !type.equals(EntityParameterType.ARRAY_LIST)) {
               CheckBox entityCB = new CheckBox(entityName);
               entityCB.setId("Company."+entityName.toLowerCase().replaceAll(" ", ""));
-              // TODO BORRAR ESTO
-              System.out.println(entityCB.getId());
               TreeItem<Node> newTree = new TreeItem<>(entityCB);
 
               Collection<TreeItem<Node>> checkBoxes = getEntityFields(pd.getReadMethod().getReturnType());
@@ -65,8 +63,6 @@ public class OptionsController implements Initializable {
             if (type.equals(EntityParameterType.ARRAY_LIST)) {
               CheckBox arrayCB = new CheckBox(entityName);
               arrayCB.setId("Company."+entityName.toLowerCase().replaceAll(" ", ""));
-              // TODO BORRAR ESTO
-              System.out.println(arrayCB.getId());
               TreeItem<Node> newTree = new TreeItem<>(arrayCB);
 
               Collection<TreeItem<Node>> moreNodes = getEntityFields(
@@ -98,8 +94,6 @@ public class OptionsController implements Initializable {
             if (!fieldType.equals(FieldType.FIELD_ARRAY_LIST) && !fieldType.equals(FieldType.INNER_CLASS)) {
               CheckBox checkBox = new CheckBox(fieldName);
               checkBox.setId("Company." + fieldName.toLowerCase().replaceAll(" ", ""));
-              // TODO BORRAR ESTO
-              System.out.println(checkBox.getId());
               nodes.add(new TreeItem<>(checkBox));
             }
 
@@ -108,8 +102,6 @@ public class OptionsController implements Initializable {
               if (fieldType.equals(FieldType.FIELD_ARRAY_LIST)) {
                 CheckBox arrayCB = new CheckBox(fieldName);
                 arrayCB.setId("Company." + fieldName.toLowerCase().replaceAll(" ", ""));
-                // TODO BORRAR ESTO
-                System.out.println(arrayCB.getId());
                 TreeItem<Node> newTree = new TreeItem<>(arrayCB);
 
                 Collection<TreeItem<Node>> moreNodes = getEntityFields(
@@ -125,8 +117,6 @@ public class OptionsController implements Initializable {
 
                 CheckBox innerClassCB = new CheckBox(fieldName);
                 innerClassCB.setId("Company." + fieldName.toLowerCase().replaceAll(" ", ""));
-                // TODO BORRAR ESTO
-                System.out.println(innerClassCB.getId());
                 TreeItem<Node> newTree = new TreeItem<>(innerClassCB);
 
                 newTree.getChildren().addAll(getEntityFields(innerEntityClass));

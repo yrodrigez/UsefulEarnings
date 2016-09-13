@@ -6,11 +6,9 @@ import es.usefulearnings.engine.connection.JSONHTTPClient;
 import es.usefulearnings.engine.connection.MultiModuleYahooFinanceURLProvider;
 import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
-import es.usefulearnings.entities.company.CalendarEvents;
 import es.usefulearnings.entities.company.FinancialData;
 import es.usefulearnings.utils.Json;
 
-import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -34,24 +32,26 @@ public class FinancialDataPlugin implements Plugin {
     return mCompanySymbol;
   }
 
-  public void setCompanySymbol(String mCompanySymbol) {
-    this.mCompanySymbol = mCompanySymbol;
-    mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
-  }
 
   @Override
   public void addInfo(Company company) {
     try {
+      mCompanySymbol = company.getSymbol();
+      mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
+
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode calendarEventsNode = Json.removeEmptyClasses(root.findValue(mModule));
 
       mFinancialData = mapper.readValue(calendarEventsNode.traverse(), FinancialData.class);
-    } catch (IOException ne) {
+
+      company.setFinancialData(mFinancialData);
+    } catch (Exception ne) {
       System.err.println("Something Happened trying to set FinancialData of " + mCompanySymbol);
       System.err.println(ne.getMessage());
       // TODO something with this exception!!
+      // ne.printStackTrace();
     }
 
-    company.setFinancialData(mFinancialData);
+
   }
 }

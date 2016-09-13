@@ -8,5 +8,4 @@ import es.usefulearnings.entities.Company;
  */
 public interface Plugin {
   void addInfo(Company company);
-  void setCompanySymbol(String companySymbol);
 }

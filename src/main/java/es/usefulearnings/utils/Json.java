@@ -17,22 +17,26 @@ public class Json {
    */
   public static JsonNode removeEmptyClasses(JsonNode jsonNode) {
     // "declaration":
-    String variableDeclaration = "\"[A-z]+\":";
+    String variableDeclaration = "\"([A-z]+|([A-z]*[0-9]*[A-z]+))\":";
     // {}
     String emptyClass = "(\\{\\})";
     // {"raw":0,"fmt":null,"longFmt":"0"}
     String nullClass = "(\\{\\\"raw\\\":0,\\\"fmt\\\":null,\\\"longFmt\\\":\\\"0\\\"\\})";
     String OR = "|";
-
-    String json = jsonNode.toString();
-    json = json.replaceAll(variableDeclaration + "(" + emptyClass + OR + nullClass + "),?", "");
-    json = json.replaceAll(",{2,}", "");
-    json = json.replaceAll(",\\}", "}");
-    ObjectMapper mapper = new ObjectMapper();
     try {
-      jsonNode = mapper.readTree(json);
-    } catch (IOException ioe){
-      System.err.println("I can not remove empty classes");
+      String json = jsonNode.toString();
+      json = json.replaceAll(variableDeclaration + "(" + emptyClass + OR + nullClass + "),?", "");
+      json = json.replaceAll(",{2,}", "");
+      json = json.replaceAll(",\\}", "}");
+      ObjectMapper mapper = new ObjectMapper();
+      try {
+        jsonNode = mapper.readTree(json);
+      } catch (IOException ioe) {
+        System.err.println("Remove empty classes -> I can not remove empty classes");
+      }
+      return jsonNode;
+    }catch (NullPointerException ne){
+      System.err.println("Remove empty classes -> maybe jsonNode is null...");
     }
 
     return jsonNode;

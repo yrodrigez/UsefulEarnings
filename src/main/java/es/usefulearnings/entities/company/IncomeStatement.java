@@ -68,7 +68,7 @@ import es.usefulearnings.entities.LongFormatField;
   private LongFormatField netIncome;
 
   @JsonProperty("netIncomeApplicableToCommonShares")
-  @ObservableField(name = "Net income applicable to common shares")
+  @ObservableField(name = "Net income applicable to common shares", fieldType = FieldType.NUMERIC)
   private LongFormatField netIncomeApplicableToCommonShares;
 
   @JsonProperty("netIncomeFromContinuingOps")

@@ -33,14 +33,13 @@ public class IncomeStatmentsPlugin implements Plugin {
     return mCompanySymbol;
   }
 
-  public void setCompanySymbol(String mCompanySymbol) {
-    this.mCompanySymbol = mCompanySymbol;
-    mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
-  }
 
   @Override
   public void addInfo(Company company) {
     try {
+      mCompanySymbol = company.getSymbol();
+      mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
+
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode jsonIncomeStatementHistory = root.findValue(mModule);
       // this is an JSon object that contains a incomeStatementHistory (yeah same name) list inside
@@ -53,10 +52,12 @@ public class IncomeStatmentsPlugin implements Plugin {
       );
 
       company.setIncomeStatements(mIncomeStatements);
+
     } catch (Exception ne) {
-        System.err.println("Something Happened trying to set incomeStatementHistory data of " + mCompanySymbol);
-        System.err.println(ne.getMessage());
-        // TODO something with this exception!!
+      System.err.println("Something Happened trying to set incomeStatementHistory data of " + mCompanySymbol);
+      System.err.println(ne.getMessage());
+      ne.printStackTrace();
+      // TODO something with this exception!!
     }
   }
 }
