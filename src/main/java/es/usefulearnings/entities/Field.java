@@ -2,12 +2,14 @@ package es.usefulearnings.entities;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serializable;
+
 /**
  * @author Yago Rodríguez
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Field  {
+public class Field implements Serializable {
   @JsonProperty("raw") private double raw;
   @JsonProperty("fmt") private String fmt;
 

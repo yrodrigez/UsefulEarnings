@@ -5,6 +5,7 @@ import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.EntityParameterType;
 import es.usefulearnings.entities.company.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * @author Yago Rodríguez
  */
 
-public class Company {
+public class Company implements Serializable {
   @EntityParameter(name = "Symbol", entityType = EntityParameterType.IGNORE)
   private String symbol;
 

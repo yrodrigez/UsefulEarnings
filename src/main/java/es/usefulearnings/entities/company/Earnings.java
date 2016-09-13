@@ -8,6 +8,7 @@ import es.usefulearnings.annotation.ObservableField;
 import es.usefulearnings.entities.Field;
 import es.usefulearnings.entities.LongFormatField;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class Earnings extends CompanyData {
+public class Earnings extends CompanyData implements Serializable {
 
   @JsonProperty("earningsDate")
   @ObservableField(name = "Earnings date", fieldType = FieldType.FIELD_ARRAY_LIST)

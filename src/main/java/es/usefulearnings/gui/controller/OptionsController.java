@@ -31,20 +31,19 @@ public class OptionsController implements Initializable {
 
   @FXML
   private BorderPane _borderPane;
-  // @FXML private TreeView<Node> _treeView;
-  private TreeView<Node> mTreeView;
+  private TreeView<Node> companyOptions;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     _borderPane.setPrefSize(1024 - 35, 768 - 35);
-    mTreeView = new TreeView<>();
-    _borderPane.setCenter(new HBox(mTreeView));
+    companyOptions = new TreeView<>();
+    _borderPane.setCenter(new HBox(companyOptions));
     getCompanyDeclaredFields();
   }
 
   private void getCompanyDeclaredFields() {
     TreeItem<Node> root = new TreeItem<>(new Label("Company"));
-    mTreeView.setRoot(root);
+    companyOptions.setRoot(root);
     try {
       for (java.lang.reflect.Field field : Company.class.getDeclaredFields()) {
         String entityName = field.getDeclaredAnnotation(EntityParameter.class).name();
@@ -53,7 +52,9 @@ public class OptionsController implements Initializable {
           if (pd.getName().equals(field.getName())) {
             if (!type.equals(EntityParameterType.IGNORE) && !type.equals(EntityParameterType.ARRAY_LIST)) {
               CheckBox entityCB = new CheckBox(entityName);
-              entityCB.setId("Company/"+entityName);
+              entityCB.setId("Company."+entityName.toLowerCase().replaceAll(" ", ""));
+              // TODO BORRAR ESTO
+              System.out.println(entityCB.getId());
               TreeItem<Node> newTree = new TreeItem<>(entityCB);
 
               Collection<TreeItem<Node>> checkBoxes = getEntityFields(pd.getReadMethod().getReturnType());
@@ -63,7 +64,9 @@ public class OptionsController implements Initializable {
             } else
             if (type.equals(EntityParameterType.ARRAY_LIST)) {
               CheckBox arrayCB = new CheckBox(entityName);
-              arrayCB.setId("Company/"+entityName);
+              arrayCB.setId("Company."+entityName.toLowerCase().replaceAll(" ", ""));
+              // TODO BORRAR ESTO
+              System.out.println(arrayCB.getId());
               TreeItem<Node> newTree = new TreeItem<>(arrayCB);
 
               Collection<TreeItem<Node>> moreNodes = getEntityFields(
@@ -77,7 +80,7 @@ public class OptionsController implements Initializable {
           }
         }
       }
-      mTreeView.getRoot().setExpanded(true);
+      companyOptions.getRoot().setExpanded(true);
     } catch (IntrospectionException e) {
       e.printStackTrace();
     }
@@ -94,7 +97,9 @@ public class OptionsController implements Initializable {
 
             if (!fieldType.equals(FieldType.FIELD_ARRAY_LIST) && !fieldType.equals(FieldType.INNER_CLASS)) {
               CheckBox checkBox = new CheckBox(fieldName);
-              checkBox.setId("Company/" + fieldName);
+              checkBox.setId("Company." + fieldName.toLowerCase().replaceAll(" ", ""));
+              // TODO BORRAR ESTO
+              System.out.println(checkBox.getId());
               nodes.add(new TreeItem<>(checkBox));
             }
 
@@ -102,7 +107,9 @@ public class OptionsController implements Initializable {
 
               if (fieldType.equals(FieldType.FIELD_ARRAY_LIST)) {
                 CheckBox arrayCB = new CheckBox(fieldName);
-                arrayCB.setId("Company/" + fieldName);
+                arrayCB.setId("Company." + fieldName.toLowerCase().replaceAll(" ", ""));
+                // TODO BORRAR ESTO
+                System.out.println(arrayCB.getId());
                 TreeItem<Node> newTree = new TreeItem<>(arrayCB);
 
                 Collection<TreeItem<Node>> moreNodes = getEntityFields(
@@ -116,9 +123,11 @@ public class OptionsController implements Initializable {
               if (fieldType.equals(FieldType.INNER_CLASS)) {
                 Class<?> innerEntityClass = pd.getReadMethod().getReturnType();
 
-                CheckBox arrayCB = new CheckBox(fieldName);
-                arrayCB.setId("Company/" + fieldName);
-                TreeItem<Node> newTree = new TreeItem<>(arrayCB);
+                CheckBox innerClassCB = new CheckBox(fieldName);
+                innerClassCB.setId("Company." + fieldName.toLowerCase().replaceAll(" ", ""));
+                // TODO BORRAR ESTO
+                System.out.println(innerClassCB.getId());
+                TreeItem<Node> newTree = new TreeItem<>(innerClassCB);
 
                 newTree.getChildren().addAll(getEntityFields(innerEntityClass));
                 nodes.add(newTree);

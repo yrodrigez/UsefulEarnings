@@ -1,9 +1,11 @@
 package es.usefulearnings.entities.company;
 
+import java.io.Serializable;
+
 /**
  * @author Yago Rodríguez
  */
-public class CompanyData {
+public class CompanyData implements Serializable {
 
   private boolean isSet = false;
 

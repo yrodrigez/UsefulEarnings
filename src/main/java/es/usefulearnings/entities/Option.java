@@ -5,12 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import es.usefulearnings.entities.option.Price;
 import es.usefulearnings.entities.option.SummaryDetail;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Yago
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Option {
+public class Option implements Serializable {
 
   private String optionSymbol;
 

@@ -1,11 +1,12 @@
 package es.usefulearnings.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author Yago Rodríguez
  */
-public class Stock {
+public class Stock implements Serializable {
   private String name;
   private List<String> symbols;
 

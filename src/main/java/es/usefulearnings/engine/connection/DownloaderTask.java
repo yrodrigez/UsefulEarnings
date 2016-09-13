@@ -1,4 +1,4 @@
-package es.usefulearnings.engine;
+package es.usefulearnings.engine.connection;
 
 import javafx.concurrent.Task;
 
@@ -8,7 +8,7 @@ import javafx.concurrent.Task;
  */
 public class DownloaderTask<E> extends Task<E> {
   /**
-   * can be an Option, Company or CompositeOption
+   * can be an Option, Company or OptionLink
    */
   private E entity;
   private double workDone;

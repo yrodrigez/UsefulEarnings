@@ -1,16 +1,16 @@
-package es.usefulearnings.entities;
+package es.usefulearnings.entities.option;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import es.usefulearnings.annotation.FieldType;
 import es.usefulearnings.annotation.ObservableField;
-import es.usefulearnings.entities.option.OptionType;
 
 /**
  *
+ *  This is a part of a Option Chain
  *  @author Yago Rodríguez
  */
-public class CompositeOption {
+public class OptionLink {
 
   @JsonIgnore
   @ObservableField(name = "Type", fieldType = FieldType.OPTION_TYPE)
@@ -206,7 +206,7 @@ public class CompositeOption {
 
   @Override
   public String toString() {
-    return "CompositeOption{" +
+    return "OptionLink{" +
       "type=" + type +
       ", contractSymbol='" + contractSymbol + '\'' +
       ", strike=" + strike +

@@ -1,6 +1,8 @@
 package es.usefulearnings.entities.option;
 
 
-public enum OptionType {
+import java.io.Serializable;
+
+public enum OptionType implements Serializable {
   CALL, PUT;
 }

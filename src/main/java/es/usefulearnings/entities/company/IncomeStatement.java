@@ -17,7 +17,7 @@ import es.usefulearnings.entities.LongFormatField;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class IncomeStatement extends CompanyData {
+ public class IncomeStatement extends CompanyData {
 
   @JsonProperty("endDate")
   @ObservableField(name = "End Date", fieldType = FieldType.DATE)
