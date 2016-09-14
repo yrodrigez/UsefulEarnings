@@ -16,12 +16,12 @@ public class DownloaderTask<E> extends Task<List<E>> {
    * can be an Option, Company or OptionLink
    */
   private int workDone;
-  private int remainingWork;
+  private double remainingWork;
   private boolean stop;
 
-  private int jump;
   private ArrayList<Plugin> plugins;
   private List<E> entities;
+  private E currentEntitiy;
 
   @Override
   protected void succeeded() {
@@ -41,14 +41,13 @@ public class DownloaderTask<E> extends Task<List<E>> {
     updateMessage("Failed!");
   }
 
-  public DownloaderTask(int jump, ArrayList<Plugin> plugins, List<E> entities) {
+  public DownloaderTask(ArrayList<Plugin> plugins, List<E> entities) {
     stop = true;
-    this.jump = jump;
     this.plugins = plugins;
     this.entities = entities;
 
     this.workDone = 0;
-    this.remainingWork = entities.size();
+    this.remainingWork = this.entities.size() * 1.0d;
   }
 
   public void stop() {
@@ -58,10 +57,17 @@ public class DownloaderTask<E> extends Task<List<E>> {
   @Override
   protected List<E> call() throws Exception {
     for(E e: entities) {
-      if (!stop) break;
+      if (!stop) {
+        cancel();
+        break;
+      }
+      // this.currentEntitiy = e;
       for(Plugin plugin : plugins) {
-        if(!stop) break;
-        updateMessage("Downloading data from " +((Company) e).getSymbol());
+        if(!stop) {
+          cancel();
+          break;
+        }
+        updateMessage(workDone + " out of " + remainingWork+ "\tCurrent company: " +((Company) e).getSymbol());
 
         //System.out.println("Downloading data from " +((Company) e).getSymbol());
         //TODO CHANGE PLUGIN INTERFACE!!!
@@ -70,9 +76,8 @@ public class DownloaderTask<E> extends Task<List<E>> {
         }catch (Exception ex){
           ex.printStackTrace();
         }
-
-        updateProgress(workDone++, remainingWork);
       }
+      updateProgress(++workDone, remainingWork);
     }
 
     updateValue(entities);

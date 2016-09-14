@@ -83,12 +83,13 @@ public class SearchEngine {
     mStocks.forEach(stock ->
       stock.getSymbols().forEach(
         symbol -> {
-          if(!symbol.trim().contains("-") || !symbol.trim().contains(".")) { // Yahoo doesn't have info for this.
+          if(!symbol.trim().contains("-") && !symbol.trim().contains(".")) { // Yahoo doesn't have info for this.
             Company company = new Company();
             company.setSymbol(symbol);
             mCompanies.add(company);
           } else {
             System.out.println("********************" + symbol + "*************************************");
+            // System.exit(0);
           }
         })
     );
@@ -103,7 +104,6 @@ public class SearchEngine {
 
       companyDownloaders.add(
         new DownloaderTask<>(
-          MAX_THREADS,
           plugins,
           (to < mCompanies.size()) ? mCompanies.subList(from, to) : mCompanies.subList(from, mCompanies.size())
         )

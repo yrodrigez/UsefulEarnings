@@ -4,6 +4,7 @@ import es.usefulearnings.engine.SearchEngine;
 import es.usefulearnings.engine.connection.DownloaderTask;
 import es.usefulearnings.entities.Company;
 import javafx.collections.FXCollections;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -21,7 +22,7 @@ import java.util.ResourceBundle;
  */
 public class DownloadController implements Initializable {
   @FXML
-  VBox vBox;
+  private VBox vBox;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -50,7 +51,28 @@ public class DownloadController implements Initializable {
         ProgressBar bar = new ProgressBar();
         bar.setPrefWidth(500);
         bar.progressProperty().bind(task.progressProperty());
-        scrollable.getChildren().add(bar);
+        Label progressLabel = new Label();
+        progressLabel.textProperty().bind(task.progressProperty().asString());
+
+        HBox hBox = new HBox(bar, progressLabel);
+        scrollable.getChildren().add(hBox);
+
+        task.setOnSucceeded(onSuccess -> {
+          bar.setStyle("-fx-accent: green;");
+          //bar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+          onSuccess.consume();
+        });
+        task.setOnCancelled(onCancelled -> {
+          bar.setStyle("-fx-accent: yellow;");
+          //bar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+          onCancelled.consume();
+        });
+
+        task.setOnFailed(onFail -> {
+          bar.setStyle("-fx-accent: red;");
+          //bar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+          onFail.consume();
+        });
 
         down.setDisable(true);
         stopThatShit.setDisable(false);
@@ -65,7 +87,6 @@ public class DownloadController implements Initializable {
       stopThatShit.setDisable(true);
       event.consume();
     });
-
 
 
     List<String> newSymbols = new LinkedList<>();

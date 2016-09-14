@@ -125,4 +125,9 @@ public class Company implements Serializable {
     this.profile = profile;
     this.profile.set();
   }
+
+  @Override
+  public String toString(){
+    return this.symbol;
+  }
 }
