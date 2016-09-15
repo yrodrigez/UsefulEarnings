@@ -48,6 +48,7 @@ public class CalendarEventsPlugin<E> implements Plugin<E> {
       ((Company)entity).setCalendarEvents(mCalendarEvents);
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set CalendarEvents data of " + mCompanySymbol);
+      System.err.println("URL: " + mUrl);
       System.err.println(ne.getMessage());
       // TODO something with this exception!!
       //ne.printStackTrace();

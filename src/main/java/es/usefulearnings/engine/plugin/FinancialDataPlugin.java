@@ -52,6 +52,7 @@ public class FinancialDataPlugin <E>implements Plugin<E> {
       ((Company)entity).setFinancialData(mFinancialData);
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set FinancialData of " + mCompanySymbol);
+      System.err.println("URL: " + mUrl);
       System.err.println(ne.getMessage());
       // TODO something with this exception!!
       // ne.printStackTrace();

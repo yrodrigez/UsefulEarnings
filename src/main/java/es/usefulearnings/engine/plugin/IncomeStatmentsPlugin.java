@@ -60,8 +60,9 @@ public class IncomeStatmentsPlugin<E> implements Plugin<E> {
 
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set incomeStatementHistory data of " + mCompanySymbol);
+      System.err.println("URL: " + mUrl);
       System.err.println(ne.getMessage());
-      ne.printStackTrace();
+      // ne.printStackTrace();
       // TODO something with this exception!!
     }
   }

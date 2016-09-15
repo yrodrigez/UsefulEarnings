@@ -49,6 +49,7 @@ public class ProfilePlugin<E> implements Plugin<E> {
       ((Company)entity).setProfile(mProfile);
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set Profile data of " + mCompanySymbol);
+      System.err.println("URL: " + mUrl);
       System.err.println(ne.getMessage());
       // ne.printStackTrace();
       // TODO something with this exception!!

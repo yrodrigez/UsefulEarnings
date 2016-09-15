@@ -55,6 +55,7 @@ public class CashFlowStatementsPlugin<E> implements Plugin<E> {
       ((Company)entity).setCashFlowStatements(mCashflowStatemnts);
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set CashFLowStatements data of " + mCompanySymbol);
+      System.err.println("URL: " + mUrl);
       System.err.println(ne.getMessage());
       // TODO something with this exception!!
       // ne.printStackTrace();

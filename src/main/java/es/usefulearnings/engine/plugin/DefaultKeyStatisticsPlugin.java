@@ -52,6 +52,7 @@ public class DefaultKeyStatisticsPlugin<E> implements Plugin<E> {
 
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set DefaultKeyStatistics data of " + mCompanySymbol);
+      System.err.println("URL: " + mUrl);
       System.err.println(ne.getMessage());
       // TODO something with this exception!!
     }

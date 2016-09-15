@@ -55,6 +55,7 @@ public class BalanceSheetStatementsPlugin<E> implements Plugin<E> {
       ((Company)entity).setBalanceSheetStatements(mBalanceSheetStatements);
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set BalanceSheetStatements data of " + mCompanySymbol);
+      System.err.println("URL: " + mUrl);
       System.err.println(ne.getClass().getName());
       // TODO something with this exception!!
       // ne.printStackTrace();
