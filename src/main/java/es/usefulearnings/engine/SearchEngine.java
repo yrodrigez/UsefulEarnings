@@ -79,7 +79,7 @@ public class SearchEngine {
   }
 
   public void getAllCompaniesData() {
-    // set all companies to new companies
+    // set all companies to new companies (set it's symbol)
     mStocks.forEach(stock ->
       stock.getSymbols().forEach(
         symbol -> {
@@ -87,9 +87,6 @@ public class SearchEngine {
             Company company = new Company();
             company.setSymbol(symbol);
             mCompanies.add(company);
-          } else {
-            System.out.println("********************" + symbol + "*************************************");
-            // System.exit(0);
           }
         })
     );

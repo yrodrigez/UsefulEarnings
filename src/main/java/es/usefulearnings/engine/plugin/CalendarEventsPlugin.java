@@ -14,7 +14,7 @@ import java.net.URL;
 /**
  * Created by yago on 7/09/16.
  */
-public class CalendarEventsPlugin implements Plugin {
+public class CalendarEventsPlugin<E> implements Plugin<E> {
   private CalendarEvents mCalendarEvents;
   private URL mUrl;
   private ObjectMapper mapper;
@@ -32,17 +32,20 @@ public class CalendarEventsPlugin implements Plugin {
 
 
   @Override
-  public void addInfo(Company company) {
+  public void addInfo(E entity) {
     try {
-      mCompanySymbol = company.getSymbol();
+      if(entity.getClass().equals(Company.class)){
+        mCompanySymbol = ((Company)entity).getSymbol();
+      } else {
+        throw new IllegalArgumentException("This is not a company");
+      }
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode calendarEventsNode = Json.removeEmptyClasses(root.findValue(mModule));
       mCalendarEvents = mapper.readValue(calendarEventsNode.traverse(), CalendarEvents.class);
 
-      company.setCalendarEvents(mCalendarEvents);
-
+      ((Company)entity).setCalendarEvents(mCalendarEvents);
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set CalendarEvents data of " + mCompanySymbol);
       System.err.println(ne.getMessage());

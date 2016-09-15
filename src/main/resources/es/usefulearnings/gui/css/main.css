@@ -7,3 +7,10 @@
 .no-radius {
      -fx-background-radius: 0%;
 }
+
+.default-progress-bar , .default-progress-indicator {
+     -fx-accent: #400090;
+}
+.default-progress-indicator {
+     -fx-font-size: 0.8em;
+}

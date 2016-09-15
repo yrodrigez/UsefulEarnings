@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by yago on 12/09/16.
  */
-public class CashFlowStatementsPlugin implements Plugin {
+public class CashFlowStatementsPlugin<E> implements Plugin<E> {
   private ArrayList<CashFlowStatement> mCashflowStatemnts;
   private URL mUrl;
   private ObjectMapper mapper;
@@ -34,11 +34,15 @@ public class CashFlowStatementsPlugin implements Plugin {
 
 
   @Override
-  public void addInfo(Company company) {
+  public void addInfo(E entity) {
     try {
-      mCompanySymbol = company.getSymbol();
-      mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
+      if(entity.getClass().equals(Company.class)){
+        mCompanySymbol = ((Company)entity).getSymbol();
+      } else {
+        throw new IllegalArgumentException("This is not a company");
+      }
 
+      mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode jsonBalanceSheetStatements = Json.removeEmptyClasses(root.findValue("cashflowStatements"));
@@ -47,7 +51,8 @@ public class CashFlowStatementsPlugin implements Plugin {
         new TypeReference<ArrayList<CashFlowStatement>>() {
         }
       );
-      company.setCashFlowStatements(mCashflowStatemnts);
+
+      ((Company)entity).setCashFlowStatements(mCashflowStatemnts);
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set CashFLowStatements data of " + mCompanySymbol);
       System.err.println(ne.getMessage());

@@ -15,8 +15,7 @@ import java.net.URL;
  * ${PATH}
  * Created by yago on 9/09/16.
  */
-public class
-ProfilePlugin implements Plugin {
+public class ProfilePlugin<E> implements Plugin<E> {
 
   private Profile mProfile;
   private URL mUrl;
@@ -34,17 +33,20 @@ ProfilePlugin implements Plugin {
   }
 
   @Override
-  public void addInfo(Company company) {
+  public void addInfo(E entity) {
     try {
-      mCompanySymbol = company.getSymbol();
+      if(entity.getClass().equals(Company.class)){
+        mCompanySymbol = ((Company)entity).getSymbol();
+      } else {
+        throw new IllegalArgumentException("This is not a company");
+      }
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode profileNode = Json.removeEmptyClasses(root.findValue(mModule));
       mProfile = mapper.readValue(profileNode.traverse(), Profile.class);
 
-      company.setProfile(mProfile);
-
+      ((Company)entity).setProfile(mProfile);
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set Profile data of " + mCompanySymbol);
       System.err.println(ne.getMessage());

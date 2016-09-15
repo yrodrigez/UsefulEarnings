@@ -15,7 +15,7 @@ import java.net.URL;
  * ${PATH}
  * Created by yago on 12/09/16.
  */
-public class FinancialDataPlugin implements Plugin {
+public class FinancialDataPlugin <E>implements Plugin<E> {
   private FinancialData mFinancialData;
   private URL mUrl;
   private ObjectMapper mapper;
@@ -34,9 +34,14 @@ public class FinancialDataPlugin implements Plugin {
 
 
   @Override
-  public void addInfo(Company company) {
+  public void addInfo(E entity) {
     try {
-      mCompanySymbol = company.getSymbol();
+      if(entity.getClass().equals(Company.class)){
+        mCompanySymbol = ((Company)entity).getSymbol();
+      } else {
+        throw new IllegalArgumentException("This is not a company");
+      }
+
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
@@ -44,7 +49,7 @@ public class FinancialDataPlugin implements Plugin {
 
       mFinancialData = mapper.readValue(calendarEventsNode.traverse(), FinancialData.class);
 
-      company.setFinancialData(mFinancialData);
+      ((Company)entity).setFinancialData(mFinancialData);
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set FinancialData of " + mCompanySymbol);
       System.err.println(ne.getMessage());

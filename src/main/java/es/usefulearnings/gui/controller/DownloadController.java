@@ -4,10 +4,12 @@ import es.usefulearnings.engine.SearchEngine;
 import es.usefulearnings.engine.connection.DownloaderTask;
 import es.usefulearnings.entities.Company;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -21,81 +23,85 @@ import java.util.ResourceBundle;
  * @author Yago on 04/09/2016.
  */
 public class DownloadController implements Initializable {
-  @FXML
-  private VBox vBox;
+  public VBox progressPane;
+  public Button downloadCompaniesButton;
+  public Button stopButton;
+  public ListView listView;
+  public BorderPane mainPane;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    vBox.setStyle("-fx-background-color: white");
-    vBox.setPrefSize(1024 - 35, 768 - 35);
-    ArrayList<Company> companies = new ArrayList<>();
-    Button down = new Button("DOWNLOAD SHIT!");
-    Button stopThatShit = new Button("STOP THAT SHIT");
+    stopButton.setDisable(true);
+  }
 
-    vBox.getChildren().add(new HBox(down, stopThatShit));
+  public void downloadAction(ActionEvent event) {
+    // begin a search
+    SearchEngine.getInstance().getAllCompaniesData();
+    // remove all progress pane nodes
+    progressPane.getChildren().remove(0, progressPane.getChildren().size());
+    // set the behavior
     VBox scrollable = new VBox();
+    ScrollPane scrollbar = new ScrollPane(scrollable);
+    progressPane.getChildren().add(scrollbar);
+    for (
+      DownloaderTask<Company> task :
+      SearchEngine.getInstance().getCompaniesDownloaders()
+      ) {
+      Label label = new Label();
+      label.textProperty().bind(task.messageProperty());
+      scrollable.getChildren().add(label);
 
-    ScrollPane scrollPane = new ScrollPane(scrollable);
-    vBox.getChildren().add(scrollPane);
+      ProgressBar bar = new ProgressBar();
+      bar.setPrefWidth(275);
+      bar.progressProperty().bind(task.progressProperty());
+      bar.getStyleClass().add("default-progress-bar");
+      ProgressIndicator pi = new ProgressIndicator();
+      pi.setPrefSize(40, 40);
+      pi.getStyleClass().add("default-progress-indicator");
 
-    down.setOnAction(event -> {
-      SearchEngine.getInstance().getAllCompaniesData();
-      for (
-        DownloaderTask<Company> task :
-        SearchEngine.getInstance().getCompaniesDownloaders()
-        ) {
-        Label label = new Label();
-        label.textProperty().bind(task.messageProperty());
-        scrollable.getChildren().add(label);
+      pi.progressProperty().bind(task.progressProperty());
 
-        ProgressBar bar = new ProgressBar();
-        bar.setPrefWidth(500);
-        bar.progressProperty().bind(task.progressProperty());
-        Label progressLabel = new Label();
-        progressLabel.textProperty().bind(task.progressProperty().asString());
+      HBox hBox = new HBox(bar, pi);
+      scrollable.getChildren().add(hBox);
 
-        HBox hBox = new HBox(bar, progressLabel);
-        scrollable.getChildren().add(hBox);
+      task.setOnSucceeded(onSuccess -> {
+        bar.setStyle("-fx-accent: #00b900;");
+        pi.setStyle("-fx-accent: #00b900;");
+        bar.progressProperty().unbind();
+        pi.progressProperty().unbind();
+        onSuccess.consume();
+      });
 
-        task.setOnSucceeded(onSuccess -> {
-          bar.setStyle("-fx-accent: green;");
-          //bar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-          onSuccess.consume();
-        });
-        task.setOnCancelled(onCancelled -> {
-          bar.setStyle("-fx-accent: yellow;");
-          //bar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-          onCancelled.consume();
-        });
+      task.setOnCancelled(onCancelled -> {
+        bar.setStyle("-fx-accent: yellow;");
+        pi.setStyle("-fx-accent: yellow;");
+        bar.progressProperty().unbind();
+        pi.progressProperty().unbind();
+        bar.setProgress(-1);
+        onCancelled.consume();
+      });
 
-        task.setOnFailed(onFail -> {
-          bar.setStyle("-fx-accent: red;");
-          //bar.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
-          onFail.consume();
-        });
+      task.setOnFailed(onFail -> {
+        bar.setStyle("-fx-accent: red;");
+        pi.setStyle("-fx-accent: red;");
+        bar.progressProperty().unbind();
+        pi.progressProperty().unbind();
+        bar.setProgress(-1);
+        onFail.consume();
+      });
 
-        down.setDisable(true);
-        stopThatShit.setDisable(false);
-        event.consume();
-      }
-    });
-
-    stopThatShit.setDisable(true);
-    stopThatShit.setOnAction(event -> {
-      SearchEngine.getInstance().getCompaniesDownloaders().forEach(DownloaderTask::stop);
-      down.setDisable(false);
-      stopThatShit.setDisable(true);
+      downloadCompaniesButton.setText("Downloading");
+      downloadCompaniesButton.setDisable(true);
+      stopButton.setDisable(false);
       event.consume();
-    });
+    }
+  }
 
-
-    List<String> newSymbols = new LinkedList<>();
-    companies.forEach(company -> newSymbols.add(company.getSymbol()));
-
-    ListView<String> lv = new ListView<>();
-
-    lv.setItems(FXCollections.observableArrayList(newSymbols));
-
-    scrollable.getChildren().add(lv);
+  public void stopAction(ActionEvent event) {
+    SearchEngine.getInstance().getCompaniesDownloaders().forEach(DownloaderTask::stop);
+    downloadCompaniesButton.setText("Download");
+    downloadCompaniesButton.setDisable(false);
+    stopButton.setDisable(true);
+    event.consume();
   }
 }

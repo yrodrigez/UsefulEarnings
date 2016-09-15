@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * ${PATH}
  * Created by yago on 12/09/16.
  */
-public class BalanceSheetStatementsPlugin implements Plugin {
+public class BalanceSheetStatementsPlugin<E> implements Plugin<E> {
   private ArrayList<BalanceSheetStatement> mBalanceSheetStatements;
   private URL mUrl;
   private ObjectMapper mapper;
@@ -35,11 +35,15 @@ public class BalanceSheetStatementsPlugin implements Plugin {
 
 
   @Override
-  public void addInfo(Company company) {
+  public void addInfo(E entity) {
     try {
-      mCompanySymbol = company.getSymbol();
-      mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
+      if(entity.getClass().equals(Company.class)){
+        mCompanySymbol = ((Company)entity).getSymbol();
+      } else {
+        throw new IllegalArgumentException("This is not a company");
+      }
 
+      mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode balanceSheetStatementsNode = Json.removeEmptyClasses(root.findValue("balanceSheetStatements"));
       mBalanceSheetStatements = mapper.readValue(
@@ -48,8 +52,7 @@ public class BalanceSheetStatementsPlugin implements Plugin {
         }
       );
 
-      company.setBalanceSheetStatements(mBalanceSheetStatements);
-
+      ((Company)entity).setBalanceSheetStatements(mBalanceSheetStatements);
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set BalanceSheetStatements data of " + mCompanySymbol);
       System.err.println(ne.getClass().getName());

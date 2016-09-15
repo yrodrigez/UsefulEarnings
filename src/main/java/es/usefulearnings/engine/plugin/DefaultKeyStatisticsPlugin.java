@@ -15,7 +15,7 @@ import java.net.URL;
  * ${PATH}
  * Created by yago on 12/09/16.
  */
-public class DefaultKeyStatisticsPlugin implements Plugin {
+public class DefaultKeyStatisticsPlugin<E> implements Plugin<E> {
 
   private DefaultKeyStatistics mDefaultKeyStatistics;
   private URL mUrl;
@@ -34,9 +34,13 @@ public class DefaultKeyStatisticsPlugin implements Plugin {
 
 
   @Override
-  public void addInfo(Company company) {
+  public void addInfo(E entity) {
     try {
-      mCompanySymbol = company.getSymbol();
+      if(entity.getClass().equals(Company.class)){
+        mCompanySymbol = ((Company)entity).getSymbol();
+      } else {
+        throw new IllegalArgumentException("This is not a company");
+      }
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
@@ -44,7 +48,7 @@ public class DefaultKeyStatisticsPlugin implements Plugin {
 
       mDefaultKeyStatistics = mapper.readValue(calendarEventsNode.traverse(), DefaultKeyStatistics.class);
 
-      company.setDefaultKeyStatistics(mDefaultKeyStatistics);
+      ((Company)entity).setDefaultKeyStatistics(mDefaultKeyStatistics);
 
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set DefaultKeyStatistics data of " + mCompanySymbol);

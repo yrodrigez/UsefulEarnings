@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * ${PATH}
  * Created by yago on 12/09/16.
  */
-public class IncomeStatmentsPlugin implements Plugin {
+public class IncomeStatmentsPlugin<E> implements Plugin<E> {
   private ArrayList<IncomeStatement> mIncomeStatements;
   private URL mUrl;
   private ObjectMapper mapper;
@@ -35,9 +35,14 @@ public class IncomeStatmentsPlugin implements Plugin {
 
 
   @Override
-  public void addInfo(Company company) {
+  public void addInfo(E entity) {
     try {
-      mCompanySymbol = company.getSymbol();
+      if(entity.getClass().equals(Company.class)) {
+        mCompanySymbol = ((Company)entity).getSymbol();
+      } else {
+        throw new IllegalArgumentException("This is not an entity");
+      }
+
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
@@ -51,7 +56,7 @@ public class IncomeStatmentsPlugin implements Plugin {
         }
       );
 
-      company.setIncomeStatements(mIncomeStatements);
+      ((Company)entity).setIncomeStatements(mIncomeStatements);
 
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set incomeStatementHistory data of " + mCompanySymbol);

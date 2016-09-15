@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.layout.HBox?>
-<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.usefulearnings.gui.controller.MainController">
+<BorderPane fx:id="mainPane" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="733.0" prefWidth="989.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.usefulearnings.gui.controller.MainController">
    <top>
       <HBox fx:id="topMenu" prefHeight="35.0" style="-fx-background-color: #400090;" BorderPane.alignment="CENTER" />
    </top>
