@@ -20,8 +20,7 @@ public class Process {
 
   protected void onStopped(){ handler.onCancelled(); }
 
-  void onError(Throwable err) throws Throwable {
-    throw err;
+  void onError(Throwable err) {
   }
 
 }

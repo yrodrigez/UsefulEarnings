@@ -51,7 +51,7 @@ public class DownloadProcess<E> extends Process implements Runnable {
           try {
             plugin.addInfo(e);
           }catch (Exception ex){
-            ex.printStackTrace();
+            onError(ex);
             throw ex;
           }
         }

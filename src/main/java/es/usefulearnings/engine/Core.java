@@ -1,6 +1,7 @@
 package es.usefulearnings.engine;
 
 
+import es.usefulearnings.engine.connection.DownloadProcess;
 import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.engine.plugin.*;
 import es.usefulearnings.entities.Company;
@@ -21,6 +22,10 @@ public class Core {
 
   private Thread [] threads;
 
+  private ArrayList<DownloadProcess<Company>> companyProcesses;
+  /**
+   * Companies from all loaded stocks
+   */
   private ArrayList<Company> allCompanies;
 
   public static Core getInstance() {
@@ -90,6 +95,8 @@ public class Core {
     return this.allCompanies;
   }
 
+
+
   public ArrayList<Company> getCompaniesFromStock(String stockName) throws IllegalArgumentException {
     for(Stock stock :
       mStocks){
@@ -110,4 +117,7 @@ public class Core {
     return this.companiesPlugins;
   }
 
+  public ArrayList<DownloadProcess<Company>> getCompanyProcesses() {
+    return this.companyProcesses;
+  }
 }
