@@ -167,9 +167,11 @@ public class MainController implements Initializable {
     ImageView navigateIcon = new ImageView(new Image(
       Main.class.getResourceAsStream("icons/navigate-white.png")
     ));
+
     Button navigateButton = new Button("", navigateIcon);
     navigateButton.getStyleClass().add("main-controller-button");
     navigateButton.setTooltip(new Tooltip("Navigate"));
+    navigateButton.getStyleClass().add("main-controller-button");
     navigateButton.setOnAction(event -> {
       VistaNavigator.getInstance().loadVista(VistaNavigator.NAVIGATE);
       event.consume();

@@ -9,6 +9,8 @@ import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.Profile;
 import es.usefulearnings.utils.Json;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
 
 /**
@@ -33,15 +35,15 @@ public class ProfilePlugin implements Plugin<Company> {
   }
 
   @Override
-  public void addInfo(Company entity) throws Exception {
+  public void addInfo(Company company) throws Exception {
     try {
-      mCompanySymbol = entity.getSymbol();
+      mCompanySymbol = company.getSymbol();
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode profileNode = Json.removeEmptyClasses(root.findValue(mModule));
       mProfile = mapper.readValue(profileNode.traverse(), Profile.class);
 
-      ((Company)entity).setProfile(mProfile);
+      company.setProfile(mProfile);
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set Profile data of " + mCompanySymbol);
       System.err.println("URL: " + mUrl);
@@ -49,7 +51,14 @@ public class ProfilePlugin implements Plugin<Company> {
       System.err.println(ne.getMessage());
 
       // if the exception is in fact untreatable (e.g. internet down, etc), we throw it
-      throw ne;
+      if(!hasInternetConnection()) throw ne;
     }
+  }
+
+  @Override
+  public boolean hasInternetConnection() throws IOException {
+    return  InetAddress.getByName(mUrl.getHost()).isReachable(1000)
+      || InetAddress.getByName("8.8.8.8").isReachable(1000) // google.com
+      || InetAddress.getByName("finance.yahoo.com").isReachable(1000); // yahoo finance
   }
 }

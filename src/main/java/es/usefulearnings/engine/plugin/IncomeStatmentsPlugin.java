@@ -10,6 +10,8 @@ import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.IncomeStatement;
 import es.usefulearnings.utils.Json;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -17,7 +19,7 @@ import java.util.ArrayList;
  * ${PATH}
  * Created by yago on 12/09/16.
  */
-public class IncomeStatmentsPlugin<E> implements Plugin<E> {
+public class IncomeStatmentsPlugin implements Plugin<Company> {
   private ArrayList<IncomeStatement> mIncomeStatements;
   private URL mUrl;
   private ObjectMapper mapper;
@@ -35,11 +37,9 @@ public class IncomeStatmentsPlugin<E> implements Plugin<E> {
 
 
   @Override
-  public void addInfo(E entity) {
+  public void addInfo(Company company) throws Exception {
     try {
-      if(!entity.getClass().equals(Company.class)) throw new IllegalArgumentException("This is not a company");
-
-      mCompanySymbol = ((Company)entity).getSymbol();
+      mCompanySymbol = company.getSymbol();
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
 
       // this is an JSon object that contains a incomeStatementHistory (yeah same name) list inside
@@ -53,12 +53,20 @@ public class IncomeStatmentsPlugin<E> implements Plugin<E> {
         }
       );
 
-      ((Company)entity).setIncomeStatements(mIncomeStatements);
+      company.setIncomeStatements(mIncomeStatements);
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set incomeStatementHistory data of " + mCompanySymbol);
       System.err.println("URL: " + mUrl);
       System.err.println("Yahoo URL: " + "http://finance.yahoo.com/quote/" + mCompanySymbol);
-      System.err.println(ne.getMessage());
+
+      if(!hasInternetConnection()) throw ne;
     }
+  }
+
+  @Override
+  public boolean hasInternetConnection() throws IOException {
+    return  InetAddress.getByName(mUrl.getHost()).isReachable(1000)
+      || InetAddress.getByName("8.8.8.8").isReachable(1000)
+      || InetAddress.getByName("finance.yahoo.com").isReachable(1000);
   }
 }

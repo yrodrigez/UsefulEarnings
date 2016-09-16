@@ -1,6 +1,6 @@
 package es.usefulearnings.gui.controller;
 
-import es.usefulearnings.engine.SearchEngine;
+import es.usefulearnings.engine.Core;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.Stock;
 import es.usefulearnings.gui.Main;
@@ -172,7 +172,7 @@ public class NavigateController implements Initializable {
   private Node setCompanyData(String symbol) {
     VBox vBox = new VBox();
     // insertDataHere!!
-    Company company = SearchEngine.getInstance().getSingleCompanyData(symbol);
+    Company company = Core.getInstance().getSingleCompanyData(symbol);
 
     vBox.getChildren().addAll(
       new Label("Company's Symbol: " + company.getSymbol()),

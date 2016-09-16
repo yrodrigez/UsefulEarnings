@@ -50,6 +50,23 @@ public class Company implements Serializable {
     balanceSheetStatements.add(new BalanceSheetStatement());
   }
 
+  public Company(String symbol){
+    this.setSymbol(symbol);
+    profile = new Profile();
+    calendarEvents = new CalendarEvents();
+    financialData = new FinancialData();
+    defaultKeyStatistics = new DefaultKeyStatistics();
+
+    cashFlowStatements = new ArrayList<>();
+    cashFlowStatements.add(new CashFlowStatement());
+
+    incomeStatements = new ArrayList<>();
+    incomeStatements.add(new IncomeStatement());
+
+    balanceSheetStatements = new ArrayList<>();
+    balanceSheetStatements.add(new BalanceSheetStatement());
+  }
+
 
   public String getSymbol() {
     return symbol;

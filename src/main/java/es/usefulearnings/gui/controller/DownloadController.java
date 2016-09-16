@@ -1,24 +1,20 @@
 package es.usefulearnings.gui.controller;
 
-import es.usefulearnings.engine.SearchEngine;
-import es.usefulearnings.engine.connection.DownloaderTask;
+import es.usefulearnings.engine.Core;
+import es.usefulearnings.engine.connection.DownloadProcess;
+import es.usefulearnings.engine.connection.ProcessHandler;
+import es.usefulearnings.engine.plugin.Plugin;
 import es.usefulearnings.entities.Company;
-import es.usefulearnings.gui.Main;
-import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -32,25 +28,91 @@ public class DownloadController implements Initializable {
   public ListView listView;
   public BorderPane mainPane;
 
+  private ArrayList<Company> companiesToDownload;
+  private ArrayList<DownloaderTask<Company>> companiesTasks;
+  private final int MAX_THREADS = Core.getInstance().MAX_THREADS;
+
+  private class DownloaderTask<E> extends Task<Void>{
+    DownloadProcess<E> process;
+    ProcessHandler handler;
+
+    DownloaderTask(ArrayList<Plugin> plugins, List<E> companies){
+      this.handler = new ProcessHandler() {
+        @Override
+        public void updateProgress(int workDone, int remaining) {
+          DownloaderTask.this.updateProgress(workDone, remaining);
+        }
+
+        @Override
+        public void updateMessage(String message) {
+          DownloaderTask.this.updateMessage(message);
+        }
+
+        @Override
+        public void onCancelled() {
+          DownloaderTask.super.cancelled();
+          DownloaderTask.this.cancel();
+          updateMessage("Cancelled!");
+        }
+
+        @Override
+        public void onError(Throwable err) throws Throwable {
+          DownloaderTask.super.failed();
+          updateMessage("Failed!");
+          throw err;
+        }
+      };
+      process = new DownloadProcess<>(this.handler, plugins, companies);
+    }
+
+    @Override
+    protected Void call() throws Exception {
+      process.run();
+      return null;
+    }
+
+    void stop(){
+      this.process.stop();
+    }
+  }
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    companiesToDownload = Core.getInstance().getAllCompanies();
+    companiesTasks = new ArrayList<>();
     stopButton.setDisable(true);
   }
 
   public void downloadAction(ActionEvent event) {
-    // begin a search
-    SearchEngine.getInstance().getAllCompaniesData();
-    // remove all progress pane nodes
     progressPane.getChildren().remove(0, progressPane.getChildren().size());
+
+    for(int i = 0; i < MAX_THREADS; i++){
+      int from = i * (companiesToDownload.size() / MAX_THREADS);
+      int to = from + (companiesToDownload.size() / MAX_THREADS);
+      if(i == MAX_THREADS -1) to = companiesToDownload.size();
+      companiesTasks.add(
+        new DownloaderTask<>(
+          Core.getInstance().getCompaniesPlugins(),
+          companiesToDownload.subList(from, to)
+        ));
+    }
+
+    for(int i = 0; i < MAX_THREADS; i++){
+      Core.getInstance().getAvailableThreads()[i] = new Thread(companiesTasks.get(i));
+      Core.getInstance().getAvailableThreads()[i].setName("DownloaderTask - " + i);
+      Core.getInstance().getAvailableThreads()[i].setDaemon(true);
+      Core.getInstance().getAvailableThreads()[i].start();
+    }
+
     // set the behavior
     VBox scrollable = new VBox();
     scrollable.setStyle("-fx-background-color: white");
     ScrollPane scrollbar = new ScrollPane(scrollable);
-    scrollbar.setStyle(scrollable.getStyle());
+    scrollbar.setStyle("-fx-background-color: white");
     progressPane.getChildren().add(scrollbar);
     for (
       DownloaderTask<Company> task :
-      SearchEngine.getInstance().getCompaniesDownloaders()
+      companiesTasks
       ) {
       Label label = new Label();
       label.textProperty().bind(task.messageProperty());
@@ -74,8 +136,6 @@ public class DownloadController implements Initializable {
         pi.setStyle("-fx-accent: #00b900;");
         bar.progressProperty().unbind();
         pi.progressProperty().unbind();
-        hBox.getChildren().remove(pi);
-        hBox.getChildren().add(new ImageView(new Image(Main.class.getResourceAsStream("ok-green.png"))));
         onSuccess.consume();
       });
 
@@ -104,7 +164,7 @@ public class DownloadController implements Initializable {
   }
 
   public void stopAction(ActionEvent event) {
-    SearchEngine.getInstance().getCompaniesDownloaders().forEach(DownloaderTask::stop);
+    companiesTasks.forEach(DownloaderTask::stop);
     downloadCompaniesButton.setText("Download");
     downloadCompaniesButton.setDisable(false);
     stopButton.setDisable(true);

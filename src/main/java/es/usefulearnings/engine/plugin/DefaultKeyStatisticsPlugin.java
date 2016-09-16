@@ -9,13 +9,15 @@ import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.DefaultKeyStatistics;
 import es.usefulearnings.utils.Json;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
 
 /**
  * ${PATH}
  * Created by yago on 12/09/16.
  */
-public class DefaultKeyStatisticsPlugin<E> implements Plugin<E> {
+public class DefaultKeyStatisticsPlugin implements Plugin<Company> {
 
   private DefaultKeyStatistics mDefaultKeyStatistics;
   private URL mUrl;
@@ -34,23 +36,29 @@ public class DefaultKeyStatisticsPlugin<E> implements Plugin<E> {
 
 
   @Override
-  public void addInfo(E entity) {
+  public void addInfo(Company company) throws Exception{
     try {
-      if(!entity.getClass().equals(Company.class)) throw new IllegalArgumentException("This is not a company");
-
-      mCompanySymbol = ((Company)entity).getSymbol();
+      mCompanySymbol = company.getSymbol();
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode calendarEventsNode = Json.removeEmptyClasses(root.findValue(mModule));
       mDefaultKeyStatistics = mapper.readValue(calendarEventsNode.traverse(), DefaultKeyStatistics.class);
 
-      ((Company)entity).setDefaultKeyStatistics(mDefaultKeyStatistics);
+      company.setDefaultKeyStatistics(mDefaultKeyStatistics);
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set DefaultKeyStatistics data of " + mCompanySymbol);
       System.err.println("URL: " + mUrl);
       System.err.println("Yahoo URL: " + "http://finance.yahoo.com/quote/" + mCompanySymbol);
-      System.err.println(ne.getMessage());
+
+      if (!hasInternetConnection()) throw ne;
     }
+  }
+
+  @Override
+  public boolean hasInternetConnection() throws IOException {
+    return  InetAddress.getByName(mUrl.getHost()).isReachable(1000)
+      || InetAddress.getByName("8.8.8.8").isReachable(1000)
+      || InetAddress.getByName("finance.yahoo.com").isReachable(1000);
   }
 }
