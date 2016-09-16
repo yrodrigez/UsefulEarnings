@@ -6,12 +6,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="mainPane" BorderPane.alignment="CENTER" style="-fx-background-color: TRANSPARENT;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.usefulearnings.gui.controller.DownloadController">
+<BorderPane fx:id="mainPane" BorderPane.alignment="CENTER" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.usefulearnings.gui.controller.DownloadController">
    <right>
-      <VBox fx:id="progressPane" prefHeight="707.0" prefWidth="339.0" style="-fx-background-color: TRANSPARENT;" BorderPane.alignment="CENTER" />
+      <VBox fx:id="progressPane" prefHeight="707.0" prefWidth="339.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER" />
    </right>
    <top>
-      <HBox prefHeight="26.0" prefWidth="600.0" style="-fx-background-color: TRANSPARENT;" BorderPane.alignment="CENTER">
+      <HBox prefHeight="26.0" prefWidth="600.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="downloadCompaniesButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#downloadAction" style="-fx-background-color: #400090; -fx-background-radius: 0%;" text="Download" textAlignment="CENTER" textFill="WHITE" />
             <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stopAction" style="-fx-background-radius: 0%; -fx-background-color: #400090;" text="Stop" textFill="WHITE" />

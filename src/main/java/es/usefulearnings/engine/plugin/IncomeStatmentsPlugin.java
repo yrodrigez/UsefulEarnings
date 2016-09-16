@@ -37,18 +37,15 @@ public class IncomeStatmentsPlugin<E> implements Plugin<E> {
   @Override
   public void addInfo(E entity) {
     try {
-      if(entity.getClass().equals(Company.class)) {
-        mCompanySymbol = ((Company)entity).getSymbol();
-      } else {
-        throw new IllegalArgumentException("This is not an entity");
-      }
+      if(!entity.getClass().equals(Company.class)) throw new IllegalArgumentException("This is not a company");
 
+      mCompanySymbol = ((Company)entity).getSymbol();
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
 
-      JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
-      JsonNode jsonIncomeStatementHistory = root.findValue(mModule);
       // this is an JSon object that contains a incomeStatementHistory (yeah same name) list inside
       // so we need to go deeper and get that object because is the one who contains the data
+      JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
+      JsonNode jsonIncomeStatementHistory = root.findValue(mModule);
       JsonNode jsonIncomeStatements = Json.removeEmptyClasses(jsonIncomeStatementHistory.findValue(mModule));
       mIncomeStatements = mapper.readValue(
         jsonIncomeStatements.traverse(),
@@ -57,13 +54,11 @@ public class IncomeStatmentsPlugin<E> implements Plugin<E> {
       );
 
       ((Company)entity).setIncomeStatements(mIncomeStatements);
-
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set incomeStatementHistory data of " + mCompanySymbol);
       System.err.println("URL: " + mUrl);
+      System.err.println("Yahoo URL: " + "http://finance.yahoo.com/quote/" + mCompanySymbol);
       System.err.println(ne.getMessage());
-      // ne.printStackTrace();
-      // TODO something with this exception!!
     }
   }
 }

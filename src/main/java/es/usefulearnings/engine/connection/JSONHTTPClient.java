@@ -30,7 +30,7 @@ public class JSONHTTPClient {
   }
 
   public JsonNode getJSON(URL url) throws IOException {
-    synchronized (url.toString().intern()) { // for the same URL, only one thread at a time
+    synchronized (url.toString().intern()) { // for the same URL, only one thread at time
       if (!cache.containsKey(url.toString())) {
         JsonNode jsonObject = getJsonFromJackson(url);
         cache.put(url.toString(), jsonObject);

@@ -36,25 +36,21 @@ public class DefaultKeyStatisticsPlugin<E> implements Plugin<E> {
   @Override
   public void addInfo(E entity) {
     try {
-      if(entity.getClass().equals(Company.class)){
-        mCompanySymbol = ((Company)entity).getSymbol();
-      } else {
-        throw new IllegalArgumentException("This is not a company");
-      }
+      if(!entity.getClass().equals(Company.class)) throw new IllegalArgumentException("This is not a company");
+
+      mCompanySymbol = ((Company)entity).getSymbol();
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode calendarEventsNode = Json.removeEmptyClasses(root.findValue(mModule));
-
       mDefaultKeyStatistics = mapper.readValue(calendarEventsNode.traverse(), DefaultKeyStatistics.class);
 
       ((Company)entity).setDefaultKeyStatistics(mDefaultKeyStatistics);
-
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set DefaultKeyStatistics data of " + mCompanySymbol);
       System.err.println("URL: " + mUrl);
+      System.err.println("Yahoo URL: " + "http://finance.yahoo.com/quote/" + mCompanySymbol);
       System.err.println(ne.getMessage());
-      // TODO something with this exception!!
     }
   }
 }

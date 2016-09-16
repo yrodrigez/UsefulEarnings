@@ -12,10 +12,10 @@ import es.usefulearnings.utils.Json;
 import java.net.URL;
 
 /**
- * ${PATH}
- * Created by yago on 9/09/16.
+ *
+ * @author yago.
  */
-public class ProfilePlugin<E> implements Plugin<E> {
+public class ProfilePlugin implements Plugin<Company> {
 
   private Profile mProfile;
   private URL mUrl;
@@ -33,15 +33,10 @@ public class ProfilePlugin<E> implements Plugin<E> {
   }
 
   @Override
-  public void addInfo(E entity) {
+  public void addInfo(Company entity) throws Exception {
     try {
-      if(entity.getClass().equals(Company.class)){
-        mCompanySymbol = ((Company)entity).getSymbol();
-      } else {
-        throw new IllegalArgumentException("This is not a company");
-      }
+      mCompanySymbol = entity.getSymbol();
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
-
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode profileNode = Json.removeEmptyClasses(root.findValue(mModule));
       mProfile = mapper.readValue(profileNode.traverse(), Profile.class);
@@ -50,9 +45,11 @@ public class ProfilePlugin<E> implements Plugin<E> {
     } catch (Exception ne) {
       System.err.println("Something Happened trying to set Profile data of " + mCompanySymbol);
       System.err.println("URL: " + mUrl);
+      System.err.println("Yahoo URL: " + "http://finance.yahoo.com/quote/" + mCompanySymbol);
       System.err.println(ne.getMessage());
-      // ne.printStackTrace();
-      // TODO something with this exception!!
+
+      // if the exception is in fact untreatable (e.g. internet down, etc), we throw it
+      throw ne;
     }
   }
 }

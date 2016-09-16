@@ -3,12 +3,15 @@ package es.usefulearnings.gui.controller;
 import es.usefulearnings.engine.SearchEngine;
 import es.usefulearnings.engine.connection.DownloaderTask;
 import es.usefulearnings.entities.Company;
+import es.usefulearnings.gui.Main;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -41,7 +44,9 @@ public class DownloadController implements Initializable {
     progressPane.getChildren().remove(0, progressPane.getChildren().size());
     // set the behavior
     VBox scrollable = new VBox();
+    scrollable.setStyle("-fx-background-color: white");
     ScrollPane scrollbar = new ScrollPane(scrollable);
+    scrollbar.setStyle(scrollable.getStyle());
     progressPane.getChildren().add(scrollbar);
     for (
       DownloaderTask<Company> task :
@@ -69,6 +74,8 @@ public class DownloadController implements Initializable {
         pi.setStyle("-fx-accent: #00b900;");
         bar.progressProperty().unbind();
         pi.progressProperty().unbind();
+        hBox.getChildren().remove(pi);
+        hBox.getChildren().add(new ImageView(new Image(Main.class.getResourceAsStream("ok-green.png"))));
         onSuccess.consume();
       });
 
@@ -77,7 +84,6 @@ public class DownloadController implements Initializable {
         pi.setStyle("-fx-accent: yellow;");
         bar.progressProperty().unbind();
         pi.progressProperty().unbind();
-        bar.setProgress(-1);
         onCancelled.consume();
       });
 
