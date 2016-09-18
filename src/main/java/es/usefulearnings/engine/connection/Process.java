@@ -18,7 +18,7 @@ abstract class Process {
     handler.updateProgress(workDone, remaining);
   }
 
-  void onStopped() {
+  void onCancelled() {
     handler.onCancelled();
   }
 
@@ -29,6 +29,5 @@ abstract class Process {
   protected void onSuccess(){
     handler.onSuccess();
   }
-
 
 }

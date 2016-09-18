@@ -9,10 +9,7 @@ import es.usefulearnings.entities.Stock;
 import es.usefulearnings.utils.NoStocksFoundException;
 import es.usefulearnings.utils.ResourcesHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Core {
 
@@ -95,7 +92,7 @@ public class Core {
       }
     }
 
-    throw new IllegalArgumentException("Could not find a stock named " + stockName);
+    throw new IllegalArgumentException("Can not find a stock named " + stockName);
   }
 
   public Thread[] getAvailableThreads() {
@@ -122,13 +119,14 @@ public class Core {
     }
   }
 
-  public void setCompanyData(Company settedCompany){
+  private void setCompanyData(Company settedCompany){
     mStocks.stream()
       .filter(
         stock -> stock.getName().equals(settedCompany.getStockName())
-      ).forEach(
+      )
+      .forEach(
         stock -> stock.getCompanies().replace(settedCompany.getSymbol(), settedCompany)
-    );
+      );
   }
 
   public void setCompaniesData(List<Company> companies) {

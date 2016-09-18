@@ -4,6 +4,9 @@ package es.usefulearnings.utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * TODO: DELETE THIS
+ */
 public class Json {
 
   /**

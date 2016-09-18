@@ -8,7 +8,6 @@ import es.usefulearnings.engine.connection.MultiModuleYahooFinanceURLProvider;
 import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.CashFlowStatement;
-import es.usefulearnings.utils.Json;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class CashFlowStatementsPlugin implements Plugin<Company> {
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
-      JsonNode jsonBalanceSheetStatements = Json.removeEmptyClasses(root.findValue("cashflowStatements"));
+      JsonNode jsonBalanceSheetStatements = root.findValue("cashflowStatements");
       mCashflowStatemnts = mapper.readValue(
         jsonBalanceSheetStatements.traverse(),
         new TypeReference<ArrayList<CashFlowStatement>>() {
@@ -49,7 +48,7 @@ public class CashFlowStatementsPlugin implements Plugin<Company> {
 
       company.setCashFlowStatements(mCashflowStatemnts);
     } catch (Exception anyException) {
-      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException);
+      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);
     }
   }
 }

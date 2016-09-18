@@ -7,7 +7,6 @@ import es.usefulearnings.engine.connection.MultiModuleYahooFinanceURLProvider;
 import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.Profile;
-import es.usefulearnings.utils.Json;
 
 import java.net.URL;
 
@@ -37,12 +36,12 @@ public class ProfilePlugin implements Plugin<Company> {
       mCompanySymbol = company.getSymbol();
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
-      JsonNode profileNode = Json.removeEmptyClasses(root.findValue(mModule));
+      JsonNode profileNode = root.findValue(mModule);
       mProfile = mapper.readValue(profileNode.traverse(), Profile.class);
 
       company.setProfile(mProfile);
     } catch (Exception anyException) {
-      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException);
+      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);
     }
   }
 

@@ -7,7 +7,6 @@ import es.usefulearnings.engine.connection.MultiModuleYahooFinanceURLProvider;
 import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.CalendarEvents;
-import es.usefulearnings.utils.Json;
 
 import java.net.URL;
 
@@ -38,12 +37,12 @@ public class CalendarEventsPlugin implements Plugin<Company> {
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
-      JsonNode calendarEventsNode = Json.removeEmptyClasses(root.findValue(mModule));
+      JsonNode calendarEventsNode = root.findValue(mModule);
       mCalendarEvents = mapper.readValue(calendarEventsNode.traverse(), CalendarEvents.class);
 
       company.setCalendarEvents(mCalendarEvents);
     } catch (Exception anyException) {
-      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException);
+      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);
     }
   }
 }

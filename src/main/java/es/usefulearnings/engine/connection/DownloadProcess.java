@@ -44,10 +44,15 @@ public class DownloadProcess<E> extends Process implements Runnable {
   public void run() {
     try {
       for (E entity : entities) {
+        if (stop) {
+          updateMessage("Stopped!");
+          onCancelled();
+          break;
+        }
         for (Plugin plugin : plugins) {
           if (stop) {
-            onStopped();
             updateMessage("Stopped!");
+            onCancelled();
             break;
           }
           try {
@@ -56,13 +61,16 @@ public class DownloadProcess<E> extends Process implements Runnable {
             if (!hasInternetConnection()) {
               throw e;
             }
+            // e.printStackTrace();
           }
         }// end foreach plugin
         updateProgress(++workDone, remainingWork);
         updateMessage(workDone + " out of " + remainingWork + "\tCurrent company: " + ((Company) entity).getSymbol());
       }// end foreach entity
-      updateMessage("Work Done!");
-      onSuccess();// SUCCESS!!!
+      if (!stop && !hasFailed) {
+        updateMessage("Work Done!");
+        onSuccess();// SUCCESS!!!
+      }
     } catch (PluginException err) {
       this.hasFailed = true;
       System.err.println("No internet connection");
@@ -84,8 +92,6 @@ public class DownloadProcess<E> extends Process implements Runnable {
 
   public void stop() {
     this.stop = true;
-    updateMessage("Stopped!");
-    onStopped();
   }
 
   public boolean hasFailed() {

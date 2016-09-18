@@ -1,8 +1,20 @@
-.main-controller-button {-fx-background-color: transparent;}
+.main-controller-button {
+     -fx-background-color: transparent;
+     -fx-border-width: 0 0 0 3;
+     -fx-border-color: transparent;
+}
 
-.main-controller-button:hover, .main-controller-button:selected {-fx-background-color: #180063;}
+.main-controller-button:hover, .main-controller-button:selected{
+     -fx-background-color: #1a006c;
+}
 
-.close-button:hover {-fx-background-color: #b20000;}
+.main-controller-right-button:hover, .main-controller-right-button:selected{
+     -fx-border-color: #160c33;
+}
+
+.close-button:hover {
+     -fx-background-color: #b20000;
+}
 
 .no-radius {
      -fx-background-radius: 0%;

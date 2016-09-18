@@ -8,7 +8,6 @@ import es.usefulearnings.engine.connection.MultiModuleYahooFinanceURLProvider;
 import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.IncomeStatement;
-import es.usefulearnings.utils.Json;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class IncomeStatmentsPlugin implements Plugin<Company> {
       // so we need to go deeper and get that object because is the one who contains the data
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
       JsonNode jsonIncomeStatementHistory = root.findValue(mModule);
-      JsonNode jsonIncomeStatements = Json.removeEmptyClasses(jsonIncomeStatementHistory.findValue(mModule));
+      JsonNode jsonIncomeStatements = jsonIncomeStatementHistory.findValue(mModule);
       mIncomeStatements = mapper.readValue(
         jsonIncomeStatements.traverse(),
         new TypeReference<ArrayList<IncomeStatement>>() {
@@ -52,7 +51,7 @@ public class IncomeStatmentsPlugin implements Plugin<Company> {
 
       company.setIncomeStatements(mIncomeStatements);
     } catch (Exception anyException) {
-      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException);
+      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);
     }
   }
 }

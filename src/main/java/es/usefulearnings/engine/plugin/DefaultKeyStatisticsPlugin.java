@@ -7,7 +7,6 @@ import es.usefulearnings.engine.connection.MultiModuleYahooFinanceURLProvider;
 import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.DefaultKeyStatistics;
-import es.usefulearnings.utils.Json;
 
 import java.net.URL;
 
@@ -40,12 +39,12 @@ public class DefaultKeyStatisticsPlugin implements Plugin<Company> {
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
-      JsonNode calendarEventsNode = Json.removeEmptyClasses(root.findValue(mModule));
+      JsonNode calendarEventsNode = root.findValue(mModule);
       mDefaultKeyStatistics = mapper.readValue(calendarEventsNode.traverse(), DefaultKeyStatistics.class);
 
       company.setDefaultKeyStatistics(mDefaultKeyStatistics);
     } catch (Exception anyException) {
-      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException);
+      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);
     }
   }
 }

@@ -51,7 +51,7 @@ public class DownloadController implements Initializable {
 
         @Override
         public void onCancelled() {
-          cancelled();
+          cancel();
         }
 
         @Override
@@ -77,6 +77,7 @@ public class DownloadController implements Initializable {
         super.failed();
         throw process.getError();
       }
+
       reActivateDownloadButton();
       return null;
     }
@@ -140,9 +141,11 @@ public class DownloadController implements Initializable {
 
       task.setOnCancelled(onCancelled -> {
         bar.setStyle("-fx-accent: yellow;");
-        progressIndicator.setStyle("-fx-accent: yellow;");
         bar.progressProperty().unbind();
+        bar.setProgress(1);
+        progressIndicator.setStyle("-fx-accent: yellow;");
         progressIndicator.progressProperty().unbind();
+        progressIndicator.setProgress(1);
         onCancelled.consume();
       });
 
@@ -151,7 +154,7 @@ public class DownloadController implements Initializable {
         progressIndicator.setStyle("-fx-accent: red;");
         bar.progressProperty().unbind();
         progressIndicator.progressProperty().unbind();
-        bar.setProgress(-1);
+        bar.setProgress(1);
         onFail.consume();
       });
     }

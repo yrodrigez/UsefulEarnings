@@ -5,9 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -162,56 +160,61 @@ public class MainController implements Initializable {
     mainPane.setCenter(vista);
   }
 
-  private ArrayList<Button> setupSideMenu() {
-    ArrayList<Button> ret = new ArrayList<>();
+  private ArrayList<Node> setupSideMenu() {
+    ArrayList<Node> ret = new ArrayList<>();
+
+    ToggleGroup group = new ToggleGroup();
     ImageView navigateIcon = new ImageView(new Image(
       Main.class.getResourceAsStream("icons/navigate-white.png")
     ));
-
-    Button navigateButton = new Button("", navigateIcon);
+    ToggleButton navigateButton = new ToggleButton("", navigateIcon);
     navigateButton.getStyleClass().add("main-controller-button");
     navigateButton.setTooltip(new Tooltip("Navigate"));
-    navigateButton.getStyleClass().add("main-controller-button");
+    navigateButton.getStyleClass().addAll("main-controller-button", "main-controller-right-button");
     navigateButton.setOnAction(event -> {
       VistaNavigator.getInstance().loadVista(VistaNavigator.NAVIGATE);
       event.consume();
     });
+    navigateButton.setToggleGroup(group);
     ret.add(navigateButton);
 
     ImageView filterIcon = new ImageView(new Image(
       Main.class.getResourceAsStream("icons/filter-white.png")
     ));
-    Button filterButton = new Button("", filterIcon);
-    filterButton.getStyleClass().add("main-controller-button");
+    ToggleButton filterButton = new ToggleButton("", filterIcon);
+    filterButton.getStyleClass().addAll("main-controller-button", "main-controller-right-button");
     filterButton.setTooltip(new Tooltip("Filter"));
     filterButton.setOnAction(event -> {
       VistaNavigator.getInstance().loadVista(VistaNavigator.FILTER);
       event.consume();
     });
+    filterButton.setToggleGroup(group);
     ret.add(filterButton);
 
     ImageView downloadIcon = new ImageView(new Image(
       Main.class.getResourceAsStream("icons/download-white.png")
     ));
-    Button downloadButton = new Button("", downloadIcon);
-    downloadButton.getStyleClass().add("main-controller-button");
+    ToggleButton downloadButton = new ToggleButton("", downloadIcon);
+    downloadButton.getStyleClass().addAll("main-controller-button", "main-controller-right-button");
     downloadButton.setTooltip(new Tooltip("Download"));
     downloadButton.setOnAction(event -> {
       VistaNavigator.getInstance().loadVista(VistaNavigator.DOWNLOAD);
       event.consume();
     });
+    downloadButton.setToggleGroup(group);
     ret.add(downloadButton);
 
     ImageView historyIcon = new ImageView(new Image(
       Main.class.getResourceAsStream("icons/history-white.png")
     ));
-    Button historyButton = new Button("", historyIcon);
-    historyButton.getStyleClass().add("main-controller-button");
+    ToggleButton historyButton = new ToggleButton("", historyIcon);
+    historyButton.getStyleClass().addAll("main-controller-button", "main-controller-right-button");
     historyButton.setTooltip(new Tooltip("History"));
     historyButton.setOnAction(event -> {
       VistaNavigator.getInstance().loadVista(VistaNavigator.HISTORY);
       event.consume();
     });
+    historyButton.setToggleGroup(group);
     ret.add(historyButton);
 
     return ret;
@@ -223,7 +226,7 @@ public class MainController implements Initializable {
       Main.class.getResourceAsStream("icons/gear-white.png")
     ));
     Button optionsButton = new Button("", optionsIcon);
-    optionsButton.getStyleClass().add("main-controller-button");
+    optionsButton.getStyleClass().addAll("main-controller-button", "main-controller-right-button");
     optionsButton.setTooltip(new Tooltip("Options"));
     optionsButton.setOnAction(event -> {
       VistaNavigator.getInstance().loadVista(VistaNavigator.OPTIONS);
@@ -235,7 +238,7 @@ public class MainController implements Initializable {
       Main.class.getResourceAsStream("icons/info-white.png")
     ));
     Button aboutButton = new Button("", helpIcon);
-    aboutButton.getStyleClass().add("main-controller-button");
+    aboutButton.getStyleClass().addAll("main-controller-button", "main-controller-right-button");
     aboutButton.setTooltip(new Tooltip("About"));
     aboutButton.setOnAction(event -> {
       Alert alert = new Alert(Alert.AlertType.INFORMATION);
