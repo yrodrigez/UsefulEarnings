@@ -89,7 +89,7 @@ public class NavigateController implements Initializable {
     try {
       resourcesHelper = ResourcesHelper.getInstance();
       List<Stock> stocks = resourcesHelper.getAvailableStocks();
-      symbols = FXCollections.observableArrayList(stocks.get(0).getSymbols()).sorted();
+      symbols = FXCollections.observableArrayList(stocks.get(0).getCompanies().keySet()).sorted();
       companies.setItems(symbols);
 
       ObservableList<String> stocksNames = FXCollections.observableArrayList();
@@ -101,7 +101,7 @@ public class NavigateController implements Initializable {
           symbols = FXCollections.observableArrayList();
           stocks.forEach(stock -> {
             if (stock.getName().equals(newValue)) {
-              symbols.addAll(stock.getSymbols());
+              symbols.addAll(stock.getCompanies().keySet());
             }
           });
           companies.setItems(symbols);

@@ -18,6 +18,9 @@ public class Company implements Serializable {
   @EntityParameter(name = "Symbol", entityType = EntityParameterType.IGNORE)
   private String symbol;
 
+  @EntityParameter(name = "Stock", entityType = EntityParameterType.IGNORE)
+  private String stockName;
+
   @EntityParameter(name = "Profile")
   private Profile profile;
   @EntityParameter(name = "Calendar events")
@@ -50,8 +53,10 @@ public class Company implements Serializable {
     balanceSheetStatements.add(new BalanceSheetStatement());
   }
 
-  public Company(String symbol){
-    this.setSymbol(symbol);
+  public Company(String symbol, String stockName){
+    this.symbol = symbol;
+    this.stockName = stockName;
+
     profile = new Profile();
     calendarEvents = new CalendarEvents();
     financialData = new FinancialData();
@@ -146,5 +151,9 @@ public class Company implements Serializable {
   @Override
   public String toString(){
     return this.symbol;
+  }
+
+  public String getStockName() {
+    return this.stockName;
   }
 }

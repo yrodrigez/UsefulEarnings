@@ -4,8 +4,6 @@ package es.usefulearnings.utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
-
 public class Json {
 
   /**
@@ -15,7 +13,7 @@ public class Json {
    * @param jsonNode the node to find the empty classes in it
    * @return the new JsonNode with no empty classes luckily
    */
-  public static JsonNode removeEmptyClasses(JsonNode jsonNode) {
+  public static JsonNode removeEmptyClasses(JsonNode jsonNode) throws Exception {
     // "declaration":
     String variableDeclaration = "\"([A-z]+|([A-z]*[0-9]*[A-z]+))\":";
     // {}
@@ -23,24 +21,15 @@ public class Json {
     // {"raw":0,"fmt":null,"longFmt":"0"}
     String nullClass = "(\\{\\\"raw\\\":0,\\\"fmt\\\":null,\\\"longFmt\\\":\\\"0\\\"\\})";
     String OR = "|";
-    try {
-      String json = jsonNode.toString();
-      json = json.replaceAll(variableDeclaration + "(" + emptyClass + OR + nullClass + "),?", "");
-      json = json.replaceAll(",{2,}", "");
-      json = json.replaceAll(",\\}", "}");
-      ObjectMapper mapper = new ObjectMapper();
-      try {
-        jsonNode = mapper.readTree(json);
-      } catch (IOException ioe) {
-        System.err.println("Remove empty classes -> I can not remove empty classes");
-      }
-      return jsonNode;
-    }catch (NullPointerException ne){
-      System.err.println("Remove empty classes -> maybe jsonNode is null...");
-    }
+
+    String json = jsonNode.toString();
+    json = json.replaceAll(variableDeclaration + "(" + emptyClass + OR + nullClass + "),?", "");
+    json = json.replaceAll(",{2,}", "");
+    json = json.replaceAll(",\\}", "}");
+    ObjectMapper mapper = new ObjectMapper();
+
+    jsonNode = mapper.readTree(json);
 
     return jsonNode;
   }
-
-
 }

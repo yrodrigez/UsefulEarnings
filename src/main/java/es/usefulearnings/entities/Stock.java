@@ -1,20 +1,20 @@
 package es.usefulearnings.entities;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author Yago Rodríguez
  */
 public class Stock {
   private String name;
-  private ArrayList<String> symbols;
+  private Map<String, Company> companies;
 
   public Stock(
     String name,
-    ArrayList<String> symbols) {
+    Map<String, Company> companies
+  ) {
     this.setName(name);
-    this.setSymbols(symbols);
+    this.setCompanies(companies);
   }
 
   public String getName() {
@@ -25,12 +25,12 @@ public class Stock {
     this.name = name;
   }
 
-  public List<String> getSymbols() {
-    return symbols;
+  public Map<String, Company> getCompanies() {
+    return companies;
   }
 
-  public void setSymbols(ArrayList<String> symbols) {
-    this.symbols = symbols;
+  public void setCompanies(Map<String, Company> companies) {
+    this.companies = companies;
   }
 
 
@@ -38,7 +38,7 @@ public class Stock {
   public String toString() {
     return "Stock{" +
       "name='" + name + '\'' +
-      ", symbols=" + symbols +
+      ", symbols=" + companies +
       '}';
   }
 }

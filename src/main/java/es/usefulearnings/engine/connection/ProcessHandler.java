@@ -7,5 +7,6 @@ public interface ProcessHandler {
   void updateProgress(int workDone, int remaining);
   void updateMessage(String message);
   void onCancelled();
-  void onError(Throwable err) throws Throwable;
+  void onError(Throwable err);
+  void onSuccess();
 }

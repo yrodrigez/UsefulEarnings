@@ -1,12 +1,14 @@
 package es.usefulearnings.utils;
 
+import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.Stock;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class CSVStockReader {
 
@@ -16,7 +18,7 @@ public class CSVStockReader {
 
     String stockName = path.substring(path.lastIndexOf(File.separator) + 1, path.lastIndexOf(".csv"));
 
-    ArrayList<String> symbols = new ArrayList<>();
+    Map<String, Company> companies = new TreeMap<>();
 
     BufferedReader br = null;
     String line;
@@ -25,11 +27,12 @@ public class CSVStockReader {
     try {
       br = new BufferedReader(new FileReader(path));
       while ((line = br.readLine()) != null) {
-        String[] splitedLine = line.split(splitBy);
-
-        symbols.add(
-          splitedLine[0] // company's symbol
-        );
+        String[] splittedLine = line.split(splitBy);
+        if(!splittedLine[0].contains("-") && !splittedLine[0].contains(".")) { // YAHOO FINANCE DOES NOT HAVE
+                                                                               // INFORMATION FOR THESE COMPANIES
+          String companySymbol = splittedLine[0];
+          companies.put(companySymbol, new Company(companySymbol, stockName));
+        }
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -43,7 +46,7 @@ public class CSVStockReader {
       }
     }
 
-    return new Stock(stockName, symbols);
+    return new Stock(stockName, companies);
   }
 
 

@@ -31,6 +31,8 @@ public class DownloadController implements Initializable {
 
   private ArrayList<DownloaderTask<Company>> companiesTasks;
 
+  private int downloadButtonLocker;
+
   private class DownloaderTask<E> extends Task<Void> {
     DownloadProcess<E> process;
     ProcessHandler handler;
@@ -49,16 +51,17 @@ public class DownloadController implements Initializable {
 
         @Override
         public void onCancelled() {
-          DownloaderTask.super.cancelled();
-          DownloaderTask.this.cancel();
-          updateMessage("Cancelled!");
+          cancelled();
         }
 
         @Override
-        public void onError(Throwable err) throws Throwable {
-          DownloaderTask.super.failed();
-          updateMessage("Failed!");
-          throw err;
+        public void onError(Throwable err) {
+          failed();
+        }
+
+        @Override
+        public void onSuccess() {
+          succeeded();
         }
       };
 
@@ -71,9 +74,10 @@ public class DownloadController implements Initializable {
       process.run();
       if(process.hasFailed()) {
         this.failed();
-        updateMessage("Failed!");
+        super.failed();
         throw process.getError();
       }
+      reActivateDownloadButton();
       return null;
     }
 
@@ -84,8 +88,8 @@ public class DownloadController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    companiesTasks = new ArrayList<>();
     stopButton.setDisable(true);
+    downloadButtonLocker = 0;
   }
 
   public void downloadAction(ActionEvent event) {
@@ -172,20 +176,33 @@ public class DownloadController implements Initializable {
    */
   private void downloadAllCompaniesData(){
     companiesTasks = new ArrayList<>();
-    for(int i = 0; i < Core.getInstance().MAX_THREADS; i++){
-      int from = i * (Core.getInstance().getAllCompanies().size() / Core.getInstance().MAX_THREADS);
-      int to = from + (Core.getInstance().getAllCompanies().size() / Core.getInstance().MAX_THREADS);
-      if(i == Core.getInstance().MAX_THREADS - 1) to = Core.getInstance().getAllCompanies().size();
 
-      DownloaderTask<Company> task = new DownloaderTask<>(
-        Core.getInstance().getCompaniesPlugins(),
-        Core.getInstance().getAllCompanies().subList(from, to)
-      );
+    List<Company> allCompanies = new ArrayList<>(Core.getInstance().getAllCompanies().values());
+
+    for(int i = 0; i < Core.getInstance().MAX_THREADS; i++){
+      int from = i * (Core.getInstance().getAllCompanies().values().size() / Core.getInstance().MAX_THREADS);
+      int to = from + (Core.getInstance().getAllCompanies().values().size() / Core.getInstance().MAX_THREADS);
+      if(i == Core.getInstance().MAX_THREADS - 1) to = Core.getInstance().getAllCompanies().values().size();
+
+      ArrayList<Plugin> plugins = Core.getInstance().getCompaniesPlugins();
+
+      DownloaderTask<Company> task = new DownloaderTask<>(plugins, allCompanies.subList(from, to));
       companiesTasks.add(task);
 
       Core.getInstance().getAvailableThreads()[i] = new Thread(task);
+      Core.getInstance().getAvailableThreads()[i].setName("UsefulEarnings-Process-"+i);
       Core.getInstance().getAvailableThreads()[i].setDaemon(true);
       Core.getInstance().getAvailableThreads()[i].start();
+
+      downloadButtonLocker++;
+    }
+  }
+
+  private void reActivateDownloadButton(){
+    if(--downloadButtonLocker == 0){
+      downloadButtonLocker = Core.getInstance().MAX_THREADS;
+      downloadCompaniesButton.setDisable(false);
+      downloadCompaniesButton.setText("Download");
     }
   }
 }

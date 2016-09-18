@@ -1,8 +1,11 @@
 package es.usefulearnings.engine.connection;
 
 import es.usefulearnings.engine.plugin.Plugin;
+import es.usefulearnings.engine.plugin.PluginException;
 import es.usefulearnings.entities.Company;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,67 +18,82 @@ public class DownloadProcess<E> extends Process implements Runnable {
 
   private int workDone;
   private int remainingWork;
+
   private boolean stop;
   private boolean hasFailed;
 
   private ArrayList<Plugin> plugins;
-
   private List<E> entities;
 
-  public DownloadProcess (
+  public DownloadProcess(
     ProcessHandler handler,
     ArrayList<Plugin> plugins,
     List<E> entities
   ) {
     super(handler);
-    this.plugins  = plugins;
+
+    this.plugins = plugins;
     this.entities = entities;
 
-    stop = hasFailed = false;
-
     workDone = 0;
+    stop = hasFailed = false;
     remainingWork = this.entities.size();
   }
 
   @Override
   public void run() {
     try {
-      for(E e: entities) {
-        for(Plugin plugin : plugins) {
-          if(stop) {
-            super.onStopped();
+      for (E entity : entities) {
+        for (Plugin plugin : plugins) {
+          if (stop) {
+            onStopped();
+            updateMessage("Stopped!");
             break;
           }
-
-          updateMessage(workDone + " out of " + remainingWork+ "\tCurrent company: " +((Company) e).getSymbol());
           try {
-            plugin.addInfo(e);
-          }catch (Exception ex){
-            onError(ex);
-            throw ex;
+            plugin.addInfo(entity);
+          } catch (PluginException e) {
+            if (!hasInternetConnection()) {
+              throw e;
+            }
           }
-        }
+        }// end foreach plugin
         updateProgress(++workDone, remainingWork);
-      }
-    } catch (Exception err) {
+        updateMessage(workDone + " out of " + remainingWork + "\tCurrent company: " + ((Company) entity).getSymbol());
+      }// end foreach entity
+      updateMessage("Work Done!");
+      onSuccess();// SUCCESS!!!
+    } catch (PluginException err) {
       this.hasFailed = true;
+      System.err.println("No internet connection");
       this.err = err;
+      updateMessage("Connection lost...");
+      onError(err);
+      err.printStackTrace();
     }
   }
 
-  public void stop(){
-    this.stop = true;
+  private boolean hasInternetConnection() {
+    try {
+      return InetAddress.getByName("8.8.8.8").isReachable(2500) // google.com
+        || InetAddress.getByName("finance.yahoo.com").isReachable(2500); // yahoo finance
+    } catch (IOException e) {
+      return false;
+    }
   }
 
-  public boolean hasFailed(){
+  public void stop() {
+    this.stop = true;
+    updateMessage("Stopped!");
+    onStopped();
+  }
+
+  public boolean hasFailed() {
     return hasFailed;
   }
 
-  public Exception getError(){
+  public Exception getError() {
     return this.err;
   }
 
-  public List<E> getResult(){
-    return this.entities;
-  }
 }

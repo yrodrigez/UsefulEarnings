@@ -1,16 +1,18 @@
 package es.usefulearnings.engine;
 
-
-import es.usefulearnings.engine.connection.DownloadProcess;
 import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.engine.plugin.*;
 import es.usefulearnings.entities.Company;
+import es.usefulearnings.entities.Option;
+import es.usefulearnings.entities.OptionChain;
 import es.usefulearnings.entities.Stock;
 import es.usefulearnings.utils.NoStocksFoundException;
 import es.usefulearnings.utils.ResourcesHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Core {
 
@@ -20,19 +22,14 @@ public class Core {
 
   private List<Stock> mStocks;
 
-  private Thread [] threads;
-
-  private ArrayList<DownloadProcess<Company>> companyProcesses;
-  /**
-   * Companies from all loaded stocks
-   */
-  private ArrayList<Company> allCompanies;
+  private Thread[] threads;
 
   public static Core getInstance() {
     return instance;
   }
 
   private static Core instance = new Core();
+
   private Core() {
     // Add companiesPlugins.
     companiesPlugins = new ArrayList<>();
@@ -48,21 +45,9 @@ public class Core {
     try {
       mStocks = ResourcesHelper.getInstance().getAvailableStocks();
     } catch (NoStocksFoundException e) {
-      // i can't do nothing without mStocks!
+      throw new RuntimeException(e);
     }
 
-    // create all the Companies.
-    allCompanies =  new ArrayList<>();
-      mStocks.forEach(stock ->
-      stock.getSymbols().forEach(
-        symbol -> {
-          if(!symbol.trim().contains("-") && !symbol.trim().contains(".")) { // Yahoo doesn't have info for this.
-            Company company = new Company();
-            company.setSymbol(symbol);
-            allCompanies.add(company);
-          }
-        })
-    );
 
     threads = new Thread[MAX_THREADS];
   }
@@ -70,16 +55,17 @@ public class Core {
   /**
    * TODO: DELETE THIS
    * Sets all Company's data depending on it's modules.
-   * @see YahooLinks for modules.
-   * @see Company
+   *
    * @param symbol Company's symbol in the selected stock.
    * @return a new Company with it's modules set.
+   * @see YahooLinks for modules.
+   * @see Company
    */
   public Company getSingleCompanyData(String symbol) {
     Company company = new Company();
     company.setSymbol(symbol);
     try {
-      for ( Plugin plugin:
+      for (Plugin plugin :
         companiesPlugins) {
         plugin.addInfo(company);
       }
@@ -91,22 +77,25 @@ public class Core {
     return company;
   }
 
-  public ArrayList<Company> getAllCompanies(){
-    return this.allCompanies;
+  public Map<String, Company> getAllCompanies() {
+    Map<String, Company> companies = new TreeMap<>();
+
+    for (Stock stock : mStocks) {
+      companies.putAll(stock.getCompanies());
+    }
+
+    return companies;
   }
 
 
-
-  public ArrayList<Company> getCompaniesFromStock(String stockName) throws IllegalArgumentException {
-    for(Stock stock :
-      mStocks){
-      if(stock.getName().equals(stockName)){
-        ArrayList<Company> newCompanies = new ArrayList<>();
-        stock.getSymbols().forEach(symbol -> newCompanies.add(new Company(symbol)));
-        return newCompanies;
+  public Map<String, Company> getCompaniesFromStock(String stockName) throws IllegalArgumentException {
+    for (Stock stock : mStocks) {
+      if (stock.getName().equals(stockName)) {
+        return stock.getCompanies();
       }
     }
-    throw new IllegalArgumentException("could not find a stock named " + stockName);
+
+    throw new IllegalArgumentException("Could not find a stock named " + stockName);
   }
 
   public Thread[] getAvailableThreads() {
@@ -117,7 +106,34 @@ public class Core {
     return this.companiesPlugins;
   }
 
-  public ArrayList<DownloadProcess<Company>> getCompanyProcesses() {
-    return this.companyProcesses;
+  public <E> void setEntityData(E entity) {
+    if (entity != null) {
+      if (entity instanceof Company) {
+        setCompanyData((Company)entity);
+      }
+
+      if (entity instanceof Option) {
+        // TODO implement method setOptionsChainData()
+      }
+
+      if (entity instanceof OptionChain) {
+        // TODO implement method setOptionsChainData()
+      }
+    }
   }
+
+  public void setCompanyData(Company settedCompany){
+    mStocks.stream()
+      .filter(
+        stock -> stock.getName().equals(settedCompany.getStockName())
+      ).forEach(
+        stock -> stock.getCompanies().replace(settedCompany.getSymbol(), settedCompany)
+    );
+  }
+
+  public void setCompaniesData(List<Company> companies) {
+    companies.forEach(this::setCompanyData);
+  }
+
+
 }
