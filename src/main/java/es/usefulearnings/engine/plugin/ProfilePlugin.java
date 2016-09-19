@@ -8,41 +8,27 @@ import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.Profile;
 
+import java.io.IOException;
 import java.net.URL;
 
 /**
  * @author yago.
  */
-public class ProfilePlugin implements Plugin<Company> {
-
-  private Profile mProfile;
-  private URL mUrl;
-  private ObjectMapper mapper;
-
-  private String mCompanySymbol;
-  private String mModule = YahooLinks.COMPANY_ASSET_PROFILE;
-
-  public ProfilePlugin() {
-    mapper = new ObjectMapper();
-  }
-
-  public String getCompanySymbol() {
-    return mCompanySymbol;
+public class ProfilePlugin extends YahooFinanceAPIPlugin {
+  @Override
+  protected String getValueToSearch() {
+    return "assetProfile";
   }
 
   @Override
-  public void addInfo(Company company) throws PluginException {
-    try {
-      mCompanySymbol = company.getSymbol();
-      mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
-      JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
-      JsonNode profileNode = root.findValue(mModule);
-      mProfile = mapper.readValue(profileNode.traverse(), Profile.class);
+  protected String getModuleName() {
+    return YahooLinks.COMPANY_ASSET_PROFILE;
+  }
 
-      company.setProfile(mProfile);
-    } catch (Exception anyException) {
-      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);
-    }
+  @Override
+  protected void processJsonNode(Company company, JsonNode node) throws IOException {
+    Profile profile = mapper.readValue(node.traverse(), Profile.class);
+    company.setProfile(profile);
   }
 
 }

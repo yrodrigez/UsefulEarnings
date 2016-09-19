@@ -6,6 +6,8 @@ import es.usefulearnings.entities.Company;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,8 +60,14 @@ public class DownloadProcess<E> extends Process implements Runnable {
           try {
             plugin.addInfo(entity);
           } catch (PluginException e) {
-            if (!hasInternetConnection()) {
+            System.err.println("cause stack: ");
+            e.getCause().printStackTrace();
+            if (e.getCause().getClass().getName().startsWith("java.net")) {
+              System.err.println("java.net exception: "+e.getCause().getClass()+", message: "+e.getCause().getMessage());
+              System.exit(1);
               throw e;
+            } else {
+              System.err.println("other exceptionº: "+e.getCause().getClass()+", message: "+e.getCause().getMessage());
             }
             // e.printStackTrace();
           }
@@ -67,9 +75,9 @@ public class DownloadProcess<E> extends Process implements Runnable {
         updateProgress(++workDone, remainingWork);
         updateMessage(workDone + " out of " + remainingWork + "\tCurrent company: " + ((Company) entity).getSymbol());
       }// end foreach entity
-      if (!stop && !hasFailed) {
-        updateMessage("Work Done!");
-        onSuccess();// SUCCESS!!!
+      if (!stop && !hasFailed) { // Success
+        updateMessage("Work done!");
+        onSuccess();
       }
     } catch (PluginException err) {
       this.hasFailed = true;
@@ -82,10 +90,23 @@ public class DownloadProcess<E> extends Process implements Runnable {
   }
 
   private boolean hasInternetConnection() {
+
     try {
-      return InetAddress.getByName("8.8.8.8").isReachable(2500) // google.com
-        || InetAddress.getByName("finance.yahoo.com").isReachable(2500); // yahoo finance
+      System.err.println("checking internet...");
+      URL url = new URL("http://www.google.com");
+      int timeoutMs = 2500;
+      URLConnection conn = url.openConnection();
+      conn.setConnectTimeout(timeoutMs);
+      conn.setReadTimeout(timeoutMs);
+      conn.getInputStream();
+      System.err.println("yes");
+
+      //return InetAddress.getByName("8.8.8.8").isReachable(2500) // google.com
+      //  || InetAddress.getByName("finance.yahoo.com").isReachable(2500); // yahoo finance
+
+      return true;
     } catch (IOException e) {
+      System.err.println("no");
       return false;
     }
   }

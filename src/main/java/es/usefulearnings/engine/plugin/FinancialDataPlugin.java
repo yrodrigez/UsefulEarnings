@@ -8,43 +8,27 @@ import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.FinancialData;
 
+import java.io.IOException;
 import java.net.URL;
 
 /**
  * ${PATH}
  * Created by yago on 12/09/16.
  */
-public class FinancialDataPlugin implements Plugin<Company> {
-  private FinancialData mFinancialData;
-  private URL mUrl;
-  private ObjectMapper mapper;
-
-  private String mCompanySymbol;
-  private String mModule = YahooLinks.COMPANY_FINANCIAL_DATA;
-
-  public FinancialDataPlugin() {
-    mapper = new ObjectMapper();
-
+public class FinancialDataPlugin extends YahooFinanceAPIPlugin{
+  @Override
+  protected String getValueToSearch() {
+    return "financialData";
   }
-
-  public String getCompanySymbol() {
-    return mCompanySymbol;
-  }
-
 
   @Override
-  public void addInfo(Company company) throws PluginException {
-    try {
-      mCompanySymbol = company.getSymbol();
-      mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
+  protected String getModuleName() {
+    return YahooLinks.COMPANY_FINANCIAL_DATA;
+  }
 
-      JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
-      JsonNode calendarEventsNode = root.findValue(mModule);
-      mFinancialData = mapper.readValue(calendarEventsNode.traverse(), FinancialData.class);
-
-      company.setFinancialData(mFinancialData);
-    } catch (Exception anyException) {
-      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);
-    }
+  @Override
+  protected void processJsonNode(Company company, JsonNode node) throws IOException {
+    FinancialData financialData = mapper.readValue(node.traverse(), FinancialData.class);
+    company.setFinancialData(financialData);
   }
 }

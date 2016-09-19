@@ -2,17 +2,24 @@ package es.usefulearnings.entities;
 
 import es.usefulearnings.annotation.FieldType;
 import es.usefulearnings.annotation.ObservableField;
+import es.usefulearnings.utils.NoStocksFoundException;
+import es.usefulearnings.utils.ResourcesHelper;
 
-import java.io.Serializable;
+import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  *
  *
  * @author yago.
  */
-public class SearchResult implements Serializable {
+public class SearchResult implements Entity, Serializable {
+  @ObservableField(name = "Created", fieldType = FieldType.DATE)
+  private long created;
+
   @ObservableField(name = "Companies found", fieldType = FieldType.FIELD_ARRAY_LIST)
   private ArrayList<Company> companiesFound;
 
@@ -22,17 +29,20 @@ public class SearchResult implements Serializable {
   @ObservableField(name = "Option chains found", fieldType = FieldType.FIELD_ARRAY_LIST)
   private ArrayList<OptionChain> optionChainsFound;
 
-  public SearchResult() {
+  public SearchResult(long created) {
+    this.created = created;
     companiesFound = new ArrayList<>();
     optionsFound = new ArrayList<>();
     optionChainsFound = new ArrayList<>();
   }
 
   public SearchResult (
+    long created,
     ArrayList<Company> companiesFound,
     ArrayList<Option> optionsFound,
     ArrayList<OptionChain> optionChainsFound
   ) {
+    this.created = created;
     this.companiesFound = companiesFound;
     this.optionsFound = optionsFound;
     this.optionChainsFound = optionChainsFound;
@@ -72,5 +82,29 @@ public class SearchResult implements Serializable {
 
   public void setOptionChainsFound(ArrayList<OptionChain> optionChainsFound) {
     this.optionChainsFound = optionChainsFound;
+  }
+
+  @Override
+  public String toString() {
+    return "Downloaded on " + new SimpleDateFormat("yyyy/MM/dd").format(new Date(created * 1000L));
+  }
+
+  @Override
+  public void save() {
+    try {
+      String serializationPath = ResourcesHelper.getInstance().getSerializationPath();
+      String mSerializationPath = serializationPath + File.separator + "searches" + File.separator + created + ".ued";
+      try {
+        FileOutputStream data = new FileOutputStream(mSerializationPath);
+        ObjectOutputStream stream = new ObjectOutputStream(data);
+        stream.writeObject(this);
+        stream.close();
+        data.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }catch (NoStocksFoundException e){
+      // do nothing with this...
+    }
   }
 }

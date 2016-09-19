@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.net.Socket;
 
 public class Main extends Application {
 
@@ -66,6 +67,9 @@ public class Main extends Application {
 
 
   public static void main(String[] args) {
+
+    System.setProperty("sun.net.client.defaultConnectTimeout", "20000");
+    System.setProperty("sun.net.client.defaultReadTimeout", "20000");
     launch(args);
   }
 }

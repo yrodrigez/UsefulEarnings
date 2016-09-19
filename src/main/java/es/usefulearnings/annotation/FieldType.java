@@ -46,7 +46,7 @@ public enum FieldType {
    */
   FIELD_ARRAY_LIST,
 
-  /**
+  IGNORE, /**
    * Field to be converted to an URL.
    */
   URL

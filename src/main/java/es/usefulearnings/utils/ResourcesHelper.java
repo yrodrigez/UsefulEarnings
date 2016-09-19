@@ -33,11 +33,12 @@ public class ResourcesHelper {
       + File.separator + "stocks";
     stocksFile = new File(stocksPath);
 
+
     serializationPath = resourcesPath
-      +File.separator + "serialization";
+      +File.separator + "data";
     serializationFile = new File(serializationPath);
 
-    createStocksFile();
+    createFiles();
     stocks = createAvailableStocksFromFolder();
   }
 
@@ -65,12 +66,17 @@ public class ResourcesHelper {
     return stocks;
   }
 
-  private void createStocksFile(){
-    File stocksFile = new File(stocksPath);
+  private void createFiles(){
     if(!stocksFile.exists())
       if(stocksFile.mkdirs())
-        System.out.printf("File succesfully created at "+ stocksFile);
-      else System.err.println("Could not create file stocks at " + stocksPath);
+        System.out.printf("File successfully created at "+ stocksFile);
+      else System.err.println("Could not create file at " + stocksPath);
+
+    if(!serializationFile.exists())
+      if(serializationFile.mkdir())
+        System.out.printf("File successfully created at "+ serializationPath);
+      else System.err.println("Could not create file at " + serializationPath);
+
   }
 
   public static ResourcesHelper getInstance() throws NoStocksFoundException {

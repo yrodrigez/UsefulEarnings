@@ -9,47 +9,36 @@ import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.BalanceSheetStatement;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
 /**
  * @author Yago Rodríguez
  */
-public class BalanceSheetStatementsPlugin implements Plugin<Company> {
+public class BalanceSheetStatementsPlugin extends YahooFinanceAPIPlugin {
+
   private ArrayList<BalanceSheetStatement> mBalanceSheetStatements;
-  private URL mUrl;
-  private ObjectMapper mapper;
 
-  private String mCompanySymbol;
-  private String mModule = YahooLinks.COMPANY_BALANCE_SHEET_HISTORY;
 
-  public BalanceSheetStatementsPlugin() {
-    mapper = new ObjectMapper();
+  @Override
+  protected String getValueToSearch() {
+    return "balanceSheetStatements";
   }
 
-  public String getCompanySymbol() {
-    return mCompanySymbol;
+  @Override
+  protected String getModuleName() {
+    return YahooLinks.COMPANY_BALANCE_SHEET_HISTORY;
   }
 
 
   @Override
-  public void addInfo(Company company) throws PluginException {
-    try {
-      mCompanySymbol = company.getSymbol();
-      mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
-
-      mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
-      JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
-      JsonNode balanceSheetStatementsNode = root.findValue("balanceSheetStatements");
-      mBalanceSheetStatements = mapper.readValue(
-        balanceSheetStatementsNode.traverse(),
-        new TypeReference<ArrayList<BalanceSheetStatement>>() {
-        }
-      );
-
-      company.setBalanceSheetStatements(mBalanceSheetStatements);
-    } catch (Exception anyException) {
-      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);
-    }
+  protected void processJsonNode(Company company, JsonNode node) throws IOException {
+    mBalanceSheetStatements = mapper.readValue(
+      node.traverse(),
+      new TypeReference<ArrayList<BalanceSheetStatement>>() {
+      }
+    );
+    company.setBalanceSheetStatements(mBalanceSheetStatements);
   }
 }

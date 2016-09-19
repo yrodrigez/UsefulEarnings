@@ -37,6 +37,9 @@ public class Company implements Serializable {
   @EntityParameter(name = "Balance sheet statement" , entityType = EntityParameterType.ARRAY_LIST)
   private ArrayList<BalanceSheetStatement> balanceSheetStatements;
 
+  /**
+   * TODO DELETE THIS...
+   */
   public Company() {
     profile = new Profile();
     calendarEvents = new CalendarEvents();

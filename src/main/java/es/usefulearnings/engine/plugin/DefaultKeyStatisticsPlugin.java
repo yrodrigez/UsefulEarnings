@@ -8,43 +8,29 @@ import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.DefaultKeyStatistics;
 
+import java.io.IOException;
 import java.net.URL;
 
 /**
  * ${PATH}
  * Created by yago on 12/09/16.
  */
-public class DefaultKeyStatisticsPlugin implements Plugin<Company> {
-
-  private DefaultKeyStatistics mDefaultKeyStatistics;
-  private URL mUrl;
-  private ObjectMapper mapper;
-
-  private String mCompanySymbol;
-  private String mModule = YahooLinks.COMPANY_DEFAULT_KEY_STATISTICS;
-
-  public DefaultKeyStatisticsPlugin() {
-    mapper = new ObjectMapper();
-  }
-
-  public String getCompanySymbol() {
-    return mCompanySymbol;
-  }
-
+public class DefaultKeyStatisticsPlugin extends YahooFinanceAPIPlugin{
 
   @Override
-  public void addInfo(Company company) throws PluginException {
-    try {
-      mCompanySymbol = company.getSymbol();
-      mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
+  protected String getValueToSearch() {
+    return "defaultKeyStatistics";
+  }
 
-      JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
-      JsonNode calendarEventsNode = root.findValue(mModule);
-      mDefaultKeyStatistics = mapper.readValue(calendarEventsNode.traverse(), DefaultKeyStatistics.class);
+  @Override
+  protected String getModuleName() {
+    return YahooLinks.COMPANY_DEFAULT_KEY_STATISTICS;
+  }
 
-      company.setDefaultKeyStatistics(mDefaultKeyStatistics);
-    } catch (Exception anyException) {
-      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);
-    }
+  @Override
+  protected void processJsonNode(Company company, JsonNode node) throws IOException {
+    DefaultKeyStatistics defaultKeyStatistics = mapper.readValue(node.traverse(), DefaultKeyStatistics.class);
+
+    company.setDefaultKeyStatistics(defaultKeyStatistics);
   }
 }

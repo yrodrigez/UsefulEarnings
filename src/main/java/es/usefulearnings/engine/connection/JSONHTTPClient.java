@@ -1,9 +1,6 @@
 package es.usefulearnings.engine.connection;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.net.URL;
 import java.util.Collections;
@@ -19,22 +16,9 @@ public class JSONHTTPClient {
   private Map<String, JsonNode> cache;
   private ObjectMapper mapper;
 
-  private class MyObjectMapper extends ObjectMapper {
-    MyObjectMapper(){
-      super();
-      configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-      configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-      configure(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT, true);
-
-      configure(JsonParser.Feature.ALLOW_MISSING_VALUES, true);
-      configure(JsonParser.Feature.ALLOW_COMMENTS, true);
-      configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, true);
-    }
-  }
-
   private JSONHTTPClient() {
     cache = Collections.synchronizedMap(new TreeMap<>());
-    mapper = new MyObjectMapper();
+    mapper = new ObjectMapper();
   }
 
   private static JSONHTTPClient mInstance = new JSONHTTPClient();

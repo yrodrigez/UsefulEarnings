@@ -8,41 +8,26 @@ import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.CalendarEvents;
 
+import java.io.IOException;
 import java.net.URL;
 
 /**
  * @author Yago
  */
-public class CalendarEventsPlugin implements Plugin<Company> {
-  private CalendarEvents mCalendarEvents;
-  private URL mUrl;
-  private ObjectMapper mapper;
-
-  private String mCompanySymbol;
-  private String mModule = YahooLinks.COMPANY_CALENDAR_EVENTS;
-
-  public CalendarEventsPlugin() {
-    mapper = new ObjectMapper();
+public class CalendarEventsPlugin extends YahooFinanceAPIPlugin {
+  @Override
+  protected String getValueToSearch() {
+    return "calendarEvents";
   }
-
-  public String getCompanySymbol() {
-    return mCompanySymbol;
-  }
-
 
   @Override
-  public void addInfo(Company company) throws PluginException {
-    try {
-      mCompanySymbol = company.getSymbol();
-      mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, mModule);
+  protected String getModuleName() {
+    return YahooLinks.COMPANY_CALENDAR_EVENTS;
+  }
 
-      JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
-      JsonNode calendarEventsNode = root.findValue(mModule);
-      mCalendarEvents = mapper.readValue(calendarEventsNode.traverse(), CalendarEvents.class);
-
-      company.setCalendarEvents(mCalendarEvents);
-    } catch (Exception anyException) {
-      throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);
-    }
+  @Override
+  protected void processJsonNode(Company company, JsonNode node) throws IOException {
+    CalendarEvents calendarEvents = mapper.readValue(node.traverse(), CalendarEvents.class);
+    company.setCalendarEvents(calendarEvents);
   }
 }

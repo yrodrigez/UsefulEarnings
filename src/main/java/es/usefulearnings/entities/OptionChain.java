@@ -10,10 +10,13 @@ import java.util.ArrayList;
 /**
  * @author Yago on 13/09/2016.
  */
-public class OptionChain implements Serializable {
+public class OptionChain implements  Serializable {
 
   @ObservableField(name = "Expiration Date", fieldType = FieldType.DATE)
   private long mExpirationDate;
+
+  @ObservableField(name= "", fieldType = FieldType.IGNORE)
+  private Company company;
 
   @ObservableField(name = "Calls", fieldType = FieldType.FIELD_ARRAY_LIST)
   private ArrayList<OptionLink> mCalls;
