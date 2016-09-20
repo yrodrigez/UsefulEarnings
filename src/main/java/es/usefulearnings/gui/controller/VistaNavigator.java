@@ -1,6 +1,8 @@
 package es.usefulearnings.gui.controller;
 
 import es.usefulearnings.gui.Main;
+import es.usefulearnings.gui.view.AlertHelper;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 
@@ -90,11 +92,8 @@ public class VistaNavigator {
       mainController.setVista(
         vista.isLoaded() ? vista.getNode() : vista.load(FXMLLoader.load(Main.class.getResource(fxml)))
       );
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+      } catch (IOException e) {
+        AlertHelper.showExceptionAlert(e);
+      }
   }
-
-
-
 }

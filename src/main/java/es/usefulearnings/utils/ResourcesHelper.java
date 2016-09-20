@@ -1,8 +1,12 @@
 package es.usefulearnings.utils;
 
+import es.usefulearnings.entities.DownloadedData;
 import es.usefulearnings.entities.Stock;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +71,24 @@ public class ResourcesHelper {
     }
 
     return stocks;
+  }
+
+  private List<DownloadedData> getDownloadedData() throws IOException, ClassNotFoundException {
+    List<DownloadedData> toRet = new ArrayList<>();
+
+    if(searchesFile.exists()){
+      if(searchesFile.listFiles().length > 0){
+        for(File downloadedData : searchesFile.listFiles()){
+          FileInputStream fileIn = new FileInputStream(downloadedData.getName());
+          ObjectInputStream in = new ObjectInputStream(fileIn);
+          toRet.add((DownloadedData) in.readObject());
+          in.close();
+          fileIn.close();
+        }
+      }
+    }
+
+    return toRet;
   }
 
   private void createFiles(){
