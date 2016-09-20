@@ -9,6 +9,7 @@ import es.usefulearnings.entities.DownloadedData;
 import es.usefulearnings.entities.Option;
 import es.usefulearnings.gui.view.AlertHelper;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -118,9 +119,11 @@ public class DownloadController<E> implements Initializable {
 
     ScrollPane scrollPane = new ScrollPane(innerVBox);
     scrollPane.setStyle("-fx-background-color: white");
-    innerVBox.getChildren().add(new Label(
-      "Concurrent downloads: " + companiesTasks.size()
-    ));
+    Label activeCoresLabel = new Label();
+    activeCoresLabel.textProperty().bind(new SimpleLongProperty(this.downloadButtonLocker).asString());
+    HBox coresInfo = new HBox();
+    coresInfo.getChildren().addAll(new Label("Active downloads: "), activeCoresLabel);
+    innerVBox.getChildren().add(coresInfo);
     for (
       DownloaderTask<Company> task :
       companiesTasks

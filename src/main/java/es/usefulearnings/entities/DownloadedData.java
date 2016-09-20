@@ -93,7 +93,7 @@ public class DownloadedData implements Savable, Serializable {
 
   @Override
   public String toString() {
-    return "Downloaded on " + new SimpleDateFormat("yyyy/MM/dd").format(new Date(created * 1000L));
+    return "Downloaded on " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(created * 1000L));
   }
 
   @Override

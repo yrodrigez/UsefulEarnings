@@ -73,13 +73,13 @@ public class ResourcesHelper {
     return stocks;
   }
 
-  private List<DownloadedData> getDownloadedData() throws IOException, ClassNotFoundException {
+  public List<DownloadedData> getDownloadedData() throws IOException, ClassNotFoundException {
     List<DownloadedData> toRet = new ArrayList<>();
 
     if(searchesFile.exists()){
-      if(searchesFile.listFiles().length > 0){
+      if(searchesFile.listFiles() != null){
         for(File downloadedData : searchesFile.listFiles()){
-          FileInputStream fileIn = new FileInputStream(downloadedData.getName());
+          FileInputStream fileIn = new FileInputStream(downloadedData.getAbsolutePath());
           ObjectInputStream in = new ObjectInputStream(fileIn);
           toRet.add((DownloadedData) in.readObject());
           in.close();
