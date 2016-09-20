@@ -9,6 +9,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Date;
  *
  * @author yago.
  */
-public class SearchResult implements Savable, Serializable {
+public class DownloadedData implements Savable, Serializable {
   @ObservableField(name = "Created", fieldType = FieldType.DATE)
   private long created;
 
@@ -29,14 +30,14 @@ public class SearchResult implements Savable, Serializable {
   @ObservableField(name = "Option chains found", fieldType = FieldType.FIELD_ARRAY_LIST)
   private ArrayList<OptionChain> optionChainsFound;
 
-  public SearchResult(long created) {
+  public DownloadedData(long created) {
     this.created = created;
     companiesFound = new ArrayList<>();
     optionsFound = new ArrayList<>();
     optionChainsFound = new ArrayList<>();
   }
 
-  public SearchResult (
+  public DownloadedData(
     long created,
     ArrayList<Company> companiesFound,
     ArrayList<Option> optionsFound,
@@ -51,9 +52,15 @@ public class SearchResult implements Savable, Serializable {
   public void addAllFoundOptions(Option... options){
     this.optionsFound.addAll(Arrays.asList(options));
   }
+  public void addAllFoundOptions(Collection<Option> options){
+    this.optionsFound.addAll(options);
+  }
 
   public void addAllFoundCompanies(Company... companies){
     this.companiesFound.addAll(Arrays.asList(companies));
+  }
+  public void addAllFoundCompanies(Collection<Company> companies){
+    this.companiesFound.addAll(companies);
   }
 
   public void addAllOptionChains(OptionChain... optionChains){
@@ -90,23 +97,20 @@ public class SearchResult implements Savable, Serializable {
   }
 
   @Override
-  public void save() {
+  public void save() throws IOException {
     final String searchResultExtension = ".sr";
     try {
       String location = ResourcesHelper.getInstance().getSearchesPath()
                         + File.separator
+                        + this.created
                         + searchResultExtension;
-      try {
-        FileOutputStream data = new FileOutputStream(location);
-        ObjectOutputStream stream = new ObjectOutputStream(data);
-        stream.writeObject(this);
-        stream.close();
-        data.close();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      FileOutputStream data = new FileOutputStream(location);
+      ObjectOutputStream stream = new ObjectOutputStream(data);
+      stream.writeObject(this);
+      stream.close();
+      data.close();
     } catch (NoStocksFoundException e) {
-      // TODO: Do something with this exception....
+      e.printStackTrace();
     }
   }
 }

@@ -21,6 +21,7 @@ public class DownloadProcess<E> extends Process implements Runnable {
   private boolean hasFailed;
 
   private ArrayList<Plugin> plugins;
+
   private List<E> entities;
 
   public DownloadProcess(
@@ -79,10 +80,10 @@ public class DownloadProcess<E> extends Process implements Runnable {
     }
   }
 
-
   public void stop() {
     this.stop = true;
   }
+
 
   public boolean hasFailed() {
     return hasFailed;
@@ -90,6 +91,10 @@ public class DownloadProcess<E> extends Process implements Runnable {
 
   public Exception getError() {
     return this.err;
+  }
+
+  public List<E> getEntities() {
+    return entities;
   }
 
 }

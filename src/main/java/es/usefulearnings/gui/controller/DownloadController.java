@@ -5,6 +5,10 @@ import es.usefulearnings.engine.connection.DownloadProcess;
 import es.usefulearnings.engine.connection.ProcessHandler;
 import es.usefulearnings.engine.plugin.Plugin;
 import es.usefulearnings.entities.Company;
+import es.usefulearnings.entities.DownloadedData;
+import es.usefulearnings.entities.Option;
+import es.usefulearnings.gui.view.AlertHelper;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -14,15 +18,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author Yago on 04/09/2016.
  */
-public class DownloadController implements Initializable {
+public class DownloadController<E> implements Initializable {
   public VBox progressPane;
   public Button downloadCompaniesButton;
   public Button stopButton;
@@ -30,12 +33,14 @@ public class DownloadController implements Initializable {
   public BorderPane mainPane;
 
   private ArrayList<DownloaderTask<Company>> companiesTasks;
-
   private int downloadButtonLocker;
+  private DownloadedData downloadedData;
 
   private class DownloaderTask<E> extends Task<Void> {
-    DownloadProcess<E> process;
-    ProcessHandler handler;
+    private DownloadProcess<E> process;
+    private ProcessHandler handler;
+    private List<E> entities;
+
 
     DownloaderTask(ArrayList<Plugin> plugins, List<E> entities){
       handler = new ProcessHandler() {
@@ -78,7 +83,8 @@ public class DownloadController implements Initializable {
         throw process.getError();
       }
 
-      reActivateDownloadButton();
+      this.entities = process.getEntities();
+      downloadCompleted(entities);
       return null;
     }
 
@@ -86,6 +92,7 @@ public class DownloadController implements Initializable {
       this.process.stop();
     }
   }
+
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -96,6 +103,9 @@ public class DownloadController implements Initializable {
   public void downloadAction(ActionEvent event) {
     // start a download
     this.downloadAllCompaniesData();
+
+    // instance the DownloadedData object
+    this.downloadedData = new DownloadedData(new Date().getTime() / 1000L);
     // set a behavior
     progressPane.getChildren().setAll(this.getDownloadBehaviorNode());
 
@@ -108,7 +118,9 @@ public class DownloadController implements Initializable {
 
     ScrollPane scrollPane = new ScrollPane(innerVBox);
     scrollPane.setStyle("-fx-background-color: white");
-
+    innerVBox.getChildren().add(new Label(
+      "Concurrent downloads: " + companiesTasks.size()
+    ));
     for (
       DownloaderTask<Company> task :
       companiesTasks
@@ -193,7 +205,7 @@ public class DownloadController implements Initializable {
       companiesTasks.add(task);
 
       Core.getInstance().getAvailableThreads()[i] = new Thread(task);
-      Core.getInstance().getAvailableThreads()[i].setName("UsefulEarnings-Process-"+i);
+      Core.getInstance().getAvailableThreads()[i].setName("UsefulEarnings-Process-" + i);
       Core.getInstance().getAvailableThreads()[i].setDaemon(true);
       Core.getInstance().getAvailableThreads()[i].start();
 
@@ -201,11 +213,33 @@ public class DownloadController implements Initializable {
     }
   }
 
-  private void reActivateDownloadButton(){
+  private <E> void downloadCompleted(List<E> entities){
+    if(entities.size() > 0) {
+      if (entities.get(0) instanceof Company) {
+        this.downloadedData.addAllFoundCompanies((Collection<Company>) entities);
+      }
+      if (entities.get(0) instanceof Option) {
+        this.downloadedData.addAllFoundOptions((Collection<Option>) entities);
+      }
+    }
+
     if(--downloadButtonLocker == 0){
+      new Thread(() -> {
+        try {
+          downloadedData.save();
+        } catch(IOException e) {
+          e.printStackTrace();
+          Platform.runLater(() ->
+            AlertHelper.showExceptionAlert(e));
+        }
+      }).start();
+
       downloadButtonLocker = Core.getInstance().MAX_THREADS;
-      downloadCompaniesButton.setDisable(false);
-      downloadCompaniesButton.setText("Download");
+
+      Platform.runLater(() -> {
+        downloadCompaniesButton.setDisable(false);
+        downloadCompaniesButton.setText("Download");
+      });
     }
   }
 }
