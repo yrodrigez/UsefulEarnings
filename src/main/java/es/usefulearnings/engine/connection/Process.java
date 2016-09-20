@@ -26,7 +26,7 @@ abstract class Process {
     handler.onError(err);
   }
 
-  protected void onSuccess(){
+  void onSuccess(){
     handler.onSuccess();
   }
 

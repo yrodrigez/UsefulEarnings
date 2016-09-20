@@ -18,25 +18,28 @@ public class ResourcesHelper {
   private final String resourcesPath;
   private final String stocksPath;
   private final String serializationPath;
+  private final String searchesPath;
 
   private final File stocksFile;
   private final File serializationFile;
+  private final File searchesFile;
+
 
   private final List<Stock> stocks;
 
   private ResourcesHelper() throws NoStocksFoundException {
     resourcesPath = System.getProperty("user.home")
-      + File.separator + "YahooUsefulEarnings"
-      + File.separator + "resources";
+                    + File.separator + "UsefulEarnings"
+                    + File.separator + "resources";
 
-    stocksPath = resourcesPath
-      + File.separator + "stocks";
+    stocksPath = resourcesPath + File.separator + "stocks";
     stocksFile = new File(stocksPath);
 
-
-    serializationPath = resourcesPath
-      +File.separator + "data";
+    serializationPath = resourcesPath +File.separator + "data";
     serializationFile = new File(serializationPath);
+
+    searchesPath = serializationPath + File.separator + "searches";
+    searchesFile = new File(searchesPath);
 
     createFiles();
     stocks = createAvailableStocksFromFolder();
@@ -67,16 +70,25 @@ public class ResourcesHelper {
   }
 
   private void createFiles(){
+    // STOCKS
     if(!stocksFile.exists())
       if(stocksFile.mkdirs())
         System.out.printf("File successfully created at "+ stocksFile);
       else System.err.println("Could not create file at " + stocksPath);
 
+    // SERIALIZATION
     if(!serializationFile.exists())
       if(serializationFile.mkdir())
         System.out.printf("File successfully created at "+ serializationPath);
       else System.err.println("Could not create file at " + serializationPath);
 
+    // SEARCHES
+    if(!searchesFile.exists())
+      if(searchesFile.mkdir())
+        System.out.printf("File successfully created at "+ searchesPath);
+      else System.err.println("Could not create file at " + searchesFile);
+
+    // ENTITIES
   }
 
   public static ResourcesHelper getInstance() throws NoStocksFoundException {
@@ -102,6 +114,10 @@ public class ResourcesHelper {
 
   public File getSerializationFile() {
     return serializationFile;
+  }
+
+  public String getSearchesPath() {
+    return searchesPath;
   }
 
 }

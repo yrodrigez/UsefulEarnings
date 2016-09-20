@@ -16,7 +16,7 @@ import java.util.Date;
  *
  * @author yago.
  */
-public class SearchResult implements Entity, Serializable {
+public class SearchResult implements Savable, Serializable {
   @ObservableField(name = "Created", fieldType = FieldType.DATE)
   private long created;
 
@@ -91,11 +91,13 @@ public class SearchResult implements Entity, Serializable {
 
   @Override
   public void save() {
+    final String searchResultExtension = ".sr";
     try {
-      String serializationPath = ResourcesHelper.getInstance().getSerializationPath();
-      String mSerializationPath = serializationPath + File.separator + "searches" + File.separator + created + ".ued";
+      String location = ResourcesHelper.getInstance().getSearchesPath()
+                        + File.separator
+                        + searchResultExtension;
       try {
-        FileOutputStream data = new FileOutputStream(mSerializationPath);
+        FileOutputStream data = new FileOutputStream(location);
         ObjectOutputStream stream = new ObjectOutputStream(data);
         stream.writeObject(this);
         stream.close();
@@ -103,8 +105,8 @@ public class SearchResult implements Entity, Serializable {
       } catch (IOException e) {
         e.printStackTrace();
       }
-    }catch (NoStocksFoundException e){
-      // do nothing with this...
+    } catch (NoStocksFoundException e) {
+      // TODO: Do something with this exception....
     }
   }
 }

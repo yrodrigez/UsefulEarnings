@@ -3,6 +3,6 @@ package es.usefulearnings.entities;
 /**
  * @author yago.
  */
-public interface Entity {
+public interface Savable {
   void save();
 }
