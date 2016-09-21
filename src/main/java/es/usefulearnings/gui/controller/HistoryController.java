@@ -19,10 +19,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-import javax.swing.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,7 +58,7 @@ public class HistoryController implements Initializable {
           progressLabel.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
           progressLabel.setGraphic(progressIndicator);
           Tooltip tooltip = new Tooltip("Recovering data please wait...");
-          tooltip.setPrefSize(150,300);
+          tooltip.setPrefSize(150, 20);
           progressIndicator.setTooltip(tooltip);
           progressLabel.setPrefSize(500, 500);
           borderPane.setCenter(progressLabel);
@@ -141,12 +137,14 @@ public class HistoryController implements Initializable {
   }
 
   private void showSummary(DownloadedData downloadedData) {
-    downloadedSummary.getChildren().clear();
-    Label dateLabel = new Label(downloadedData.toString());
-    Label companiesFound = new Label("Companies found: " + downloadedData.getCompaniesFound().size());
-    Label optionsFound = new Label("Options found: " + downloadedData.getOptionsFound().size());
-    Label optionChains = new Label("Option chains found: " + downloadedData.getOptionsFound().size());
-    downloadedSummary.getChildren().addAll(dateLabel, companiesFound, optionsFound, optionChains);
+    Platform.runLater(()-> {
+      downloadedSummary.getChildren().clear();
+      Label dateLabel = new Label(downloadedData.toString());
+      Label companiesFound = new Label("Companies found: " + downloadedData.getCompaniesFound().size());
+      Label optionsFound = new Label("Options found: " + downloadedData.getOptionsFound().size());
+      Label optionChains = new Label("Option chains found: " + downloadedData.getOptionsFound().size());
+      downloadedSummary.getChildren().addAll(dateLabel, companiesFound, optionsFound, optionChains);
+    });
   }
 
   public void reload(ActionEvent event) {

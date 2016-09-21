@@ -4,10 +4,8 @@ import es.usefulearnings.engine.Core;
 import es.usefulearnings.engine.connection.DownloadProcess;
 import es.usefulearnings.engine.connection.ProcessHandler;
 import es.usefulearnings.engine.plugin.Plugin;
-import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.DownloadedData;
 import es.usefulearnings.entities.Entity;
-import es.usefulearnings.entities.Option;
 import es.usefulearnings.gui.view.AlertHelper;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleLongProperty;
@@ -22,7 +20,10 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * @author Yago on 04/09/2016.
@@ -42,7 +43,7 @@ public class DownloadController implements Initializable {
   private DownloadedData downloadedData;
   private final int MAX_THREADS = Runtime.getRuntime().availableProcessors() * 2;
 
-  private class DownloaderTask<E> extends Task<Void> {
+  private class DownloaderTask extends Task<Void> {
     private DownloadProcess process;
     private ProcessHandler handler;
 
@@ -198,7 +199,7 @@ public class DownloadController implements Initializable {
   private void downloadAllCompaniesData(){
     tasks = new ArrayList<>();
 
-    List<Company> allCompanies = new ArrayList<>(Core.getInstance().getAllCompanies().values());
+    List<Entity> allCompanies = new ArrayList<>(Core.getInstance().getAllCompanies().values());
 
     for(int i = 0; i < MAX_THREADS; i++){
       int from = i * (Core.getInstance().getAllCompanies().values().size() / MAX_THREADS);
