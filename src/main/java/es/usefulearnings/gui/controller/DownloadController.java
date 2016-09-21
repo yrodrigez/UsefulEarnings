@@ -6,6 +6,7 @@ import es.usefulearnings.engine.connection.ProcessHandler;
 import es.usefulearnings.engine.plugin.Plugin;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.DownloadedData;
+import es.usefulearnings.entities.Entity;
 import es.usefulearnings.entities.Option;
 import es.usefulearnings.gui.view.AlertHelper;
 import javafx.application.Platform;
@@ -26,24 +27,26 @@ import java.util.*;
 /**
  * @author Yago on 04/09/2016.
  */
-public class DownloadController<E> implements Initializable {
+public class DownloadController implements Initializable {
+
+  //FXML
   public VBox progressPane;
   public Button downloadCompaniesButton;
   public Button stopButton;
   public ListView listView;
   public BorderPane mainPane;
 
-  private ArrayList<DownloaderTask<Company>> companiesTasks;
+  //PRIVATE
+  private ArrayList<DownloaderTask> tasks;
   private int downloadButtonLocker;
   private DownloadedData downloadedData;
+  private final int MAX_THREADS = Runtime.getRuntime().availableProcessors() * 2;
 
   private class DownloaderTask<E> extends Task<Void> {
-    private DownloadProcess<E> process;
+    private DownloadProcess process;
     private ProcessHandler handler;
-    private List<E> entities;
 
-
-    DownloaderTask(ArrayList<Plugin> plugins, List<E> entities){
+    DownloaderTask(ArrayList<Plugin> plugins, List<Entity> entities){
       handler = new ProcessHandler() {
         @Override
         public void updateProgress(int workDone, int remaining) {
@@ -62,6 +65,7 @@ public class DownloadController<E> implements Initializable {
 
         @Override
         public void onError(Throwable err) {
+          Platform.runLater(()-> AlertHelper.showExceptionAlert(process.getError()));
           failed();
         }
 
@@ -71,7 +75,7 @@ public class DownloadController<E> implements Initializable {
         }
       };
 
-      process = new DownloadProcess<>(handler, plugins, entities);
+      process = new DownloadProcess(handler, plugins, entities);
     }
 
 
@@ -83,9 +87,8 @@ public class DownloadController<E> implements Initializable {
         super.failed();
         throw process.getError();
       }
-
-      this.entities = process.getEntities();
-      downloadCompleted(entities);
+      Core.getInstance().removeEntities(this.process.getEmptyEntities());
+      downloadCompleted();
       return null;
     }
 
@@ -125,8 +128,8 @@ public class DownloadController<E> implements Initializable {
     coresInfo.getChildren().addAll(new Label("Active downloads: "), activeCoresLabel);
     innerVBox.getChildren().add(coresInfo);
     for (
-      DownloaderTask<Company> task :
-      companiesTasks
+      DownloaderTask task :
+      this.tasks
       ) {
       Label label = new Label();
       label.textProperty().bind(task.messageProperty());
@@ -182,7 +185,7 @@ public class DownloadController<E> implements Initializable {
   }
 
   public void stopAction(ActionEvent event) {
-    companiesTasks.forEach(DownloaderTask::stop);
+    tasks.forEach(DownloaderTask::stop);
     downloadCompaniesButton.setText("Download");
     downloadCompaniesButton.setDisable(false);
     stopButton.setDisable(true);
@@ -193,38 +196,30 @@ public class DownloadController<E> implements Initializable {
    * Downloads companies's data from all stocks
    */
   private void downloadAllCompaniesData(){
-    companiesTasks = new ArrayList<>();
+    tasks = new ArrayList<>();
 
     List<Company> allCompanies = new ArrayList<>(Core.getInstance().getAllCompanies().values());
 
-    for(int i = 0; i < Core.getInstance().MAX_THREADS; i++){
-      int from = i * (Core.getInstance().getAllCompanies().values().size() / Core.getInstance().MAX_THREADS);
-      int to = from + (Core.getInstance().getAllCompanies().values().size() / Core.getInstance().MAX_THREADS);
-      if(i == Core.getInstance().MAX_THREADS - 1) to = Core.getInstance().getAllCompanies().values().size();
+    for(int i = 0; i < MAX_THREADS; i++){
+      int from = i * (Core.getInstance().getAllCompanies().values().size() / MAX_THREADS);
+      int to = from + (Core.getInstance().getAllCompanies().values().size() / MAX_THREADS);
+      if(i == MAX_THREADS - 1) to = Core.getInstance().getAllCompanies().values().size();
 
       ArrayList<Plugin> plugins = Core.getInstance().getCompaniesPlugins();
 
-      DownloaderTask<Company> task = new DownloaderTask<>(plugins, allCompanies.subList(from, to));
-      companiesTasks.add(task);
+      DownloaderTask task = new DownloaderTask(plugins, allCompanies.subList(from, to));
+      this.tasks.add(task);
 
-      Core.getInstance().getAvailableThreads()[i] = new Thread(task);
-      Core.getInstance().getAvailableThreads()[i].setName("UsefulEarnings-Process-" + i);
-      Core.getInstance().getAvailableThreads()[i].setDaemon(true);
-      Core.getInstance().getAvailableThreads()[i].start();
+      Thread t = new Thread(task);
+      t.setDaemon(true);
+      t.setName("UsefulEarnings-DownloadProcess-" + i);
+      t.start();
 
       downloadButtonLocker++;
     }
   }
 
-  private <E> void downloadCompleted(List<E> entities){
-    if(entities.size() > 0) {
-      if (entities.get(0) instanceof Company) {
-        this.downloadedData.addAllFoundCompanies((Collection<Company>) entities);
-      }
-      if (entities.get(0) instanceof Option) {
-        this.downloadedData.addAllFoundOptions((Collection<Option>) entities);
-      }
-    }
+  private void downloadCompleted(){
 
     if(--downloadButtonLocker == 0){
       new Thread(() -> {
@@ -237,11 +232,12 @@ public class DownloadController<E> implements Initializable {
         }
       }).start();
 
-      downloadButtonLocker = Core.getInstance().MAX_THREADS;
+      downloadButtonLocker = MAX_THREADS;
 
       Platform.runLater(() -> {
         downloadCompaniesButton.setDisable(false);
         downloadCompaniesButton.setText("Download");
+        stopButton.setDisable(true);
       });
     }
   }

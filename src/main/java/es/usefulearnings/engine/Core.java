@@ -2,10 +2,7 @@ package es.usefulearnings.engine;
 
 import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.engine.plugin.*;
-import es.usefulearnings.entities.Company;
-import es.usefulearnings.entities.Option;
-import es.usefulearnings.entities.OptionChain;
-import es.usefulearnings.entities.Stock;
+import es.usefulearnings.entities.*;
 import es.usefulearnings.utils.NoStocksFoundException;
 import es.usefulearnings.utils.ResourcesHelper;
 
@@ -13,13 +10,10 @@ import java.util.*;
 
 public class Core {
 
-  public final int MAX_THREADS = Runtime.getRuntime().availableProcessors() * 2;
-
   private ArrayList<Plugin> companiesPlugins;
 
   private List<Stock> mStocks;
 
-  private Thread[] threads;
 
   public static Core getInstance() {
     return instance;
@@ -44,9 +38,6 @@ public class Core {
     } catch (NoStocksFoundException e) {
       throw new RuntimeException(e);
     }
-
-
-    threads = new Thread[MAX_THREADS];
   }
 
   /**
@@ -95,10 +86,6 @@ public class Core {
     throw new IllegalArgumentException("Can not find a stock named " + stockName);
   }
 
-  public Thread[] getAvailableThreads() {
-    return threads;
-  }
-
   public ArrayList<Plugin> getCompaniesPlugins() {
     return this.companiesPlugins;
   }
@@ -129,6 +116,29 @@ public class Core {
       );
   }
 
+  public void removeEntities(Collection<Entity> entitiesToRemove) {
+    //TODO: implement remove for options & options chains.
+    Collection<Company> companies = new ArrayList<>();
+    Collection<Option> options = new ArrayList<>();
+    Collection<OptionChain> optionChains = new ArrayList<>();
+
+    for (Entity e: entitiesToRemove) {
+      if(e instanceof Company) {
+        companies.add((Company)e);
+      }else if (e instanceof Option){
+        options.add((Option)e);
+      }else if(e instanceof OptionChain){
+        optionChains.add((OptionChain)e);
+      }
+    }
+    removeCompanies(companies);
+  }
+
+  public void removeCompanies(Collection<Company> companiesToRemove) {
+    companiesToRemove.forEach(company -> {
+      getCompaniesFromStock(company.getStockName()).remove(company.getSymbol());
+    });
+  }
   public void setCompaniesData(List<Company> companies) {
     companies.forEach(this::setCompanyData);
   }

@@ -79,11 +79,13 @@ public class ResourcesHelper {
     if(searchesFile.exists()){
       if(searchesFile.listFiles() != null){
         for(File downloadedData : searchesFile.listFiles()){
-          FileInputStream fileIn = new FileInputStream(downloadedData.getAbsolutePath());
-          ObjectInputStream in = new ObjectInputStream(fileIn);
-          toRet.add((DownloadedData) in.readObject());
-          in.close();
-          fileIn.close();
+          if(downloadedData.getAbsolutePath().endsWith(DownloadedData.EXTENSION)) {
+            FileInputStream fileIn = new FileInputStream(downloadedData.getAbsolutePath());
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            toRet.add((DownloadedData) in.readObject());
+            in.close();
+            fileIn.close();
+          }
         }
       }
     }
@@ -136,6 +138,10 @@ public class ResourcesHelper {
 
   public File getSerializationFile() {
     return serializationFile;
+  }
+
+  public File getSearchesFile(){
+    return searchesFile;
   }
 
   public String getSearchesPath() {

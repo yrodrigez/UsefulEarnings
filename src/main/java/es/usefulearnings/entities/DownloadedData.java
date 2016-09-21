@@ -2,15 +2,13 @@ package es.usefulearnings.entities;
 
 import es.usefulearnings.annotation.FieldType;
 import es.usefulearnings.annotation.ObservableField;
+import es.usefulearnings.engine.Core;
 import es.usefulearnings.utils.NoStocksFoundException;
 import es.usefulearnings.utils.ResourcesHelper;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 /**
  *
@@ -18,11 +16,16 @@ import java.util.Date;
  * @author yago.
  */
 public class DownloadedData implements Savable, Serializable {
+
+
+  // Serializable extension
+  public static final String EXTENSION = ".sr";
+
   @ObservableField(name = "Created", fieldType = FieldType.DATE)
   private long created;
 
   @ObservableField(name = "Companies found", fieldType = FieldType.FIELD_ARRAY_LIST)
-  private ArrayList<Company> companiesFound;
+  private Map<String, Company> companiesFound;
 
   @ObservableField(name = "Options found", fieldType = FieldType.FIELD_ARRAY_LIST)
   private ArrayList<Option> optionsFound;
@@ -32,14 +35,14 @@ public class DownloadedData implements Savable, Serializable {
 
   public DownloadedData(long created) {
     this.created = created;
-    companiesFound = new ArrayList<>();
+    companiesFound = new TreeMap<>();
     optionsFound = new ArrayList<>();
     optionChainsFound = new ArrayList<>();
   }
 
   public DownloadedData(
     long created,
-    ArrayList<Company> companiesFound,
+     Map<String, Company> companiesFound,
     ArrayList<Option> optionsFound,
     ArrayList<OptionChain> optionChainsFound
   ) {
@@ -57,17 +60,17 @@ public class DownloadedData implements Savable, Serializable {
   }
 
   public void addAllFoundCompanies(Company... companies){
-    this.companiesFound.addAll(Arrays.asList(companies));
+    Arrays.asList(companies).forEach(company -> companiesFound.put(company.getSymbol(), company));
   }
   public void addAllFoundCompanies(Collection<Company> companies){
-    this.companiesFound.addAll(companies);
+    companies.forEach(company -> companiesFound.put(company.getSymbol(), company));
   }
 
   public void addAllOptionChains(OptionChain... optionChains){
     this.optionChainsFound.addAll(Arrays.asList(optionChains));
   }
 
-  public ArrayList<Company> getCompaniesFound() {
+  public Map<String, Company> getCompaniesFound() {
     return this.companiesFound;
   }
 
@@ -75,7 +78,7 @@ public class DownloadedData implements Savable, Serializable {
     return this.optionsFound;
   }
 
-  public void setCompaniesFound(ArrayList<Company> companiesFound) {
+  public void setCompaniesFound(Map<String, Company> companiesFound) {
     this.companiesFound = companiesFound;
   }
 
@@ -91,19 +94,26 @@ public class DownloadedData implements Savable, Serializable {
     this.optionChainsFound = optionChainsFound;
   }
 
+  public String getDateToString() {
+    return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(created * 1000L));
+  }
+
   @Override
   public String toString() {
-    return "Downloaded on " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(created * 1000L));
+    return "Downloaded on " + getDateToString();
   }
 
   @Override
   public void save() throws IOException {
-    final String searchResultExtension = ".sr";
     try {
+      if(this.getOptionsFound().isEmpty() && getCompaniesFound().isEmpty() && getOptionChainsFound().isEmpty()){
+        this.companiesFound = Core.getInstance().getAllCompanies();
+        // TODO implement this for options...
+      }
       String location = ResourcesHelper.getInstance().getSearchesPath()
                         + File.separator
                         + this.created
-                        + searchResultExtension;
+                        + EXTENSION;
       FileOutputStream data = new FileOutputStream(location);
       ObjectOutputStream stream = new ObjectOutputStream(data);
       stream.writeObject(this);

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * @author Yago on 13/09/2016.
  */
-public class OptionChain implements  Serializable {
+public class OptionChain implements  Serializable, Entity {
 
   @ObservableField(name = "Expiration Date", fieldType = FieldType.DATE)
   private long mExpirationDate;
@@ -20,7 +20,7 @@ public class OptionChain implements  Serializable {
 
   @ObservableField(name = "Calls", fieldType = FieldType.FIELD_ARRAY_LIST)
   private ArrayList<OptionLink> mCalls;
-  @ObservableField(name = "Calls", fieldType = FieldType.FIELD_ARRAY_LIST)
+  @ObservableField(name = "Puts", fieldType = FieldType.FIELD_ARRAY_LIST)
   private ArrayList<OptionLink> mPuts;
 
   public OptionChain(
@@ -55,6 +55,11 @@ public class OptionChain implements  Serializable {
 
   public void setmPuts(ArrayList<OptionLink> mPuts) {
     this.mPuts = mPuts;
+  }
+
+  @Override
+  public boolean isEmpty() {
+    return !(mCalls.isEmpty() || mPuts.isEmpty());
   }
 }
 

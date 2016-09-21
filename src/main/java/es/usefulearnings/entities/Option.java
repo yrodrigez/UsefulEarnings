@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author Yago
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Option implements Serializable {
+public class Option implements Serializable, Entity {
 
   private String optionSymbol;
 
@@ -45,5 +45,10 @@ public class Option implements Serializable {
 
   public void setOptionSymbol(String optionSymbol) {
     this.optionSymbol = optionSymbol;
+  }
+
+  @Override
+  public boolean isEmpty() {
+    return !(summaryDetail.isSet() || price.isSet());
   }
 }

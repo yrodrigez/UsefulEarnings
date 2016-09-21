@@ -1,8 +1,10 @@
 package es.usefulearnings.engine.connection;
 
+import es.usefulearnings.engine.Core;
 import es.usefulearnings.engine.plugin.Plugin;
 import es.usefulearnings.engine.plugin.PluginException;
 import es.usefulearnings.entities.Company;
+import es.usefulearnings.entities.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
 /**
  * @author yago.
  */
-public class DownloadProcess<E> extends Process implements Runnable {
+public class DownloadProcess extends Process implements Runnable {
 
   private Exception err;
 
@@ -22,15 +24,17 @@ public class DownloadProcess<E> extends Process implements Runnable {
 
   private ArrayList<Plugin> plugins;
 
-  private List<E> entities;
+  private List<Entity> entities;
+  private List<Entity> emptyEntities;
 
   public DownloadProcess(
     ProcessHandler handler,
     ArrayList<Plugin> plugins,
-    List<E> entities
+    List<Entity> entities
   ) {
     super(handler);
 
+    this.emptyEntities = new ArrayList<>();
     this.plugins = plugins;
     this.entities = entities;
 
@@ -42,7 +46,7 @@ public class DownloadProcess<E> extends Process implements Runnable {
   @Override
   public void run() {
     try {
-      for (E entity : entities) {
+      for (Entity entity : entities) {
         if (stop) {
           updateMessage("Stopped!");
           onCancelled();
@@ -63,10 +67,14 @@ public class DownloadProcess<E> extends Process implements Runnable {
             }
           }
         }// end foreach plugin
+        if(entity.isEmpty()){
+          emptyEntities.add(entity);
+        }
         updateProgress(++workDone, remainingWork);
         updateMessage(workDone + " out of " + remainingWork + "\tCurrent company: " + ((Company) entity).getSymbol());
       }// end foreach entity
-      if (!stop && !hasFailed) { // Success
+      if (!stop && !hasFailed) { // Success.
+        Core.getInstance().removeEntities(emptyEntities);
         updateMessage("Work done!");
         onSuccess();
       }
@@ -93,8 +101,11 @@ public class DownloadProcess<E> extends Process implements Runnable {
     return this.err;
   }
 
-  public List<E> getEntities() {
+  public List<Entity> getEntities() {
     return entities;
+  }
+  public List<Entity> getEmptyEntities() {
+    return emptyEntities;
   }
 
 }

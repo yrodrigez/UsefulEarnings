@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @author Yago Rodríguez
  */
 
-public class Company implements Serializable {
+public class Company implements Serializable, Entity {
   @EntityParameter(name = "Symbol", entityType = EntityParameterType.IGNORE)
   private String symbol;
 
@@ -158,5 +158,11 @@ public class Company implements Serializable {
 
   public String getStockName() {
     return this.stockName;
+  }
+
+  @Override
+  public boolean isEmpty() {
+    return !(profile.isSet() || calendarEvents.isSet() || financialData.isSet() || defaultKeyStatistics.isSet()
+      || cashFlowStatements.isEmpty() || incomeStatements.isEmpty());
   }
 }
