@@ -5,15 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import es.usefulearnings.entities.option.Price;
 import es.usefulearnings.entities.option.SummaryDetail;
 
-import java.io.Serializable;
+import java.io.*;
 
 /**
  *
  * @author Yago
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Option implements Serializable, Entity {
+public class Option implements Serializable, Entity, Savable {
 
+  public static final String EXTENSION = ".opn";
   private String optionSymbol;
 
   @JsonProperty("price")
@@ -39,7 +40,7 @@ public class Option implements Serializable, Entity {
     this.summaryDetail.set();
   }
 
-  public String getOptionSymbol() {
+  public String getSymbol() {
     return optionSymbol;
   }
 
@@ -50,5 +51,19 @@ public class Option implements Serializable, Entity {
   @Override
   public boolean isEmpty() {
     return !(summaryDetail.isSet() || price.isSet());
+  }
+
+  @Override
+  public void save(File fileToSave) throws IOException {
+    String location = fileToSave.getAbsolutePath()
+                      + File.separator
+                      + this.optionSymbol
+                      + EXTENSION;
+
+    FileOutputStream data = new FileOutputStream(location);
+    ObjectOutputStream stream = new ObjectOutputStream(data);
+    stream.writeObject(this);
+    stream.close();
+    data.close();
   }
 }

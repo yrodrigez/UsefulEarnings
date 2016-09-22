@@ -1,12 +1,15 @@
 package es.usefulearnings.gui.controller;
 
+import es.usefulearnings.engine.connection.ProcessHandler;
 import es.usefulearnings.entities.DownloadedData;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
+import es.usefulearnings.utils.DataToCoreProcess;
 import es.usefulearnings.utils.ResourcesHelper;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -19,10 +22,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static es.usefulearnings.entities.DownloadedData.*;
 
 /**
  * @author Yago on 04/09/2016.
@@ -136,14 +142,108 @@ public class HistoryController implements Initializable {
     }).start();
   }
 
+  private class DataRecoverTask extends Task<Void>{
+    DataToCoreProcess process;
+
+    private DataRecoverTask(DownloadedData downloadedData) throws IOException {
+      ProcessHandler handler = new ProcessHandler() {
+        @Override
+        public void updateProgress(int workDone, int remaining) {
+          DataRecoverTask.this.updateProgress(workDone, remaining);
+        }
+
+        @Override
+        public void updateMessage(String message) {
+          DataRecoverTask.this.updateMessage(message);
+        }
+
+        @Override
+        public void onCancelled() {
+
+        }
+
+        @Override
+        public void onError(Throwable err) {
+
+        }
+
+        @Override
+        public void onSuccess() {
+
+        }
+      };
+
+      process = new DataToCoreProcess(handler, downloadedData.getEntitiesFile());
+    }
+
+    @Override
+    protected Void call() throws Exception {
+      process.run();
+      if(process.getException() != null){
+        this.failed();
+        throw process.getException();
+      }
+      return null;
+    }
+  }
+
   private void showSummary(DownloadedData downloadedData) {
     Platform.runLater(()-> {
+      // clear all nodes
       downloadedSummary.getChildren().clear();
+
+      // Create the view for DownloadedData
       Label dateLabel = new Label(downloadedData.toString());
-      Label companiesFound = new Label("Companies found: " + downloadedData.getCompaniesFound().size());
-      Label optionsFound = new Label("Options found: " + downloadedData.getOptionsFound().size());
-      Label optionChains = new Label("Option chains found: " + downloadedData.getOptionsFound().size());
-      downloadedSummary.getChildren().addAll(dateLabel, companiesFound, optionsFound, optionChains);
+      Label companiesFound = new Label("Companies found: " + downloadedData.getTotalSavedCompanies());
+      Label optionsFound = new Label("Options found: " + downloadedData.getTotalSavedOptions());
+      Label optionChains = new Label("Option chains found: " + downloadedData.getTotalSavedOptionChains());
+
+      Button delete = new Button(
+        "",
+        new ImageView(new Image(Main.class.getResourceAsStream("icons/delete-forever-white.png")))
+      );
+      delete.getStyleClass().addAll("history-button");
+
+      Button useThis = new Button(
+        "",
+        new ImageView(new Image(Main.class.getResourceAsStream("icons/import-data-white.png")))
+      );
+      useThis.getStyleClass().addAll("history-button", "no-opacity");
+      useThis.setOnAction(event -> {
+        try {
+          DataRecoverTask task = new DataRecoverTask(downloadedData);
+
+          ProgressIndicator pi = new ProgressIndicator();
+          pi.setPrefSize(35, 35);
+          pi.getStyleClass().addAll("history-data-to-core-process");
+          pi.progressProperty().bind(task.progressProperty());
+
+          Tooltip tooltip = new Tooltip();
+          tooltip.textProperty().bind(task.messageProperty());
+          useThis.setTooltip(tooltip);
+          useThis.setDisable(true);
+          useThis.setGraphic(pi);
+
+          delete.setDisable(true);
+
+          Thread t = new Thread(task);
+          t.setDaemon(true);
+          t.setName("UE-DataRecover-Task");
+          t.start();
+        } catch (IOException e) {
+          AlertHelper.showExceptionAlert(e);
+        }
+
+        event.consume();
+      });
+
+
+
+
+      // Paint it
+      HBox buttonsBox = new HBox(useThis, delete);
+      buttonsBox.setSpacing(10);
+      downloadedSummary.getChildren().addAll(dateLabel, companiesFound, optionsFound, optionChains, buttonsBox);
     });
   }
 

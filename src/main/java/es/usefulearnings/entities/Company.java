@@ -5,7 +5,7 @@ import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.EntityParameterType;
 import es.usefulearnings.entities.company.*;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +14,9 @@ import java.util.ArrayList;
  * @author Yago Rodríguez
  */
 
-public class Company implements Serializable, Entity {
+public class Company implements Serializable, Entity, Savable {
+  public static final String EXTENSION = ".cpy";
+
   @EntityParameter(name = "Symbol", entityType = EntityParameterType.IGNORE)
   private String symbol;
 
@@ -164,5 +166,19 @@ public class Company implements Serializable, Entity {
   public boolean isEmpty() {
     return !(profile.isSet() || calendarEvents.isSet() || financialData.isSet() || defaultKeyStatistics.isSet()
       || cashFlowStatements.isEmpty() || incomeStatements.isEmpty());
+  }
+
+  @Override
+  public void save(File fileToSave) throws IOException {
+    String location = fileToSave.getAbsolutePath()
+                      + File.separator
+                      + this.stockName + this.symbol
+                      + EXTENSION;
+
+    FileOutputStream data = new FileOutputStream(location);
+    ObjectOutputStream stream = new ObjectOutputStream(data);
+    stream.writeObject(this);
+    stream.close();
+    data.close();
   }
 }

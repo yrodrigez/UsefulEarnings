@@ -41,4 +41,8 @@ public class Stock {
       ", symbols=" + companies +
       '}';
   }
+
+  public void putCompany(Company company) {
+    this.companies.put(company.getSymbol(), company);
+  }
 }

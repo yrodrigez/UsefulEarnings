@@ -60,3 +60,17 @@
 .choice-box .label{
      -fx-text-fill: white;
 }
+
+.history-data-to-core-process .percentage {
+     -fx-fill: #ffffff;
+}
+
+.history-button {
+     -fx-background-color: #400090;
+     -fx-background-radius: 0%;
+     -fx-border-color: transparent;
+}
+
+.no-opacity {
+    -fx-opacity: 1.0;
+}

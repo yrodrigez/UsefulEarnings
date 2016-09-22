@@ -3,17 +3,18 @@ package es.usefulearnings.engine;
 import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.engine.plugin.*;
 import es.usefulearnings.entities.*;
+import es.usefulearnings.utils.EntitiesPackage;
 import es.usefulearnings.utils.NoStocksFoundException;
 import es.usefulearnings.utils.ResourcesHelper;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Core {
 
   private ArrayList<Plugin> companiesPlugins;
 
   private List<Stock> mStocks;
-
 
   public static Core getInstance() {
     return instance;
@@ -75,6 +76,11 @@ public class Core {
     return companies;
   }
 
+  public Map<String, Option> getAllOptions(){
+    System.err.println("getAllOptions() -> not implemented yet...");
+    return new TreeMap<>();
+  }
+
 
   public Map<String, Company> getCompaniesFromStock(String stockName) throws IllegalArgumentException {
     for (Stock stock : mStocks) {
@@ -119,29 +125,44 @@ public class Core {
   public void removeEntities(Collection<Entity> entitiesToRemove) {
     //TODO: implement remove for options & options chains.
     Collection<Company> companies = new ArrayList<>();
-    Collection<Option> options = new ArrayList<>();
-    Collection<OptionChain> optionChains = new ArrayList<>();
+    // Collection<Option> options = new ArrayList<>();
+    // Collection<OptionChain> optionChains = new ArrayList<>();
 
     for (Entity e: entitiesToRemove) {
       if(e instanceof Company) {
         companies.add((Company)e);
       }else if (e instanceof Option){
-        options.add((Option)e);
+        // options.add((Option)e);
+        System.err.println("Remove empty Options not implemented yet");
       }else if(e instanceof OptionChain){
-        optionChains.add((OptionChain)e);
+        // optionChains.add((OptionChain)e);
+        System.err.println("Remove empty OptionChains not implemented yet");
       }
     }
     removeCompanies(companies);
   }
 
   public void removeCompanies(Collection<Company> companiesToRemove) {
-    companiesToRemove.forEach(company -> {
-      getCompaniesFromStock(company.getStockName()).remove(company.getSymbol());
-    });
-  }
-  public void setCompaniesData(List<Company> companies) {
-    companies.forEach(this::setCompanyData);
+    companiesToRemove.forEach(company ->
+      getCompaniesFromStock(company.getStockName()).remove(company.getSymbol())
+    );
   }
 
 
+  public void setFromEntitiesPackage(EntitiesPackage entitiesPackage) {
+    List<Stock> newStocks = new LinkedList<>();
+
+    for(Company company : entitiesPackage.getCompanies()){
+      List<Stock> stocks = newStocks.stream().filter(stock -> stock.getName().equals(company.getStockName())).collect(Collectors.toList());
+      if(stocks.isEmpty()){
+        Map<String, Company> map = new TreeMap<>();
+        map.put(company.getSymbol(), company);
+        newStocks.add(new Stock(company.getStockName(), map));
+      } else {
+        stocks.forEach(s-> s.putCompany(company));
+      }
+    }
+
+    mStocks = newStocks;
+  }
 }

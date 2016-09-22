@@ -7,6 +7,8 @@ import es.usefulearnings.engine.plugin.Plugin;
 import es.usefulearnings.entities.DownloadedData;
 import es.usefulearnings.entities.Entity;
 import es.usefulearnings.gui.view.AlertHelper;
+import es.usefulearnings.utils.NoStocksFoundException;
+import es.usefulearnings.utils.ResourcesHelper;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.concurrent.Task;
@@ -18,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -225,8 +228,8 @@ public class DownloadController implements Initializable {
     if(--downloadButtonLocker == 0){
       new Thread(() -> {
         try {
-          downloadedData.save();
-        } catch(IOException e) {
+          downloadedData.save(new File(ResourcesHelper.getInstance().getSearchesPath()));
+        } catch(IOException | NoStocksFoundException e) {
           e.printStackTrace();
           Platform.runLater(() ->
             AlertHelper.showExceptionAlert(e));
