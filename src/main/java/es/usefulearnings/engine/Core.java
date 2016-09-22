@@ -92,7 +92,7 @@ public class Core {
     throw new IllegalArgumentException("Can not find a stock named " + stockName);
   }
 
-  public ArrayList<Plugin> getCompaniesPlugins() {
+  public ArrayList<Plugin> getCompanyPlugins() {
     return this.companiesPlugins;
   }
 

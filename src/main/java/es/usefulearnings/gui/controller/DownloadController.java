@@ -2,6 +2,7 @@ package es.usefulearnings.gui.controller;
 
 import es.usefulearnings.engine.Core;
 import es.usefulearnings.engine.connection.DownloadProcess;
+import es.usefulearnings.engine.connection.JSONHTTPClient;
 import es.usefulearnings.engine.connection.ProcessHandler;
 import es.usefulearnings.engine.plugin.Plugin;
 import es.usefulearnings.entities.DownloadedData;
@@ -75,6 +76,9 @@ public class DownloadController implements Initializable {
 
         @Override
         public void onSuccess() {
+          updateMessage("Saving data");
+          downloadCompleted();
+          updateMessage("Work done!");
           succeeded();
         }
       };
@@ -91,8 +95,6 @@ public class DownloadController implements Initializable {
         super.failed();
         throw process.getError();
       }
-      Core.getInstance().removeEntities(this.process.getEmptyEntities());
-      downloadCompleted();
       return null;
     }
 
@@ -209,7 +211,7 @@ public class DownloadController implements Initializable {
       int to = from + (Core.getInstance().getAllCompanies().values().size() / MAX_THREADS);
       if(i == MAX_THREADS - 1) to = Core.getInstance().getAllCompanies().values().size();
 
-      ArrayList<Plugin> plugins = Core.getInstance().getCompaniesPlugins();
+      ArrayList<Plugin> plugins = Core.getInstance().getCompanyPlugins();
 
       DownloaderTask task = new DownloaderTask(plugins, allCompanies.subList(from, to));
       this.tasks.add(task);
@@ -224,9 +226,9 @@ public class DownloadController implements Initializable {
   }
 
   private void downloadCompleted(){
-
     if(--downloadButtonLocker == 0){
-      new Thread(() -> {
+     new Thread(() -> {
+       JSONHTTPClient.getInstance().clearCache();
         try {
           downloadedData.save(new File(ResourcesHelper.getInstance().getSearchesPath()));
         } catch(IOException | NoStocksFoundException e) {

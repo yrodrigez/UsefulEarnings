@@ -33,8 +33,6 @@ public class DownloadProcess extends Process implements Runnable {
     List<Entity> entities
   ) {
     super(handler);
-
-    this.emptyEntities = new ArrayList<>();
     this.plugins = plugins;
     this.entities = entities;
 
@@ -45,6 +43,7 @@ public class DownloadProcess extends Process implements Runnable {
 
   @Override
   public void run() {
+    emptyEntities = new ArrayList<>(entities);
     try {
       for (Entity entity : entities) {
         if (stop) {
@@ -67,8 +66,8 @@ public class DownloadProcess extends Process implements Runnable {
             }
           }
         }// end foreach plugin
-        if(entity.isEmpty()){
-          emptyEntities.add(entity);
+        if(!entity.isEmpty()){
+          emptyEntities.remove(entity);
         }
         updateProgress(++workDone, remainingWork);
         updateMessage(workDone + " out of " + remainingWork + "\tCurrent company: " + ((Company) entity).getSymbol());

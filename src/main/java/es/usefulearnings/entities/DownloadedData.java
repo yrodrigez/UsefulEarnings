@@ -3,11 +3,11 @@ package es.usefulearnings.entities;
 import es.usefulearnings.annotation.FieldType;
 import es.usefulearnings.annotation.ObservableField;
 import es.usefulearnings.engine.Core;
-import es.usefulearnings.engine.connection.ProcessHandler;
-import es.usefulearnings.engine.connection.Process;
+
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.Map;
 
 /**
  *
@@ -48,7 +48,6 @@ public class DownloadedData implements Savable, Serializable {
 
   @Override
   public void save(File fileToSave) throws IOException {
-
     String location = fileToSave.getAbsolutePath()
       + File.separator
       + this.created
@@ -85,7 +84,6 @@ public class DownloadedData implements Savable, Serializable {
     stream.writeObject(this);
     stream.close();
     data.close();
-
   }
 
   public long getTotalSavedCompanies() {

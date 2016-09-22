@@ -11,7 +11,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -40,6 +42,12 @@ public class MainController implements Initializable {
 
 
   public void initialize(URL location, ResourceBundle resources) {
+    Label logo = new Label("  UsefulEarnings");
+    Font mFont = Font.loadFont(Main.class.getResource("fonts/Bunya-Bold_PERSONAL.ttf").toExternalForm(), 25);
+    logo.setFont(mFont);
+    logo.setStyle("-fx-text-fill: white");
+    logo.setAlignment(Pos.TOP_LEFT);
+    topMenu.getChildren().addAll(logo);
     isMaximized = false;
     boundary = new Boundary();
     setupTopMenu();
@@ -60,7 +68,7 @@ public class MainController implements Initializable {
       ((Stage)mainPane.getScene().getWindow()).setIconified(true);
       event.consume();
     });
-    topMenu.getChildren().add(minimize);
+    //topMenu.getChildren().add(minimize);
 
     maximizeIcon = new ImageView(new Image(Main.class.getResourceAsStream("icons/window-maximize.png")));
     restoreIcon = new ImageView(new Image(Main.class.getResourceAsStream("icons/window-restore.png")));
@@ -74,7 +82,7 @@ public class MainController implements Initializable {
       }
       event.consume();
     });
-    topMenu.getChildren().add(maximizeRestore);
+    //topMenu.getChildren().add(maximizeRestore);
 
     ImageView closeIcon = new ImageView(new Image(Main.class.getResourceAsStream("icons/window-close.png")));
     Button closeButton = new Button("", closeIcon);
@@ -84,9 +92,15 @@ public class MainController implements Initializable {
       stage.close();
       event.consume();
     });
-    topMenu.getChildren().add(closeButton);
 
-    topMenu.setAlignment(Pos.TOP_RIGHT);
+
+    HBox buttonBox = new HBox(minimize, maximizeRestore, closeButton);
+
+    buttonBox.setAlignment(Pos.TOP_RIGHT);
+
+    topMenu.getChildren().addAll(buttonBox);
+    topMenu.setHgrow(buttonBox, Priority.ALWAYS);
+    //topMenu.setAlignment(Pos.TOP_RIGHT);
 
   }
 
