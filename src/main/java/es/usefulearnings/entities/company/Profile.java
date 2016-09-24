@@ -3,8 +3,8 @@ package es.usefulearnings.entities.company;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import es.usefulearnings.annotation.FieldType;
-import es.usefulearnings.annotation.ObservableField;
+import es.usefulearnings.annotation.EntityParameter;
+import es.usefulearnings.annotation.ParameterType;
 
 import java.io.Serializable;
 
@@ -19,34 +19,34 @@ import java.io.Serializable;
 public class Profile extends CompanyData implements Serializable {
 
   @JsonProperty("address1")
-  @ObservableField(name = "Address")
+  @EntityParameter(name = "Address", parameterType = ParameterType.RAW_STRING)
   private String address;
   @JsonProperty("city")
-  @ObservableField(name = "City")
+  @EntityParameter(name = "City", parameterType = ParameterType.RAW_STRING)
   private String city;
   @JsonProperty("state")
-  @ObservableField(name = "State")
+  @EntityParameter(name = "State", parameterType = ParameterType.RAW_STRING)
   private String state;
   @JsonProperty("zip")
-  @ObservableField(name = "PO-Box")
+  @EntityParameter(name = "PO-Box", parameterType = ParameterType.RAW_STRING)
   private String zip;
   @JsonProperty("country")
-  @ObservableField(name = "Country")
+  @EntityParameter(name = "Country", parameterType = ParameterType.RAW_STRING)
   private String country;
   @JsonProperty("phone")
-  @ObservableField(name = "Phone")
+  @EntityParameter(name = "Phone", parameterType = ParameterType.RAW_STRING)
   private String phone;
   @JsonProperty("website")
-  @ObservableField(name = "WebSite", fieldType = FieldType.URL)
+  @EntityParameter(name = "WebSite", parameterType = ParameterType.URL)
   private String website;
   @JsonProperty("industry")
-  @ObservableField(name = "Industry")
+  @EntityParameter(name = "Industry", parameterType = ParameterType.RAW_STRING)
   private String industry;
   @JsonProperty("sector")
-  @ObservableField(name = "Sector")
+  @EntityParameter(name = "Sector", parameterType = ParameterType.RAW_STRING)
   private String sector;
   @JsonProperty("fullTimeEmployees")
-  @ObservableField(name = "Employees", fieldType = FieldType.RAW_NUMERIC)
+  @EntityParameter(name = "Employees", parameterType = ParameterType.RAW_NUMERIC)
   private int fullTimeEmployees;
 
   public String getAddress() {

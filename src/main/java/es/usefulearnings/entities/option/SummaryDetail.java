@@ -2,8 +2,8 @@ package es.usefulearnings.entities.option;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import es.usefulearnings.entities.Field;
-import es.usefulearnings.entities.LongFormatField;
+import es.usefulearnings.entities.YahooLongFormatField;
+import es.usefulearnings.entities.YahooField;
 
 import java.io.Serializable;
 
@@ -16,173 +16,173 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SummaryDetail extends OptionData implements Serializable {
   @JsonProperty("previousClose")
-  private Field previousClose;
+  private YahooField previousClose;
   @JsonProperty("open")
-  private Field open;
+  private YahooField open;
   @JsonProperty("dayLow")
-  private Field dayLow;
+  private YahooField dayLow;
   @JsonProperty("dayHigh")
-  private Field dayHigh;
+  private YahooField dayHigh;
   @JsonProperty("regularMarketPreviousClose")
-  private Field regularMarketPreviousClose;
+  private YahooField regularMarketPreviousClose;
   @JsonProperty("regularMarketOpen")
-  private Field regularMarketOpen;
+  private YahooField regularMarketOpen;
   @JsonProperty("regularMarketDayLow")
-  private Field regularMarketDayLow;
+  private YahooField regularMarketDayLow;
   @JsonProperty("regularMarketDayHigh")
-  private Field regularMarketDayHigh;
+  private YahooField regularMarketDayHigh;
   @JsonProperty("bid")
-  private Field bid;
+  private YahooField bid;
   @JsonProperty("ask")
-  private Field ask;
+  private YahooField ask;
   @JsonProperty("expireDate")
-  private Field expireDate;
+  private YahooField expireDate;
   @JsonProperty("strikePrice")
-  private Field strikePrice;
+  private YahooField strikePrice;
   @JsonProperty("fiftyTwoWeekLow")
-  private Field fiftyTwoWeekLow;
+  private YahooField fiftyTwoWeekLow;
   @JsonProperty("fiftyTwoWeekHigh")
-  private Field fiftyTwoWeekHigh;
+  private YahooField fiftyTwoWeekHigh;
   @JsonProperty("openInterest")
-  private LongFormatField openInterest;
+  private YahooLongFormatField openInterest;
   @JsonProperty("volume")
-  private LongFormatField volume;
+  private YahooLongFormatField volume;
   @JsonProperty("regularMarketVolume")
-  private LongFormatField regularMarketVolume;
+  private YahooLongFormatField regularMarketVolume;
 
-  public Field getPreviousClose() {
+  public YahooField getPreviousClose() {
     return previousClose;
   }
 
-  public void setPreviousClose(Field previousClose) {
+  public void setPreviousClose(YahooField previousClose) {
     this.previousClose = previousClose;
   }
 
-  public Field getOpen() {
+  public YahooField getOpen() {
     return open;
   }
 
-  public void setOpen(Field open) {
+  public void setOpen(YahooField open) {
     this.open = open;
   }
 
-  public Field getDayLow() {
+  public YahooField getDayLow() {
     return dayLow;
   }
 
-  public void setDayLow(Field dayLow) {
+  public void setDayLow(YahooField dayLow) {
     this.dayLow = dayLow;
   }
 
-  public Field getDayHigh() {
+  public YahooField getDayHigh() {
     return dayHigh;
   }
 
-  public void setDayHigh(Field dayHigh) {
+  public void setDayHigh(YahooField dayHigh) {
     this.dayHigh = dayHigh;
   }
 
-  public Field getRegularMarketPreviousClose() {
+  public YahooField getRegularMarketPreviousClose() {
     return regularMarketPreviousClose;
   }
 
-  public void setRegularMarketPreviousClose(Field regularMarketPreviousClose) {
+  public void setRegularMarketPreviousClose(YahooField regularMarketPreviousClose) {
     this.regularMarketPreviousClose = regularMarketPreviousClose;
   }
 
-  public Field getRegularMarketOpen() {
+  public YahooField getRegularMarketOpen() {
     return regularMarketOpen;
   }
 
-  public void setRegularMarketOpen(Field regularMarketOpen) {
+  public void setRegularMarketOpen(YahooField regularMarketOpen) {
     this.regularMarketOpen = regularMarketOpen;
   }
 
-  public Field getRegularMarketDayLow() {
+  public YahooField getRegularMarketDayLow() {
     return regularMarketDayLow;
   }
 
-  public void setRegularMarketDayLow(Field regularMarketDayLow) {
+  public void setRegularMarketDayLow(YahooField regularMarketDayLow) {
     this.regularMarketDayLow = regularMarketDayLow;
   }
 
-  public Field getRegularMarketDayHigh() {
+  public YahooField getRegularMarketDayHigh() {
     return regularMarketDayHigh;
   }
 
-  public void setRegularMarketDayHigh(Field regularMarketDayHigh) {
+  public void setRegularMarketDayHigh(YahooField regularMarketDayHigh) {
     this.regularMarketDayHigh = regularMarketDayHigh;
   }
 
-  public Field getBid() {
+  public YahooField getBid() {
     return bid;
   }
 
-  public void setBid(Field bid) {
+  public void setBid(YahooField bid) {
     this.bid = bid;
   }
 
-  public Field getAsk() {
+  public YahooField getAsk() {
     return ask;
   }
 
-  public void setAsk(Field ask) {
+  public void setAsk(YahooField ask) {
     this.ask = ask;
   }
 
-  public Field getExpireDate() {
+  public YahooField getExpireDate() {
     return expireDate;
   }
 
-  public void setExpireDate(Field expireDate) {
+  public void setExpireDate(YahooField expireDate) {
     this.expireDate = expireDate;
   }
 
-  public Field getStrikePrice() {
+  public YahooField getStrikePrice() {
     return strikePrice;
   }
 
-  public void setStrikePrice(Field strikePrice) {
+  public void setStrikePrice(YahooField strikePrice) {
     this.strikePrice = strikePrice;
   }
 
-  public Field getFiftyTwoWeekLow() {
+  public YahooField getFiftyTwoWeekLow() {
     return fiftyTwoWeekLow;
   }
 
-  public void setFiftyTwoWeekLow(Field fiftyTwoWeekLow) {
+  public void setFiftyTwoWeekLow(YahooField fiftyTwoWeekLow) {
     this.fiftyTwoWeekLow = fiftyTwoWeekLow;
   }
 
-  public Field getFiftyTwoWeekHigh() {
+  public YahooField getFiftyTwoWeekHigh() {
     return fiftyTwoWeekHigh;
   }
 
-  public void setFiftyTwoWeekHigh(Field fiftyTwoWeekHigh) {
+  public void setFiftyTwoWeekHigh(YahooField fiftyTwoWeekHigh) {
     this.fiftyTwoWeekHigh = fiftyTwoWeekHigh;
   }
 
-  public LongFormatField getOpenInterest() {
+  public YahooLongFormatField getOpenInterest() {
     return openInterest;
   }
 
-  public void setOpenInterest(LongFormatField openInterest) {
+  public void setOpenInterest(YahooLongFormatField openInterest) {
     this.openInterest = openInterest;
   }
 
-  public LongFormatField getVolume() {
+  public YahooLongFormatField getVolume() {
     return volume;
   }
 
-  public void setVolume(LongFormatField volume) {
+  public void setVolume(YahooLongFormatField volume) {
     this.volume = volume;
   }
 
-  public LongFormatField getRegularMarketVolume() {
+  public YahooLongFormatField getRegularMarketVolume() {
     return regularMarketVolume;
   }
 
-  public void setRegularMarketVolume(LongFormatField regularMarketVolume) {
+  public void setRegularMarketVolume(YahooLongFormatField regularMarketVolume) {
     this.regularMarketVolume = regularMarketVolume;
   }
 }

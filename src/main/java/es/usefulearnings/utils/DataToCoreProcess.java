@@ -19,9 +19,9 @@ public class DataToCoreProcess extends Process implements Runnable {
   private Exception exception;
   private File mEntitiesFile;
 
-  public DataToCoreProcess(ProcessHandler handler, File entitiesFile) throws IOException {
+  public DataToCoreProcess(ProcessHandler handler, File entitiesDirectory) throws IOException {
     super(handler);
-    mEntitiesFile = entitiesFile;
+    mEntitiesFile = entitiesDirectory;
     if((!mEntitiesFile.exists() || mEntitiesFile.listFiles() == null || mEntitiesFile.listFiles().length < 1)){
       throw new IOException(mEntitiesFile.getAbsolutePath() + " does not exists or does not have files inside");
     }

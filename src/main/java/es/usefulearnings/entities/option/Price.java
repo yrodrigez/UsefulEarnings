@@ -1,10 +1,10 @@
 package es.usefulearnings.entities.option;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import es.usefulearnings.annotation.FieldType;
-import es.usefulearnings.annotation.ObservableField;
-import es.usefulearnings.entities.Field;
-import es.usefulearnings.entities.LongFormatField;
+import es.usefulearnings.annotation.EntityParameter;
+import es.usefulearnings.annotation.ParameterType;
+import es.usefulearnings.entities.YahooLongFormatField;
+import es.usefulearnings.entities.YahooField;
 
 import java.io.Serializable;
 
@@ -16,88 +16,88 @@ import java.io.Serializable;
  */
 public class Price extends OptionData implements Serializable {
   @JsonProperty("exchange")
-  @ObservableField(name = "Exchange")
+  @EntityParameter(name = "Exchange", parameterType = ParameterType.RAW_STRING)
   private String exchange; // "OPR",
 
   @JsonProperty("exchangeName")
-  @ObservableField(name = "Exchange name")
+  @EntityParameter(name = "Exchange name", parameterType = ParameterType.RAW_STRING)
   private String exchangeName; // "OPR",
 
   @JsonProperty("marketState")
-  @ObservableField(name = "Market state")
+  @EntityParameter(name = "Market state", parameterType = ParameterType.RAW_STRING)
   private String marketState; // "REGULAR",
 
   @JsonProperty("quoteType")
-  @ObservableField(name = "Quote type")
+  @EntityParameter(name = "Quote type", parameterType = ParameterType.RAW_STRING)
   private String quoteType; // "OPTION",
 
   @JsonProperty("symbol")
-  @ObservableField(name = "Symbol")
+  @EntityParameter(name = "Symbol", parameterType = ParameterType.RAW_STRING)
   private String symbol; // "AAPL160812C00070000",
 
   @JsonProperty("underlyingSymbol")
-  @ObservableField(name = "Company's symbol")
+  @EntityParameter(name = "Company's symbol", parameterType = ParameterType.RAW_STRING)
   private String underlyingSymbol; // "AAPL",
 
   @JsonProperty("currency")
-  @ObservableField(name = "Currency")
+  @EntityParameter(name = "Currency", parameterType = ParameterType.RAW_STRING)
   private String currency; // "USD",
 
   @JsonProperty("currencySymbol")
-  @ObservableField(name = "Currency symbol")
+  @EntityParameter(name = "Currency symbol", parameterType = ParameterType.RAW_STRING)
   private String currencySymbol; // "$"
 
   @JsonProperty("regularMarketChangePercent")
-  @ObservableField(name = "Regular market change percent", fieldType = FieldType.NUMERIC)
-  private Field regularMarketChangePercent;
+  @EntityParameter(name = "Regular market change percent", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField regularMarketChangePercent;
 
   @JsonProperty("regularMarketChange")
-  @ObservableField(name = "Regular market change", fieldType = FieldType.NUMERIC)
-  private Field regularMarketChange;
+  @EntityParameter(name = "Regular market change", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField regularMarketChange;
 
   @JsonProperty("regularMarketTime")
-  @ObservableField(name = "Regular market time", fieldType = FieldType.DATE)
-  private Field regularMarketTime; // 1470439901,
+  @EntityParameter(name = "Regular market time", parameterType = ParameterType.YAHOO_FIELD_DATE)
+  private YahooField regularMarketTime; // 1470439901,
 
   @JsonProperty("regularMarketPrice")
-  @ObservableField(name = "Regular market price", fieldType = FieldType.NUMERIC)
-  private Field regularMarketPrice;
+  @EntityParameter(name = "Regular market price", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField regularMarketPrice;
 
   @JsonProperty("regularMarketDayHigh")
-  @ObservableField(name = "Regular market day high", fieldType = FieldType.NUMERIC)
-  private Field regularMarketDayHigh;
+  @EntityParameter(name = "Regular market day high", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField regularMarketDayHigh;
 
   @JsonProperty("regularMarketDayLow")
-  @ObservableField(name = "Regular market day low", fieldType = FieldType.NUMERIC)
-  private Field regularMarketDayLow;
+  @EntityParameter(name = "Regular market day low", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField regularMarketDayLow;
 
   @JsonProperty("regularMarketVolume")
-  @ObservableField(name = "Regular market volume", fieldType = FieldType.NUMERIC)
-  private LongFormatField regularMarketVolume;
+  @EntityParameter(name = "Regular market volume", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooLongFormatField regularMarketVolume;
 
   @JsonProperty("regularMarketPreviousClose")
-  @ObservableField(name = "Regular market previous close", fieldType = FieldType.NUMERIC)
-  private Field regularMarketPreviousClose;
+  @EntityParameter(name = "Regular market previous close", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField regularMarketPreviousClose;
 
   @JsonProperty("regularMarketSource")
-  @ObservableField(name = "Regular market source", fieldType = FieldType.STRING)
-  private Field regularMarketSource; // "DELAYED",
+  @EntityParameter(name = "Regular market source", parameterType = ParameterType.RAW_STRING)
+  private YahooField regularMarketSource; // "DELAYED",
 
   @JsonProperty("regularMarketOpen")
-  @ObservableField(name = "regular market open", fieldType = FieldType.NUMERIC)
-  private Field regularMarketOpen;
+  @EntityParameter(name = "regular market open", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField regularMarketOpen;
 
   @JsonProperty("strikePrice")
-  @ObservableField(name = "Strike price", fieldType = FieldType.NUMERIC)
-  private Field strikePrice;
+  @EntityParameter(name = "Strike price", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField strikePrice;
 
   @JsonProperty("openInterest")
-  @ObservableField(name = "Open interest", fieldType = FieldType.NUMERIC)
-  private LongFormatField openInterest;
+  @EntityParameter(name = "Open interest", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooLongFormatField openInterest;
 
   @JsonProperty("expireDate")
-  @ObservableField(name = "Expiration date", fieldType = FieldType.DATE)
-  private Field expireDate;
+  @EntityParameter(name = "Expiration date", parameterType = ParameterType.YAHOO_FIELD_DATE)
+  private YahooField expireDate;
 
   public String getExchange() {
     return exchange;
@@ -163,107 +163,107 @@ public class Price extends OptionData implements Serializable {
     this.currencySymbol = currencySymbol;
   }
 
-  public Field getRegularMarketChangePercent() {
+  public YahooField getRegularMarketChangePercent() {
     return regularMarketChangePercent;
   }
 
-  public void setRegularMarketChangePercent(Field regularMarketChangePercent) {
+  public void setRegularMarketChangePercent(YahooField regularMarketChangePercent) {
     this.regularMarketChangePercent = regularMarketChangePercent;
   }
 
-  public Field getRegularMarketChange() {
+  public YahooField getRegularMarketChange() {
     return regularMarketChange;
   }
 
-  public void setRegularMarketChange(Field regularMarketChange) {
+  public void setRegularMarketChange(YahooField regularMarketChange) {
     this.regularMarketChange = regularMarketChange;
   }
 
-  public Field getRegularMarketTime() {
+  public YahooField getRegularMarketTime() {
     return regularMarketTime;
   }
 
-  public void setRegularMarketTime(Field regularMarketTime) {
+  public void setRegularMarketTime(YahooField regularMarketTime) {
     this.regularMarketTime = regularMarketTime;
   }
 
-  public Field getRegularMarketPrice() {
+  public YahooField getRegularMarketPrice() {
     return regularMarketPrice;
   }
 
-  public void setRegularMarketPrice(Field regularMarketPrice) {
+  public void setRegularMarketPrice(YahooField regularMarketPrice) {
     this.regularMarketPrice = regularMarketPrice;
   }
 
-  public Field getRegularMarketDayHigh() {
+  public YahooField getRegularMarketDayHigh() {
     return regularMarketDayHigh;
   }
 
-  public void setRegularMarketDayHigh(Field regularMarketDayHigh) {
+  public void setRegularMarketDayHigh(YahooField regularMarketDayHigh) {
     this.regularMarketDayHigh = regularMarketDayHigh;
   }
 
-  public Field getRegularMarketDayLow() {
+  public YahooField getRegularMarketDayLow() {
     return regularMarketDayLow;
   }
 
-  public void setRegularMarketDayLow(Field regularMarketDayLow) {
+  public void setRegularMarketDayLow(YahooField regularMarketDayLow) {
     this.regularMarketDayLow = regularMarketDayLow;
   }
 
-  public LongFormatField getRegularMarketVolume() {
+  public YahooLongFormatField getRegularMarketVolume() {
     return regularMarketVolume;
   }
 
-  public void setRegularMarketVolume(LongFormatField regularMarketVolume) {
+  public void setRegularMarketVolume(YahooLongFormatField regularMarketVolume) {
     this.regularMarketVolume = regularMarketVolume;
   }
 
-  public Field getRegularMarketPreviousClose() {
+  public YahooField getRegularMarketPreviousClose() {
     return regularMarketPreviousClose;
   }
 
-  public void setRegularMarketPreviousClose(Field regularMarketPreviousClose) {
+  public void setRegularMarketPreviousClose(YahooField regularMarketPreviousClose) {
     this.regularMarketPreviousClose = regularMarketPreviousClose;
   }
 
-  public Field getRegularMarketSource() {
+  public YahooField getRegularMarketSource() {
     return regularMarketSource;
   }
 
-  public void setRegularMarketSource(Field regularMarketSource) {
+  public void setRegularMarketSource(YahooField regularMarketSource) {
     this.regularMarketSource = regularMarketSource;
   }
 
-  public Field getRegularMarketOpen() {
+  public YahooField getRegularMarketOpen() {
     return regularMarketOpen;
   }
 
-  public void setRegularMarketOpen(Field regularMarketOpen) {
+  public void setRegularMarketOpen(YahooField regularMarketOpen) {
     this.regularMarketOpen = regularMarketOpen;
   }
 
-  public Field getStrikePrice() {
+  public YahooField getStrikePrice() {
     return strikePrice;
   }
 
-  public void setStrikePrice(Field strikePrice) {
+  public void setStrikePrice(YahooField strikePrice) {
     this.strikePrice = strikePrice;
   }
 
-  public LongFormatField getOpenInterest() {
+  public YahooLongFormatField getOpenInterest() {
     return openInterest;
   }
 
-  public void setOpenInterest(LongFormatField openInterest) {
+  public void setOpenInterest(YahooLongFormatField openInterest) {
     this.openInterest = openInterest;
   }
 
-  public Field getExpireDate() {
+  public YahooField getExpireDate() {
     return expireDate;
   }
 
-  public void setExpireDate(Field expireDate) {
+  public void setExpireDate(YahooField expireDate) {
     this.expireDate = expireDate;
   }
 }

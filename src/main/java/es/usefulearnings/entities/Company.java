@@ -2,7 +2,7 @@ package es.usefulearnings.entities;
 
 
 import es.usefulearnings.annotation.EntityParameter;
-import es.usefulearnings.annotation.EntityParameterType;
+import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.entities.company.*;
 
 import java.io.*;
@@ -17,26 +17,26 @@ import java.util.ArrayList;
 public class Company implements Serializable, Entity, Savable {
   public static final String EXTENSION = ".cpy";
 
-  @EntityParameter(name = "Symbol", entityType = EntityParameterType.IGNORE)
+  @EntityParameter(name = "Symbol", parameterType = ParameterType.IGNORE)
   private String symbol;
 
-  @EntityParameter(name = "Stock", entityType = EntityParameterType.IGNORE)
+  @EntityParameter(name = "Stock", parameterType = ParameterType.IGNORE)
   private String stockName;
 
-  @EntityParameter(name = "Profile")
+  @EntityParameter(name = "Profile", parameterType = ParameterType.INNER_CLASS)
   private Profile profile;
-  @EntityParameter(name = "Calendar events")
+  @EntityParameter(name = "Calendar events", parameterType = ParameterType.INNER_CLASS)
   private CalendarEvents calendarEvents;
-  @EntityParameter(name = "Financial data")
+  @EntityParameter(name = "Financial data", parameterType = ParameterType.INNER_CLASS)
   private FinancialData financialData;
-  @EntityParameter(name = "Default key statistics")
+  @EntityParameter(name = "Default key statistics", parameterType = ParameterType.INNER_CLASS)
   private DefaultKeyStatistics defaultKeyStatistics;
 
-  @EntityParameter(name = "Cashflow statements", entityType = EntityParameterType.ARRAY_LIST)
+  @EntityParameter(name = "Cashflow statements", parameterType = ParameterType.INNER_CLASS_COLLECTION)
   private ArrayList<CashFlowStatement> cashFlowStatements;
-  @EntityParameter(name = "Income statements", entityType = EntityParameterType.ARRAY_LIST)
+  @EntityParameter(name = "Income statements", parameterType = ParameterType.INNER_CLASS_COLLECTION)
   private ArrayList<IncomeStatement> incomeStatements;
-  @EntityParameter(name = "Balance sheet statement" , entityType = EntityParameterType.ARRAY_LIST)
+  @EntityParameter(name = "Balance sheet statement" , parameterType = ParameterType.INNER_CLASS_COLLECTION)
   private ArrayList<BalanceSheetStatement> balanceSheetStatements;
 
   /**
@@ -86,7 +86,7 @@ public class Company implements Serializable, Entity, Savable {
     this.symbol = symbol;
   }
 
-  public ArrayList<Field> getEarningsDates() {
+  public ArrayList<YahooField> getEarningsDates() {
     return this.calendarEvents.getEarningsDate();
   }
 

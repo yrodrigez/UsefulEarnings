@@ -1,7 +1,6 @@
 package es.usefulearnings.entities;
-
-import es.usefulearnings.annotation.FieldType;
-import es.usefulearnings.annotation.ObservableField;
+import es.usefulearnings.annotation.EntityParameter;
+import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.entities.option.OptionLink;
 
 import java.io.Serializable;
@@ -12,15 +11,15 @@ import java.util.ArrayList;
  */
 public class OptionChain implements  Serializable, Entity {
 
-  @ObservableField(name = "Expiration Date", fieldType = FieldType.DATE)
+  @EntityParameter(name = "Expiration Date", parameterType = ParameterType.RAW_DATE)
   private long mExpirationDate;
 
-  @ObservableField(name= "", fieldType = FieldType.IGNORE)
+  @EntityParameter(name= "", parameterType = ParameterType.IGNORE)
   private Company company;
 
-  @ObservableField(name = "Calls", fieldType = FieldType.FIELD_ARRAY_LIST)
+  @EntityParameter(name = "Calls", parameterType = ParameterType.OPTION_LINK_COLLECTION)
   private ArrayList<OptionLink> mCalls;
-  @ObservableField(name = "Puts", fieldType = FieldType.FIELD_ARRAY_LIST)
+  @EntityParameter(name = "Puts", parameterType = ParameterType.OPTION_LINK_COLLECTION)
   private ArrayList<OptionLink> mPuts;
 
   public OptionChain(

@@ -3,10 +3,10 @@ package es.usefulearnings.entities.company;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import es.usefulearnings.annotation.FieldType;
-import es.usefulearnings.annotation.ObservableField;
-import es.usefulearnings.entities.Field;
-import es.usefulearnings.entities.LongFormatField;
+import es.usefulearnings.annotation.EntityParameter;
+import es.usefulearnings.annotation.ParameterType;
+import es.usefulearnings.entities.YahooLongFormatField;
+import es.usefulearnings.entities.YahooField;
 
 import java.io.Serializable;
 
@@ -21,159 +21,159 @@ import java.io.Serializable;
 public class FinancialData extends CompanyData implements Serializable {
 
   @JsonProperty("currentPrice")
-  @ObservableField(name = "Current price", fieldType = FieldType.NUMERIC)
-  private Field currentPrice;
+  @EntityParameter(name = "Current price", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField currentPrice;
 
   @JsonProperty("targetHighPrice")
-  @ObservableField(name = "Target high price", fieldType = FieldType.NUMERIC)
-  private Field targetHighPrice;
+  @EntityParameter(name = "Target high price", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField targetHighPrice;
 
   @JsonProperty("targetLowPrice")
-  @ObservableField(name = "Target low price", fieldType = FieldType.NUMERIC)
-  private Field targetLowPrice;
+  @EntityParameter(name = "Target low price", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField targetLowPrice;
 
   @JsonProperty("targetMeanPrice")
-  @ObservableField(name = "Target mean price", fieldType = FieldType.NUMERIC)
-  private Field targetMeanPrice;
+  @EntityParameter(name = "Target mean price", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField targetMeanPrice;
 
   @JsonProperty("targetMedianPrice")
-  @ObservableField(name = "Target median price", fieldType = FieldType.NUMERIC)
-  private Field targetMedianPrice;
+  @EntityParameter(name = "Target median price", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField targetMedianPrice;
 
   @JsonProperty("recommendationMean")
-  @ObservableField(name = "Recommendation mean", fieldType = FieldType.NUMERIC)
-  private Field recommendationMean;
+  @EntityParameter(name = "Recommendation mean", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField recommendationMean;
 
   @JsonProperty("recommendationKey")
-  @ObservableField(name = "Recommendation key", fieldType = FieldType.STRING)
+  @EntityParameter(name = "Recommendation key", parameterType = ParameterType.RAW_STRING)
   private String recommendationKey;
 
   @JsonProperty("totalCashPerShare")
-  @ObservableField(name = "Total cash per share", fieldType = FieldType.NUMERIC)
-  private Field totalCashPerShare;
+  @EntityParameter(name = "Total cash per share", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField totalCashPerShare;
 
   @JsonProperty("quickRatio")
-  @ObservableField(name = "Quick ratio", fieldType = FieldType.NUMERIC)
-  private Field quickRatio;
+  @EntityParameter(name = "Quick ratio", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField quickRatio;
 
   @JsonProperty("currentRatio")
-  @ObservableField(name = "Current ratio", fieldType = FieldType.NUMERIC)
-  private Field currentRatio;
+  @EntityParameter(name = "Current ratio", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField currentRatio;
 
   @JsonProperty("returnOnAssets")
-  @ObservableField(name = "Return on assets", fieldType = FieldType.NUMERIC)
-  private Field returnOnAssets;
+  @EntityParameter(name = "Return on assets", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField returnOnAssets;
 
   @JsonProperty("returnOnEquity")
-  @ObservableField(name = "Return on Equity", fieldType = FieldType.NUMERIC)
-  private Field returnOnEquity;
+  @EntityParameter(name = "Return on Equity", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField returnOnEquity;
 
   @JsonProperty("earningsGrowth")
-  @ObservableField(name = "Earnings growth", fieldType = FieldType.NUMERIC)
-  private Field earningsGrowth;
+  @EntityParameter(name = "Earnings growth", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField earningsGrowth;
 
   @JsonProperty("revenueGrowth")
-  @ObservableField(name = "Revenue growth", fieldType = FieldType.NUMERIC)
-  private Field revenueGrowth;
+  @EntityParameter(name = "Revenue growth", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField revenueGrowth;
 
   @JsonProperty("grossMargins")
-  @ObservableField(name = "Gross margins", fieldType = FieldType.NUMERIC)
-  private Field grossMargins;
+  @EntityParameter(name = "Gross margins", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField grossMargins;
 
   @JsonProperty("ebitdaMargins")
-  @ObservableField(name = "EBITDA margins", fieldType = FieldType.NUMERIC)
-  private Field ebitdaMargins;
+  @EntityParameter(name = "EBITDA margins", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField ebitdaMargins;
 
   @JsonProperty("operatingMargins")
-  @ObservableField(name = "Operating margins", fieldType = FieldType.NUMERIC)
-  private Field operatingMargins;
+  @EntityParameter(name = "Operating margins", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField operatingMargins;
 
   @JsonProperty("profitMargins")
-  @ObservableField(name = "Profit margins", fieldType = FieldType.NUMERIC)
-  private Field profitMargins;
+  @EntityParameter(name = "Profit margins", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField profitMargins;
 
   @JsonProperty("numberOfAnalystOpinions")
-  @ObservableField(name = "Number of analyst opinions", fieldType = FieldType.NUMERIC)
-  private LongFormatField numberOfAnalystOpinions;
+  @EntityParameter(name = "Number of analyst opinions", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField numberOfAnalystOpinions;
 
   @JsonProperty("totalCash")
-  @ObservableField(name = "Total cash", fieldType = FieldType.NUMERIC)
-  private LongFormatField totalCash;
+  @EntityParameter(name = "Total cash", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField totalCash;
 
   @JsonProperty("ebitda")
-  @ObservableField(name = "EBITDA", fieldType = FieldType.NUMERIC)
-  private LongFormatField ebitda;
+  @EntityParameter(name = "EBITDA", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField ebitda;
 
  @JsonProperty("totalDebt")
- @ObservableField(name = "Total debt", fieldType = FieldType.NUMERIC)
-  private LongFormatField totalDebt;
+ @EntityParameter(name = "Total debt", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField totalDebt;
 
   @JsonProperty("totalRevenue")
-  @ObservableField(name = "Total revenue", fieldType = FieldType.NUMERIC)
-  private LongFormatField totalRevenue;
+  @EntityParameter(name = "Total revenue", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField totalRevenue;
 
   @JsonProperty("debtToEquity")
-  @ObservableField(name = "Debt to equity", fieldType = FieldType.NUMERIC)
-  private LongFormatField debtToEquity;
+  @EntityParameter(name = "Debt to equity", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField debtToEquity;
 
   @JsonProperty("grossProfits")
-  @ObservableField(name = "Gross profits", fieldType = FieldType.NUMERIC)
-  private LongFormatField grossProfits;
+  @EntityParameter(name = "Gross profits", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField grossProfits;
 
   @JsonProperty("freeCashflow")
-  @ObservableField(name = "Free cashflow", fieldType = FieldType.NUMERIC)
-  private LongFormatField freeCashflow;
+  @EntityParameter(name = "Free cashflow", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField freeCashflow;
 
   @JsonProperty("operatingCashflow")
-  @ObservableField(name = "Operating cashflow", fieldType = FieldType.NUMERIC)
-  private LongFormatField operatingCashflow;
+  @EntityParameter(name = "Operating cashflow", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField operatingCashflow;
 
 
-  public Field getCurrentPrice() {
+  public YahooField getCurrentPrice() {
     return currentPrice;
   }
 
-  public void setCurrentPrice(Field currentPrice) {
+  public void setCurrentPrice(YahooField currentPrice) {
     this.currentPrice = currentPrice;
   }
 
-  public Field getTargetHighPrice() {
+  public YahooField getTargetHighPrice() {
     return targetHighPrice;
   }
 
-  public void setTargetHighPrice(Field targetHighPrice) {
+  public void setTargetHighPrice(YahooField targetHighPrice) {
     this.targetHighPrice = targetHighPrice;
   }
 
-  public Field getTargetLowPrice() {
+  public YahooField getTargetLowPrice() {
     return targetLowPrice;
   }
 
-  public void setTargetLowPrice(Field targetLowPrice) {
+  public void setTargetLowPrice(YahooField targetLowPrice) {
     this.targetLowPrice = targetLowPrice;
   }
 
-  public Field getTargetMeanPrice() {
+  public YahooField getTargetMeanPrice() {
     return targetMeanPrice;
   }
 
-  public void setTargetMeanPrice(Field targetMeanPrice) {
+  public void setTargetMeanPrice(YahooField targetMeanPrice) {
     this.targetMeanPrice = targetMeanPrice;
   }
 
-  public Field getTargetMedianPrice() {
+  public YahooField getTargetMedianPrice() {
     return targetMedianPrice;
   }
 
-  public void setTargetMedianPrice(Field targetMedianPrice) {
+  public void setTargetMedianPrice(YahooField targetMedianPrice) {
     this.targetMedianPrice = targetMedianPrice;
   }
 
-  public Field getRecommendationMean() {
+  public YahooField getRecommendationMean() {
     return recommendationMean;
   }
 
-  public void setRecommendationMean(Field recommendationMean) {
+  public void setRecommendationMean(YahooField recommendationMean) {
     this.recommendationMean = recommendationMean;
   }
 
@@ -185,163 +185,163 @@ public class FinancialData extends CompanyData implements Serializable {
     this.recommendationKey = recommendationKey;
   }
 
-  public Field getTotalCashPerShare() {
+  public YahooField getTotalCashPerShare() {
     return totalCashPerShare;
   }
 
-  public void setTotalCashPerShare(Field totalCashPerShare) {
+  public void setTotalCashPerShare(YahooField totalCashPerShare) {
     this.totalCashPerShare = totalCashPerShare;
   }
 
-  public Field getQuickRatio() {
+  public YahooField getQuickRatio() {
     return quickRatio;
   }
 
-  public void setQuickRatio(Field quickRatio) {
+  public void setQuickRatio(YahooField quickRatio) {
     this.quickRatio = quickRatio;
   }
 
-  public Field getCurrentRatio() {
+  public YahooField getCurrentRatio() {
     return currentRatio;
   }
 
-  public void setCurrentRatio(Field currentRatio) {
+  public void setCurrentRatio(YahooField currentRatio) {
     this.currentRatio = currentRatio;
   }
 
-  public Field getReturnOnAssets() {
+  public YahooField getReturnOnAssets() {
     return returnOnAssets;
   }
 
-  public void setReturnOnAssets(Field returnOnAssets) {
+  public void setReturnOnAssets(YahooField returnOnAssets) {
     this.returnOnAssets = returnOnAssets;
   }
 
-  public Field getReturnOnEquity() {
+  public YahooField getReturnOnEquity() {
     return returnOnEquity;
   }
 
-  public void setReturnOnEquity(Field returnOnEquity) {
+  public void setReturnOnEquity(YahooField returnOnEquity) {
     this.returnOnEquity = returnOnEquity;
   }
 
-  public Field getEarningsGrowth() {
+  public YahooField getEarningsGrowth() {
     return earningsGrowth;
   }
 
-  public void setEarningsGrowth(Field earningsGrowth) {
+  public void setEarningsGrowth(YahooField earningsGrowth) {
     this.earningsGrowth = earningsGrowth;
   }
 
-  public Field getRevenueGrowth() {
+  public YahooField getRevenueGrowth() {
     return revenueGrowth;
   }
 
-  public void setRevenueGrowth(Field revenueGrowth) {
+  public void setRevenueGrowth(YahooField revenueGrowth) {
     this.revenueGrowth = revenueGrowth;
   }
 
-  public Field getGrossMargins() {
+  public YahooField getGrossMargins() {
     return grossMargins;
   }
 
-  public void setGrossMargins(Field grossMargins) {
+  public void setGrossMargins(YahooField grossMargins) {
     this.grossMargins = grossMargins;
   }
 
-  public Field getEbitdaMargins() {
+  public YahooField getEbitdaMargins() {
     return ebitdaMargins;
   }
 
-  public void setEbitdaMargins(Field ebitdaMargins) {
+  public void setEbitdaMargins(YahooField ebitdaMargins) {
     this.ebitdaMargins = ebitdaMargins;
   }
 
-  public Field getOperatingMargins() {
+  public YahooField getOperatingMargins() {
     return operatingMargins;
   }
 
-  public void setOperatingMargins(Field operatingMargins) {
+  public void setOperatingMargins(YahooField operatingMargins) {
     this.operatingMargins = operatingMargins;
   }
 
-  public Field getProfitMargins() {
+  public YahooField getProfitMargins() {
     return profitMargins;
   }
 
-  public void setProfitMargins(Field profitMargins) {
+  public void setProfitMargins(YahooField profitMargins) {
     this.profitMargins = profitMargins;
   }
 
-  public LongFormatField getNumberOfAnalystOpinions() {
+  public YahooLongFormatField getNumberOfAnalystOpinions() {
     return numberOfAnalystOpinions;
   }
 
-  public void setNumberOfAnalystOpinions(LongFormatField numberOfAnalystOpinions) {
+  public void setNumberOfAnalystOpinions(YahooLongFormatField numberOfAnalystOpinions) {
     this.numberOfAnalystOpinions = numberOfAnalystOpinions;
   }
 
-  public LongFormatField getTotalCash() {
+  public YahooLongFormatField getTotalCash() {
     return totalCash;
   }
 
-  public void setTotalCash(LongFormatField totalCash) {
+  public void setTotalCash(YahooLongFormatField totalCash) {
     this.totalCash = totalCash;
   }
 
-  public LongFormatField getEbitda() {
+  public YahooLongFormatField getEbitda() {
     return ebitda;
   }
 
-  public void setEbitda(LongFormatField ebitda) {
+  public void setEbitda(YahooLongFormatField ebitda) {
     this.ebitda = ebitda;
   }
 
-  public LongFormatField getTotalDebt() {
+  public YahooLongFormatField getTotalDebt() {
     return totalDebt;
   }
 
-  public void setTotalDebt(LongFormatField totalDebt) {
+  public void setTotalDebt(YahooLongFormatField totalDebt) {
     this.totalDebt = totalDebt;
   }
 
-  public LongFormatField getTotalRevenue() {
+  public YahooLongFormatField getTotalRevenue() {
     return totalRevenue;
   }
 
-  public void setTotalRevenue(LongFormatField totalRevenue) {
+  public void setTotalRevenue(YahooLongFormatField totalRevenue) {
     this.totalRevenue = totalRevenue;
   }
 
-  public LongFormatField getDebtToEquity() {
+  public YahooLongFormatField getDebtToEquity() {
     return debtToEquity;
   }
 
-  public void setDebtToEquity(LongFormatField debtToEquity) {
+  public void setDebtToEquity(YahooLongFormatField debtToEquity) {
     this.debtToEquity = debtToEquity;
   }
 
-  public LongFormatField getGrossProfits() {
+  public YahooLongFormatField getGrossProfits() {
     return grossProfits;
   }
 
-  public void setGrossProfits(LongFormatField grossProfits) {
+  public void setGrossProfits(YahooLongFormatField grossProfits) {
     this.grossProfits = grossProfits;
   }
 
-  public LongFormatField getFreeCashflow() {
+  public YahooLongFormatField getFreeCashflow() {
     return freeCashflow;
   }
 
-  public void setFreeCashflow(LongFormatField freeCashflow) {
+  public void setFreeCashflow(YahooLongFormatField freeCashflow) {
     this.freeCashflow = freeCashflow;
   }
 
-  public LongFormatField getOperatingCashflow() {
+  public YahooLongFormatField getOperatingCashflow() {
     return operatingCashflow;
   }
 
-  public void setOperatingCashflow(LongFormatField operatingCashflow) {
+  public void setOperatingCashflow(YahooLongFormatField operatingCashflow) {
     this.operatingCashflow = operatingCashflow;
   }
 }

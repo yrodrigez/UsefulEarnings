@@ -1,7 +1,5 @@
 package es.usefulearnings.entities;
 
-import es.usefulearnings.annotation.FieldType;
-import es.usefulearnings.annotation.ObservableField;
 import es.usefulearnings.engine.Core;
 
 import java.io.*;
@@ -17,11 +15,10 @@ import java.util.Map;
 public class DownloadedData implements Savable, Serializable {
 
   // Serializable extension
-  public static final String EXTENSION = ".sr";
+  public static final String EXTENSION = ".metatada";
 
-  private File mEntitiesFile;
+  private File mEntitiesFile; //1474537062.cdata (List<Company> serializado)
 
-  @ObservableField(name = "Created", fieldType = FieldType.DATE)
   private long created;
 
   private long totalSavedCompanies;

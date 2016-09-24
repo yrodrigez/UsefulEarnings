@@ -2,8 +2,8 @@ package es.usefulearnings.entities.option;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import es.usefulearnings.annotation.FieldType;
-import es.usefulearnings.annotation.ObservableField;
+import es.usefulearnings.annotation.ParameterType;
+import es.usefulearnings.annotation.EntityParameter;
 
 /**
  *
@@ -13,67 +13,67 @@ import es.usefulearnings.annotation.ObservableField;
 public class OptionLink {
 
   @JsonIgnore
-  @ObservableField(name = "Type", fieldType = FieldType.OPTION_TYPE)
+  @EntityParameter(name = "Type", parameterType = ParameterType.OPTION_TYPE)
   public OptionType type;
 
   @JsonProperty("contractSymbol")
-  @ObservableField(name = "Symbol", fieldType = FieldType.STRING)
+  @EntityParameter(name = "Symbol", parameterType = ParameterType.RAW_STRING)
   private String contractSymbol;
 
   @JsonProperty("strike")
-  @ObservableField(name = "Strike", fieldType = FieldType.NUMERIC)
+  @EntityParameter(name = "Strike", parameterType = ParameterType.RAW_NUMERIC)
   private double strike;
 
   @JsonProperty("currency")
-  @ObservableField(name = "Currency", fieldType = FieldType.NUMERIC)
+  @EntityParameter(name = "Currency", parameterType = ParameterType.RAW_STRING)
   private String currency;
 
   @JsonProperty("lastPrice")
-  @ObservableField(name = "Last price", fieldType = FieldType.NUMERIC)
+  @EntityParameter(name = "Last price", parameterType = ParameterType.RAW_NUMERIC)
   private double lastPrice;
 
   @JsonProperty("change")
-  @ObservableField(name = "Change", fieldType = FieldType.NUMERIC)
+  @EntityParameter(name = "Change", parameterType = ParameterType.RAW_NUMERIC)
   private double change;
 
   @JsonProperty("percentChange")
-  @ObservableField(name = "% Change", fieldType = FieldType.NUMERIC)
+  @EntityParameter(name = "% Change", parameterType = ParameterType.RAW_NUMERIC)
   private double percentChange;
 
   @JsonProperty("volume")
-  @ObservableField(name = "Volume", fieldType = FieldType.NUMERIC)
+  @EntityParameter(name = "Volume", parameterType = ParameterType.RAW_NUMERIC)
   private double volume;
 
   @JsonProperty("openInterest")
-  @ObservableField(name = "Open interest", fieldType = FieldType.NUMERIC)
+  @EntityParameter(name = "Open interest", parameterType = ParameterType.RAW_NUMERIC)
   private double openInterest;
 
   @JsonProperty("bid")
-  @ObservableField(name = "Bid", fieldType = FieldType.NUMERIC)
+  @EntityParameter(name = "Bid", parameterType = ParameterType.RAW_NUMERIC)
   private double bid;
 
   @JsonProperty("ask")
-  @ObservableField(name = "Ask", fieldType = FieldType.NUMERIC)
+  @EntityParameter(name = "Ask", parameterType = ParameterType.RAW_NUMERIC)
   private double ask;
 
   @JsonProperty("contractSize")
-  @ObservableField(name = "Size", fieldType = FieldType.NUMERIC)
+  @EntityParameter(name = "Size", parameterType = ParameterType.RAW_STRING)
   private String contractSize;
 
   @JsonProperty("expiration")
-  @ObservableField(name = "Expiration", fieldType = FieldType.DATE)
+  @EntityParameter(name = "Expiration", parameterType = ParameterType.RAW_DATE)
   private long expiration;
 
   @JsonProperty("lastTradeDate")
-  @ObservableField(name = "Last trade", fieldType = FieldType.DATE)
+  @EntityParameter(name = "Last trade", parameterType = ParameterType.RAW_DATE)
   private long lastTradeDate;
 
   @JsonProperty("impliedVolatility")
-  @ObservableField(name = "Implied volatility", fieldType = FieldType.NUMERIC)
+  @EntityParameter(name = "Implied volatility", parameterType = ParameterType.RAW_NUMERIC)
   private double impliedVolatility;
 
   @JsonProperty("inTheMoney")
-  @ObservableField(name = "In the money", fieldType = FieldType.BOOLEAN) // this is not important maybe?
+  @EntityParameter(name = "In the money", parameterType = ParameterType.RAW_BOOLEAN) // this is not important maybe?
   private boolean inTheMoney;
 
   public OptionType getType() {

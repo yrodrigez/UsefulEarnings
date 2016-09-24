@@ -1,11 +1,9 @@
 package es.usefulearnings.gui.view;
 
 import es.usefulearnings.annotation.EntityParameter;
-import es.usefulearnings.annotation.EntityParameterType;
-import es.usefulearnings.annotation.FieldType;
-import es.usefulearnings.annotation.ObservableField;
+import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.entities.Company;
-import es.usefulearnings.entities.Field;
+import es.usefulearnings.entities.YahooField;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
@@ -40,7 +38,7 @@ public class CompanyViewHelper implements ViewHelper {
 
   private <E> Collection<Node> getEntityView(E entity) {
     Collection<Node> nodes = new ArrayList<>();
-    try {
+    /*try {
       for (java.lang.reflect.Field field : entity.getClass().getDeclaredFields()) {
         String fieldName = field.getDeclaredAnnotation(ObservableField.class).name() + ": ";
         FieldType fieldType = field.getDeclaredAnnotation(ObservableField.class).fieldType();
@@ -49,7 +47,7 @@ public class CompanyViewHelper implements ViewHelper {
           if (pd.getName().equals(field.getName())) {
             try {
               if (fieldType.equals(FieldType.DATE)) {
-                Field propertyValue = (Field) pd.getReadMethod().invoke(entity);
+                YahooField propertyValue = (YahooField) pd.getReadMethod().invoke(entity);
                 //System.out.println(propertyValue.getFmt());
                 nodes.add(new Label(fieldName + propertyValue.getFmt()));
               }
@@ -69,7 +67,7 @@ public class CompanyViewHelper implements ViewHelper {
               }
 
               if (fieldType.equals(FieldType.NUMERIC)) {
-                Field fieldValue = (Field) pd.getReadMethod().invoke(entity);
+                YahooField fieldValue = (YahooField) pd.getReadMethod().invoke(entity);
                 // System.out.println(propertyValue.getRaw());
                 nodes.add(new Label(fieldName + fieldValue.getFmt()));
               }
@@ -82,7 +80,7 @@ public class CompanyViewHelper implements ViewHelper {
 
               if (fieldType.equals(FieldType.FIELD_ARRAY_LIST)) {
                 @SuppressWarnings("unchecked") // this is indeed an ArrayList
-                ArrayList<Field> fields = (ArrayList<Field>) pd.getReadMethod().invoke(entity);
+                ArrayList<YahooField> fields = (ArrayList<YahooField>) pd.getReadMethod().invoke(entity);
                 fields.forEach(field1 -> nodes.add(new Label(fieldName + field1.getFmt())));
               }
 
@@ -108,7 +106,7 @@ public class CompanyViewHelper implements ViewHelper {
     } catch (NullPointerException | IntrospectionException | IllegalAccessException | InvocationTargetException e) {
       System.out.println(e.getMessage());
       System.out.println(e.getCause() != null? e.getCause() : "cause is null" );
-    }
+    }*/
     return nodes;
   }
 
@@ -125,17 +123,17 @@ public class CompanyViewHelper implements ViewHelper {
 
       for (java.lang.reflect.Field field : company.getClass().getDeclaredFields()) {
         String entityName = field.getDeclaredAnnotation(EntityParameter.class).name();
-        EntityParameterType type = field.getDeclaredAnnotation(EntityParameter.class).entityType();
+        ParameterType type = field.getDeclaredAnnotation(EntityParameter.class).parameterType();
         VBox entityBox = new VBox();
 
-        if (!type.equals(EntityParameterType.IGNORE)) {
+        if (!type.equals(ParameterType.IGNORE)) {
           entityBox.getChildren().add(new Label("---" + entityName + "---"));
         }
 
         for (PropertyDescriptor pd : Introspector.getBeanInfo(company.getClass()).getPropertyDescriptors()) {
           if (pd.getName().equals(field.getName())) {
 
-            if (type.equals(EntityParameterType.ARRAY_LIST)) {
+            if (type.equals(ParameterType.INNER_CLASS_COLLECTION)) {
               @SuppressWarnings("unchecked")// this is indeed an ArrayList
               ArrayList<Object> entities = (ArrayList<Object>) pd.getReadMethod().invoke(company);
               entities.forEach(entity -> {
@@ -144,7 +142,7 @@ public class CompanyViewHelper implements ViewHelper {
                 });
             }
 
-            if (type.equals(EntityParameterType.CLASS)) {
+            if (type.equals(ParameterType.CLASS)) {
               Object entity = pd.getReadMethod().invoke(company);
               entityBox.getChildren().addAll(getEntityView(entity));
             }

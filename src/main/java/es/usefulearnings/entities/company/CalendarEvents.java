@@ -3,10 +3,10 @@ package es.usefulearnings.entities.company;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import es.usefulearnings.annotation.FieldType;
-import es.usefulearnings.annotation.ObservableField;
-import es.usefulearnings.entities.Field;
-import es.usefulearnings.entities.LongFormatField;
+import es.usefulearnings.annotation.EntityParameter;
+import es.usefulearnings.annotation.ParameterType;
+import es.usefulearnings.entities.YahooLongFormatField;
+import es.usefulearnings.entities.YahooField;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,82 +22,82 @@ import java.util.ArrayList;
 public class CalendarEvents extends CompanyData implements Serializable {
 
   @JsonProperty("earnings")
-  @ObservableField(name = "Earnings", fieldType = FieldType.INNER_CLASS)
+  @EntityParameter(name = "Earnings", parameterType = ParameterType.INNER_CLASS)
   private Earnings earnings;
 
   @JsonProperty("exDividendDate")
-  @ObservableField(name = "Ex dividend date", fieldType = FieldType.DATE)
-  private Field exDividendDate;
+  @EntityParameter(name = "Ex dividend date", parameterType = ParameterType.YAHOO_FIELD_DATE)
+  private YahooField exDividendDate;
 
   @JsonProperty("dividendDate")
-  @ObservableField(name = "Dividend date", fieldType = FieldType.DATE)
-  private Field dividendDate;
+  @EntityParameter(name = "Dividend date", parameterType = ParameterType.YAHOO_FIELD_DATE)
+  private YahooField dividendDate;
 
-  public ArrayList<Field> getEarningsDate() {
+  public ArrayList<YahooField> getEarningsDate() {
     return this.earnings.getEarningsDate();
   }
 
-  public void setEarningsDate(ArrayList<Field> earningsDate) {
+  public void setEarningsDate(ArrayList<YahooField> earningsDate) {
     this.earnings.setEarningsDate(earningsDate);
   }
 
-  public Field getEarningsAverage() {
+  public YahooField getEarningsAverage() {
     return this.earnings.getEarningsAverage();
   }
 
-  public void setEarningsAverage(Field earningsAverage) {
+  public void setEarningsAverage(YahooField earningsAverage) {
     this.earnings.setEarningsAverage(earningsAverage);
   }
 
-  public Field getEarningsLow() {
+  public YahooField getEarningsLow() {
     return this.earnings.getEarningsLow();
   }
 
-  public void setEarningsLow(Field earningsLow) {
+  public void setEarningsLow(YahooField earningsLow) {
     this.earnings.setEarningsLow(earningsLow);
   }
 
-  public Field getEarningsHigh() {
+  public YahooField getEarningsHigh() {
     return this.earnings.getEarningsHigh();
   }
 
-  public void setEarningsHigh(Field earningsHigh) {
+  public void setEarningsHigh(YahooField earningsHigh) {
     this.earnings.setEarningsHigh(earningsHigh);
   }
 
-  public LongFormatField getRevenueAverage() {
+  public YahooLongFormatField getRevenueAverage() {
     return this.earnings.getRevenueAverage();
   }
 
-  public void setRevenueAverage(LongFormatField revenueAverage) {
+  public void setRevenueAverage(YahooLongFormatField revenueAverage) {
     this.earnings.setRevenueAverage(revenueAverage);
   }
 
-  public LongFormatField getRevenueLow() {
+  public YahooLongFormatField getRevenueLow() {
     return this.earnings.getRevenueLow();
   }
 
-  public LongFormatField getRevenueHigh() {
+  public YahooLongFormatField getRevenueHigh() {
     return this.earnings.getRevenueHigh();
   }
 
-  public void setRevenueLow(LongFormatField revenueLow) {
+  public void setRevenueLow(YahooLongFormatField revenueLow) {
     this.earnings.setRevenueLow(revenueLow);
   }
 
-  public Field getExDividendDate() {
+  public YahooField getExDividendDate() {
     return exDividendDate;
   }
 
-  public void setExDividendDate(Field exDividendDate) {
+  public void setExDividendDate(YahooField exDividendDate) {
     this.exDividendDate = exDividendDate;
   }
 
-  public Field getDividendDate() {
+  public YahooField getDividendDate() {
     return dividendDate;
   }
 
-  public void setDividendDate(Field dividendDate) {
+  public void setDividendDate(YahooField dividendDate) {
     this.dividendDate = dividendDate;
   }
 

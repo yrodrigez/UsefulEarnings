@@ -9,12 +9,12 @@ import java.io.Serializable;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Field implements Serializable {
+public class YahooField implements Serializable {
   @JsonProperty("raw") private double raw;
   @JsonProperty("fmt") private String fmt;
 
   @JsonCreator
-  public Field(
+  public YahooField(
     @JsonProperty("raw") double raw,
     @JsonProperty("fmt") final String fmt
   ) {

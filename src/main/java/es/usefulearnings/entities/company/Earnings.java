@@ -3,10 +3,10 @@ package es.usefulearnings.entities.company;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import es.usefulearnings.annotation.FieldType;
-import es.usefulearnings.annotation.ObservableField;
-import es.usefulearnings.entities.Field;
-import es.usefulearnings.entities.LongFormatField;
+import es.usefulearnings.annotation.EntityParameter;
+import es.usefulearnings.annotation.ParameterType;
+import es.usefulearnings.entities.YahooLongFormatField;
+import es.usefulearnings.entities.YahooField;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,86 +23,86 @@ import java.util.ArrayList;
 public class Earnings extends CompanyData implements Serializable {
 
   @JsonProperty("earningsDate")
-  @ObservableField(name = "Earnings date", fieldType = FieldType.FIELD_ARRAY_LIST)
-  private ArrayList<Field> earningsDate;
+  @EntityParameter(name = "Earnings date", parameterType = ParameterType.YAHOO_FIELD_COLLECTION)
+  private ArrayList<YahooField> earningsDate;
 
   @JsonProperty("earningsAverage")
-  @ObservableField(name = "Earnings average", fieldType = FieldType.NUMERIC)
-  private Field earningsAverage;
+  @EntityParameter(name = "Earnings average", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField earningsAverage;
 
   @JsonProperty("earningsLow")
-  @ObservableField(name = "Earnings low", fieldType = FieldType.NUMERIC)
-  private Field earningsLow;
+  @EntityParameter(name = "Earnings low", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField earningsLow;
 
   @JsonProperty("earningsHigh")
-  @ObservableField(name = "Earnings high", fieldType = FieldType.NUMERIC)
-  private Field earningsHigh;
+  @EntityParameter(name = "Earnings high", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField earningsHigh;
 
   @JsonProperty("revenueAverage")
-  @ObservableField(name = "Revenue average", fieldType = FieldType.NUMERIC)
-  private LongFormatField revenueAverage;
+  @EntityParameter(name = "Revenue average", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooLongFormatField revenueAverage;
 
   @JsonProperty("revenueLow")
-  @ObservableField(name = "Revenue low", fieldType = FieldType.NUMERIC)
-  private LongFormatField revenueLow;
+  @EntityParameter(name = "Revenue low", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooLongFormatField revenueLow;
 
   @JsonProperty("revenueHigh")
-  @ObservableField(name = "Revenue high", fieldType = FieldType.NUMERIC)
-  private LongFormatField revenueHigh;
+  @EntityParameter(name = "Revenue high", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooLongFormatField revenueHigh;
 
-  public ArrayList<Field> getEarningsDate() {
+  public ArrayList<YahooField> getEarningsDate() {
     return earningsDate;
   }
 
-  public void setEarningsDate(ArrayList<Field> earningsDate) {
+  public void setEarningsDate(ArrayList<YahooField> earningsDate) {
     this.earningsDate = earningsDate;
   }
 
-  public Field getEarningsAverage() {
+  public YahooField getEarningsAverage() {
     return earningsAverage;
   }
 
-  public void setEarningsAverage(Field earningsAverage) {
+  public void setEarningsAverage(YahooField earningsAverage) {
     this.earningsAverage = earningsAverage;
   }
 
-  public Field getEarningsLow() {
+  public YahooField getEarningsLow() {
     return earningsLow;
   }
 
-  public void setEarningsLow(Field earningsLow) {
+  public void setEarningsLow(YahooField earningsLow) {
     this.earningsLow = earningsLow;
   }
 
-  public Field getEarningsHigh() {
+  public YahooField getEarningsHigh() {
     return earningsHigh;
   }
 
-  public void setEarningsHigh(Field earningsHigh) {
+  public void setEarningsHigh(YahooField earningsHigh) {
     this.earningsHigh = earningsHigh;
   }
 
-  public LongFormatField getRevenueAverage() {
+  public YahooLongFormatField getRevenueAverage() {
     return revenueAverage;
   }
 
-  public void setRevenueAverage(LongFormatField revenueAverage) {
+  public void setRevenueAverage(YahooLongFormatField revenueAverage) {
     this.revenueAverage = revenueAverage;
   }
 
-  public LongFormatField getRevenueLow() {
+  public YahooLongFormatField getRevenueLow() {
     return revenueLow;
   }
 
-  public void setRevenueLow(LongFormatField revenueLow) {
+  public void setRevenueLow(YahooLongFormatField revenueLow) {
     this.revenueLow = revenueLow;
   }
 
-  public LongFormatField getRevenueHigh() {
+  public YahooLongFormatField getRevenueHigh() {
     return revenueHigh;
   }
 
-  public void setRevenueHigh(LongFormatField revenueHigh) {
+  public void setRevenueHigh(YahooLongFormatField revenueHigh) {
     this.revenueHigh = revenueHigh;
   }
 }

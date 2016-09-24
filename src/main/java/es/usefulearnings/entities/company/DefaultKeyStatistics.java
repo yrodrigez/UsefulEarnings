@@ -3,10 +3,10 @@ package es.usefulearnings.entities.company;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import es.usefulearnings.annotation.FieldType;
-import es.usefulearnings.annotation.ObservableField;
-import es.usefulearnings.entities.Field;
-import es.usefulearnings.entities.LongFormatField;
+import es.usefulearnings.annotation.ParameterType;
+import es.usefulearnings.annotation.EntityParameter;
+import es.usefulearnings.entities.YahooLongFormatField;
+import es.usefulearnings.entities.YahooField;
 
 import java.io.Serializable;
 
@@ -21,113 +21,113 @@ import java.io.Serializable;
 public class DefaultKeyStatistics extends CompanyData implements Serializable {
 
   @JsonProperty("lastSplitFactor")
-  @ObservableField(name = "Last split factor", fieldType = FieldType.STRING)
+  @EntityParameter(name = "Last split factor", parameterType = ParameterType.RAW_STRING)
   private String lastSplitFactor;
 
   @JsonProperty("forwardPE")
-  @ObservableField(name = "Forward price to earnings", fieldType = FieldType.NUMERIC)
-  private Field forwardPE;
+  @EntityParameter(name = "Forward price to earnings", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField forwardPE;
 
   @JsonProperty("profitMargins")
-  @ObservableField(name = "Profit margins", fieldType = FieldType.NUMERIC)
-  private Field profitMargins;
+  @EntityParameter(name = "Profit margins", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField profitMargins;
 
   @JsonProperty("heldPercentInsiders")
-  @ObservableField(name = "Held percent insiders", fieldType = FieldType.NUMERIC)
-  private Field heldPercentInsiders;
+  @EntityParameter(name = "Held percent insiders", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField heldPercentInsiders;
 
   @JsonProperty("heldPercentInstitutions")
-  @ObservableField(name = "Held percent institutions", fieldType = FieldType.NUMERIC)
-  private Field heldPercentInstitutions;
+  @EntityParameter(name = "Held percent institutions", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField heldPercentInstitutions;
 
   @JsonProperty("shortRatio")
-  @ObservableField(name = "Short ratio", fieldType = FieldType.NUMERIC)
-  private Field shortRatio;
+  @EntityParameter(name = "Short ratio", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField shortRatio;
 
   @JsonProperty("shortPercentOfFloat")
-  @ObservableField(name = "Short percent of float", fieldType = FieldType.NUMERIC)
-  private Field shortPercentOfFloat;
+  @EntityParameter(name = "Short percent of float", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField shortPercentOfFloat;
 
   @JsonProperty("beta")
-  @ObservableField(name = "Beta", fieldType = FieldType.NUMERIC)
-  private Field beta;
+  @EntityParameter(name = "Beta", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField beta;
 
   @JsonProperty("bookValue")
-  @ObservableField(name = "Book name", fieldType = FieldType.NUMERIC)
-  private Field bookValue;
+  @EntityParameter(name = "Book name", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField bookValue;
 
   @JsonProperty("priceToBook")
-  @ObservableField(name = "Price to book", fieldType = FieldType.NUMERIC)
-  private Field priceToBook;
+  @EntityParameter(name = "Price to book", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField priceToBook;
 
   @JsonProperty("lastFiscalYearEnd")
-  @ObservableField(name = "Last fiscal Year End", fieldType = FieldType.NUMERIC)
-  private Field lastFiscalYearEnd;
+  @EntityParameter(name = "Last fiscal Year End", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField lastFiscalYearEnd;
 
   @JsonProperty("nextFiscalYearEnd")
-  @ObservableField(name = "Next fiscal year End", fieldType = FieldType.NUMERIC)
-  private Field nextFiscalYearEnd;
+  @EntityParameter(name = "Next fiscal year End", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField nextFiscalYearEnd;
 
 
   @JsonProperty("mostRecentQuarter")
-  @ObservableField(name = "Most recent quarter", fieldType = FieldType.NUMERIC)
-  private Field mostRecentQuarter;
+  @EntityParameter(name = "Most recent quarter", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField mostRecentQuarter;
 
   @JsonProperty("earningsQuarterlyGrowth")
-  @ObservableField(name = "Earnings quarterly growth", fieldType = FieldType.NUMERIC)
-  private Field earningsQuarterlyGrowth;
+  @EntityParameter(name = "Earnings quarterly growth", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField earningsQuarterlyGrowth;
 
   @JsonProperty("trailingEps")
-  @ObservableField(name = "Trailing EPS", fieldType = FieldType.NUMERIC)
-  private Field trailingEps;
+  @EntityParameter(name = "Trailing EPS", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField trailingEps;
 
   @JsonProperty("forwardEps")
-  @ObservableField(name = "Forward EPS", fieldType = FieldType.NUMERIC)
-  private Field forwardEps;
+  @EntityParameter(name = "Forward EPS", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField forwardEps;
 
   @JsonProperty("pegRatio")
-  @ObservableField(name = "PEG ratio", fieldType = FieldType.NUMERIC)
-  private Field pegRatio;
+  @EntityParameter(name = "PEG ratio", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField pegRatio;
 
   @JsonProperty("lastSplitDate")
-  @ObservableField(name = "Last split date", fieldType = FieldType.DATE)
-  private Field lastSplitDate;
+  @EntityParameter(name = "Last split date", parameterType = ParameterType.YAHOO_FIELD_DATE)
+  private YahooField lastSplitDate;
 
   @JsonProperty("enterpriseToRevenue")
-  @ObservableField(name = "Enterprise to revenue", fieldType = FieldType.NUMERIC)
-  private Field enterpriseToRevenue;
+  @EntityParameter(name = "Enterprise to revenue", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField enterpriseToRevenue;
 
   @JsonProperty("enterpriseToEbitda")
-  @ObservableField(name = "Entrprise EBITDA", fieldType = FieldType.NUMERIC)
-  private Field enterpriseToEbitda;
+  @EntityParameter(name = "Entrprise EBITDA", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField enterpriseToEbitda;
 
   @JsonProperty("SandP52WeekChange")
-  @ObservableField(name = "Sand 52 week change", fieldType = FieldType.NUMERIC)
-  private Field sandP52WeekChange;
+  @EntityParameter(name = "Sand 52 week change", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  private YahooField sandP52WeekChange;
 
   @JsonProperty("floatShares")
-  @ObservableField(name = "Float shares", fieldType = FieldType.NUMERIC)
-  private LongFormatField floatShares;
+  @EntityParameter(name = "Float shares", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField floatShares;
 
   @JsonProperty("sharesOutstanding")
-  @ObservableField(name = "Shares outstanding", fieldType = FieldType.NUMERIC)
-  private LongFormatField sharesOutstanding;
+  @EntityParameter(name = "Shares outstanding", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField sharesOutstanding;
 
   @JsonProperty("sharesShort")
-  @ObservableField(name = "Shares short", fieldType = FieldType.NUMERIC)
-  private LongFormatField sharesShort;
+  @EntityParameter(name = "Shares short", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField sharesShort;
 
   @JsonProperty("sharesShortPriorMonth")
-  @ObservableField(name = "Shares short prior month", fieldType = FieldType.NUMERIC)
-  private LongFormatField sharesShortPriorMonth;
+  @EntityParameter(name = "Shares short prior month", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField sharesShortPriorMonth;
 
   @JsonProperty("netIncomeToCommon")
-  @ObservableField(name = "Net income to common", fieldType = FieldType.NUMERIC)
-  private LongFormatField netIncomeToCommon;
+  @EntityParameter(name = "Net income to common", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField netIncomeToCommon;
 
   @JsonProperty("enterpriseValue")
-  @ObservableField(name = "Enterprise value", fieldType = FieldType.NUMERIC)
-  private LongFormatField enterpriseValue;
+  @EntityParameter(name = "Enterprise value", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField enterpriseValue;
 
   public String getLastSplitFactor() {
     return lastSplitFactor;
@@ -137,211 +137,211 @@ public class DefaultKeyStatistics extends CompanyData implements Serializable {
     this.lastSplitFactor = lastSplitFactor;
   }
 
-  public Field getForwardPE() {
+  public YahooField getForwardPE() {
     return forwardPE;
   }
 
-  public void setForwardPE(Field forwardPE) {
+  public void setForwardPE(YahooField forwardPE) {
     this.forwardPE = forwardPE;
   }
 
-  public Field getProfitMargins() {
+  public YahooField getProfitMargins() {
     return profitMargins;
   }
 
-  public void setProfitMargins(Field profitMargins) {
+  public void setProfitMargins(YahooField profitMargins) {
     this.profitMargins = profitMargins;
   }
 
-  public Field getHeldPercentInsiders() {
+  public YahooField getHeldPercentInsiders() {
     return heldPercentInsiders;
   }
 
-  public void setHeldPercentInsiders(Field heldPercentInsiders) {
+  public void setHeldPercentInsiders(YahooField heldPercentInsiders) {
     this.heldPercentInsiders = heldPercentInsiders;
   }
 
-  public Field getHeldPercentInstitutions() {
+  public YahooField getHeldPercentInstitutions() {
     return heldPercentInstitutions;
   }
 
-  public void setHeldPercentInstitutions(Field heldPercentInstitutions) {
+  public void setHeldPercentInstitutions(YahooField heldPercentInstitutions) {
     this.heldPercentInstitutions = heldPercentInstitutions;
   }
 
-  public Field getShortRatio() {
+  public YahooField getShortRatio() {
     return shortRatio;
   }
 
-  public void setShortRatio(Field shortRatio) {
+  public void setShortRatio(YahooField shortRatio) {
     this.shortRatio = shortRatio;
   }
 
-  public Field getShortPercentOfFloat() {
+  public YahooField getShortPercentOfFloat() {
     return shortPercentOfFloat;
   }
 
-  public void setShortPercentOfFloat(Field shortPercentOfFloat) {
+  public void setShortPercentOfFloat(YahooField shortPercentOfFloat) {
     this.shortPercentOfFloat = shortPercentOfFloat;
   }
 
-  public Field getBeta() {
+  public YahooField getBeta() {
     return beta;
   }
 
-  public void setBeta(Field beta) {
+  public void setBeta(YahooField beta) {
     this.beta = beta;
   }
 
-  public Field getBookValue() {
+  public YahooField getBookValue() {
     return bookValue;
   }
 
-  public void setBookValue(Field bookValue) {
+  public void setBookValue(YahooField bookValue) {
     this.bookValue = bookValue;
   }
 
-  public Field getPriceToBook() {
+  public YahooField getPriceToBook() {
     return priceToBook;
   }
 
-  public void setPriceToBook(Field priceToBook) {
+  public void setPriceToBook(YahooField priceToBook) {
     this.priceToBook = priceToBook;
   }
 
-  public Field getLastFiscalYearEnd() {
+  public YahooField getLastFiscalYearEnd() {
     return lastFiscalYearEnd;
   }
 
-  public void setLastFiscalYearEnd(Field lastFiscalYearEnd) {
+  public void setLastFiscalYearEnd(YahooField lastFiscalYearEnd) {
     this.lastFiscalYearEnd = lastFiscalYearEnd;
   }
 
-  public Field getNextFiscalYearEnd() {
+  public YahooField getNextFiscalYearEnd() {
     return nextFiscalYearEnd;
   }
 
-  public void setNextFiscalYearEnd(Field nextFiscalYearEnd) {
+  public void setNextFiscalYearEnd(YahooField nextFiscalYearEnd) {
     this.nextFiscalYearEnd = nextFiscalYearEnd;
   }
 
-  public Field getMostRecentQuarter() {
+  public YahooField getMostRecentQuarter() {
     return mostRecentQuarter;
   }
 
-  public void setMostRecentQuarter(Field mostRecentQuarter) {
+  public void setMostRecentQuarter(YahooField mostRecentQuarter) {
     this.mostRecentQuarter = mostRecentQuarter;
   }
 
-  public Field getEarningsQuarterlyGrowth() {
+  public YahooField getEarningsQuarterlyGrowth() {
     return earningsQuarterlyGrowth;
   }
 
-  public void setEarningsQuarterlyGrowth(Field earningsQuarterlyGrowth) {
+  public void setEarningsQuarterlyGrowth(YahooField earningsQuarterlyGrowth) {
     this.earningsQuarterlyGrowth = earningsQuarterlyGrowth;
   }
 
-  public Field getTrailingEps() {
+  public YahooField getTrailingEps() {
     return trailingEps;
   }
 
-  public void setTrailingEps(Field trailingEps) {
+  public void setTrailingEps(YahooField trailingEps) {
     this.trailingEps = trailingEps;
   }
 
-  public Field getForwardEps() {
+  public YahooField getForwardEps() {
     return forwardEps;
   }
 
-  public void setForwardEps(Field forwardEps) {
+  public void setForwardEps(YahooField forwardEps) {
     this.forwardEps = forwardEps;
   }
 
-  public Field getPegRatio() {
+  public YahooField getPegRatio() {
     return pegRatio;
   }
 
-  public void setPegRatio(Field pegRatio) {
+  public void setPegRatio(YahooField pegRatio) {
     this.pegRatio = pegRatio;
   }
 
-  public Field getLastSplitDate() {
+  public YahooField getLastSplitDate() {
     return lastSplitDate;
   }
 
-  public void setLastSplitDate(Field lastSplitDate) {
+  public void setLastSplitDate(YahooField lastSplitDate) {
     this.lastSplitDate = lastSplitDate;
   }
 
-  public Field getEnterpriseToRevenue() {
+  public YahooField getEnterpriseToRevenue() {
     return enterpriseToRevenue;
   }
 
-  public void setEnterpriseToRevenue(Field enterpriseToRevenue) {
+  public void setEnterpriseToRevenue(YahooField enterpriseToRevenue) {
     this.enterpriseToRevenue = enterpriseToRevenue;
   }
 
-  public Field getEnterpriseToEbitda() {
+  public YahooField getEnterpriseToEbitda() {
     return enterpriseToEbitda;
   }
 
-  public void setEnterpriseToEbitda(Field enterpriseToEbitda) {
+  public void setEnterpriseToEbitda(YahooField enterpriseToEbitda) {
     this.enterpriseToEbitda = enterpriseToEbitda;
   }
 
-  public Field getSandP52WeekChange() {
+  public YahooField getSandP52WeekChange() {
     return sandP52WeekChange;
   }
 
-  public void setSandP52WeekChange(Field sandP52WeekChange) {
+  public void setSandP52WeekChange(YahooField sandP52WeekChange) {
     this.sandP52WeekChange = sandP52WeekChange;
   }
 
-  public LongFormatField getFloatShares() {
+  public YahooLongFormatField getFloatShares() {
     return floatShares;
   }
 
-  public void setFloatShares(LongFormatField floatShares) {
+  public void setFloatShares(YahooLongFormatField floatShares) {
     this.floatShares = floatShares;
   }
 
-  public LongFormatField getSharesOutstanding() {
+  public YahooLongFormatField getSharesOutstanding() {
     return sharesOutstanding;
   }
 
-  public void setSharesOutstanding(LongFormatField sharesOutstanding) {
+  public void setSharesOutstanding(YahooLongFormatField sharesOutstanding) {
     this.sharesOutstanding = sharesOutstanding;
   }
 
-  public LongFormatField getSharesShort() {
+  public YahooLongFormatField getSharesShort() {
     return sharesShort;
   }
 
-  public void setSharesShort(LongFormatField sharesShort) {
+  public void setSharesShort(YahooLongFormatField sharesShort) {
     this.sharesShort = sharesShort;
   }
 
-  public LongFormatField getSharesShortPriorMonth() {
+  public YahooLongFormatField getSharesShortPriorMonth() {
     return sharesShortPriorMonth;
   }
 
-  public void setSharesShortPriorMonth(LongFormatField sharesShortPriorMonth) {
+  public void setSharesShortPriorMonth(YahooLongFormatField sharesShortPriorMonth) {
     this.sharesShortPriorMonth = sharesShortPriorMonth;
   }
 
-  public LongFormatField getNetIncomeToCommon() {
+  public YahooLongFormatField getNetIncomeToCommon() {
     return netIncomeToCommon;
   }
 
-  public void setNetIncomeToCommon(LongFormatField netIncomeToCommon) {
+  public void setNetIncomeToCommon(YahooLongFormatField netIncomeToCommon) {
     this.netIncomeToCommon = netIncomeToCommon;
   }
 
-  public LongFormatField getEnterpriseValue() {
+  public YahooLongFormatField getEnterpriseValue() {
     return enterpriseValue;
   }
 
-  public void setEnterpriseValue(LongFormatField enterpriseValue) {
+  public void setEnterpriseValue(YahooLongFormatField enterpriseValue) {
     this.enterpriseValue = enterpriseValue;
   }
 
@@ -350,41 +350,41 @@ public class DefaultKeyStatistics extends CompanyData implements Serializable {
   /*
   * *** NULL DATA ***
   @JsonProperty("revenueQuarterlyGrowth")
-  private ObservableField revenueQuarterlyGrowth;
+  private EntityParameter revenueQuarterlyGrowth;
   @JsonProperty("morningStarOverallRating")
-  private ObservableField morningStarOverallRating;
+  private EntityParameter morningStarOverallRating;
   @JsonProperty("morningStarRiskRating")
-  private ObservableField morningStarRiskRating;
+  private EntityParameter morningStarRiskRating;
   @JsonProperty("category")
-  private ObservableField category; // null,
+  private EntityParameter category; // null,
   @JsonProperty("annualReportExpenseRatio")
-  private ObservableField annualReportExpenseRatio;
+  private EntityParameter annualReportExpenseRatio;
   @JsonProperty("ytdReturn")
-  private ObservableField ytdReturn;
+  private EntityParameter ytdReturn;
   @JsonProperty("beta3Year")
-  private ObservableField beta3Year;
+  private EntityParameter beta3Year;
   @JsonProperty("totalAssets")
-  private ObservableField totalAssets;
+  private EntityParameter totalAssets;
   @JsonProperty("yield")
-  private ObservableField yield;
+  private EntityParameter yield;
   @JsonProperty("fundFamily")
-  private ObservableField fundFamily; // null,
+  private EntityParameter fundFamily; // null,
   @JsonProperty("fundInceptionDate")
-  private ObservableField fundInceptionDate;
+  private EntityParameter fundInceptionDate;
   @JsonProperty("legalType")
-  private ObservableField legalType; // null,
+  private EntityParameter legalType; // null,
   @JsonProperty("threeYearAverageReturn")
-  private ObservableField threeYearAverageReturn;
+  private EntityParameter threeYearAverageReturn;
   @JsonProperty("fiveYearAverageReturn")
-  private ObservableField fiveYearAverageReturn;
+  private EntityParameter fiveYearAverageReturn;
   @JsonProperty("priceToSalesTrailing12Months")
-  private ObservableField priceToSalesTrailing12Months;
+  private EntityParameter priceToSalesTrailing12Months;
   @JsonProperty("lastDividendValue")
-  private ObservableField lastDividendValue;
+  private EntityParameter lastDividendValue;
   @JsonProperty("lastCapGain")
-  private ObservableField lastCapGain;
+  private EntityParameter lastCapGain;
   @JsonProperty("annualHoldingsTurnover")
-  private ObservableField annualHoldingsTurnover;
+  private EntityParameter annualHoldingsTurnover;
    */
 
 }

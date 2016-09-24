@@ -3,10 +3,10 @@ package es.usefulearnings.entities.company;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import es.usefulearnings.annotation.FieldType;
-import es.usefulearnings.annotation.ObservableField;
-import es.usefulearnings.entities.Field;
-import es.usefulearnings.entities.LongFormatField;
+import es.usefulearnings.annotation.EntityParameter;
+import es.usefulearnings.annotation.ParameterType;
+import es.usefulearnings.entities.YahooLongFormatField;
+import es.usefulearnings.entities.YahooField;
 
 import java.io.Serializable;
 
@@ -22,314 +22,314 @@ import java.io.Serializable;
 public class BalanceSheetStatement extends CompanyData implements Serializable {
   
   @JsonProperty("endDate")
-  @ObservableField(name = "End date", fieldType = FieldType.DATE)
-  private Field endDate;
+  @EntityParameter(name = "End date", parameterType = ParameterType.YAHOO_FIELD_DATE)
+  private YahooField endDate;
 
   @JsonProperty("cash")
-  @ObservableField(name = "Cash", fieldType = FieldType.NUMERIC)
-  private LongFormatField cash;
+  @EntityParameter(name = "Cash", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField cash;
 
   @JsonProperty("shortTermInvestments")
-  @ObservableField(name = "Short term investments", fieldType = FieldType.NUMERIC)
-  private LongFormatField shortTermInvestments;
+  @EntityParameter(name = "Short term investments", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField shortTermInvestments;
 
   @JsonProperty("netReceivables")
-  @ObservableField(name = "Net receivables", fieldType = FieldType.NUMERIC)
-  private LongFormatField netReceivables;
+  @EntityParameter(name = "Net receivables", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField netReceivables;
 
   @JsonProperty("inventory")
-  @ObservableField(name = "Inventory", fieldType = FieldType.NUMERIC)
-  private LongFormatField inventory;
+  @EntityParameter(name = "Inventory", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField inventory;
 
   @JsonProperty("otherCurrentAssets")
-  @ObservableField(name = "Other current assets", fieldType = FieldType.NUMERIC)
-  private LongFormatField otherCurrentAssets;
+  @EntityParameter(name = "Other current assets", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField otherCurrentAssets;
 
   @JsonProperty("totalCurrentAssets")
-  @ObservableField(name = "Total current assets", fieldType = FieldType.NUMERIC)
-  private LongFormatField totalCurrentAssets;
+  @EntityParameter(name = "Total current assets", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField totalCurrentAssets;
 
   @JsonProperty("longTermInvestments")
-  @ObservableField(name = "Long term investments", fieldType = FieldType.NUMERIC)
-  private LongFormatField longTermInvestments;
+  @EntityParameter(name = "Long term investments", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField longTermInvestments;
 
   @JsonProperty("propertyPlantEquipment")
-  @ObservableField(name = "Property plan equipment", fieldType = FieldType.NUMERIC)
-  private LongFormatField propertyPlantEquipment;
+  @EntityParameter(name = "Property plan equipment", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField propertyPlantEquipment;
 
   @JsonProperty("goodWill")
-  @ObservableField(name = "Good will", fieldType = FieldType.NUMERIC)
-  private LongFormatField goodWill;
+  @EntityParameter(name = "Good will", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField goodWill;
 
   @JsonProperty("intangibleAssets")
-  @ObservableField(name = "Intangible assets", fieldType = FieldType.NUMERIC)
-  private LongFormatField intangibleAssets;
+  @EntityParameter(name = "Intangible assets", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField intangibleAssets;
 
   @JsonProperty("otherAssets")
-  @ObservableField(name = "Other assets", fieldType = FieldType.NUMERIC)
-  private LongFormatField otherAssets;
+  @EntityParameter(name = "Other assets", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField otherAssets;
 
   @JsonProperty("totalAssets")
-  @ObservableField(name = "Total assets", fieldType = FieldType.NUMERIC)
-  private LongFormatField totalAssets;
+  @EntityParameter(name = "Total assets", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField totalAssets;
 
   @JsonProperty("accountsPayable")
-  @ObservableField(name = "Accounts payable", fieldType = FieldType.NUMERIC)
-  private LongFormatField accountsPayable;
+  @EntityParameter(name = "Accounts payable", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField accountsPayable;
 
   @JsonProperty("shortLongTermDebt")
-  @ObservableField(name = "Short/Long term debt", fieldType = FieldType.NUMERIC)
-  private LongFormatField shortLongTermDebt;
+  @EntityParameter(name = "Short/Long term debt", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField shortLongTermDebt;
 
   @JsonProperty("otherCurrentLiab")
-  @ObservableField(name = "Other current liability", fieldType = FieldType.NUMERIC)
-  private LongFormatField otherCurrentLiab;
+  @EntityParameter(name = "Other current liability", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField otherCurrentLiab;
 
   @JsonProperty("longTermDebt")
-  @ObservableField(name = "Long term debt", fieldType = FieldType.NUMERIC)
-  private LongFormatField longTermDebt;
+  @EntityParameter(name = "Long term debt", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField longTermDebt;
 
   @JsonProperty("otherLiab")
-  @ObservableField(name = "Other liabilities", fieldType = FieldType.NUMERIC)
-  private LongFormatField otherLiab;
+  @EntityParameter(name = "Other liabilities", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField otherLiab;
 
   @JsonProperty("deferredLongTermLiab")
-  @ObservableField(name = "Deferred long term liability", fieldType = FieldType.NUMERIC)
-  private LongFormatField deferredLongTermLiab;
+  @EntityParameter(name = "Deferred long term liability", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField deferredLongTermLiab;
 
   @JsonProperty("totalCurrentLiabilities")
-  @ObservableField(name = "Total current liabilities", fieldType = FieldType.NUMERIC)
-  private LongFormatField totalCurrentLiabilities;
+  @EntityParameter(name = "Total current liabilities", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField totalCurrentLiabilities;
 
   @JsonProperty("totalLiab")
-  @ObservableField(name = "Total liability", fieldType = FieldType.NUMERIC)
-  private LongFormatField totalLiab;
+  @EntityParameter(name = "Total liability", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField totalLiab;
 
   @JsonProperty("commonStock")
-  @ObservableField(name = "Common stock", fieldType = FieldType.NUMERIC)
-  private LongFormatField commonStock;
+  @EntityParameter(name = "Common stock", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField commonStock;
 
   @JsonProperty("retainedEarnings")
-  @ObservableField(name = "Retained earnings", fieldType = FieldType.NUMERIC)
-  private LongFormatField retainedEarnings;
+  @EntityParameter(name = "Retained earnings", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField retainedEarnings;
 
   @JsonProperty("otherStockholderEquity")
-  @ObservableField(name = "Other stock holder equity", fieldType = FieldType.NUMERIC)
-  private LongFormatField otherStockholderEquity;
+  @EntityParameter(name = "Other stock holder equity", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField otherStockholderEquity;
 
   @JsonProperty("totalStockholderEquity")
-  @ObservableField(name = "Total stock holder equity", fieldType = FieldType.NUMERIC)
-  private LongFormatField totalStockholderEquity;
+  @EntityParameter(name = "Total stock holder equity", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField totalStockholderEquity;
 
   @JsonProperty("netTangibleAssets")
-  @ObservableField(name = "Net tangible assets", fieldType = FieldType.NUMERIC)
-  private LongFormatField netTangibleAssets; 
+  @EntityParameter(name = "Net tangible assets", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  private YahooLongFormatField netTangibleAssets;
 
-  public Field getEndDate() {
+  public YahooField getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(Field endDate) {
+  public void setEndDate(YahooField endDate) {
     this.endDate = endDate;
   }
 
-  public LongFormatField getCash() {
+  public YahooLongFormatField getCash() {
     return cash;
   }
 
-  public void setCash(LongFormatField cash) {
+  public void setCash(YahooLongFormatField cash) {
     this.cash = cash;
   }
 
-  public LongFormatField getShortTermInvestments() {
+  public YahooLongFormatField getShortTermInvestments() {
     return shortTermInvestments;
   }
 
-  public void setShortTermInvestments(LongFormatField shortTermInvestments) {
+  public void setShortTermInvestments(YahooLongFormatField shortTermInvestments) {
     this.shortTermInvestments = shortTermInvestments;
   }
 
-  public LongFormatField getNetReceivables() {
+  public YahooLongFormatField getNetReceivables() {
     return netReceivables;
   }
 
-  public void setNetReceivables(LongFormatField netReceivables) {
+  public void setNetReceivables(YahooLongFormatField netReceivables) {
     this.netReceivables = netReceivables;
   }
 
-  public LongFormatField getInventory() {
+  public YahooLongFormatField getInventory() {
     return inventory;
   }
 
-  public void setInventory(LongFormatField inventory) {
+  public void setInventory(YahooLongFormatField inventory) {
     this.inventory = inventory;
   }
 
-  public LongFormatField getOtherCurrentAssets() {
+  public YahooLongFormatField getOtherCurrentAssets() {
     return otherCurrentAssets;
   }
 
-  public void setOtherCurrentAssets(LongFormatField otherCurrentAssets) {
+  public void setOtherCurrentAssets(YahooLongFormatField otherCurrentAssets) {
     this.otherCurrentAssets = otherCurrentAssets;
   }
 
-  public LongFormatField getTotalCurrentAssets() {
+  public YahooLongFormatField getTotalCurrentAssets() {
     return totalCurrentAssets;
   }
 
-  public void setTotalCurrentAssets(LongFormatField totalCurrentAssets) {
+  public void setTotalCurrentAssets(YahooLongFormatField totalCurrentAssets) {
     this.totalCurrentAssets = totalCurrentAssets;
   }
 
-  public LongFormatField getLongTermInvestments() {
+  public YahooLongFormatField getLongTermInvestments() {
     return longTermInvestments;
   }
 
-  public void setLongTermInvestments(LongFormatField longTermInvestments) {
+  public void setLongTermInvestments(YahooLongFormatField longTermInvestments) {
     this.longTermInvestments = longTermInvestments;
   }
 
-  public LongFormatField getPropertyPlantEquipment() {
+  public YahooLongFormatField getPropertyPlantEquipment() {
     return propertyPlantEquipment;
   }
 
-  public void setPropertyPlantEquipment(LongFormatField propertyPlantEquipment) {
+  public void setPropertyPlantEquipment(YahooLongFormatField propertyPlantEquipment) {
     this.propertyPlantEquipment = propertyPlantEquipment;
   }
 
-  public LongFormatField getGoodWill() {
+  public YahooLongFormatField getGoodWill() {
     return goodWill;
   }
 
-  public void setGoodWill(LongFormatField goodWill) {
+  public void setGoodWill(YahooLongFormatField goodWill) {
     this.goodWill = goodWill;
   }
 
-  public LongFormatField getIntangibleAssets() {
+  public YahooLongFormatField getIntangibleAssets() {
     return intangibleAssets;
   }
 
-  public void setIntangibleAssets(LongFormatField intangibleAssets) {
+  public void setIntangibleAssets(YahooLongFormatField intangibleAssets) {
     this.intangibleAssets = intangibleAssets;
   }
 
-  public LongFormatField getOtherAssets() {
+  public YahooLongFormatField getOtherAssets() {
     return otherAssets;
   }
 
-  public void setOtherAssets(LongFormatField otherAssets) {
+  public void setOtherAssets(YahooLongFormatField otherAssets) {
     this.otherAssets = otherAssets;
   }
 
-  public LongFormatField getTotalAssets() {
+  public YahooLongFormatField getTotalAssets() {
     return totalAssets;
   }
 
-  public void setTotalAssets(LongFormatField totalAssets) {
+  public void setTotalAssets(YahooLongFormatField totalAssets) {
     this.totalAssets = totalAssets;
   }
 
-  public LongFormatField getAccountsPayable() {
+  public YahooLongFormatField getAccountsPayable() {
     return accountsPayable;
   }
 
-  public void setAccountsPayable(LongFormatField accountsPayable) {
+  public void setAccountsPayable(YahooLongFormatField accountsPayable) {
     this.accountsPayable = accountsPayable;
   }
 
-  public LongFormatField getShortLongTermDebt() {
+  public YahooLongFormatField getShortLongTermDebt() {
     return shortLongTermDebt;
   }
 
-  public void setShortLongTermDebt(LongFormatField shortLongTermDebt) {
+  public void setShortLongTermDebt(YahooLongFormatField shortLongTermDebt) {
     this.shortLongTermDebt = shortLongTermDebt;
   }
 
-  public LongFormatField getOtherCurrentLiab() {
+  public YahooLongFormatField getOtherCurrentLiab() {
     return otherCurrentLiab;
   }
 
-  public void setOtherCurrentLiab(LongFormatField otherCurrentLiab) {
+  public void setOtherCurrentLiab(YahooLongFormatField otherCurrentLiab) {
     this.otherCurrentLiab = otherCurrentLiab;
   }
 
-  public LongFormatField getLongTermDebt() {
+  public YahooLongFormatField getLongTermDebt() {
     return longTermDebt;
   }
 
-  public void setLongTermDebt(LongFormatField longTermDebt) {
+  public void setLongTermDebt(YahooLongFormatField longTermDebt) {
     this.longTermDebt = longTermDebt;
   }
 
-  public LongFormatField getOtherLiab() {
+  public YahooLongFormatField getOtherLiab() {
     return otherLiab;
   }
 
-  public void setOtherLiab(LongFormatField otherLiab) {
+  public void setOtherLiab(YahooLongFormatField otherLiab) {
     this.otherLiab = otherLiab;
   }
 
-  public LongFormatField getDeferredLongTermLiab() {
+  public YahooLongFormatField getDeferredLongTermLiab() {
     return deferredLongTermLiab;
   }
 
-  public void setDeferredLongTermLiab(LongFormatField deferredLongTermLiab) {
+  public void setDeferredLongTermLiab(YahooLongFormatField deferredLongTermLiab) {
     this.deferredLongTermLiab = deferredLongTermLiab;
   }
 
-  public LongFormatField getTotalCurrentLiabilities() {
+  public YahooLongFormatField getTotalCurrentLiabilities() {
     return totalCurrentLiabilities;
   }
 
-  public void setTotalCurrentLiabilities(LongFormatField totalCurrentLiabilities) {
+  public void setTotalCurrentLiabilities(YahooLongFormatField totalCurrentLiabilities) {
     this.totalCurrentLiabilities = totalCurrentLiabilities;
   }
 
-  public LongFormatField getTotalLiab() {
+  public YahooLongFormatField getTotalLiab() {
     return totalLiab;
   }
 
-  public void setTotalLiab(LongFormatField totalLiab) {
+  public void setTotalLiab(YahooLongFormatField totalLiab) {
     this.totalLiab = totalLiab;
   }
 
-  public LongFormatField getCommonStock() {
+  public YahooLongFormatField getCommonStock() {
     return commonStock;
   }
 
-  public void setCommonStock(LongFormatField commonStock) {
+  public void setCommonStock(YahooLongFormatField commonStock) {
     this.commonStock = commonStock;
   }
 
-  public LongFormatField getRetainedEarnings() {
+  public YahooLongFormatField getRetainedEarnings() {
     return retainedEarnings;
   }
 
-  public void setRetainedEarnings(LongFormatField retainedEarnings) {
+  public void setRetainedEarnings(YahooLongFormatField retainedEarnings) {
     this.retainedEarnings = retainedEarnings;
   }
 
-  public LongFormatField getOtherStockholderEquity() {
+  public YahooLongFormatField getOtherStockholderEquity() {
     return otherStockholderEquity;
   }
 
-  public void setOtherStockholderEquity(LongFormatField otherStockholderEquity) {
+  public void setOtherStockholderEquity(YahooLongFormatField otherStockholderEquity) {
     this.otherStockholderEquity = otherStockholderEquity;
   }
 
-  public LongFormatField getTotalStockholderEquity() {
+  public YahooLongFormatField getTotalStockholderEquity() {
     return totalStockholderEquity;
   }
 
-  public void setTotalStockholderEquity(LongFormatField totalStockholderEquity) {
+  public void setTotalStockholderEquity(YahooLongFormatField totalStockholderEquity) {
     this.totalStockholderEquity = totalStockholderEquity;
   }
 
-  public LongFormatField getNetTangibleAssets() {
+  public YahooLongFormatField getNetTangibleAssets() {
     return netTangibleAssets;
   }
 
-  public void setNetTangibleAssets(LongFormatField netTangibleAssets) {
+  public void setNetTangibleAssets(YahooLongFormatField netTangibleAssets) {
     this.netTangibleAssets = netTangibleAssets;
   }
 }

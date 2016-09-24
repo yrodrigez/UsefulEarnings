@@ -12,12 +12,12 @@ import java.io.Serializable;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class LongFormatField extends Field implements Serializable{
+public class YahooLongFormatField extends YahooField implements Serializable{
 
   @JsonProperty("longFmt") private String longFmt;
 
   @JsonCreator
-  public LongFormatField(
+  public YahooLongFormatField(
     @JsonProperty("raw") final double  raw,
     @JsonProperty("fmt") final String fmt,
     @JsonProperty("longFmt") final String longFmt
