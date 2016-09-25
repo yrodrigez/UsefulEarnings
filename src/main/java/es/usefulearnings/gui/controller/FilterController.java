@@ -11,7 +11,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -27,6 +26,8 @@ import java.util.ResourceBundle;
 public class FilterController implements Initializable {
   public BorderPane mainPane;
   public Accordion accordion;
+
+
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -65,6 +66,8 @@ public class FilterController implements Initializable {
       AlertHelper.showExceptionAlert(e);
     }
   }
+
+
 
   private <E> GridPane getFilterField(Class<E> parameter) {
     GridPane gridPane = new GridPane();
@@ -109,9 +112,8 @@ public class FilterController implements Initializable {
 
                Accordion newAccordion = new Accordion();
 
-               VBox vBox = new VBox();
-               vBox.getChildren().addAll(getFilterField(innerClass));
-               TitledPane titledPane = new TitledPane(parameterName, vBox);
+               ScrollPane pane = new ScrollPane(getFilterField(innerClass));
+               TitledPane titledPane = new TitledPane(parameterName, pane);
 
                newAccordion.getPanes().add(titledPane);
                gridPane.add(newAccordion, 0, i, 3, 1);

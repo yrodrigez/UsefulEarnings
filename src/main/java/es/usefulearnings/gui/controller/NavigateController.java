@@ -73,7 +73,25 @@ public class NavigateController implements Initializable {
     webEngine = webView.getEngine();
     webEngine.load("https://github.com/yrodrigez/UsefulEarnings/blob/master/README.md");
 
-    textFilter.textProperty().addListener(getSymbolFilterListener());
+    textFilter.textProperty().addListener(
+      (observable, oldSymbolEntry, newSymbolEntry) -> {
+      //remove the listener from the ListView so when it change don't crash
+      companies.getSelectionModel().selectedItemProperty().removeListener(stockListener);
+      if (oldSymbolEntry != null && (newSymbolEntry.length() < oldSymbolEntry.length())) {
+        companies.setItems(symbols);
+      }
+
+      String value = newSymbolEntry.toUpperCase();
+      ObservableList<String> filteredSymbols = FXCollections.observableArrayList();
+      companies.getItems().forEach(symbol -> {
+        if (symbol.toUpperCase().contains(value)) {
+          filteredSymbols.add(symbol);
+        }
+      });
+      companies.setItems(filteredSymbols);
+      // add again the listener this is really important!!!
+      companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
+    });
 
     stockListener = getStockListener();
     companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
@@ -142,32 +160,6 @@ public class NavigateController implements Initializable {
     event.consume();
   }
 
-  /**
-   * Listener to a TextField that filters the main Symbols ListView but first removes the listener from it
-   * so it won't crash
-   *
-   * @return ChangeListener
-   */
-  private ChangeListener<String> getSymbolFilterListener() {
-    return (observable, oldSymbolEntry, newSymbolEntry) -> {
-      //remove the listener from the ListView so when it change don't crash
-      companies.getSelectionModel().selectedItemProperty().removeListener(stockListener);
-      if (oldSymbolEntry != null && (newSymbolEntry.length() < oldSymbolEntry.length())) {
-        companies.setItems(symbols);
-      }
-
-      String value = newSymbolEntry.toUpperCase();
-      ObservableList<String> filteredSymbols = FXCollections.observableArrayList();
-      companies.getItems().forEach(symbol -> {
-        if (symbol.toUpperCase().contains(value)) {
-          filteredSymbols.add(symbol);
-        }
-      });
-      companies.setItems(filteredSymbols);
-      // add again the listener this is really important!!!
-      companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
-    };
-  }
 
   private Node setCompanyData(String symbol) {
     VBox vBox = new VBox();
