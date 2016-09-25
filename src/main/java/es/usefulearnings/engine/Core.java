@@ -126,7 +126,6 @@ public class Core {
     //TODO: implement remove for options & options chains.
     Collection<Company> companies = new ArrayList<>();
     // Collection<Option> options = new ArrayList<>();
-    // Collection<OptionChain> optionChains = new ArrayList<>();
 
     for (Entity e: entitiesToRemove) {
       if(e instanceof Company) {
@@ -152,7 +151,7 @@ public class Core {
   public void setFromEntitiesPackage(EntitiesPackage entitiesPackage) {
     List<Stock> newStocks = new LinkedList<>();
 
-    for(Company company : entitiesPackage.getCompanies()){
+    for(Company company : entitiesPackage.getCompanies().values()){
       List<Stock> stocks = newStocks.stream().filter(stock -> stock.getName().equals(company.getStockName())).collect(Collectors.toList());
       if(stocks.isEmpty()){
         Map<String, Company> map = new TreeMap<>();

@@ -11,7 +11,7 @@ import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.utils.NoStocksFoundException;
 import es.usefulearnings.utils.ResourcesHelper;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -111,11 +111,12 @@ public class DownloadController implements Initializable {
   }
 
   public void downloadAction(ActionEvent event) {
+    // instance the DownloadedData object
+    this.downloadedData = new DownloadedData(new Date().getTime() / 1000L);
+
     // start a download
     this.downloadAllCompaniesData();
 
-    // instance the DownloadedData object
-    this.downloadedData = new DownloadedData(new Date().getTime() / 1000L);
     // set a behavior
     progressPane.getChildren().setAll(this.getDownloadBehaviorNode());
 
@@ -129,7 +130,7 @@ public class DownloadController implements Initializable {
     ScrollPane scrollPane = new ScrollPane(innerVBox);
     scrollPane.setStyle("-fx-background-color: white");
     Label activeCoresLabel = new Label();
-    activeCoresLabel.textProperty().bind(new SimpleLongProperty(this.downloadButtonLocker).asString());
+    activeCoresLabel.textProperty().bind(new SimpleIntegerProperty(downloadButtonLocker).asString());
     HBox coresInfo = new HBox();
     coresInfo.getChildren().addAll(new Label("Active downloads: "), activeCoresLabel);
     innerVBox.getChildren().add(coresInfo);

@@ -1,17 +1,17 @@
 package es.usefulearnings.gui.controller;
 
-import es.usefulearnings.engine.connection.ProcessHandler;
+import es.usefulearnings.engine.Core;
 import es.usefulearnings.entities.DownloadedData;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
-import es.usefulearnings.utils.DataToCoreProcess;
+import es.usefulearnings.utils.EntitiesPackage;
 import es.usefulearnings.utils.ResourcesHelper;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,13 +22,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-import java.io.IOException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import static es.usefulearnings.entities.DownloadedData.*;
 
 /**
  * @author Yago on 04/09/2016.
@@ -74,14 +74,14 @@ public class HistoryController implements Initializable {
         this.downloadHistory.setItems(FXCollections.observableArrayList(downloadedData));
         this.downloadHistory.getSelectionModel().selectedItemProperty().addListener(
           (observable, oldValue, newValue) -> {
-            if(oldValue == null){
+            if (oldValue == null) {
               showSummary(newValue);
             } else {
-              if(oldValue != newValue){
+              if (oldValue != newValue) {
                 showSummary(newValue);
               }
             }
-        });
+          });
 
         //Context Menu
         ContextMenu contextMenu = new ContextMenu();
@@ -98,9 +98,8 @@ public class HistoryController implements Initializable {
         downloadHistory.setContextMenu(contextMenu);
 
 
-
         Platform.runLater(() -> {
-          if(downloadHistory.getItems().size() < 1) {
+          if (downloadHistory.getItems().size() < 1) {
             Label errorLabel = new Label("No downloads found.");
             errorLabel.setTextFill(Color.web("#ffffff"));
             errorLabel.setFont(new Font(20));
@@ -142,53 +141,8 @@ public class HistoryController implements Initializable {
     }).start();
   }
 
-  private class DataRecoverTask extends Task<Void>{
-    DataToCoreProcess process;
-
-    private DataRecoverTask(DownloadedData downloadedData) throws IOException {
-      ProcessHandler handler = new ProcessHandler() {
-        @Override
-        public void updateProgress(int workDone, int remaining) {
-          DataRecoverTask.this.updateProgress(workDone, remaining);
-        }
-
-        @Override
-        public void updateMessage(String message) {
-          DataRecoverTask.this.updateMessage(message);
-        }
-
-        @Override
-        public void onCancelled() {
-
-        }
-
-        @Override
-        public void onError(Throwable err) {
-
-        }
-
-        @Override
-        public void onSuccess() {
-
-        }
-      };
-
-      process = new DataToCoreProcess(handler, downloadedData.getEntitiesFile());
-    }
-
-    @Override
-    protected Void call() throws Exception {
-      process.run();
-      if(process.getException() != null){
-        this.failed();
-        throw process.getException();
-      }
-      return null;
-    }
-  }
-
   private void showSummary(DownloadedData downloadedData) {
-    Platform.runLater(()-> {
+    Platform.runLater(() -> {
       // clear all nodes
       downloadedSummary.getChildren().clear();
 
@@ -198,54 +152,68 @@ public class HistoryController implements Initializable {
       Label optionsFound = new Label("Options found: " + downloadedData.getTotalSavedOptions());
       Label optionChains = new Label("Option chains found: " + downloadedData.getTotalSavedOptionChains());
 
-      Button delete = new Button(
-        "",
-        new ImageView(new Image(Main.class.getResourceAsStream("icons/delete-forever-white.png")))
-      );
+      Button delete = new Button("", new ImageView(new Image(Main.class.getResourceAsStream("icons/delete-forever-white.png"))));
       delete.getStyleClass().addAll("history-button");
 
-      Button useThis = new Button(
-        "",
-        new ImageView(new Image(Main.class.getResourceAsStream("icons/import-data-white.png")))
-      );
-      useThis.getStyleClass().addAll("history-button", "no-opacity");
-      useThis.setOnAction(event -> {
-        try {
-          DataRecoverTask task = new DataRecoverTask(downloadedData);
+      Button reloadData = new Button("", new ImageView(new Image(Main.class.getResourceAsStream("icons/import-data-white.png"))));
+      reloadData.getStyleClass().addAll("history-button", "no-opacity");
+      reloadData.setOnAction(event -> {
+        ProgressIndicator pi = new ProgressIndicator();
+        pi.setPrefSize(35.5, 35.5);
+        pi.getStyleClass().addAll("history-data-to-core-process");
+        pi.setProgress(-1);
 
-          ProgressIndicator pi = new ProgressIndicator();
-          pi.setPrefSize(35, 35);
-          pi.getStyleClass().addAll("history-data-to-core-process");
-          pi.progressProperty().bind(task.progressProperty());
+        Tooltip tooltip = new Tooltip("Uploading data to system...");
+        reloadData.setTooltip(tooltip);
+        reloadData.setDisable(true);
+        Node previousGraphic = reloadData.getGraphic();
+        reloadData.setGraphic(pi);
 
-          Tooltip tooltip = new Tooltip();
-          tooltip.textProperty().bind(task.messageProperty());
-          useThis.setTooltip(tooltip);
-          useThis.setDisable(true);
-          useThis.setGraphic(pi);
+        delete.setDisable(true);
 
-          delete.setDisable(true);
+        new Thread(() -> {
+          // restore the files to the core
+          if (downloadedData.getEntitiesFile().listFiles() != null) {
+            for (File f : downloadedData.getEntitiesFile().listFiles()) {
+              try {
+                if (f.getName().endsWith(EntitiesPackage.EXTENSION)) {
+                  FileInputStream fileIn = new FileInputStream(f);
+                  ObjectInputStream in = new ObjectInputStream(fileIn);
+                  EntitiesPackage entitiesPackage = (EntitiesPackage) in.readObject();
+                  in.close();
+                  fileIn.close();
 
-          Thread t = new Thread(task);
-          t.setDaemon(true);
-          t.setName("UE-DataRecover-Task");
-          t.start();
-        } catch (IOException e) {
-          AlertHelper.showExceptionAlert(e);
-        }
+                  Core.getInstance().setFromEntitiesPackage(entitiesPackage);
+                }
+              } catch (Exception e) {
+                e.printStackTrace();
+                Platform.runLater(() -> AlertHelper.showExceptionAlert(e));
+              }
+            }
+          }
+          // restored
+
+          // ALWAYS (when done): restore buttons to re-use
+          Platform.runLater(() -> {
+            reloadData.setTooltip(null);
+            reloadData.setDisable(false);
+            reloadData.setGraphic(previousGraphic);
+
+            delete.setDisable(false);
+          });
+        }).start();
 
         event.consume();
-      });
-
-
+      }); // end setOnAction
 
 
       // Paint it
-      HBox buttonsBox = new HBox(useThis, delete);
+      HBox buttonsBox = new HBox(reloadData, delete);
       buttonsBox.setSpacing(10);
       downloadedSummary.getChildren().addAll(dateLabel, companiesFound, optionsFound, optionChains, buttonsBox);
     });
   }
+
 
   public void reload(ActionEvent event) {
     notificationsBox.setStyle("");

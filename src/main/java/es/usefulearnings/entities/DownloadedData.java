@@ -1,6 +1,7 @@
 package es.usefulearnings.entities;
 
 import es.usefulearnings.engine.Core;
+import es.usefulearnings.utils.EntitiesPackage;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class DownloadedData implements Savable, Serializable {
 
   // Serializable extension
-  public static final String EXTENSION = ".metatada";
+  public static final String EXTENSION = ".metadata";
 
   private File mEntitiesFile; //1474537062.cdata (List<Company> serializado)
 
@@ -68,13 +69,12 @@ public class DownloadedData implements Savable, Serializable {
         throw new IOException(mEntitiesFile.getAbsolutePath() + "can't be created!");
     }
 
-    for (Company c: companiesToSave.values()){
-      c.save(mEntitiesFile);
-    }
+    EntitiesPackage entitiesPackage = new EntitiesPackage(
+      companiesToSave,
+      optionsToSave
+    );
+    entitiesPackage.save(mEntitiesFile);
 
-    for (Option o : optionsToSave.values()){
-      o.save(mEntitiesFile);
-    }
 
     FileOutputStream data = new FileOutputStream(location);
     ObjectOutputStream stream = new ObjectOutputStream(data);

@@ -61,8 +61,8 @@
      -fx-text-fill: white;
 }
 
-.history-data-to-core-process .percentage {
-     -fx-fill: #ffffff;
+.history-data-to-core-process {
+     -fx-progress-color: #ffffff;
 }
 
 .history-button {
