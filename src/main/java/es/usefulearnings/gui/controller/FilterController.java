@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -59,7 +60,7 @@ public class FilterController implements Initializable {
 
                 ScrollPane pane = new ScrollPane(new ProgressIndicator(-1));
 
-                new Thread(() ->{
+                new Thread(() -> {
                   GridPane gr = getFilterField(pd.getReadMethod().getReturnType());
 
                   // when ready
@@ -73,7 +74,7 @@ public class FilterController implements Initializable {
               } else if (type.equals(ParameterType.INNER_CLASS_COLLECTION)) {
                 ScrollPane pane = new ScrollPane(new ProgressIndicator(-1));
 
-                new Thread(() ->{
+                new Thread(() -> {
                   GridPane gr = getFilterField(
                     (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0]
                   );
@@ -97,93 +98,121 @@ public class FilterController implements Initializable {
   }
 
 
-
   private <E> GridPane getFilterField(Class<E> parameter) {
     GridPane gridPane = new GridPane();
     gridPane.setHgap(20);
     gridPane.setPadding(new Insets(5, 5, 5, 5));
-    try{
-      for(Field field : parameter.getDeclaredFields()) {
-       if(field.getDeclaredAnnotation(EntityParameter.class) != null){
-         String parameterName = field.getDeclaredAnnotation(EntityParameter.class).name();
-         ParameterType parameterType = field.getDeclaredAnnotation(EntityParameter.class).parameterType();
-         Class<? extends AllowedValuesRetriever> allowedValuesRetrieverClass = field.getDeclaredAnnotation(EntityParameter.class).allowedValues();
+    try {
+      for (Field field : parameter.getDeclaredFields()) {
+        if (field.getDeclaredAnnotation(EntityParameter.class) != null) {
+          String parameterName = field.getDeclaredAnnotation(EntityParameter.class).name();
+          ParameterType parameterType = field.getDeclaredAnnotation(EntityParameter.class).parameterType();
 
-         List<String> allowedValues = allowedValuesRetrieverClass.newInstance().getAllowedValues();
-         if (allowedValues != null) {
-           System.out.println("Allowed values for field " + field.getName() + ": " + allowedValues);
-         }
-         for(int i = 0; i < Introspector.getBeanInfo(parameter).getPropertyDescriptors().length ; i++){
-           PropertyDescriptor descriptor = Introspector.getBeanInfo(parameter).getPropertyDescriptors()[i];
-           if(descriptor.getName().equals(field.getName())){
+          Class<? extends AllowedValuesRetriever> allowedValuesRetrieverClass = field.getDeclaredAnnotation(EntityParameter.class).allowedValues();
+          Collection<String> allowedValues = allowedValuesRetrieverClass.newInstance().getAllowedValues();
+          for (int i = 0; i < Introspector.getBeanInfo(parameter).getPropertyDescriptors().length; i++) {
+            PropertyDescriptor descriptor = Introspector.getBeanInfo(parameter).getPropertyDescriptors()[i];
+            if (descriptor.getName().equals(field.getName())) {
 
-             Label parameterNameLabel = new Label(parameterName);
+              Label parameterNameLabel = new Label(parameterName);
 
-             if(parameterType.equals(ParameterType.RAW_STRING) || parameterType.equals(ParameterType.URL)){
-               gridPane.add(parameterNameLabel, 0, i);
+              if (parameterType.equals(ParameterType.RAW_STRING) || parameterType.equals(ParameterType.URL)) {
+                gridPane.add(parameterNameLabel, 0, i);
 
-               Node input = getInputFor(field, parameterType, getAChoiceBox());
+                Node input = getInputFor(field, parameterType, getAChoiceBox(), allowedValues);
 
-               gridPane.add(input, 1, i, 2, 1);
-               continue;
-             }
+                gridPane.add(input, 1, i, 2, 1);
+                continue;
+              }
 
-             if(parameterType.equals(ParameterType.INNER_CLASS)){
-               Class<?> innerClass = descriptor.getReadMethod().getReturnType();
+              if (parameterType.equals(ParameterType.INNER_CLASS)) {
+                Class<?> innerClass = descriptor.getReadMethod().getReturnType();
 
-               Accordion newAccordion = new Accordion();
+                Accordion newAccordion = new Accordion();
 
-               ScrollPane pane = new ScrollPane(getFilterField(innerClass));
-               TitledPane titledPane = new TitledPane(parameterName, pane);
+                ScrollPane pane = new ScrollPane(getFilterField(innerClass));
+                TitledPane titledPane = new TitledPane(parameterName, pane);
 
-               newAccordion.getPanes().add(titledPane);
-               gridPane.add(newAccordion, 0, i, 3, 1);
-               continue;
-             }
+                newAccordion.getPanes().add(titledPane);
+                gridPane.add(newAccordion, 0, i, 3, 1);
+                continue;
+              }
 
-             gridPane.add(parameterNameLabel, 0, i);
+              gridPane.add(parameterNameLabel, 0, i);
 
-             ChoiceBox<String> cb = getAChoiceBox();
-             Node input = getInputFor(field, parameterType, cb);
+              ChoiceBox<String> cb = getAChoiceBox();
+              Node input = getInputFor(field, parameterType, cb, allowedValues);
 
-             gridPane.add(cb, 1, i);
-             gridPane.add(input, 2, i);
+              gridPane.add(cb, 1, i);
+              gridPane.add(input, 2, i);
+            }
+          }
 
-
-           }
-         }
-
-       }
+        }
       }
-    }catch (NullPointerException | IntrospectionException e) {
+    } catch (NullPointerException | IntrospectionException e) {
       e.printStackTrace();
       AlertHelper.showExceptionAlert(e);
-    } catch (InstantiationException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
+    } catch (InstantiationException | IllegalAccessException e) {
       e.printStackTrace();
     }
     return gridPane;
   }
 
-  private Node getInputFor(Field field, ParameterType parameterType, ChoiceBox<String> choiceBox) {
-    switch (parameterType){
-
+  private Node getInputFor(Field field, ParameterType parameterType, ChoiceBox<String> choiceBox, Collection<String> allowedValues) {
+    switch (parameterType) {
       case URL:
       case RAW_STRING:
         TextField strTextField = new TextField();
-        strTextField.setOnKeyReleased(event ->
-          filter.put(field, new RestrictionValue<>(strTextField.getText(), BasicOperator.EQ))
-        );
+        ContextMenu contextMenu = new ContextMenu();
+        strTextField.setContextMenu(contextMenu);
+        if (allowedValues != null) {
+          List<MenuItem> items = new ArrayList<>();
+          allowedValues.forEach(value -> {
+            MenuItem item = new MenuItem(value);
+            item.setOnAction(event -> {
+              strTextField.setText(item.getText());
+              event.consume();
+            });
+            items.add(item);
+            items.sort((o1, o2) -> o1.getText().compareTo(o2.getText()));
+            contextMenu.getItems().setAll(items);
+          });
 
+          strTextField.textProperty().addListener(
+            (observable, oldValue, newValue) -> {
+              if (oldValue != null && (newValue.length() < oldValue.length())) {
+                contextMenu.getItems().setAll(items);
+              }
 
+              if (newValue != null) {
+                String value = newValue.toUpperCase();
+                List<MenuItem> filteredItems = new ArrayList<>();
+                strTextField.getContextMenu().getItems().forEach(menuItem -> {
+                  if (menuItem.getText().toUpperCase().contains(value)) {
+                    filteredItems.add(menuItem);
+                  }
+                });
+
+                contextMenu.getItems().setAll(filteredItems);
+              }
+              strTextField.getContextMenu().show(strTextField, Side.RIGHT, 0, 0);
+
+              filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ));
+            }
+          );
+        } else {
+          strTextField.textProperty().addListener(
+            (observable, oldValue, newValue) -> filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ))
+          );
+        }
         return strTextField;
 
       case YAHOO_FIELD_DATE_COLLECTION:
       case YAHOO_FIELD_DATE:
         DatePicker datePicker = new DatePicker();
         datePicker.setOnAction(event -> {
-          switch (choiceBox.getValue()){
+          switch (choiceBox.getValue()) {
             case "<":
               filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.LT));
               break;
@@ -201,10 +230,10 @@ public class FilterController implements Initializable {
       case YAHOO_LONG_FORMAT_FIELD:
       case YAHOO_FIELD_NUMERIC:
         TextField numTextField = new TextField();
-        numTextField.textProperty().addListener((observable, oldValue, newValue)-> {
-          if (newValue.matches("\\d*(\\.\\d+)?")) {
+        numTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+          if (newValue.matches("\\d*(\\.\\d*)?")) {
             numTextField.setStyle("");
-            if(numTextField.getTooltip() != null)  numTextField.getTooltip().hide();
+            if (numTextField.getTooltip() != null) numTextField.getTooltip().hide();
             numTextField.setTooltip(null);
             filter.put(field, new RestrictionValue<>(numTextField.getText(), BasicOperator.EQ));
           } else {
@@ -217,11 +246,12 @@ public class FilterController implements Initializable {
         return numTextField;
 
 
-      default: throw new IllegalArgumentException("getInputFor() -> I have no input for " + parameterType.name() + " class " + field.getName());
+      default:
+        throw new IllegalArgumentException("getInputFor() -> I have no input for " + parameterType.name() + " class " + field.getName());
     }
   }
 
-  private ChoiceBox<String> getAChoiceBox(){
+  private ChoiceBox<String> getAChoiceBox() {
     String[] operators = {"<", "=", ">"};
     ChoiceBox<String> choiceBox = new ChoiceBox<>(FXCollections.observableArrayList(operators));
     choiceBox.setValue(operators[1]);

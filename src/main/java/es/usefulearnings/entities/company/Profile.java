@@ -22,16 +22,16 @@ public class Profile extends CompanyData implements Serializable {
   @EntityParameter(name = "Address", parameterType = ParameterType.RAW_STRING)
   private String address;
   @JsonProperty("city")
-  @EntityParameter(name = "City", parameterType = ParameterType.RAW_STRING)
+  @EntityParameter(name = "City", parameterType = ParameterType.RAW_STRING, allowedValues = CityAllowedValues.class)
   private String city;
   @JsonProperty("state")
-  @EntityParameter(name = "State", parameterType = ParameterType.RAW_STRING)
+  @EntityParameter(name = "State", parameterType = ParameterType.RAW_STRING, allowedValues = StateAllowedValues.class)
   private String state;
   @JsonProperty("zip")
   @EntityParameter(name = "PO-Box", parameterType = ParameterType.RAW_STRING)
   private String zip;
   @JsonProperty("country")
-  @EntityParameter(name = "Country", parameterType = ParameterType.RAW_STRING)
+  @EntityParameter(name = "Country", parameterType = ParameterType.RAW_STRING, allowedValues = CountryAllowedValues.class)
   private String country;
   @JsonProperty("phone")
   @EntityParameter(name = "Phone", parameterType = ParameterType.RAW_STRING)
@@ -40,7 +40,7 @@ public class Profile extends CompanyData implements Serializable {
   @EntityParameter(name = "WebSite", parameterType = ParameterType.URL)
   private String website;
   @JsonProperty("industry")
-  @EntityParameter(name = "Industry", parameterType = ParameterType.RAW_STRING)
+  @EntityParameter(name = "Industry", parameterType = ParameterType.RAW_STRING, allowedValues = IndustryAllowedValues.class)
   private String industry;
   @JsonProperty("sector")
   @EntityParameter(name = "Sector", parameterType = ParameterType.RAW_STRING, allowedValues = SectorAllowedValues.class)

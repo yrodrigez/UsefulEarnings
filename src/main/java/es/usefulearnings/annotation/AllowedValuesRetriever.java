@@ -1,10 +1,10 @@
 package es.usefulearnings.annotation;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * @author yago.
  */
 public interface AllowedValuesRetriever {
-  List<String> getAllowedValues();
+  Collection<String> getAllowedValues();
 }

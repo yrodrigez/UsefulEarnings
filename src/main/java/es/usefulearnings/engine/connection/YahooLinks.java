@@ -151,16 +151,16 @@ public class YahooLinks {
     companyQuoteSummaryModules.put("Cashflow Statement History Quarterly", "cashflowStatementHistoryQuarterly"); //igual al anterior pero qutrimestral
     companyQuoteSummaryModules.put("Balance Sheet History Quarterly", "balanceSheetHistoryQuarterly"); //igual al anterior pero qutrimestral
 
-    // modules=earningsHistory,earningsTrend,industryTrend
-    companyQuoteSummaryModules.put("Earnings History", "earningsHistory"); // sin definir
-    companyQuoteSummaryModules.put("Earnings Trend", "earningsTrend"); // sin definir
+    // modules=earningsHistory.json,earningsTrend.json,industryTrend
+    companyQuoteSummaryModules.put("Earnings History", "earningsHistory.json"); // sin definir
+    companyQuoteSummaryModules.put("Earnings Trend", "earningsTrend.json"); // sin definir
     companyQuoteSummaryModules.put("Industry Trend", "industryTrend"); // sin definir
 
     companyQuoteSummaryModules.put("Institution Ownership", "institutionOwnership"); // *** ¿Basura? ***
     companyQuoteSummaryModules.put("Major Direct Holders", "majorDirectHolders"); // *** ¿BASURA? ***
     companyQuoteSummaryModules.put("Major Holders Breakdown", "majorHoldersBreakdown");// *** ¿BASURA? ***
     companyQuoteSummaryModules.put("Insider Transactions", "insiderTransactions");// *** ¿BASURA? ***
-    companyQuoteSummaryModules.put("Insider Holders", "insiderHolders");// *** ¿BASURA? ***
+    companyQuoteSummaryModules.put("Insider Holders", "insiderHolders.json");// *** ¿BASURA? ***
     companyQuoteSummaryModules.put("Net Share Purchase Activity", "netSharePurchaseActivity");// *** ¿BASURA? ***
 
     companyQuoteSummaryModules.put("Sec Filings", "secFilings"); // *** BASURA ***
