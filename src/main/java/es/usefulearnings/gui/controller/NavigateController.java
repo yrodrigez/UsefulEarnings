@@ -125,6 +125,7 @@ public class NavigateController implements Initializable {
           companies.setItems(symbols);
         }
       );
+      stocksChoiceBox.getStyleClass().addAll("ue-choice-box");
     } catch (NoStocksFoundException e) {
       stocksChoiceBox.getItems().add("No Stocks found");
       stocksChoiceBox.getSelectionModel().select(0);

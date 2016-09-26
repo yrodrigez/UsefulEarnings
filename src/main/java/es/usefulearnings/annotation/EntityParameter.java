@@ -14,4 +14,5 @@ import java.lang.annotation.Target;
 public @interface EntityParameter {
   String name();
   ParameterType parameterType();
+  Class<? extends AllowedValuesRetriever> allowedValues() default DefaultAllowedValuesRetriever.class;
 }

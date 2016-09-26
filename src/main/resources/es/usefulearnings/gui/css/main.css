@@ -1,5 +1,9 @@
+*{
+     -fx-main-color: #400090;
+}
 .main-controller-button, .button#refresh {
-     -fx-background-color: #400090;
+     -fx-background-color: -fx-main-color;
+     -fx-text-fill: white;
      -fx-background-radius: 0%;
      -fx-border-width: 0 0 0 3;
      -fx-border-color: transparent;
@@ -22,7 +26,7 @@
 }
 
 .default-progress-bar , .default-progress-indicator {
-     -fx-accent: #400090;
+     -fx-accent: -fx-main-color;
 }
 .default-progress-indicator {
      -fx-font-size: 0.8em;
@@ -47,17 +51,17 @@
      -fx-text-fill: white;
 }
 
-.choice-box .context-menu {
-     -fx-background-color: linear-gradient(#6b00ff 0%, #6400e0 25%, #4100c3 75%, #400090 100%) ;
+.ue-choice-box .context-menu {
+     -fx-background-color: linear-gradient(#6b00ff 0%, #6400e0 25%, #4100c3 75%, #400090 100%);
      -fx-text-fill: white;
 }
 
-.choice-box {
-     -fx-background-color: #400090;
+.ue-choice-box {
+     -fx-background-color: -fx-main-color;
      -fx-background-radius: 0%;
 }
 
-.choice-box .label{
+.ue-choice-box .label{
      -fx-text-fill: white;
 }
 
@@ -66,7 +70,7 @@
 }
 
 .history-button {
-     -fx-background-color: #400090;
+     -fx-background-color: -fx-main-color;
      -fx-background-radius: 0%;
      -fx-border-color: transparent;
 }
