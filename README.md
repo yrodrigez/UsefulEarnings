@@ -10,7 +10,7 @@ First views of the app!
 ![](navigateView.png)
 * You'll be able to filter by all this fields!
 ![](filterView.png)
-* Use the power of your processor's cores to improve the download of data!
+* Use the power of your processor's cores to improve the data download!
 ![](downloadView.png)
 
 This project is a thesis developed to  [Universidad de Vigo](http://www.uvigo.gal/uvigo_en/index.html)
