@@ -1,4 +1,4 @@
-package es.usefulearnings.engine;
+package es.usefulearnings.engine.filter;
 
 /**
  * @author yago.
