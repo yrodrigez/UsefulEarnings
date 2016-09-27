@@ -12,7 +12,7 @@ public class RestrictionValue<E> {
     _operator = operator;
   }
 
-  public BasicOperator get_operator() {
+  public BasicOperator getOperator() {
     return _operator;
   }
 
@@ -20,7 +20,7 @@ public class RestrictionValue<E> {
     this._operator = _operator;
   }
 
-  public E get_value() {
+  public E getValue() {
     return _value;
   }
 

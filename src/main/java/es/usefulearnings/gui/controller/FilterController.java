@@ -4,6 +4,7 @@ import es.usefulearnings.annotation.AllowedValuesRetriever;
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.engine.BasicOperator;
+import es.usefulearnings.engine.Core;
 import es.usefulearnings.engine.RestrictionValue;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.gui.view.AlertHelper;
@@ -23,6 +24,7 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.net.URL;
 import java.util.*;
@@ -41,11 +43,25 @@ public class FilterController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     setTittledPanesForCompanies();
     Button filterButton = new Button("Filter");
+
     filterButton.getStyleClass().addAll("main-controller-button");
     HBox hBox = new HBox(filterButton);
     hBox.setAlignment(Pos.BASELINE_RIGHT);
     mainPane.setBottom(hBox);
     filter = new HashMap<>();
+
+    filterButton.setOnAction(event -> {
+      new Thread(()->{
+        try {
+          Core.getInstance().applyFilter(filter);
+        } catch (IntrospectionException | InvocationTargetException | IllegalAccessException e) {
+          Platform.runLater(()-> AlertHelper.showExceptionAlert(e));
+          e.printStackTrace();
+        }
+
+      }).start();
+      event.consume();
+    });
   }
 
   private void setTittledPanesForCompanies() {
@@ -197,7 +213,7 @@ public class FilterController implements Initializable {
                 contextMenu.getItems().setAll(filteredItems);
               }
               strTextField.getContextMenu().show(strTextField, Side.RIGHT, 0, 0);
-
+              System.out.println("Field: " + field + ", value: "+ newValue);
               filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ));
             }
           );
@@ -211,6 +227,21 @@ public class FilterController implements Initializable {
       case YAHOO_FIELD_DATE_COLLECTION:
       case YAHOO_FIELD_DATE:
         DatePicker datePicker = new DatePicker();
+        choiceBox.setOnAction(event -> {
+          if(datePicker.getValue() != null) {
+            switch (choiceBox.getValue()) {
+              case "<":
+                filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.LT));
+                break;
+              case ">":
+                filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.GT));
+                break;
+              case "=":
+                filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.EQ));
+                break;
+            }
+          }
+        });
         datePicker.setOnAction(event -> {
           switch (choiceBox.getValue()) {
             case "<":
@@ -220,7 +251,7 @@ public class FilterController implements Initializable {
               filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.GT));
               break;
             default:
-              filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.EQ));
+              filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400, BasicOperator.EQ));
               break;
           }
         });
@@ -230,12 +261,38 @@ public class FilterController implements Initializable {
       case YAHOO_LONG_FORMAT_FIELD:
       case YAHOO_FIELD_NUMERIC:
         TextField numTextField = new TextField();
-        numTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-          if (newValue.matches("\\d*(\\.\\d*)?")) {
+        choiceBox.setOnAction(event -> {
+          if(!numTextField.getText().equals("")) {
+            switch (choiceBox.getValue()) {
+              case "<":
+                filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.LT));
+                break;
+              case ">":
+                filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.GT));
+                break;
+              case "=":
+                filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.EQ));
+                break;
+            }
+          }
+        });
+        numTextField.textProperty().addListener(
+          (observable, oldValue, newValue) -> {
+          if (newValue.matches("\\d+(\\.\\d*)?")) {
             numTextField.setStyle("");
             if (numTextField.getTooltip() != null) numTextField.getTooltip().hide();
             numTextField.setTooltip(null);
-            filter.put(field, new RestrictionValue<>(numTextField.getText(), BasicOperator.EQ));
+            switch (choiceBox.getValue()) {
+              case "<":
+                filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.LT));
+                break;
+              case ">":
+                filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.GT));
+                break;
+              case "=":
+                filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.EQ));
+                break;
+            }
           } else {
             if (oldValue != null) numTextField.setText(oldValue);
             numTextField.setStyle("-fx-border-color: linear-gradient(#fe372b 25%, #ff4b5c 75%, #fc000f 100%); -fx-border-width: 2;");

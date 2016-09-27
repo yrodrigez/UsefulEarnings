@@ -1,5 +1,7 @@
 package es.usefulearnings.engine;
 
+import es.usefulearnings.annotation.EntityParameter;
+import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.engine.connection.YahooLinks;
 import es.usefulearnings.engine.plugin.*;
 import es.usefulearnings.entities.*;
@@ -7,6 +9,12 @@ import es.usefulearnings.utils.EntitiesPackage;
 import es.usefulearnings.utils.NoStocksFoundException;
 import es.usefulearnings.utils.ResourcesHelper;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,7 +62,7 @@ public class Core {
     Company company = new Company();
     company.setSymbol(symbol);
     try {
-      for (Plugin plugin :
+      for (Plugin<Company> plugin :
         companiesPlugins) {
         plugin.addInfo(company);
       }
@@ -147,6 +155,11 @@ public class Core {
     );
   }
 
+  private void removeCompany(Company company) {
+    currentCompaniesToFilter.remove(company);
+    //getCompaniesFromStock(company.getStockName()).remove(company.getSymbol());
+  }
+
 
   public void setFromEntitiesPackage(EntitiesPackage entitiesPackage) {
     List<Stock> newStocks = new LinkedList<>();
@@ -164,4 +177,175 @@ public class Core {
 
     mStocks = newStocks;
   }
+
+  private     Set<Company> currentCompaniesToFilter = null;
+  public void applyFilter(Map<Field, RestrictionValue> filter) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+    currentCompaniesToFilter = new HashSet<>(getAllCompanies().values());
+
+    for(Company company : getAllCompanies().values()) {
+      applyFilter(company, Company.class, company, filter);
+    }
+
+    for (Company company: currentCompaniesToFilter) {
+      System.err.println("Resulting company: " + company + " exDividend date: " + company.getCalendarEvents().getExDividendDate());
+      System.err.println("Current price: " + company.getFinancialData().getCurrentPrice());
+    }
+  }
+
+  private <E> void applyFilter(
+    Company company,
+    Class<?> elementType,
+    E elementValue,
+    Map<Field, RestrictionValue> filter
+  ) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+    for (Field field : elementType.getDeclaredFields()) {
+      if (field.getAnnotation(EntityParameter.class) != null){
+        ParameterType parameterType = field.getAnnotation(EntityParameter.class).parameterType();
+        for (PropertyDescriptor pd : Introspector.getBeanInfo(elementType).getPropertyDescriptors()) {
+          if (pd.getName().equals(field.getName())) {
+
+            switch (parameterType) {
+              case INNER_CLASS:
+                applyFilter(company, pd.getPropertyType(), (elementValue == null)?null:pd.getReadMethod().invoke(elementValue), filter);
+                break;
+
+              case INNER_CLASS_COLLECTION:
+                Collection<E> collection = elementValue == null? null: ((Collection<E>) pd.getReadMethod().invoke(elementValue));
+                if (collection != null) {
+                  for (E innerElement : collection) {
+                    applyFilter(company, (Class<?>) ((ParameterizedType) pd.getReadMethod().getGenericReturnType()).getActualTypeArguments()[0], innerElement, filter);
+                  }
+                } else {
+                  applyFilter(company, (Class<?>) ((ParameterizedType) pd.getReadMethod().getGenericReturnType()).getActualTypeArguments()[0], null, filter);
+                }
+                break;
+
+              case URL:
+              case RAW_STRING:
+                if(filter.containsKey(field)) {
+                  RestrictionValue restrictionValue = filter.get(field);
+                  if (elementValue != null) {
+                    Object string = pd.getReadMethod().invoke(elementValue);
+                    if(! restrictionValue.getValue().equals(string)) {
+                      System.out.println("Removing company: " + company.getSymbol() + " because:\n"
+                        + restrictionValue.getValue() + " is not " + restrictionValue.getOperator() + " to " + string
+                      );
+                      removeCompany(company);
+                    }
+                  } else {
+                    removeCompany(company);
+                  }
+                }
+                break;
+
+              case YAHOO_FIELD_NUMERIC:
+              case YAHOO_LONG_FORMAT_FIELD:
+                if(filter.containsKey(field)) {
+                  RestrictionValue restrictionValue = filter.get(field);
+                  if (elementValue != null) {
+                    if (pd.getReadMethod().invoke(elementValue) != null){
+                      double number = ((YahooField) pd.getReadMethod().invoke(elementValue)).getRaw();
+                      if (!evaluateNumber(
+                        number,
+                        restrictionValue.getOperator(),
+                        ((double)restrictionValue.getValue())
+                      )) {
+                        System.out.println("Removing company: " + company.getSymbol() + " because:\n"
+                          + (restrictionValue.getValue()) + " is not " + restrictionValue.getOperator() + " to " + number
+                        );
+                        removeCompany(company);
+                      }
+                    } else {
+                      removeCompany(company);
+                    }
+                  } else {
+                    removeCompany(company);
+                  }
+                }
+                break;
+
+              case RAW_NUMERIC:
+                if(filter.containsKey(field)) {
+                  if (elementValue != null) {
+                    RestrictionValue restrictionValue = filter.get(field);
+                    if (pd.getReadMethod().invoke(elementValue)!=null) {
+                      double number = ((double) pd.getReadMethod().invoke(elementValue));
+                      if (!evaluateNumber(
+                        number,
+                        restrictionValue.getOperator(),
+                        (double) restrictionValue.getValue()
+                      )) {
+                        System.out.println("Removing company: " + company.getSymbol() + " because:\n"
+                          + restrictionValue.getValue() + " is not " + restrictionValue.getOperator() + " to " + number
+                        );
+                        removeCompany(company);
+                      }
+                    } else {
+                      removeCompany(company);
+                    }
+                  } else {
+                    removeCompany(company);
+                  }
+                }
+                break;
+
+
+              case YAHOO_FIELD_DATE:
+              case YAHOO_FIELD_DATE_COLLECTION:
+                if(filter.containsKey(field)){
+                  if (elementValue != null) {
+                    RestrictionValue restrictionValue = filter.get(field);
+                    if(parameterType.equals(ParameterType.YAHOO_FIELD_DATE_COLLECTION)){
+                      Collection<YahooField> yahooFieldCollection = (Collection<YahooField>) pd.getReadMethod().invoke(elementValue);
+                      if (yahooFieldCollection != null) {
+                        boolean remove = true;
+                        for (YahooField yahooField : yahooFieldCollection) {
+                          remove = remove && !evaluateNumber(yahooField.getRaw(), restrictionValue.getOperator(), new Double((long)restrictionValue.getValue()));
+                        }
+                        if (remove) {
+                          removeCompany(company);
+                        }
+                      } else {
+                        removeCompany(company);
+                      }
+                    } else if(parameterType.equals(ParameterType.YAHOO_FIELD_DATE)){
+                      if((pd.getReadMethod().invoke(elementValue)) != null) {
+                        if (!evaluateNumber(((YahooField) pd.getReadMethod().invoke(elementValue)).getRaw(), restrictionValue.getOperator(), new Double((long) restrictionValue.getValue()))) {
+                          removeCompany(company);
+                        }
+                      } else {
+                        removeCompany(company);
+                      }
+                    }
+                  } else {
+                    removeCompany(company);
+                  }
+                }
+                break;
+
+              case IGNORE:
+                break;
+
+              default: throw new IllegalArgumentException("Wrong Argument -> " + parameterType.name());
+            }
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  private boolean evaluateNumber(double number, BasicOperator operator , double toEval){
+    switch (operator){
+      case EQ:
+        return number == toEval;
+      case LT:
+        return number < toEval;
+      case GT:
+        return number > toEval;
+
+      default: return false;
+    }
+  }
 }
+
