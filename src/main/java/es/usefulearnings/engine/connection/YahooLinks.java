@@ -145,23 +145,23 @@ public class YahooLinks {
      ***REVISAR DESPUES***
     companyQuoteSummaryModules.put("Upgrade Downgrade History", "upgradeDowngradeHistory");// datos para los gráficos del sumario...
     companyQuoteSummaryModules.put("Earnings", "earnings");// datos para los gráficos del sumario...
-    companyQuoteSummaryModules.put("Summary Profile", "summaryProfile"); // como assetsProfile pero menos extenso....
+    companyQuoteSummaryModules.put("Summary Profile", "summaryProfile"); // como assetsProfile.json pero menos extenso....
 
     companyQuoteSummaryModules.put("Income Statement History Quarterly", "incomeStatementHistoryQuarterly"); //igual al anterior pero qutrimestral
     companyQuoteSummaryModules.put("Cashflow Statement History Quarterly", "cashflowStatementHistoryQuarterly"); //igual al anterior pero qutrimestral
     companyQuoteSummaryModules.put("Balance Sheet History Quarterly", "balanceSheetHistoryQuarterly"); //igual al anterior pero qutrimestral
 
-    // modules=earningsHistory.json,earningsTrend.json,industryTrend
+    // modules=earningsHistory.json,earningsTrend.json,industryTrend.json
     companyQuoteSummaryModules.put("Earnings History", "earningsHistory.json"); // sin definir
     companyQuoteSummaryModules.put("Earnings Trend", "earningsTrend.json"); // sin definir
-    companyQuoteSummaryModules.put("Industry Trend", "industryTrend"); // sin definir
+    companyQuoteSummaryModules.put("Industry Trend", "industryTrend.json"); // sin definir
 
-    companyQuoteSummaryModules.put("Institution Ownership", "institutionOwnership"); // *** ¿Basura? ***
+    companyQuoteSummaryModules.put("Institution Ownership", "institutionOwnership.json"); // *** ¿Basura? ***
     companyQuoteSummaryModules.put("Major Direct Holders", "majorDirectHolders"); // *** ¿BASURA? ***
     companyQuoteSummaryModules.put("Major Holders Breakdown", "majorHoldersBreakdown");// *** ¿BASURA? ***
     companyQuoteSummaryModules.put("Insider Transactions", "insiderTransactions");// *** ¿BASURA? ***
     companyQuoteSummaryModules.put("Insider Holders", "insiderHolders.json");// *** ¿BASURA? ***
-    companyQuoteSummaryModules.put("Net Share Purchase Activity", "netSharePurchaseActivity");// *** ¿BASURA? ***
+    companyQuoteSummaryModules.put("Net Share Purchase Activity", "netSharePurchaseActivity.json");// *** ¿BASURA? ***
 
     companyQuoteSummaryModules.put("Sec Filings", "secFilings"); // *** BASURA ***
     companyQuoteSummaryModules.put("Recommendation Trend", "recommendationTrend");// datos para los gráficos del sumario... *** BASURA de verdad ***
