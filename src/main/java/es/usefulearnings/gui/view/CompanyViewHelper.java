@@ -57,7 +57,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
                   entityName,
                   new ScrollPane(getContentFor(descriptors[i].getReadMethod().invoke(eClass)))
                 ));
-                gridPane.add(accordion, 0, i, 3, 1);
+                gridPane.add(accordion, 0, i, 10, 1);
                 break;
 
               case YAHOO_FIELD_DATE:
@@ -144,7 +144,6 @@ public class CompanyViewHelper implements ViewHelper<Company> {
               case INNER_CLASS_COLLECTION:
                 Accordion collectionAccordion = new Accordion();
                 ScrollPane collectionScrollPane = new ScrollPane(collectionAccordion);
-                Class<?> typeOf = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
                 Collection<E> innerClassCollection = (Collection<E>) pd.getReadMethod().invoke(company);
                 for(E innerClass: innerClassCollection){
                   TitledPane innerTittledPane = new TitledPane(
