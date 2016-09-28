@@ -3,6 +3,8 @@ package es.usefulearnings.gui.controller;
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.entities.Company;
+import es.usefulearnings.gui.view.AlertHelper;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -132,13 +134,11 @@ public class OptionsController implements Initializable {
           }
         }
       }
-    } catch (NullPointerException e) {
-      //System.err.println(entityClass.getName());
-      /*System.err.println(e.getMessage());
-      System.err.println(e.getCause() != null ? e.getCause() : "cause is null");*/
-       e.printStackTrace();
-    } catch (IntrospectionException e) {
-      e.printStackTrace();
+    } catch (NullPointerException | IntrospectionException e) {
+      Platform.runLater(()-> {
+        AlertHelper.showExceptionAlert(e);
+        e.printStackTrace();
+      });
     }
     return nodes;
   }

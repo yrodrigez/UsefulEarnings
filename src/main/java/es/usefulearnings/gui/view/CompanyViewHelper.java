@@ -4,11 +4,13 @@ import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.YahooField;
+import es.usefulearnings.entities.YahooLongFormatField;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
@@ -16,166 +18,149 @@ import javafx.scene.web.WebEngine;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.lang.reflect.ParameterizedType;
+import java.util.*;
 
 /**
  * View manager of CompanyViewHelper's data
  *
  * @author Yago Rodríguez
  */
-public class CompanyViewHelper implements ViewHelper {
-  private Company company;
+public class CompanyViewHelper implements ViewHelper<Company> {
   private WebEngine webEngine;
 
-  public CompanyViewHelper(Company company, WebEngine webEngine) {
-    this.setCompany(company);
+
+  public CompanyViewHelper(WebEngine webEngine) {
     this.webEngine = webEngine;
   }
 
 
-  private <E> Collection<Node> getEntityView(E entity) {
-    Collection<Node> nodes = new ArrayList<>();
-    /*try {
-      for (java.lang.reflect.Field field : entity.getClass().getDeclaredFields()) {
-        String fieldName = field.getDeclaredAnnotation(ObservableField.class).name() + ": ";
-        FieldType fieldType = field.getDeclaredAnnotation(ObservableField.class).fieldType();
-        //System.out.print(fieldName);
-        for (PropertyDescriptor pd : Introspector.getBeanInfo(entity.getClass()).getPropertyDescriptors()) {
-          if (pd.getName().equals(field.getName())) {
-            try {
-              if (fieldType.equals(FieldType.DATE)) {
-                YahooField propertyValue = (YahooField) pd.getReadMethod().invoke(entity);
-                //System.out.println(propertyValue.getFmt());
-                nodes.add(new Label(fieldName + propertyValue.getFmt()));
-              }
+  private <E> Node getContentFor(E eClass) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+    GridPane gridPane = new GridPane();
+    gridPane.setHgap(20);
+    gridPane.setPadding(new Insets(5, 5, 5, 5));
+    for (Field field: eClass.getClass().getDeclaredFields()){
+      if (field == null) return new VBox();
+      if(field.getDeclaredAnnotation(EntityParameter.class) != null){
+        String entityName = field.getDeclaredAnnotation(EntityParameter.class).name();
+        ParameterType parameterType = field.getAnnotation(EntityParameter.class).parameterType();
+        PropertyDescriptor[] descriptors = Introspector.getBeanInfo(eClass.getClass()).getPropertyDescriptors();
+        for(int i = 0 ; i < descriptors.length ; i++){
+          if(descriptors[i].getName().equals(field.getName())){
+            Label entityNameLabel = new Label(entityName+": ");
+            switch (parameterType){
+              case INNER_CLASS:
+                Accordion accordion = new Accordion();
+                accordion.getPanes().add(new TitledPane(
+                  entityName,
+                  new ScrollPane(getContentFor(descriptors[i].getReadMethod().invoke(eClass)))
+                ));
+                gridPane.add(accordion, 0, i, 3, 1);
+                break;
 
-              if (fieldType.equals(FieldType.URL)) {
-                String url = (String) pd.getReadMethod().invoke(entity);
-                HBox website = new HBox();
-                Hyperlink hyperlink = new Hyperlink(url);
-                hyperlink.setOnAction(event -> webEngine.load(url));
-                website.getChildren().addAll(new Label(fieldName), hyperlink);
-                nodes.add(website);
-              }
+              case YAHOO_FIELD_DATE:
+              case YAHOO_FIELD_NUMERIC:
+                gridPane.add(entityNameLabel, 0 , i);
+                YahooField yahooField = (YahooField)descriptors[i].getReadMethod().invoke(eClass);
+                if(yahooField != null)
+                gridPane.add(new Label(yahooField.getFmt()), 1 , i);
+                break;
 
-              if (fieldType.equals(FieldType.STRING)) {
-                String stringValue = (String) pd.getReadMethod().invoke(entity);
-                nodes.add(new Label(fieldName + stringValue));
-              }
+              case YAHOO_LONG_FORMAT_FIELD:
+                gridPane.add(entityNameLabel, 0 , i);
+                YahooLongFormatField longFormatField = (YahooLongFormatField)descriptors[i].getReadMethod().invoke(eClass);
+                if(longFormatField != null)
+                  gridPane.add(new Label(longFormatField.getLongFmt()), 1 , i);
+                break;
 
-              if (fieldType.equals(FieldType.NUMERIC)) {
-                YahooField fieldValue = (YahooField) pd.getReadMethod().invoke(entity);
-                // System.out.println(propertyValue.getRaw());
-                nodes.add(new Label(fieldName + fieldValue.getFmt()));
-              }
+              case YAHOO_FIELD_DATE_COLLECTION:
+                gridPane.add(entityNameLabel, 0, i);
+                Collection<YahooField> collection = (Collection<YahooField>)descriptors[i].getReadMethod().invoke(eClass);
+                if(collection != null) {
+                  Iterator<YahooField> it = collection.iterator();
+                  Label datesLabel = new Label();
+                  while (it.hasNext()) {
+                    YahooField date = it.next();
+                    if (it.hasNext()) {
+                      datesLabel.setText(datesLabel.getText() + date.getFmt() + " - ");
+                    } else {
+                      datesLabel.setText(datesLabel.getText() + date.getFmt());
+                    }
+                  }
+                  gridPane.add(datesLabel, 1, i);
+                }
+                break;
 
-              if (fieldType.equals(FieldType.RAW_NUMERIC)) {
-                Number number = (Number) pd.getReadMethod().invoke(entity);
-                // System.out.println(number.toString());
-                nodes.add(new Label(fieldName + number.toString()));
-              }
+              case URL:
+                gridPane.add(entityNameLabel, 0, i);
+                String url = (String)descriptors[i].getReadMethod().invoke(eClass);
+                if(url != null) {
+                  Hyperlink hyperlink = new Hyperlink(url);
+                  hyperlink.setOnAction(event -> webEngine.load(url));
+                  gridPane.add(hyperlink, 1, i);
+                }
+                break;
 
-              if (fieldType.equals(FieldType.FIELD_ARRAY_LIST)) {
-                @SuppressWarnings("unchecked") // this is indeed an ArrayList
-                ArrayList<YahooField> fields = (ArrayList<YahooField>) pd.getReadMethod().invoke(entity);
-                fields.forEach(field1 -> nodes.add(new Label(fieldName + field1.getFmt())));
-              }
+              case RAW_STRING:
+              case RAW_NUMERIC:
+                gridPane.add(entityNameLabel, 0, i);
+                if(descriptors[i].getReadMethod().invoke(eClass) != null)
+                  gridPane.add(new Label(descriptors[i].getReadMethod().invoke(eClass).toString()), 1, i);
+                break;
 
-              if (fieldType.equals(FieldType.INNER_CLASS)) {
-                Object newEntity = pd.getReadMethod().invoke(entity);
-                // System.out.println("---This is an inner "+ newEntity.getClass().getName() +" class---");
-                nodes.addAll(getEntityView(newEntity));
-              }
+              case IGNORE:
+                break;
 
-              if (fieldType.equals(FieldType.BOOLEAN)) {
-                // System.out.println("This is a boolean name");
-                Boolean boolValue = (Boolean) pd.getReadMethod().invoke(entity);
-                nodes.add(new Label(fieldName + boolValue.toString()));
-              }
-            } catch (NullPointerException e) {
-              nodes.add(getNullLabel(fieldName));
+              default: throw new IllegalArgumentException("Wrong argument -> " + parameterType.name());
             }
             break;
           }
         }
       }
-
-    } catch (NullPointerException | IntrospectionException | IllegalAccessException | InvocationTargetException e) {
-      System.out.println(e.getMessage());
-      System.out.println(e.getCause() != null? e.getCause() : "cause is null" );
-    }*/
-    return nodes;
-  }
-
-  private Label getNullLabel(String fieldName) {
-    return new Label(fieldName + " not found...");
+    }
+    return gridPane;
   }
 
   @Override
-  public Collection<Node> setView() {
-    Collection<Node> view = new ArrayList<>();
-
-    ArrayList<VBox> vBoxes = new ArrayList<>();
-    try {
-
-      for (java.lang.reflect.Field field : company.getClass().getDeclaredFields()) {
+  public <E> Node getViewFor(Company company) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+    Accordion accordion = new Accordion();
+    for (Field field : company.getClass().getDeclaredFields()) {
+      if (field.getDeclaredAnnotation(EntityParameter.class) != null) {
         String entityName = field.getDeclaredAnnotation(EntityParameter.class).name();
         ParameterType type = field.getDeclaredAnnotation(EntityParameter.class).parameterType();
-        VBox entityBox = new VBox();
-
-        if (!type.equals(ParameterType.IGNORE)) {
-          entityBox.getChildren().add(new Label("---" + entityName + "---"));
-        }
-
-        for (PropertyDescriptor pd : Introspector.getBeanInfo(company.getClass()).getPropertyDescriptors()) {
+        for (PropertyDescriptor pd : Introspector.getBeanInfo(Company.class).getPropertyDescriptors()) {
           if (pd.getName().equals(field.getName())) {
 
-            if (type.equals(ParameterType.INNER_CLASS_COLLECTION)) {
-              @SuppressWarnings("unchecked")// this is indeed an ArrayList
-              ArrayList<Object> entities = (ArrayList<Object>) pd.getReadMethod().invoke(company);
-              entities.forEach(entity -> {
-                entityBox.getChildren().add(new Separator(Orientation.HORIZONTAL));
-                entityBox.getChildren().addAll(getEntityView(entity));
-                });
+            switch (type){
+              case INNER_CLASS:
+                ScrollPane pane = new ScrollPane(
+                  getContentFor(pd.getReadMethod().invoke(company))
+                );
+                TitledPane titledPane = new TitledPane(entityName, pane);
+                accordion.getPanes().add(titledPane);
+                break;
+              case INNER_CLASS_COLLECTION:
+                Accordion collectionAccordion = new Accordion();
+                ScrollPane collectionScrollPane = new ScrollPane(collectionAccordion);
+                Class<?> typeOf = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+                Collection<E> innerClassCollection = (Collection<E>) pd.getReadMethod().invoke(company);
+                for(E innerClass: innerClassCollection){
+                  TitledPane innerTittledPane = new TitledPane(
+                    entityName,
+                    new ScrollPane(getContentFor(innerClass))
+                  );
+                  collectionAccordion.getPanes().add(innerTittledPane);
+                }
+                accordion.getPanes().add(new TitledPane(entityName, collectionScrollPane));
+                break;
             }
-
-            if (type.equals(ParameterType.CLASS)) {
-              Object entity = pd.getReadMethod().invoke(company);
-              entityBox.getChildren().addAll(getEntityView(entity));
-            }
-
             break;
           }
         }
-        vBoxes.add(entityBox);
       }
-    } catch (IntrospectionException | InvocationTargetException | IllegalAccessException e) {
-      e.printStackTrace();
     }
-
-    Iterator<VBox> vBoxIterator = vBoxes.iterator();
-    while (vBoxIterator.hasNext()){
-      HBox hbox = new HBox();
-      hbox.getChildren().add(vBoxIterator.next());
-      hbox.getChildren().add(new Separator(Orientation.VERTICAL));
-
-      if(vBoxIterator.hasNext()){
-        hbox.getChildren().add(vBoxIterator.next());
-        hbox.getChildren().add(new Separator(Orientation.VERTICAL));
-      }
-
-      view.add(hbox);
-      view.add(new Separator(Orientation.HORIZONTAL));
-    }
-
-
-    return view;
-  }
-
-  public void setCompany(Company company) {
-    this.company = company;
+    return accordion;
   }
 }

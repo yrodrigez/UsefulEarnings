@@ -1,7 +1,6 @@
 package es.usefulearnings.entities;
 
 import es.usefulearnings.engine.Core;
-import es.usefulearnings.utils.EntitiesPackage;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -13,29 +12,33 @@ import java.util.Map;
  *
  * @author yago.
  */
-public class DownloadedData implements Savable, Serializable {
+public class DownloadedData implements Savable, Serializable, Comparable {
 
   // Serializable extension
   public static final String EXTENSION = ".metadata";
 
-  private File mEntitiesFile; //1474537062.cdata (List<Company> serializado)
+  private File _entitiesFile; //1474537062.cdata (List<Company> serializado)
 
-  private long created;
+  public long get_created() {
+    return _created;
+  }
 
-  private long totalSavedCompanies;
-  private long totalSavedOptions;
-  private long totalSavedOptionChains;
+  private long _created;
+
+  private long _totalSavedCompanies;
+  private long _totalSavedOptions;
+  private long _totalSavedOptionChains;
 
   public DownloadedData(long created) {
-    this.created = created;
-    this.totalSavedCompanies = 0;
-    this.totalSavedOptionChains = 0;
-    this.totalSavedOptions = 0;
+    _created = created;
+    _totalSavedCompanies = 0;
+    _totalSavedOptionChains = 0;
+    _totalSavedOptions = 0;
   }
 
 
   public String getDateToString() {
-    return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(created * 1000L));
+    return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(_created * 1000L));
   }
 
   @Override
@@ -48,32 +51,33 @@ public class DownloadedData implements Savable, Serializable {
   public void save(File fileToSave) throws IOException {
     String location = fileToSave.getAbsolutePath()
       + File.separator
-      + this.created
+      + _created
       + EXTENSION;
 
     Map<String, Company> companiesToSave = Core.getInstance().getAllCompanies();
     Map<String, Option> optionsToSave = Core.getInstance().getAllOptions();
 
 
-    this.totalSavedCompanies = companiesToSave.size();
-    this.totalSavedOptions = optionsToSave.size();
+    _totalSavedCompanies = companiesToSave.size();
+    _totalSavedOptions = optionsToSave.size();
 
-    mEntitiesFile = new File(
+    _entitiesFile = new File(
       fileToSave.getAbsolutePath()
         + File.separator
-        + this.created
+        + _created
     );
 
-    if (!mEntitiesFile.exists()) {
-      if(!mEntitiesFile.mkdirs())
-        throw new IOException(mEntitiesFile.getAbsolutePath() + "can't be created!");
+    if (!_entitiesFile.exists()) {
+      if(!_entitiesFile.mkdirs())
+        throw new IOException(_entitiesFile.getAbsolutePath() + "can't be _created!");
     }
 
     EntitiesPackage entitiesPackage = new EntitiesPackage(
       companiesToSave,
-      optionsToSave
+      optionsToSave,
+      _created
     );
-    entitiesPackage.save(mEntitiesFile);
+    entitiesPackage.save(_entitiesFile);
 
 
     FileOutputStream data = new FileOutputStream(location);
@@ -83,19 +87,28 @@ public class DownloadedData implements Savable, Serializable {
     data.close();
   }
 
-  public long getTotalSavedCompanies() {
-    return totalSavedCompanies;
+  public long get_totalSavedCompanies() {
+    return _totalSavedCompanies;
   }
 
-  public long getTotalSavedOptions() {
-    return totalSavedOptions;
+  public long get_totalSavedOptions() {
+    return _totalSavedOptions;
   }
 
-  public long getTotalSavedOptionChains() {
-    return totalSavedOptionChains;
+  public long get_totalSavedOptionChains() {
+    return _totalSavedOptionChains;
   }
 
   public File getEntitiesFile() {
-    return mEntitiesFile;
+    return _entitiesFile;
+  }
+
+  @Override
+  public int compareTo(Object o) {
+    if(((DownloadedData)o)._created == this._created) return 0;
+    if(((DownloadedData)o)._created < this._created) return -1;
+    if(((DownloadedData)o)._created > this._created) return 1;
+    System.err.println("This shouldn't appear");
+    return -1;
   }
 }

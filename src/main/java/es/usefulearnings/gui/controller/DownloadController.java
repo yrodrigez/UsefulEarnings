@@ -118,7 +118,7 @@ public class DownloadController implements Initializable {
     this.downloadAllCompaniesData();
 
     // set a behavior
-    progressPane.getChildren().setAll(this.getDownloadBehaviorNode());
+    progressPane.getChildren().setAll(getDownloadBehaviorNode());
 
     event.consume();
   }
@@ -203,6 +203,7 @@ public class DownloadController implements Initializable {
    * Downloads companies's data from all stocks
    */
   private void downloadAllCompaniesData(){
+    Core.getInstance().setDataLoaded(false); // is Downloading!
     tasks = new ArrayList<>();
 
     List<Entity> allCompanies = new ArrayList<>(Core.getInstance().getAllCompanies().values());
@@ -228,16 +229,17 @@ public class DownloadController implements Initializable {
 
   private void downloadCompleted(){
     if(--downloadButtonLocker == 0){
-     new Thread(() -> {
        JSONHTTPClient.getInstance().clearCache();
         try {
           downloadedData.save(new File(ResourcesHelper.getInstance().getSearchesPath()));
+          System.out.println("Activating filter");
+          Core.getInstance().setDataLoaded(true);
         } catch(IOException | NoStocksFoundException e) {
           e.printStackTrace();
           Platform.runLater(() ->
             AlertHelper.showExceptionAlert(e));
         }
-      }).start();
+
 
       downloadButtonLocker = MAX_THREADS;
 

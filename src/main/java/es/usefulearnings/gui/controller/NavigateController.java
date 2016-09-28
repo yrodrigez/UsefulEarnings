@@ -8,6 +8,7 @@ import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.gui.view.CompanyViewHelper;
 import es.usefulearnings.utils.NoStocksFoundException;
 import es.usefulearnings.utils.ResourcesHelper;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -29,7 +30,9 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 import java.awt.*;
+import java.beans.IntrospectionException;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
@@ -75,23 +78,23 @@ public class NavigateController implements Initializable {
 
     textFilter.textProperty().addListener(
       (observable, oldSymbolEntry, newSymbolEntry) -> {
-      //remove the listener from the ListView so when it change don't crash
-      companies.getSelectionModel().selectedItemProperty().removeListener(stockListener);
-      if (oldSymbolEntry != null && (newSymbolEntry.length() < oldSymbolEntry.length())) {
-        companies.setItems(symbols);
-      }
-
-      String value = newSymbolEntry.toUpperCase();
-      ObservableList<String> filteredSymbols = FXCollections.observableArrayList();
-      companies.getItems().forEach(symbol -> {
-        if (symbol.toUpperCase().contains(value)) {
-          filteredSymbols.add(symbol);
+        //remove the listener from the ListView so when it change don't crash
+        companies.getSelectionModel().selectedItemProperty().removeListener(stockListener);
+        if (oldSymbolEntry != null && (newSymbolEntry.length() < oldSymbolEntry.length())) {
+          companies.setItems(symbols);
         }
+
+        String value = newSymbolEntry.toUpperCase();
+        ObservableList<String> filteredSymbols = FXCollections.observableArrayList();
+        companies.getItems().forEach(symbol -> {
+          if (symbol.toUpperCase().contains(value)) {
+            filteredSymbols.add(symbol);
+          }
+        });
+        companies.setItems(filteredSymbols);
+        // add again the listener this is really important!!!
+        companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
       });
-      companies.setItems(filteredSymbols);
-      // add again the listener this is really important!!!
-      companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
-    });
 
     stockListener = getStockListener();
     companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
@@ -162,20 +165,9 @@ public class NavigateController implements Initializable {
   }
 
 
-  private Node setCompanyData(String symbol) {
-    VBox vBox = new VBox();
-    // insertDataHere!!
-    Company company = Core.getInstance().getSingleCompanyData(symbol);
-
-    vBox.getChildren().addAll(
-      new Label("Company's Symbol: " + company.getSymbol()),
-      new Separator(Orientation.HORIZONTAL)
-    );
-
-    CompanyViewHelper companyViewManager = new CompanyViewHelper(company, webEngine);
-    vBox.getChildren().addAll(companyViewManager.setView());
-
-    return new ScrollPane(vBox);
+  private Node setCompanyData(String symbol) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
+    CompanyViewHelper companyViewHelper = new CompanyViewHelper(webEngine);
+    return companyViewHelper.getViewFor(Core.getInstance().getSingleCompanyData(symbol));
   }
   /**
    * @return Listener that handle the press event on the main ListView (companies)
@@ -193,7 +185,16 @@ public class NavigateController implements Initializable {
       }
 
       Tab cTab = new Tab(newSymbol);
-      cTab.setContent(setCompanyData(newSymbol));
+      cTab.setContent(new ProgressIndicator(-1));
+      new Thread(() ->{
+        try {
+          Node companyData = setCompanyData(newSymbol);
+          Platform.runLater(()-> cTab.setContent(companyData));
+        } catch (IllegalAccessException | IntrospectionException | InvocationTargetException e) {
+          Platform.runLater(()-> AlertHelper.showExceptionAlert(e));
+          e.printStackTrace();
+        }
+      }).start();
       tabPane.getTabs().add(cTab);
     };
   }

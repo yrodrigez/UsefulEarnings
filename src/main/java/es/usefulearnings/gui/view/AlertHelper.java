@@ -41,4 +41,12 @@ public class AlertHelper {
 
     alert.showAndWait();
   }
+
+  public static void showAlert(Alert.AlertType alertType, String tittle, String contextText) {
+    Alert alert = new Alert(alertType);
+    alert.setTitle(tittle);
+    alert.setHeaderText(null);
+    alert.setContentText(contextText);
+    alert.showAndWait();
+  }
 }

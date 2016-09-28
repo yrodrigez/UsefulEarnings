@@ -4,7 +4,7 @@ import es.usefulearnings.engine.Core;
 import es.usefulearnings.entities.DownloadedData;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
-import es.usefulearnings.utils.EntitiesPackage;
+import es.usefulearnings.entities.EntitiesPackage;
 import es.usefulearnings.utils.ResourcesHelper;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
@@ -71,6 +71,7 @@ public class HistoryController implements Initializable {
         });
 
         this.downloadedData = ResourcesHelper.getInstance().getDownloadedData();
+        this.downloadedData.sort(DownloadedData::compareTo);
         this.downloadHistory.setItems(FXCollections.observableArrayList(downloadedData));
         this.downloadHistory.getSelectionModel().selectedItemProperty().addListener(
           (observable, oldValue, newValue) -> {
@@ -148,15 +149,21 @@ public class HistoryController implements Initializable {
 
       // Create the view for DownloadedData
       Label dateLabel = new Label(downloadedData.toString());
-      Label companiesFound = new Label("Companies found: " + downloadedData.getTotalSavedCompanies());
-      Label optionsFound = new Label("Options found: " + downloadedData.getTotalSavedOptions());
-      Label optionChains = new Label("Option chains found: " + downloadedData.getTotalSavedOptionChains());
+      Label companiesFound = new Label("Companies found: " + downloadedData.get_totalSavedCompanies());
+      Label optionsFound = new Label("Options found: " + downloadedData.get_totalSavedOptions());
+      Label optionChains = new Label("Option chains found: " + downloadedData.get_totalSavedOptionChains());
 
       Button delete = new Button("", new ImageView(new Image(Main.class.getResourceAsStream("icons/delete-forever-white.png"))));
       delete.getStyleClass().addAll("history-button");
 
       Button reloadData = new Button("", new ImageView(new Image(Main.class.getResourceAsStream("icons/import-data-white.png"))));
       reloadData.getStyleClass().addAll("history-button", "no-opacity");
+
+      long coreLoadedPackage = Core.getInstance().getLoadedPackageId();
+      if (coreLoadedPackage == downloadedData.get_created()) {
+        reloadData.setDisable(true);
+      }
+
       reloadData.setOnAction(event -> {
         ProgressIndicator pi = new ProgressIndicator();
         pi.setPrefSize(35.5, 35.5);
@@ -173,6 +180,7 @@ public class HistoryController implements Initializable {
 
         new Thread(() -> {
           // restore the files to the core
+          Core.getInstance().setDataLoaded(false);// IS LOADING
           if (downloadedData.getEntitiesFile().listFiles() != null) {
             for (File f : downloadedData.getEntitiesFile().listFiles()) {
               try {

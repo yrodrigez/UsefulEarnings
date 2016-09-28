@@ -1,6 +1,8 @@
 package es.usefulearnings.gui.controller;
 
+import es.usefulearnings.engine.Core;
 import es.usefulearnings.gui.Main;
+import es.usefulearnings.gui.view.AlertHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -199,7 +201,16 @@ public class MainController implements Initializable {
     filterButton.getStyleClass().addAll("main-controller-button", "main-controller-right-button");
     filterButton.setTooltip(new Tooltip("Filter"));
     filterButton.setOnAction(event -> {
-      VistaNavigator.getInstance().loadVista(VistaNavigator.FILTER);
+      if(!Core.getInstance().isDataLoaded()){
+        AlertHelper.showAlert(
+          Alert.AlertType.ERROR,
+          "No data is loaded",
+          "Please, download data from internet using the download button" +
+          " or " +
+          "go to your download history to load data so you can use filters.");
+      } else {
+        VistaNavigator.getInstance().loadVista(VistaNavigator.FILTER);
+      }
       event.consume();
     });
     filterButton.setToggleGroup(group);
@@ -255,11 +266,11 @@ public class MainController implements Initializable {
     aboutButton.getStyleClass().addAll("main-controller-button", "main-controller-right-button");
     aboutButton.setTooltip(new Tooltip("About"));
     aboutButton.setOnAction(event -> {
-      Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("About");
-      alert.setHeaderText(null);
-      alert.setContentText("UsefulEarnings is is a thesis developed to Universidade de Vigo");
-      alert.showAndWait();
+      AlertHelper.showAlert(
+        Alert.AlertType.INFORMATION,
+        "About UsefulEarnings",
+        "UsefulEarnings is is a thesis developed to Universidade de Vigo"
+      );
       event.consume();
     });
     ret.add(aboutButton);

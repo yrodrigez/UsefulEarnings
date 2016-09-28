@@ -64,7 +64,7 @@ public class FilterController implements Initializable {
     });
   }
 
-  private void setTittledPanesForCompanies() {
+  protected void setTittledPanesForCompanies() {
     try {
       for (Field field : Company.class.getDeclaredFields()) {
         if (field.getDeclaredAnnotation(EntityParameter.class) != null) {
@@ -123,7 +123,6 @@ public class FilterController implements Initializable {
         if (field.getDeclaredAnnotation(EntityParameter.class) != null) {
           String parameterName = field.getDeclaredAnnotation(EntityParameter.class).name();
           ParameterType parameterType = field.getDeclaredAnnotation(EntityParameter.class).parameterType();
-
           Class<? extends AllowedValuesRetriever> allowedValuesRetrieverClass = field.getDeclaredAnnotation(EntityParameter.class).allowedValues();
           Collection<String> allowedValues = allowedValuesRetrieverClass.newInstance().getAllowedValues();
           for (int i = 0; i < Introspector.getBeanInfo(parameter).getPropertyDescriptors().length; i++) {
@@ -175,7 +174,12 @@ public class FilterController implements Initializable {
     return gridPane;
   }
 
-  private Node getInputFor(Field field, ParameterType parameterType, ChoiceBox<String> choiceBox, Collection<String> allowedValues) {
+  private Node getInputFor(
+    Field field,
+    ParameterType parameterType,
+    ChoiceBox<String> choiceBox,
+    Collection<String> allowedValues
+  ) {
     switch (parameterType) {
       case URL:
       case RAW_STRING:

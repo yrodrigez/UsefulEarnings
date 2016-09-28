@@ -89,9 +89,13 @@ public class VistaNavigator {
   public void loadVista(String fxml) {
     try {
       Vista vista = vistas.get(fxml);
-      mainController.setVista(
-        vista.isLoaded() ? vista.getNode() : vista.load(FXMLLoader.load(Main.class.getResource(fxml)))
-      );
+      if(fxml.equals(FILTER)){
+        mainController.setVista(vista.load(FXMLLoader.load(Main.class.getResource(fxml))));
+      }else {
+        mainController.setVista(
+          vista.isLoaded() ? vista.getNode() : vista.load(FXMLLoader.load(Main.class.getResource(fxml)))
+        );
+      }
       } catch (IOException e) {
         AlertHelper.showExceptionAlert(e);
       }

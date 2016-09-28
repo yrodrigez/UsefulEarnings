@@ -6,7 +6,7 @@ import es.usefulearnings.engine.filter.Filter;
 import es.usefulearnings.engine.filter.RestrictionValue;
 import es.usefulearnings.engine.plugin.*;
 import es.usefulearnings.entities.*;
-import es.usefulearnings.utils.EntitiesPackage;
+import es.usefulearnings.entities.EntitiesPackage;
 import es.usefulearnings.utils.NoStocksFoundException;
 import es.usefulearnings.utils.ResourcesHelper;
 
@@ -30,7 +30,13 @@ public class Core {
 
   private List<Filter> appliedFilters;
 
+  private boolean isDataLoaded;
+
+  private long _loadedPackageId;
+
   private Core() {
+    isDataLoaded = false;
+    _loadedPackageId = 0;
     // Add companiesPlugins.
     companiesPlugins = new ArrayList<>();
     companiesPlugins.add(new ProfilePlugin());
@@ -157,10 +163,18 @@ public class Core {
     );
   }
 
+  public long getLoadedPackageId() {
+    return _loadedPackageId;
+  }
+
+  public void setLoadedPackageId(long loadedPackageId) {
+    _loadedPackageId = loadedPackageId;
+  }
+
   public void setFromEntitiesPackage(EntitiesPackage entitiesPackage) {
     List<Stock> newStocks = new LinkedList<>();
 
-    for(Company company : entitiesPackage.getCompanies().values()){
+    for(Company company : entitiesPackage.get_companies().values()){
       List<Stock> stocks = newStocks.stream().filter(stock -> stock.getName().equals(company.getStockName())).collect(Collectors.toList());
       if(stocks.isEmpty()){
         Map<String, Company> map = new TreeMap<>();
@@ -172,6 +186,8 @@ public class Core {
     }
 
     mStocks = newStocks;
+    _loadedPackageId = entitiesPackage.getdateId();
+    setDataLoaded(true);
   }
 
 
@@ -181,5 +197,12 @@ public class Core {
     companyFilter.filter();
   }
 
+  public boolean isDataLoaded() {
+    return isDataLoaded;
+  }
+
+  public void setDataLoaded(boolean dataLoaded) {
+    isDataLoaded = dataLoaded;
+  }
 }
 
