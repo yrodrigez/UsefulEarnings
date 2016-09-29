@@ -77,7 +77,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
                 gridPane.add(entityNameLabel, 0 , i);
                 YahooField yahooField = (YahooField)descriptors[i].getReadMethod().invoke(eClass);
                 if(yahooField != null)
-                gridPane.add(new Label(yahooField.getFmt()), 1 , i);
+                  gridPane.add(new Label(yahooField.getFmt()), 1 , i);
                 break;
 
               case YAHOO_LONG_FORMAT_FIELD:
@@ -326,30 +326,38 @@ public class CompanyViewHelper implements ViewHelper<Company> {
 
           strTextField.textProperty().addListener(
             (observable, oldValue, newValue) -> {
+              assert newValue != null;
               if (oldValue != null && (newValue.length() < oldValue.length())) {
                 contextMenu.getItems().setAll(items);
               }
 
-              if (newValue != null) {
-                String value = newValue.toUpperCase();
-                List<MenuItem> filteredItems = new ArrayList<>();
-                strTextField.getContextMenu().getItems().forEach(menuItem -> {
-                  if (menuItem.getText().toUpperCase().contains(value)) {
-                    filteredItems.add(menuItem);
-                  }
-                });
 
-                contextMenu.getItems().setAll(filteredItems);
-              }
+              String value = newValue.toUpperCase();
+              List<MenuItem> filteredItems = new ArrayList<>();
+              strTextField.getContextMenu().getItems().forEach(menuItem -> {
+                if (menuItem.getText().toUpperCase().contains(value)) {
+                  filteredItems.add(menuItem);
+                }
+              });
+
+              contextMenu.getItems().setAll(filteredItems);
+
               strTextField.getContextMenu().show(strTextField, Side.RIGHT, 0, 0);
-              System.out.println("Field: " + field + ", value: "+ newValue);
               filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ));
+              if(newValue.equals("")){
+                filter.remove(field);
+              }
             }
           );
         } else {
           strTextField.textProperty().addListener(
-            (observable, oldValue, newValue) -> filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ))
-          );
+            (observable, oldValue, newValue) -> {
+              assert newValue != null;
+              filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ));
+              if(newValue.equals("")){
+                filter.remove(field);
+              }
+            });
         }
         return strTextField;
 
@@ -384,6 +392,22 @@ public class CompanyViewHelper implements ViewHelper<Company> {
               break;
           }
         });
+        datePicker.accessibleTextProperty().addListener(
+          (observable, oldValue, newValue) -> {
+            assert newValue != null;
+            if (newValue.equals("")) filter.remove(field);
+            switch (choiceBox.getValue()) {
+              case "<":
+                filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.LT));
+                break;
+              case ">":
+                filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.GT));
+                break;
+              default:
+                filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400, BasicOperator.EQ));
+                break;
+            }
+          });
         return datePicker;
 
       case RAW_NUMERIC:
@@ -407,7 +431,8 @@ public class CompanyViewHelper implements ViewHelper<Company> {
         });
         numTextField.textProperty().addListener(
           (observable, oldValue, newValue) -> {
-            if (newValue.matches("\\d+(\\.\\d*)?")) {
+            assert newValue != null;
+            if (newValue.matches("\\d*(\\.\\d*)?")) {
               numTextField.setStyle("");
               if (numTextField.getTooltip() != null) numTextField.getTooltip().hide();
               numTextField.setTooltip(null);
@@ -422,11 +447,14 @@ public class CompanyViewHelper implements ViewHelper<Company> {
                   filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.EQ));
                   break;
               }
+              if(newValue.equals("")) filter.remove(field);
+
             } else {
               if (oldValue != null) numTextField.setText(oldValue);
               numTextField.setStyle("-fx-border-color: linear-gradient(#fe372b 25%, #ff4b5c 75%, #fc000f 100%); -fx-border-width: 2;");
               numTextField.setTooltip(new Tooltip("You can write numbers only!"));
               numTextField.getTooltip().show(numTextField.getScene().getWindow());
+              if(newValue.equals("")) filter.remove(field);
             }
           });
         return numTextField;

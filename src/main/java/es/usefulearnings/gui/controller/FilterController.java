@@ -35,9 +35,12 @@ import java.util.ResourceBundle;
  */
 public class FilterController implements Initializable {
   public BorderPane mainPane;
-  private ListView<Filter> filtersPane;
-  public ListView<Company> companiesPane;
+  private ListView<Filter> filterListView;
+  public ListView<Company> companyListView;
   public BorderPane rightPane;
+  // remove listeners here!!
+  private ChangeListener<Company> companyChangeListener;
+  private ChangeListener<Filter> filterChangeListener;
 
   private Map<Field, RestrictionValue> filter;
 
@@ -45,12 +48,15 @@ public class FilterController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     filter = new HashMap<>();
-    filtersPane = new ListView<>();
-    filtersPane.setMaxSize(250, 325);
-    filtersPane.setPrefSize(250, 325);
-    companiesPane = new ListView<>();
-    companiesPane.setMaxSize(250, 325);
-    companiesPane.setPrefSize(250, 325);
+    filterListView = new ListView<>();
+    filterListView.setMaxSize(250, 325);
+    filterListView.setPrefSize(250, 325);
+    companyListView = new ListView<>();
+    companyListView.setMaxSize(250, 325);
+    companyListView.setPrefSize(250, 325);
+
+    companyChangeListener = getCompanySelectedListener();
+    filterChangeListener = getFilterChangeListener(companyChangeListener);
     try {
       mainPane.setCenter(CompanyViewHelper.getInstance().getFilterView(filter));
     } catch (IntrospectionException | InvocationTargetException | IllegalAccessException e) {
@@ -65,28 +71,26 @@ public class FilterController implements Initializable {
     hBox.setAlignment(Pos.BASELINE_RIGHT);
     mainPane.setBottom(hBox);
 
-
     filterButton.setOnAction(getFilterEvent(filterButton));
   }
 
   @SuppressWarnings("unchecked")
   private void refreshFilterPane(){
-    rightPane.setTop(filtersPane);
-    rightPane.setBottom(companiesPane);
+    rightPane.setTop(filterListView);
+    rightPane.setBottom(companyListView);
+
+    filterListView.getSelectionModel().selectedItemProperty().removeListener(filterChangeListener);
     List<Filter> appliedFilters = Core.getInstance().getAppliedFilters();
-    filtersPane.setItems(FXCollections.observableArrayList(appliedFilters));
-    ChangeListener<Company> companyChangeListener = getCompanySelectedListener();
-    ChangeListener<Filter> filterChangeListener = getFilterChangeListener(companyChangeListener);
-    filtersPane.getSelectionModel().selectedItemProperty().removeListener(filterChangeListener);
-    filtersPane.getSelectionModel().selectedItemProperty().addListener(filterChangeListener);
+    filterListView.setItems(FXCollections.observableArrayList(appliedFilters));
+    filterListView.getSelectionModel().selectedItemProperty().addListener(filterChangeListener);
   }
 
   private ChangeListener<Filter> getFilterChangeListener(ChangeListener<Company> companyChangeListener) {
     return (observable, oldFilter, newFilter) -> {
       if(newFilter != null && newFilter != oldFilter) {
-        companiesPane.getSelectionModel().selectedItemProperty().removeListener(companyChangeListener);
-        companiesPane.setItems(FXCollections.observableArrayList(newFilter.getEntities()));
-        companiesPane.getSelectionModel().selectedItemProperty().addListener(companyChangeListener);
+        companyListView.getSelectionModel().selectedItemProperty().removeListener(companyChangeListener);
+        companyListView.setItems(FXCollections.observableArrayList(newFilter.getEntities()));
+        companyListView.getSelectionModel().selectedItemProperty().addListener(companyChangeListener);
       }
     };
   }
