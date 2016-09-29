@@ -4,6 +4,7 @@ import es.usefulearnings.engine.Core;
 import es.usefulearnings.engine.filter.Filter;
 import es.usefulearnings.engine.filter.RestrictionValue;
 import es.usefulearnings.entities.Company;
+import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.gui.view.CompanyViewHelper;
 import javafx.application.Platform;
@@ -13,13 +14,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.Field;
@@ -36,7 +36,7 @@ import java.util.ResourceBundle;
 public class FilterController implements Initializable {
   public BorderPane mainPane;
   private ListView<Filter> filterListView;
-  public ListView<Company> companyListView;
+  private ListView<Company> companyListView;
   public BorderPane rightPane;
   // remove listeners here!!
   private ChangeListener<Company> companyChangeListener;
@@ -44,16 +44,21 @@ public class FilterController implements Initializable {
 
   private Map<Field, RestrictionValue> filter;
 
+  private VBox lists;
+
 
   @Override
-  public void initialize(URL location, ResourceBundle resources) {
+  public void initialize(URL location, ResourceBundle resources){
+
+
     filter = new HashMap<>();
     filterListView = new ListView<>();
-    filterListView.setMaxSize(250, 325);
-    filterListView.setPrefSize(250, 325);
+    filterListView.prefHeightProperty().bind(mainPane.heightProperty().multiply(0.5));
     companyListView = new ListView<>();
-    companyListView.setMaxSize(250, 325);
-    companyListView.setPrefSize(250, 325);
+    companyListView.prefHeightProperty().bind(mainPane.heightProperty().multiply(0.5));
+
+    lists = new VBox();
+    lists.getChildren().addAll(filterListView, companyListView);
 
     companyChangeListener = getCompanySelectedListener();
     filterChangeListener = getFilterChangeListener(companyChangeListener);
@@ -70,24 +75,49 @@ public class FilterController implements Initializable {
     HBox hBox = new HBox(filterButton);
     hBox.setAlignment(Pos.BASELINE_RIGHT);
     mainPane.setBottom(hBox);
-
+    refreshFilterPane();
     filterButton.setOnAction(getFilterEvent(filterButton));
   }
 
-  @SuppressWarnings("unchecked")
-  private void refreshFilterPane(){
-    rightPane.setTop(filterListView);
-    rightPane.setBottom(companyListView);
 
-    filterListView.getSelectionModel().selectedItemProperty().removeListener(filterChangeListener);
-    List<Filter> appliedFilters = Core.getInstance().getAppliedFilters();
-    filterListView.setItems(FXCollections.observableArrayList(appliedFilters));
-    filterListView.getSelectionModel().selectedItemProperty().addListener(filterChangeListener);
+  private void refreshFilterPane() {
+    if(Core.getInstance().getAppliedFilters().size() > 0) {
+      rightPane.setCenter(lists);
+      filterListView.getSelectionModel().selectedItemProperty().removeListener(filterChangeListener);
+      List<Filter> appliedFilters = Core.getInstance().getAppliedFilters();
+      filterListView.setItems(FXCollections.observableArrayList(appliedFilters));
+      filterListView.getSelectionModel().selectedItemProperty().addListener(filterChangeListener);
+
+      filterListView.setCellFactory(param -> {
+        ListCell<Filter> ret = new ListCell<>();
+
+        ContextMenu filterContextMenu = new ContextMenu();
+        MenuItem export = new MenuItem("Export to Excel", new ImageView(new Image(Main.class.getResourceAsStream("icons/export.png"), 12, 12, false, false)));
+        export.setOnAction(event -> {
+          AlertHelper.showAlert(
+            Alert.AlertType.CONFIRMATION,
+            "i will export data",
+            "i will export data some day hopefully" + " " + ret.getItem().toString()
+          );
+        });
+        filterContextMenu.getItems().addAll(export);
+        ret.setContextMenu(filterContextMenu);
+
+        // recover the *damn* text
+        ret.itemProperty().addListener((observable, oldValue, newValue) -> {
+          assert newValue != null;
+          ret.textProperty().bind(ret.itemProperty().asString());
+        });
+
+        return ret;
+      });
+    }
   }
 
+  @SuppressWarnings("unchecked")
   private ChangeListener<Filter> getFilterChangeListener(ChangeListener<Company> companyChangeListener) {
     return (observable, oldFilter, newFilter) -> {
-      if(newFilter != null && newFilter != oldFilter) {
+      if (newFilter != null && newFilter != oldFilter) {
         companyListView.getSelectionModel().selectedItemProperty().removeListener(companyChangeListener);
         companyListView.setItems(FXCollections.observableArrayList(newFilter.getEntities()));
         companyListView.getSelectionModel().selectedItemProperty().addListener(companyChangeListener);
@@ -95,31 +125,15 @@ public class FilterController implements Initializable {
     };
   }
 
-  private ChangeListener<Company> getCompanySelectedListener(){
+  private ChangeListener<Company> getCompanySelectedListener() {
     return (observable1, oldCompany, newCompany) -> {
-      if(newCompany != null && newCompany != oldCompany) {
-        Stage dialogStage = new Stage();
-        dialogStage.setTitle(newCompany.getSymbol());
-        dialogStage.initModality(Modality.WINDOW_MODAL);
-        dialogStage.initOwner(mainPane.getScene().getWindow());
-        Scene scene = null;
-        try {
-          BorderPane borderPane = new BorderPane();
-          borderPane.setCenter(CompanyViewHelper.getInstance().getViewFor(newCompany));
-          borderPane.setPrefSize(800, 600);
-          scene = new Scene(borderPane);
-        } catch (IntrospectionException | InvocationTargetException | IllegalAccessException e) {
-          AlertHelper.showExceptionAlert(e);
-          e.printStackTrace();
-        }
-        dialogStage.setScene(scene);
-        // Show the dialog and wait until the user closes it
-        dialogStage.showAndWait();
+      if (newCompany != null && newCompany != oldCompany) {
+        CompanyViewHelper.getInstance().showEntityOnWindow(mainPane.getScene().getWindow(), newCompany);
       }
     };
   }
 
-  private EventHandler<ActionEvent> getFilterEvent(Button filterButton){
+  private EventHandler<ActionEvent> getFilterEvent(Button filterButton) {
     return event -> {
       new Thread(() -> {
         try {

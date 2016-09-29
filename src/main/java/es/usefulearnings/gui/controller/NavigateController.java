@@ -114,6 +114,7 @@ public class NavigateController implements Initializable {
       stocksChoiceBox.getSelectionModel().select(0);
       stocksChoiceBox.getSelectionModel().selectedItemProperty().addListener(
         (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+          companies.getSelectionModel().selectedItemProperty().removeListener(stockListener);
           symbols = FXCollections.observableArrayList();
           stocks.forEach(stock -> {
             if (stock.getName().equals(newValue)) {
@@ -121,6 +122,7 @@ public class NavigateController implements Initializable {
             }
           });
           companies.setItems(symbols);
+          companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
         }
       );
       stocksChoiceBox.getStyleClass().addAll("ue-choice-box");
@@ -158,7 +160,7 @@ public class NavigateController implements Initializable {
   }
 
 
-  private Node setCompanyData(String symbol) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
+  private Node getCompanyView(String symbol) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
     CompanyViewHelper companyViewHelper = CompanyViewHelper.getInstance();
     return companyViewHelper.getViewFor(Core.getInstance().getCompanyFromSymbol(symbol));
   }
@@ -184,7 +186,7 @@ public class NavigateController implements Initializable {
 
         new Thread(() -> {
           try {
-            Node companyData = setCompanyData(newSymbol);
+            Node companyData = getCompanyView(newSymbol);
             Platform.runLater(() -> cTab.setContent(companyData));
           } catch (IllegalAccessException | IntrospectionException | InvocationTargetException e) {
             Platform.runLater(() -> AlertHelper.showExceptionAlert(e));

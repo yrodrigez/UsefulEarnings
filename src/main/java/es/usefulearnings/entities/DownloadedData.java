@@ -19,7 +19,7 @@ public class DownloadedData implements Savable, Serializable, Comparable {
 
   private File _entitiesFile; //1474537062.cdata (List<Company> serializado)
 
-  public long get_created() {
+  public long getCreated() {
     return _created;
   }
 

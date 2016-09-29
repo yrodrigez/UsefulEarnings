@@ -157,11 +157,14 @@ public class HistoryController implements Initializable {
       delete.getStyleClass().addAll("history-button");
 
       Button reloadData = new Button("", new ImageView(new Image(Main.class.getResourceAsStream("icons/import-data-white.png"))));
+      reloadData.setMinSize(45, 45);
       reloadData.getStyleClass().addAll("history-button", "no-opacity");
 
+      Node okGraphic = new ImageView(new Image(Main.class.getResourceAsStream("icons/ok.png")));
       long coreLoadedPackage = Core.getInstance().getLoadedPackageId();
-      if (coreLoadedPackage == downloadedData.get_created()) {
+      if (coreLoadedPackage == downloadedData.getCreated()) {
         reloadData.setDisable(true);
+        reloadData.setGraphic(okGraphic);
       }
 
       reloadData.setOnAction(event -> {
@@ -173,7 +176,6 @@ public class HistoryController implements Initializable {
         Tooltip tooltip = new Tooltip("Uploading data to system...");
         reloadData.setTooltip(tooltip);
         reloadData.setDisable(true);
-        Node previousGraphic = reloadData.getGraphic();
         reloadData.setGraphic(pi);
 
         delete.setDisable(true);
@@ -204,8 +206,7 @@ public class HistoryController implements Initializable {
           // ALWAYS (when done): restore buttons to re-use
           Platform.runLater(() -> {
             reloadData.setTooltip(null);
-            reloadData.setDisable(false);
-            reloadData.setGraphic(previousGraphic);
+            reloadData.setGraphic(okGraphic);
 
             delete.setDisable(false);
           });

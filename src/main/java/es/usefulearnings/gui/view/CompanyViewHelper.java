@@ -13,13 +13,18 @@ import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.awt.*;
 import java.beans.IntrospectionException;
@@ -42,11 +47,32 @@ import java.util.List;
 public class CompanyViewHelper implements ViewHelper<Company> {
   private static CompanyViewHelper _instance = new CompanyViewHelper();
 
-  public static CompanyViewHelper getInstance(){
+  public static CompanyViewHelper getInstance() {
     return _instance;
   }
 
-  private CompanyViewHelper(){
+  private CompanyViewHelper() {
+  }
+
+  @Override
+  public void showEntityOnWindow(Window window, Company company) {
+    Stage dialogStage = new Stage();
+    dialogStage.setTitle(company.getSymbol());
+    dialogStage.initModality(Modality.WINDOW_MODAL);
+    dialogStage.initOwner(window);
+    Scene scene = null;
+    try {
+      BorderPane borderPane = new BorderPane();
+      borderPane.setCenter(CompanyViewHelper.getInstance().getViewFor(company));
+      borderPane.setPrefSize(800, 600);
+      scene = new Scene(borderPane);
+    } catch (IntrospectionException | InvocationTargetException | IllegalAccessException e) {
+      AlertHelper.showExceptionAlert(e);
+      e.printStackTrace();
+    }
+    dialogStage.setScene(scene);
+    // Show the dialog and wait until the user closes it
+    dialogStage.showAndWait();
   }
 
   private <E> Node getContentFor(E eClass)
@@ -54,16 +80,16 @@ public class CompanyViewHelper implements ViewHelper<Company> {
     GridPane gridPane = new GridPane();
     gridPane.setHgap(20);
     gridPane.setPadding(new Insets(5, 5, 5, 5));
-    for (Field field: eClass.getClass().getDeclaredFields()){
+    for (Field field : eClass.getClass().getDeclaredFields()) {
       if (field == null) return new VBox();
-      if(field.getDeclaredAnnotation(EntityParameter.class) != null){
+      if (field.getDeclaredAnnotation(EntityParameter.class) != null) {
         String entityName = field.getDeclaredAnnotation(EntityParameter.class).name();
         ParameterType parameterType = field.getAnnotation(EntityParameter.class).parameterType();
         PropertyDescriptor[] descriptors = Introspector.getBeanInfo(eClass.getClass()).getPropertyDescriptors();
-        for(int i = 0 ; i < descriptors.length ; i++){
-          if(descriptors[i].getName().equals(field.getName())){
-            Label entityNameLabel = new Label(entityName+": ");
-            switch (parameterType){
+        for (int i = 0; i < descriptors.length; i++) {
+          if (descriptors[i].getName().equals(field.getName())) {
+            Label entityNameLabel = new Label(entityName + ": ");
+            switch (parameterType) {
               case INNER_CLASS:
                 Accordion accordion = new Accordion();
                 accordion.getPanes().add(new TitledPane(
@@ -75,23 +101,23 @@ public class CompanyViewHelper implements ViewHelper<Company> {
 
               case YAHOO_FIELD_DATE:
               case YAHOO_FIELD_NUMERIC:
-                gridPane.add(entityNameLabel, 0 , i);
-                YahooField yahooField = (YahooField)descriptors[i].getReadMethod().invoke(eClass);
-                if(yahooField != null)
-                  gridPane.add(new Label(yahooField.getFmt()), 1 , i);
+                gridPane.add(entityNameLabel, 0, i);
+                YahooField yahooField = (YahooField) descriptors[i].getReadMethod().invoke(eClass);
+                if (yahooField != null)
+                  gridPane.add(new Label(yahooField.getFmt()), 1, i);
                 break;
 
               case YAHOO_LONG_FORMAT_FIELD:
-                gridPane.add(entityNameLabel, 0 , i);
-                YahooLongFormatField longFormatField = (YahooLongFormatField)descriptors[i].getReadMethod().invoke(eClass);
-                if(longFormatField != null)
-                  gridPane.add(new Label(longFormatField.getLongFmt()), 1 , i);
+                gridPane.add(entityNameLabel, 0, i);
+                YahooLongFormatField longFormatField = (YahooLongFormatField) descriptors[i].getReadMethod().invoke(eClass);
+                if (longFormatField != null)
+                  gridPane.add(new Label(longFormatField.getLongFmt()), 1, i);
                 break;
 
               case YAHOO_FIELD_DATE_COLLECTION:
                 gridPane.add(entityNameLabel, 0, i);
-                Collection<YahooField> collection = (Collection<YahooField>)descriptors[i].getReadMethod().invoke(eClass);
-                if(collection != null) {
+                Collection<YahooField> collection = (Collection<YahooField>) descriptors[i].getReadMethod().invoke(eClass);
+                if (collection != null) {
                   Iterator<YahooField> it = collection.iterator();
                   Label datesLabel = new Label();
                   while (it.hasNext()) {
@@ -108,19 +134,19 @@ public class CompanyViewHelper implements ViewHelper<Company> {
 
               case URL:
                 gridPane.add(entityNameLabel, 0, i);
-                String url = (String)descriptors[i].getReadMethod().invoke(eClass);
-                if(url != null) {
+                String url = (String) descriptors[i].getReadMethod().invoke(eClass);
+                if (url != null) {
                   Hyperlink hyperlink = new Hyperlink(url);
                   hyperlink.setOnAction(event -> {
                     Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-                    if(desktop != null && desktop.isSupported(Desktop.Action.BROWSE)){
+                    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
                       try {
                         Desktop.getDesktop().browse(new URI(url));
                       } catch (IOException | URISyntaxException e) {
                         e.printStackTrace();
                       }
                     } else {
-                      Platform.runLater(()-> AlertHelper.showAlert(
+                      Platform.runLater(() -> AlertHelper.showAlert(
                         Alert.AlertType.INFORMATION,
                         "Operation not supported",
                         "Sorry, you can't do this on your actual OS"
@@ -134,14 +160,15 @@ public class CompanyViewHelper implements ViewHelper<Company> {
               case RAW_STRING:
               case RAW_NUMERIC:
                 gridPane.add(entityNameLabel, 0, i);
-                if(descriptors[i].getReadMethod().invoke(eClass) != null)
+                if (descriptors[i].getReadMethod().invoke(eClass) != null)
                   gridPane.add(new Label(descriptors[i].getReadMethod().invoke(eClass).toString()), 1, i);
                 break;
 
               case IGNORE:
                 break;
 
-              default: throw new IllegalArgumentException("Wrong argument -> " + parameterType.name());
+              default:
+                throw new IllegalArgumentException("Wrong argument -> " + parameterType.name());
             }
             break;
           }
@@ -162,7 +189,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
         for (PropertyDescriptor pd : Introspector.getBeanInfo(Company.class).getPropertyDescriptors()) {
           if (pd.getName().equals(field.getName())) {
 
-            switch (type){
+            switch (type) {
               case INNER_CLASS:
                 ScrollPane pane = new ScrollPane(
                   getContentFor(pd.getReadMethod().invoke(company))
@@ -175,7 +202,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
                 ScrollPane collectionScrollPane = new ScrollPane(collectionAccordion);
 
                 Collection<E> innerClassCollection = (Collection<E>) pd.getReadMethod().invoke(company);
-                for(E innerClass: innerClassCollection){
+                for (E innerClass : innerClassCollection) {
                   TitledPane innerTittledPane = new TitledPane(
                     entityName,
                     new ScrollPane(getContentFor(innerClass))
@@ -347,7 +374,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
 
               strTextField.getContextMenu().show(strTextField, Side.RIGHT, 0, 0);
               filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ));
-              if(newValue.equals("")){
+              if (newValue.equals("")) {
                 filter.remove(field);
               }
             }
@@ -357,7 +384,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
             (observable, oldValue, newValue) -> {
               assert newValue != null;
               filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ));
-              if(newValue.equals("")){
+              if (newValue.equals("")) {
                 filter.remove(field);
               }
             });
@@ -368,7 +395,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
       case YAHOO_FIELD_DATE:
         DatePicker datePicker = new DatePicker();
         choiceBox.setOnAction(event -> {
-          if(datePicker.getValue() != null) {
+          if (datePicker.getValue() != null) {
             switch (choiceBox.getValue()) {
               case "<":
                 filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.LT));
@@ -418,7 +445,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
       case YAHOO_FIELD_NUMERIC:
         TextField numTextField = new TextField();
         choiceBox.setOnAction(event -> {
-          if(!numTextField.getText().equals("")) {
+          if (!numTextField.getText().equals("")) {
             switch (choiceBox.getValue()) {
               case "<":
                 filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.LT));
@@ -439,25 +466,26 @@ public class CompanyViewHelper implements ViewHelper<Company> {
               numTextField.setStyle("");
               if (numTextField.getTooltip() != null) numTextField.getTooltip().hide();
               numTextField.setTooltip(null);
-              switch (choiceBox.getValue()) {
-                case "<":
-                  filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.LT));
-                  break;
-                case ">":
-                  filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.GT));
-                  break;
-                case "=":
-                  filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.EQ));
-                  break;
+              if (newValue.equals("")) filter.remove(field);
+              else {
+                switch (choiceBox.getValue()) {
+                  case "<":
+                    filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.LT));
+                    break;
+                  case ">":
+                    filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.GT));
+                    break;
+                  case "=":
+                    filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.EQ));
+                    break;
+                }
               }
-              if(newValue.equals("")) filter.remove(field);
-
             } else {
               if (oldValue != null) numTextField.setText(oldValue);
               numTextField.setStyle("-fx-border-color: linear-gradient(#fe372b 25%, #ff4b5c 75%, #fc000f 100%); -fx-border-width: 2;");
               numTextField.setTooltip(new Tooltip("You can write numbers only!"));
               numTextField.getTooltip().show(numTextField.getScene().getWindow());
-              if(newValue.equals("")) filter.remove(field);
+              if (newValue.equals("")) filter.remove(field);
             }
           });
         return numTextField;
@@ -465,7 +493,6 @@ public class CompanyViewHelper implements ViewHelper<Company> {
         throw new IllegalArgumentException("getInputForFilter() -> I have no input for " + parameterType.name() + " class " + field.getName());
     }
   }
-
 
 
   private ChoiceBox<String> getAChoiceBox() {
