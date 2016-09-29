@@ -58,28 +58,18 @@ public class Core {
   }
 
   /**
-   * TODO: DELETE THIS
-   * Sets all Company's data depending on it's modules.
-   *
    * @param symbol Company's symbol in the selected stock.
    * @return a new Company with it's modules set.
    * @see YahooLinks for modules.
    * @see Company
    */
-  public Company getSingleCompanyData(String symbol) {
-    Company company = new Company();
-    company.setSymbol(symbol);
-    try {
-      for (Plugin<Company> plugin :
-        companiesPlugins) {
-        plugin.addInfo(company);
-      }
-
-      return company;
-    } catch (Exception e) {
-      e.printStackTrace();
+  public Company getCompanyFromSymbol(String symbol) throws IllegalArgumentException {
+    for (Stock stock : mStocks){
+      if (stock.getCompanies().containsKey(symbol))
+        return stock.getCompanies().get(symbol);
     }
-    return company;
+
+    throw new IllegalArgumentException("Company " + symbol + " not found.");
   }
 
   public Map<String, Company> getAllCompanies() {
@@ -97,7 +87,6 @@ public class Core {
     return new TreeMap<>();
   }
 
-
   public Map<String, Company> getCompaniesFromStock(String stockName) throws IllegalArgumentException {
     for (Stock stock : mStocks) {
       if (stock.getName().equals(stockName)) {
@@ -107,6 +96,7 @@ public class Core {
 
     throw new IllegalArgumentException("Can not find a stock named " + stockName);
   }
+
 
   public ArrayList<Plugin> getCompanyPlugins() {
     return this.companiesPlugins;
@@ -190,12 +180,12 @@ public class Core {
     setDataLoaded(true);
   }
 
-
   public void applyFilter(Map<Field, RestrictionValue> parameters) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
     CompanyFilter companyFilter = new CompanyFilter(new HashSet<>(getAllCompanies().values()), parameters);
     appliedFilters.add(companyFilter);
     companyFilter.filter();
   }
+
 
   public boolean isDataLoaded() {
     return isDataLoaded;
@@ -203,6 +193,10 @@ public class Core {
 
   public void setDataLoaded(boolean dataLoaded) {
     isDataLoaded = dataLoaded;
+  }
+
+  public List<Filter> getAppliedFilters() {
+    return appliedFilters;
   }
 }
 

@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="mainPane" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.usefulearnings.gui.controller.FilterController">
-   <center>
-      <Accordion fx:id="accordion" BorderPane.alignment="CENTER">
-        <panes>
-        </panes>
-      </Accordion>
-   </center>
+<BorderPane fx:id="mainPane" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.usefulearnings.gui.controller.FilterController">
+   <right>
+      <BorderPane fx:id="rightPane" BorderPane.alignment="CENTER">
+      </BorderPane>
+   </right>
 </BorderPane>

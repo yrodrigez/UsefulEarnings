@@ -32,13 +32,6 @@ public class CompanyFilter extends Filter<Company> {
     for(Company company: listToIterate){
       applyFilter(company, Company.class, company);
     }
-    
-    for (Company company: _filteredEntities){
-      //System.err.println("Resulting company: " + company +
-      System.err.println("Company " + company.getSymbol() + " Sector: " + company.getProfile().getSector());
-      System.err.println("Current price: " + company.getFinancialData().getCurrentPrice().getRaw());
-      System.err.println("exDividend date: " + company.getCalendarEvents().getExDividendDate().getFmt());
-    }
   }
 
   @SuppressWarnings("unchecked")
@@ -128,7 +121,7 @@ public class CompanyFilter extends Filter<Company> {
                   break;
                 } else {
                   RestrictionValue restrictionValue = _parameters.get(field);
-                  double number = ((double) pd.getReadMethod().invoke(elementValue));
+                  double number = ((Number)(pd.getReadMethod().invoke(elementValue))).doubleValue();
                   double toEval = (double) restrictionValue.getValue();
                   if (!evaluateNumber(number, restrictionValue.getOperator(), toEval)) {
                     removeCompany(company);

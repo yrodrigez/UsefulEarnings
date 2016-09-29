@@ -1,7 +1,6 @@
 package es.usefulearnings.gui.controller;
 
 import es.usefulearnings.engine.Core;
-import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.Stock;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
@@ -16,16 +15,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -132,18 +127,14 @@ public class NavigateController implements Initializable {
     } catch (NoStocksFoundException e) {
       stocksChoiceBox.getItems().add("No Stocks found");
       stocksChoiceBox.getSelectionModel().select(0);
-      // TODO meter esto en AlertHelper
+      // ALERT SHOW ALERT!
       Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
       alert.setTitle("UsefulEarnings | No stocks found at your folder!");
       alert.setHeaderText("No stocks found at your stocks folder");
       alert.setContentText("Choose your option.");
-
       ButtonType openFolderButton = new ButtonType("Open stock Folder");
-
       ButtonType buttonTypeCancel = new ButtonType("I don't care!", ButtonBar.ButtonData.CANCEL_CLOSE);
-
       alert.getButtonTypes().setAll(openFolderButton, buttonTypeCancel);
-
       Optional<ButtonType> result = alert.showAndWait();
       if (result.isPresent() && result.get() == openFolderButton) {
         if (Desktop.isDesktopSupported()) {
@@ -156,6 +147,8 @@ public class NavigateController implements Initializable {
         }
       }
     }
+
+
   }
 
   @FXML
@@ -166,8 +159,8 @@ public class NavigateController implements Initializable {
 
 
   private Node setCompanyData(String symbol) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
-    CompanyViewHelper companyViewHelper = new CompanyViewHelper(webEngine);
-    return companyViewHelper.getViewFor(Core.getInstance().getSingleCompanyData(symbol));
+    CompanyViewHelper companyViewHelper = CompanyViewHelper.getInstance();
+    return companyViewHelper.getViewFor(Core.getInstance().getCompanyFromSymbol(symbol));
   }
   /**
    * @return Listener that handle the press event on the main ListView (companies)
@@ -183,19 +176,23 @@ public class NavigateController implements Initializable {
           webEngine.load("http://finance.yahoo.com/quote/" + newSymbol);
         }
       }
+      if(Core.getInstance().isDataLoaded()) {
+        Tab cTab = new Tab(newSymbol);
+        ProgressIndicator progressIndicator = new ProgressIndicator(-1);
+        progressIndicator.getStyleClass().addAll("default-progress-indicator");
+        cTab.setContent(progressIndicator);
 
-      Tab cTab = new Tab(newSymbol);
-      cTab.setContent(new ProgressIndicator(-1));
-      new Thread(() ->{
-        try {
-          Node companyData = setCompanyData(newSymbol);
-          Platform.runLater(()-> cTab.setContent(companyData));
-        } catch (IllegalAccessException | IntrospectionException | InvocationTargetException e) {
-          Platform.runLater(()-> AlertHelper.showExceptionAlert(e));
-          e.printStackTrace();
-        }
-      }).start();
-      tabPane.getTabs().add(cTab);
+        new Thread(() -> {
+          try {
+            Node companyData = setCompanyData(newSymbol);
+            Platform.runLater(() -> cTab.setContent(companyData));
+          } catch (IllegalAccessException | IntrospectionException | InvocationTargetException e) {
+            Platform.runLater(() -> AlertHelper.showExceptionAlert(e));
+            e.printStackTrace();
+          }
+        }).start();
+        tabPane.getTabs().add(cTab);
+      } // No data loaded
     };
   }
 
