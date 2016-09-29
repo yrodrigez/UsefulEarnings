@@ -49,7 +49,8 @@ public class CompanyViewHelper implements ViewHelper<Company> {
   private CompanyViewHelper(){
   }
 
-  private <E> Node getContentFor(E eClass) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+  private <E> Node getContentFor(E eClass)
+    throws IntrospectionException, InvocationTargetException, IllegalAccessException {
     GridPane gridPane = new GridPane();
     gridPane.setHgap(20);
     gridPane.setPadding(new Insets(5, 5, 5, 5));
@@ -151,7 +152,8 @@ public class CompanyViewHelper implements ViewHelper<Company> {
   }
 
   @Override
-  public <E> Node getViewFor(Company company) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+  public <E> Node getViewFor(Company company)
+    throws IntrospectionException, InvocationTargetException, IllegalAccessException {
     Accordion accordion = new Accordion();
     for (Field field : company.getClass().getDeclaredFields()) {
       if (field.getDeclaredAnnotation(EntityParameter.class) != null) {
@@ -192,7 +194,8 @@ public class CompanyViewHelper implements ViewHelper<Company> {
   }
 
   @Override
-  public Node getFilterView(Map<Field, RestrictionValue> filter) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+  public Node getFilterView(Map<Field, RestrictionValue> filter)
+    throws IntrospectionException, InvocationTargetException, IllegalAccessException {
     Accordion accordion = new Accordion();
     for (Field field : Company.class.getDeclaredFields()) {
       if (field.getDeclaredAnnotation(EntityParameter.class) != null) {
@@ -258,7 +261,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
               if (parameterType.equals(ParameterType.RAW_STRING) || parameterType.equals(ParameterType.URL)) {
                 gridPane.add(parameterNameLabel, 0, i);
 
-                Node input = getInputFor(field, parameterType, getAChoiceBox(), allowedValues, filter);
+                Node input = getInputForFilter(field, parameterType, getAChoiceBox(), allowedValues, filter);
 
                 gridPane.add(input, 1, i, 2, 1);
                 continue;
@@ -280,7 +283,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
               gridPane.add(parameterNameLabel, 0, i);
 
               ChoiceBox<String> cb = getAChoiceBox();
-              Node input = getInputFor(field, parameterType, cb, allowedValues, filter);
+              Node input = getInputForFilter(field, parameterType, cb, allowedValues, filter);
 
               gridPane.add(cb, 1, i);
               gridPane.add(input, 2, i);
@@ -298,7 +301,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
     return gridPane;
   }
 
-  private Node getInputFor(
+  private Node getInputForFilter(
     Field field,
     ParameterType parameterType,
     ChoiceBox<String> choiceBox,
@@ -458,12 +461,12 @@ public class CompanyViewHelper implements ViewHelper<Company> {
             }
           });
         return numTextField;
-
-
       default:
-        throw new IllegalArgumentException("getInputFor() -> I have no input for " + parameterType.name() + " class " + field.getName());
+        throw new IllegalArgumentException("getInputForFilter() -> I have no input for " + parameterType.name() + " class " + field.getName());
     }
   }
+
+
 
   private ChoiceBox<String> getAChoiceBox() {
     String[] operators = {"<", "=", ">"};
