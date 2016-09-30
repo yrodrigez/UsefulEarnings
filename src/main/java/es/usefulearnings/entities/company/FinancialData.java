@@ -45,7 +45,7 @@ public class FinancialData extends CompanyData implements Serializable {
   private YahooField recommendationMean;
 
   @JsonProperty("recommendationKey")
-  @EntityParameter(name = "Recommendation key", parameterType = ParameterType.RAW_STRING)
+  @EntityParameter(name = "Recommendation key", parameterType = ParameterType.RAW_STRING, allowedValues = RecommendationKeyAllowedValues.class)
   private String recommendationKey;
 
   @JsonProperty("totalCashPerShare")

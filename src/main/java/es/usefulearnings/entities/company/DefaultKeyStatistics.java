@@ -21,7 +21,7 @@ import java.io.Serializable;
 public class DefaultKeyStatistics extends CompanyData implements Serializable {
 
   @JsonProperty("lastSplitFactor")
-  @EntityParameter(name = "Last split factor", parameterType = ParameterType.RAW_STRING)
+  @EntityParameter(name = "Last split factor", parameterType = ParameterType.RAW_STRING, allowedValues = LastSplitFactorAllowedValues.class)
   private String lastSplitFactor;
 
   @JsonProperty("forwardPE")

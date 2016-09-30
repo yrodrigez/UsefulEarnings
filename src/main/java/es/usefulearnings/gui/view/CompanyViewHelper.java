@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -342,49 +343,14 @@ public class CompanyViewHelper implements ViewHelper<Company> {
         ContextMenu contextMenu = new ContextMenu();
         strTextField.setContextMenu(contextMenu);
         if (allowedValues != null) {
-          List<MenuItem> items = new ArrayList<>();
-          allowedValues.forEach(value -> {
-            MenuItem item = new MenuItem(value);
-            item.setOnAction(event -> {
-              strTextField.setText(item.getText());
-              event.consume();
-            });
-            items.add(item);
-            items.sort((o1, o2) -> o1.getText().compareTo(o2.getText()));
-            contextMenu.getItems().setAll(items);
-          });
-
-          strTextField.textProperty().addListener(
-            (observable, oldValue, newValue) -> {
-              assert newValue != null;
-              if (oldValue != null && (newValue.length() < oldValue.length())) {
-                contextMenu.getItems().setAll(items);
-              }
-
-
-              String value = newValue.toUpperCase();
-              List<MenuItem> filteredItems = new ArrayList<>();
-              strTextField.getContextMenu().getItems().forEach(menuItem -> {
-                if (menuItem.getText().toUpperCase().contains(value)) {
-                  filteredItems.add(menuItem);
-                }
-              });
-
-              contextMenu.getItems().setAll(filteredItems);
-
-              strTextField.getContextMenu().show(strTextField, Side.RIGHT, 0, 0);
-              filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ));
-              if (newValue.equals("")) {
-                filter.remove(field);
-              }
-            }
-          );
+          setAllowedValuesForContextMenu(field, allowedValues, filter, strTextField, contextMenu);
         } else {
           strTextField.textProperty().addListener(
             (observable, oldValue, newValue) -> {
-              assert newValue != null;
-              filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ));
-              if (newValue.equals("")) {
+              if(newValue != null && !newValue.isEmpty()) {
+                  filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ));
+              } else {
+                System.err.println("Removing from " + field.getName());
                 filter.remove(field);
               }
             });
@@ -395,49 +361,22 @@ public class CompanyViewHelper implements ViewHelper<Company> {
       case YAHOO_FIELD_DATE:
         DatePicker datePicker = new DatePicker();
         choiceBox.setOnAction(event -> {
-          if (datePicker.getValue() != null) {
-            switch (choiceBox.getValue()) {
-              case "<":
-                filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.LT));
-                break;
-              case ">":
-                filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.GT));
-                break;
-              case "=":
-                filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.EQ));
-                break;
-            }
+          if (datePicker.getValue() != null && !datePicker.getValue().toString().isEmpty()) {
+            putDate(field, choiceBox, filter, datePicker);
+          } else {
+            System.err.println("Removing from " + field.getName());
+            filter.remove(field);
           }
         });
+
         datePicker.setOnAction(event -> {
-          switch (choiceBox.getValue()) {
-            case "<":
-              filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.LT));
-              break;
-            case ">":
-              filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.GT));
-              break;
-            default:
-              filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400, BasicOperator.EQ));
-              break;
+          if(datePicker.getValue() != null && !datePicker.getValue().toString().isEmpty()) {
+            putDate(field, choiceBox, filter, datePicker);
+          } else {
+            System.err.println("Removing from " + field.getName());
+            filter.remove(field);
           }
         });
-        datePicker.accessibleTextProperty().addListener(
-          (observable, oldValue, newValue) -> {
-            assert newValue != null;
-            if (newValue.equals("")) filter.remove(field);
-            switch (choiceBox.getValue()) {
-              case "<":
-                filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.LT));
-                break;
-              case ">":
-                filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.GT));
-                break;
-              default:
-                filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400, BasicOperator.EQ));
-                break;
-            }
-          });
         return datePicker;
 
       case RAW_NUMERIC:
@@ -446,17 +385,10 @@ public class CompanyViewHelper implements ViewHelper<Company> {
         TextField numTextField = new TextField();
         choiceBox.setOnAction(event -> {
           if (!numTextField.getText().equals("")) {
-            switch (choiceBox.getValue()) {
-              case "<":
-                filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.LT));
-                break;
-              case ">":
-                filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.GT));
-                break;
-              case "=":
-                filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.EQ));
-                break;
-            }
+            putNumber(field, choiceBox, filter, numTextField);
+          } else {
+            System.err.println("Removing from " + field.getName());
+            filter.remove(field);
           }
         });
         numTextField.textProperty().addListener(
@@ -464,28 +396,25 @@ public class CompanyViewHelper implements ViewHelper<Company> {
             assert newValue != null;
             if (newValue.matches("\\d*(\\.\\d*)?")) {
               numTextField.setStyle("");
-              if (numTextField.getTooltip() != null) numTextField.getTooltip().hide();
-              numTextField.setTooltip(null);
-              if (newValue.equals("")) filter.remove(field);
-              else {
-                switch (choiceBox.getValue()) {
-                  case "<":
-                    filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.LT));
-                    break;
-                  case ">":
-                    filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.GT));
-                    break;
-                  case "=":
-                    filter.put(field, new RestrictionValue<>(Double.parseDouble(numTextField.getText()), BasicOperator.EQ));
-                    break;
-                }
+              if(numTextField.getTooltip() != null){
+                numTextField.getTooltip().hide();
+                numTextField.setTooltip(null);
+              }
+              if (!newValue.equals("")){
+                putNumber(field, choiceBox, filter, numTextField);
+              } else {
+                System.err.println("Removing from " + field.getName());
+                filter.remove(field);
               }
             } else {
               if (oldValue != null) numTextField.setText(oldValue);
-              numTextField.setStyle("-fx-border-color: linear-gradient(#fe372b 25%, #ff4b5c 75%, #fc000f 100%); -fx-border-width: 2;");
+              numTextField.setStyle("-fx-border-color: red; -fx-border-width: 1;");
               numTextField.setTooltip(new Tooltip("You can write numbers only!"));
               numTextField.getTooltip().show(numTextField.getScene().getWindow());
-              if (newValue.equals("")) filter.remove(field);
+              if (newValue.equals("")){
+                System.err.println("Removing from " + field.getName());
+                filter.remove(field);
+              }
             }
           });
         return numTextField;
@@ -494,6 +423,110 @@ public class CompanyViewHelper implements ViewHelper<Company> {
     }
   }
 
+  private void setAllowedValuesForContextMenu(
+    Field field,
+    Collection<String> allowedValues,
+    Map<Field, RestrictionValue> filter,
+    TextField textField,
+    ContextMenu contextMenu
+  ) {
+    List<MenuItem> items = new ArrayList<>();
+    allowedValues.forEach(value -> {
+      MenuItem item = new MenuItem(value);
+      item.setOnAction(event -> {
+        textField.setText(item.getText());
+        event.consume();
+      });
+      items.add(item);
+      items.sort((o1, o2) -> o1.getText().compareTo(o2.getText()));
+      contextMenu.getItems().setAll(items);
+    });
+
+    textField.textProperty().addListener(
+      (observable, oldValue, newValue) -> {
+        if (oldValue != null && (newValue.length() < oldValue.length())) {
+          contextMenu.getItems().setAll(items);
+        }
+
+        String value = newValue.toUpperCase();
+        List<MenuItem> filteredItems = new ArrayList<>();
+        textField.getContextMenu().getItems().forEach(menuItem -> {
+          if (menuItem.getText().toUpperCase().contains(value)) {
+            filteredItems.add(menuItem);
+          }
+        });
+
+        contextMenu.getItems().setAll(filteredItems);
+
+        textField.getContextMenu().show(textField, Side.RIGHT, 0, 0);
+
+        if(!newValue.isEmpty() && allowedValues.contains(newValue)) {
+          filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ));
+        } else {
+          System.err.println("Removing from " + field.getName());
+          filter.remove(field);
+        }
+      }
+    );
+
+    textField.setOnMouseClicked(event -> {
+      if(event.getButton().equals(MouseButton.PRIMARY)){
+        if(event.getClickCount() == 2){
+          textField.getContextMenu().show(textField, Side.RIGHT, 0, 0);
+        }
+        if(event.getClickCount() == 1){
+          textField.getContextMenu().hide();
+        }
+      } else if(event.getButton().equals(MouseButton.SECONDARY)){
+        textField.getContextMenu().show(textField, Side.RIGHT, 0, 0);
+      }
+      event.consume();
+    });
+
+    textField.setTooltip(new Tooltip("Double or right click for allowed values"));
+  }
+
+  private void putNumber(
+    Field field,
+    ChoiceBox<String> choiceBox,
+    Map<Field, RestrictionValue> filter,
+    TextField textField
+  ) {
+    switch (choiceBox.getValue()) {
+      case "<":
+        filter.put(field, new RestrictionValue<>(Double.parseDouble(textField.getText()), BasicOperator.LT));
+        break;
+      case ">":
+        filter.put(field, new RestrictionValue<>(Double.parseDouble(textField.getText()), BasicOperator.GT));
+        break;
+      case "=":
+        filter.put(field, new RestrictionValue<>(Double.parseDouble(textField.getText()), BasicOperator.EQ));
+        break;
+      default:
+        throw new IllegalArgumentException("\"" + choiceBox.getValue() + "\" not defined for this method");
+    }
+  }
+
+  private void putDate(
+    Field field,
+    ChoiceBox<String> choiceBox,
+    Map<Field, RestrictionValue> filter,
+    DatePicker datePicker
+  ) {
+    switch (choiceBox.getValue()) {
+      case "<":
+        filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.LT));
+        break;
+      case ">":
+        filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400L, BasicOperator.GT));
+        break;
+      case "=":
+        filter.put(field, new RestrictionValue<>(datePicker.getValue().toEpochDay() * 86400, BasicOperator.EQ));
+        break;
+      default:
+        throw new IllegalArgumentException("\"" + choiceBox.getValue() + "\" not defined for this method");
+    }
+  }
 
   private ChoiceBox<String> getAChoiceBox() {
     String[] operators = {"<", "=", ">"};
