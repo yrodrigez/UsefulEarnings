@@ -12,5 +12,5 @@ import java.lang.reflect.Method;
  */
 public interface EntityParameterProcessor {
   void processParameter(Field field, Annotation annotation, Method method, int position)
-    throws InvocationTargetException, IllegalAccessException, IntrospectionException;
+    throws InvocationTargetException, IllegalAccessException, IntrospectionException, InstantiationException;
 }

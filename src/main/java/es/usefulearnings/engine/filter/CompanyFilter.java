@@ -140,7 +140,7 @@ public class CompanyFilter extends Filter<Company> {
                   break;
                 } else {
                   RestrictionValue restrictionValue = _parameters.get(field);
-                  long timeStamp = new Double(((YahooField) pd.getReadMethod().invoke(elementValue)).getRaw()).longValue();
+                  long timeStamp = ((Number)(((YahooField) pd.getReadMethod().invoke(elementValue)).getRaw())).longValue();
                   long stampToEval = (long) restrictionValue.getValue();
                   if (!evaluateTimeStamp(timeStamp, restrictionValue.getOperator(), stampToEval) || timeStamp == 0) {
                     removeCompany(company);

@@ -1,8 +1,6 @@
 package es.usefulearnings.engine;
 
 import es.usefulearnings.annotation.EntityParameter;
-import es.usefulearnings.annotation.ParameterType;
-import es.usefulearnings.entities.Company;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -21,7 +19,7 @@ public class EntityParameterBeanWorker {
   }
 
   public void walk(Class<?> classToWalk)
-    throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+    throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
     for (Field field : classToWalk.getDeclaredFields()) {
       if (field.getDeclaredAnnotation(EntityParameter.class) != null) {
         PropertyDescriptor[] descriptors = Introspector.getBeanInfo(classToWalk).getPropertyDescriptors();

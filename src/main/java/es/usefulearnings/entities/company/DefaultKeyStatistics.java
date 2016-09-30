@@ -61,16 +61,15 @@ public class DefaultKeyStatistics extends CompanyData implements Serializable {
   private YahooField priceToBook;
 
   @JsonProperty("lastFiscalYearEnd")
-  @EntityParameter(name = "Last fiscal Year End", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  @EntityParameter(name = "Last fiscal Year End", parameterType = ParameterType.YAHOO_FIELD_DATE)
   private YahooField lastFiscalYearEnd;
 
   @JsonProperty("nextFiscalYearEnd")
-  @EntityParameter(name = "Next fiscal year End", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  @EntityParameter(name = "Next fiscal year End", parameterType = ParameterType.YAHOO_FIELD_DATE)
   private YahooField nextFiscalYearEnd;
 
-
   @JsonProperty("mostRecentQuarter")
-  @EntityParameter(name = "Most recent quarter", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  @EntityParameter(name = "Most recent quarter", parameterType = ParameterType.YAHOO_FIELD_DATE)
   private YahooField mostRecentQuarter;
 
   @JsonProperty("earningsQuarterlyGrowth")

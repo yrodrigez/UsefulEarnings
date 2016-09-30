@@ -2,11 +2,11 @@ package es.usefulearnings.gui.controller;
 
 import es.usefulearnings.engine.Core;
 import es.usefulearnings.engine.filter.Filter;
-import es.usefulearnings.engine.filter.RestrictionValue;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.gui.view.CompanyViewHelper;
+import es.usefulearnings.gui.view.FilterView;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -20,14 +20,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.Node;
 
 import java.beans.IntrospectionException;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -41,17 +39,12 @@ public class FilterController implements Initializable {
   // remove listeners here!!
   private ChangeListener<Company> companyChangeListener;
   private ChangeListener<Filter> filterChangeListener;
-
-  private Map<Field, RestrictionValue> filter;
-
   private VBox lists;
-
+  private FilterView companyFilterView;
 
   @Override
   public void initialize(URL location, ResourceBundle resources){
 
-
-    filter = new HashMap<>();
     filterListView = new ListView<>();
     filterListView.prefHeightProperty().bind(mainPane.heightProperty().multiply(0.5));
     companyListView = new ListView<>();
@@ -62,23 +55,32 @@ public class FilterController implements Initializable {
 
     companyChangeListener = getCompanySelectedListener();
     filterChangeListener = getFilterChangeListener(companyChangeListener);
-    try {
-      mainPane.setCenter(CompanyViewHelper.getInstance().getFilterView(filter));
-    } catch (IntrospectionException | InvocationTargetException | IllegalAccessException e) {
-      Platform.runLater(() -> AlertHelper.showExceptionAlert(e));
-      e.printStackTrace();
-    }
 
-    Button filterButton = new Button("Filter");
+    ProgressIndicator progressIndicator = new ProgressIndicator(-1);
+    progressIndicator.getStyleClass().add("default-progress-indicator");
+    mainPane.setCenter(progressIndicator);
 
-    filterButton.getStyleClass().addAll("main-controller-button");
-    HBox hBox = new HBox(filterButton);
-    hBox.setAlignment(Pos.BASELINE_RIGHT);
-    mainPane.setBottom(hBox);
-    refreshFilterPane();
-    filterButton.setOnAction(getFilterEvent(filterButton));
+    new Thread(()-> {
+      try {
+        companyFilterView = CompanyViewHelper.getInstance().getFilterView();
+        Platform.runLater(() -> {
+          Node filterView = companyFilterView.getView();
+          mainPane.setCenter(filterView);
+          Button filterButton = new Button("Filter");
+          filterButton.getStyleClass().addAll("main-controller-button");
+          HBox hBox = new HBox(filterButton);
+          hBox.setAlignment(Pos.BASELINE_RIGHT);
+          mainPane.setBottom(hBox);
+          refreshFilterPane();
+          filterButton.setOnAction(getFilterEvent(filterButton));
+        });
+      } catch (IntrospectionException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+        Platform.runLater(() -> AlertHelper.showExceptionAlert(e));
+        e.printStackTrace();
+      }
+    }).start();
+
   }
-
 
   private void refreshFilterPane() {
     if(Core.getInstance().getAppliedFilters().size() > 0) {
@@ -97,7 +99,7 @@ public class FilterController implements Initializable {
           AlertHelper.showAlert(
             Alert.AlertType.CONFIRMATION,
             "i will export data",
-            "i will export data some day hopefully" + " " + ret.getItem().toString()
+            "i will export data some day hopefully" + " from this filter " + ret.getItem().toString()
           );
         });
         filterContextMenu.getItems().addAll(export);
@@ -105,8 +107,9 @@ public class FilterController implements Initializable {
 
         // recover the *damn* text
         ret.itemProperty().addListener((observable, oldValue, newValue) -> {
-          assert newValue != null;
-          ret.textProperty().bind(ret.itemProperty().asString());
+          if(newValue != null) {
+            ret.textProperty().bind(ret.itemProperty().asString());
+          }
         });
 
         return ret;
@@ -142,7 +145,7 @@ public class FilterController implements Initializable {
             filterButton.setText("Filtering...");
           });
 
-          Core.getInstance().applyFilter(filter);
+          Core.getInstance().applyFilter(companyFilterView.getFilterParams());
 
           Platform.runLater(() -> {
             refreshFilterPane();

@@ -160,7 +160,7 @@ public class NavigateController implements Initializable {
   }
 
 
-  private Node getCompanyView(String symbol) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
+  private Node getCompanyView(String symbol) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException {
     CompanyViewHelper companyViewHelper = CompanyViewHelper.getInstance();
     return companyViewHelper.getViewFor(Core.getInstance().getCompanyFromSymbol(symbol));
   }
@@ -190,6 +190,8 @@ public class NavigateController implements Initializable {
             Platform.runLater(() -> cTab.setContent(companyData));
           } catch (IllegalAccessException | IntrospectionException | InvocationTargetException e) {
             Platform.runLater(() -> AlertHelper.showExceptionAlert(e));
+            e.printStackTrace();
+          } catch (InstantiationException e) {
             e.printStackTrace();
           }
         }).start();
