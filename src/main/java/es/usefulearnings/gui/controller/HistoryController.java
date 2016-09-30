@@ -84,21 +84,6 @@ public class HistoryController implements Initializable {
             }
           });
 
-        //Context Menu
-        ContextMenu contextMenu = new ContextMenu();
-
-        //Menu items
-        MenuItem item = new MenuItem("Use this data");
-        item.setOnAction(event -> {
-          DownloadedData data = downloadHistory.getSelectionModel().getSelectedItem();
-          // TODO: LOAD HERE DOWNLOAD RESULTS
-
-          event.consume();
-        });
-        contextMenu.getItems().add(item);
-        downloadHistory.setContextMenu(contextMenu);
-
-
         Platform.runLater(() -> {
           if (downloadHistory.getItems().size() < 1) {
             Label errorLabel = new Label("No downloads found.");
