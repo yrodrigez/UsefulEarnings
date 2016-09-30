@@ -8,6 +8,7 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author yago.
@@ -19,12 +20,14 @@ public class EntityParameterBeanWorker {
     _processor = processor;
   }
 
-  public void walk(Class<?> classToWalk) throws IntrospectionException {
-    for (Field field : classToWalk.getClass().getDeclaredFields()) {
+  public void walk(Class<?> classToWalk)
+    throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+    for (Field field : classToWalk.getDeclaredFields()) {
       if (field.getDeclaredAnnotation(EntityParameter.class) != null) {
-        for (PropertyDescriptor descriptor : Introspector.getBeanInfo(Company.class).getPropertyDescriptors()) {
-          if (descriptor.getName().equals(field.getName())) {
-            _processor.processParameter(field, field.getAnnotation(EntityParameter.class), descriptor.getReadMethod());
+        PropertyDescriptor[] descriptors = Introspector.getBeanInfo(classToWalk).getPropertyDescriptors();
+        for (int i = 0 ; i < descriptors.length; i++) {
+          if (descriptors[i].getName().equals(field.getName())) {
+            _processor.processParameter(field, field.getDeclaredAnnotation(EntityParameter.class), descriptors[i].getReadMethod(), i);
             break;
           }
         }

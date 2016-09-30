@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Yago Rodríguez
  */
 interface ViewHelper<E>  {
- <T> Node getViewFor(E entity) throws IntrospectionException, InvocationTargetException, IllegalAccessException;
+ Node getViewFor(Object entity) throws IntrospectionException, InvocationTargetException, IllegalAccessException;
  Node getFilterView(Map<Field, RestrictionValue> filter) throws IntrospectionException, InvocationTargetException, IllegalAccessException;
  void showEntityOnWindow(Window window, E entity);
 }

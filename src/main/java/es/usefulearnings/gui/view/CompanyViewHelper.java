@@ -3,6 +3,7 @@ package es.usefulearnings.gui.view;
 import es.usefulearnings.annotation.AllowedValuesRetriever;
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
+import es.usefulearnings.engine.EntityParameterBeanWorker;
 import es.usefulearnings.engine.filter.BasicOperator;
 import es.usefulearnings.engine.filter.RestrictionValue;
 import es.usefulearnings.entities.Company;
@@ -22,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -76,149 +78,220 @@ public class CompanyViewHelper implements ViewHelper<Company> {
     dialogStage.showAndWait();
   }
 
-  private <E> Node getContentFor(E eClass)
+ /* private Node getContentFor(Object object)
     throws IntrospectionException, InvocationTargetException, IllegalAccessException {
     GridPane gridPane = new GridPane();
     gridPane.setHgap(20);
     gridPane.setPadding(new Insets(5, 5, 5, 5));
-    for (Field field : eClass.getClass().getDeclaredFields()) {
-      if (field == null) return new VBox();
-      if (field.getDeclaredAnnotation(EntityParameter.class) != null) {
-        String entityName = field.getDeclaredAnnotation(EntityParameter.class).name();
-        ParameterType parameterType = field.getAnnotation(EntityParameter.class).parameterType();
-        PropertyDescriptor[] descriptors = Introspector.getBeanInfo(eClass.getClass()).getPropertyDescriptors();
-        for (int i = 0; i < descriptors.length; i++) {
-          if (descriptors[i].getName().equals(field.getName())) {
-            Label entityNameLabel = new Label(entityName + ": ");
-            switch (parameterType) {
-              case INNER_CLASS:
-                Accordion accordion = new Accordion();
-                accordion.getPanes().add(new TitledPane(
-                  entityName,
-                  new ScrollPane(getContentFor(descriptors[i].getReadMethod().invoke(eClass)))
-                ));
-                gridPane.add(accordion, 0, i, 10, 1);
-                break;
+    EntityParameterBeanWorker worker = new EntityParameterBeanWorker(
+      (field, annotation, method, position)-> {
+        if (field != null){
+          EntityParameter parameter = ((EntityParameter)annotation);
+          String entityName = parameter.name();
+          ParameterType parameterType = parameter.parameterType();
 
-              case YAHOO_FIELD_DATE:
-              case YAHOO_FIELD_NUMERIC:
-                gridPane.add(entityNameLabel, 0, i);
-                YahooField yahooField = (YahooField) descriptors[i].getReadMethod().invoke(eClass);
-                if (yahooField != null)
-                  gridPane.add(new Label(yahooField.getFmt()), 1, i);
-                break;
+          Label entityNameLabel = new Label(entityName + ": ");
+          switch (parameterType) {
+            case INNER_CLASS:
+              Accordion accordion = new Accordion();
+              accordion.getPanes().add(new TitledPane(
+                entityName,
+                new ScrollPane(getContentFor(method.invoke(object)))
+              ));
+              gridPane.add(accordion, 0, position, 10, 1);
+              break;
 
-              case YAHOO_LONG_FORMAT_FIELD:
-                gridPane.add(entityNameLabel, 0, i);
-                YahooLongFormatField longFormatField = (YahooLongFormatField) descriptors[i].getReadMethod().invoke(eClass);
-                if (longFormatField != null)
-                  gridPane.add(new Label(longFormatField.getLongFmt()), 1, i);
-                break;
+            case YAHOO_FIELD_DATE:
+            case YAHOO_FIELD_NUMERIC:
+              gridPane.add(entityNameLabel, 0, position);
+              YahooField yahooField = (YahooField) method.invoke(object);
+              if (yahooField != null)
+                gridPane.add(new Label(yahooField.getFmt()), 1, position);
+              break;
 
-              case YAHOO_FIELD_DATE_COLLECTION:
-                gridPane.add(entityNameLabel, 0, i);
-                Collection<YahooField> collection = (Collection<YahooField>) descriptors[i].getReadMethod().invoke(eClass);
-                if (collection != null) {
-                  Iterator<YahooField> it = collection.iterator();
-                  Label datesLabel = new Label();
-                  while (it.hasNext()) {
-                    YahooField date = it.next();
-                    if (it.hasNext()) {
-                      datesLabel.setText(datesLabel.getText() + date.getFmt() + " - ");
-                    } else {
-                      datesLabel.setText(datesLabel.getText() + date.getFmt());
-                    }
+            case YAHOO_LONG_FORMAT_FIELD:
+              gridPane.add(entityNameLabel, 0, position);
+              YahooLongFormatField longFormatField = (YahooLongFormatField)method.invoke(object);
+              if (longFormatField != null)
+                gridPane.add(new Label(longFormatField.getLongFmt()), 1, position);
+              break;
+
+            case YAHOO_FIELD_DATE_COLLECTION:
+              gridPane.add(entityNameLabel, 0, position);
+              Collection<YahooField> collection = (Collection<YahooField>)method.invoke(object);
+              if (collection != null) {
+                Iterator<YahooField> it = collection.iterator();
+                Label datesLabel = new Label();
+                while (it.hasNext()) {
+                  YahooField date = it.next();
+                  if (it.hasNext()) {
+                    datesLabel.setText(datesLabel.getText() + date.getFmt() + " - ");
+                  } else {
+                    datesLabel.setText(datesLabel.getText() + date.getFmt());
                   }
-                  gridPane.add(datesLabel, 1, i);
                 }
-                break;
+                gridPane.add(datesLabel, 1, position);
+              }
+              break;
 
-              case URL:
-                gridPane.add(entityNameLabel, 0, i);
-                String url = (String) descriptors[i].getReadMethod().invoke(eClass);
-                if (url != null) {
-                  Hyperlink hyperlink = new Hyperlink(url);
-                  hyperlink.setOnAction(event -> {
-                    Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-                    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-                      try {
-                        Desktop.getDesktop().browse(new URI(url));
-                      } catch (IOException | URISyntaxException e) {
-                        e.printStackTrace();
-                      }
-                    } else {
-                      Platform.runLater(() -> AlertHelper.showAlert(
-                        Alert.AlertType.INFORMATION,
-                        "Operation not supported",
-                        "Sorry, you can't do this on your actual OS"
-                      ));
+            case URL:
+              gridPane.add(entityNameLabel, 0, position);
+              String url = (String) method.invoke(object);
+              if (url != null) {
+                Hyperlink hyperlink = new Hyperlink(url);
+                hyperlink.setOnAction(event -> {
+                  Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+                  if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                    try {
+                      Desktop.getDesktop().browse(new URI(url));
+                    } catch (IOException | URISyntaxException e) {
+                      e.printStackTrace();
                     }
-                  });
-                  gridPane.add(hyperlink, 1, i);
-                }
-                break;
+                  } else {
+                    Platform.runLater(() -> AlertHelper.showAlert(
+                      Alert.AlertType.INFORMATION,
+                      "Operation not supported",
+                      "Sorry, you can't do this on your actual OS"
+                    ));
+                  }
+                });
+                gridPane.add(hyperlink, 1, position);
+              }
+              break;
 
-              case RAW_STRING:
-              case RAW_NUMERIC:
-                gridPane.add(entityNameLabel, 0, i);
-                if (descriptors[i].getReadMethod().invoke(eClass) != null)
-                  gridPane.add(new Label(descriptors[i].getReadMethod().invoke(eClass).toString()), 1, i);
-                break;
+            case RAW_STRING:
+            case RAW_NUMERIC:
+              gridPane.add(entityNameLabel, 0, position);
+              if (method.invoke(object) != null)
+                gridPane.add(new Label(method.invoke(object).toString()), 1, position);
+              break;
 
-              case IGNORE:
-                break;
+            case IGNORE:
+              break;
 
-              default:
-                throw new IllegalArgumentException("Wrong argument -> " + parameterType.name());
-            }
-            break;
+            default:
+              throw new IllegalArgumentException("Wrong argument -> " + parameterType.name());
           }
+
         }
-      }
-    }
+      });
+    worker.walk(object.getClass());
     return gridPane;
-  }
+  }*/
 
   @Override
-  public <E> Node getViewFor(Company company)
+  public Node getViewFor(Object object)
     throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+    GridPane gridPane = new GridPane();
+    gridPane.setHgap(20);
+    gridPane.setPadding(new Insets(5, 5, 5, 5));
     Accordion accordion = new Accordion();
-    for (Field field : company.getClass().getDeclaredFields()) {
-      if (field.getDeclaredAnnotation(EntityParameter.class) != null) {
-        String entityName = field.getDeclaredAnnotation(EntityParameter.class).name();
-        ParameterType type = field.getDeclaredAnnotation(EntityParameter.class).parameterType();
-        for (PropertyDescriptor pd : Introspector.getBeanInfo(Company.class).getPropertyDescriptors()) {
-          if (pd.getName().equals(field.getName())) {
+    EntityParameterBeanWorker worker = new EntityParameterBeanWorker(
+      (field, annotation, method, position) -> {
+        EntityParameter parameterDescriptor = ((EntityParameter)annotation);
+        ParameterType parameterType = parameterDescriptor.parameterType();
+        String entityName = parameterDescriptor.name();
+        Label entityNameLabel = new Label(entityName + ": ");
+        switch (parameterType){
+          case INNER_CLASS:
+            Object innerObject = method.invoke(object);
+            ScrollPane pane = new ScrollPane(
+              getViewFor(innerObject)
+            );
+            TitledPane titledPane = new TitledPane(entityName, pane);
+            accordion.getPanes().add(titledPane);
+            break;
 
-            switch (type) {
-              case INNER_CLASS:
-                ScrollPane pane = new ScrollPane(
-                  getContentFor(pd.getReadMethod().invoke(company))
-                );
-                TitledPane titledPane = new TitledPane(entityName, pane);
-                accordion.getPanes().add(titledPane);
-                break;
-              case INNER_CLASS_COLLECTION:
-                Accordion collectionAccordion = new Accordion();
-                ScrollPane collectionScrollPane = new ScrollPane(collectionAccordion);
+          case INNER_CLASS_COLLECTION:
+            Accordion collectionAccordion = new Accordion();
+            ScrollPane collectionScrollPane = new ScrollPane(collectionAccordion);
 
-                Collection<E> innerClassCollection = (Collection<E>) pd.getReadMethod().invoke(company);
-                for (E innerClass : innerClassCollection) {
-                  TitledPane innerTittledPane = new TitledPane(
-                    entityName,
-                    new ScrollPane(getContentFor(innerClass))
-                  );
-                  collectionAccordion.getPanes().add(innerTittledPane);
+            Collection<Object> innerClassCollection = (Collection<Object>) method.invoke(object);
+            for (Object objectLink : innerClassCollection) {
+              TitledPane innerTittledPane = new TitledPane(
+                entityName,
+                new ScrollPane(getViewFor(objectLink))
+              );
+              collectionAccordion.getPanes().add(innerTittledPane);
+            }
+            accordion.getPanes().add(new TitledPane(entityName, collectionScrollPane));
+            break;
+
+          case YAHOO_FIELD_DATE:
+          case YAHOO_FIELD_NUMERIC:
+            gridPane.add(entityNameLabel, 0, position);
+            YahooField yahooField = (YahooField) method.invoke(object);
+            if (yahooField != null)
+              gridPane.add(new Label(yahooField.getFmt()), 1, position);
+            break;
+
+          case YAHOO_LONG_FORMAT_FIELD:
+            gridPane.add(entityNameLabel, 0, position);
+            YahooLongFormatField longFormatField = (YahooLongFormatField)method.invoke(object);
+            if (longFormatField != null)
+              gridPane.add(new Label(longFormatField.getLongFmt()), 1, position);
+            break;
+
+          case YAHOO_FIELD_DATE_COLLECTION:
+            gridPane.add(entityNameLabel, 0, position);
+            Collection<YahooField> collection = (Collection<YahooField>)method.invoke(object);
+            if (collection != null) {
+              Iterator<YahooField> it = collection.iterator();
+              Label datesLabel = new Label();
+              while (it.hasNext()) {
+                YahooField date = it.next();
+                if (it.hasNext()) {
+                  datesLabel.setText(datesLabel.getText() + date.getFmt() + " - ");
+                } else {
+                  datesLabel.setText(datesLabel.getText() + date.getFmt());
                 }
-                accordion.getPanes().add(new TitledPane(entityName, collectionScrollPane));
-                break;
+              }
+              gridPane.add(datesLabel, 1, position);
             }
             break;
-          }
+
+          case URL:
+            gridPane.add(entityNameLabel, 0, position);
+            String url = (String) method.invoke(object);
+            if (url != null) {
+              Hyperlink hyperlink = new Hyperlink(url);
+              hyperlink.setOnAction(event -> {
+                Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+                if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                  try {
+                    Desktop.getDesktop().browse(new URI(url));
+                  } catch (IOException | URISyntaxException e) {
+                    e.printStackTrace();
+                  }
+                } else {
+                  Platform.runLater(() -> AlertHelper.showAlert(
+                    Alert.AlertType.INFORMATION,
+                    "Operation not supported",
+                    "Sorry, you can't do this on your actual OS"
+                  ));
+                }
+              });
+              gridPane.add(hyperlink, 1, position);
+            }
+            break;
+
+          case RAW_STRING:
+          case RAW_NUMERIC:
+            gridPane.add(entityNameLabel, 0, position);
+            if (method.invoke(object) != null)
+              gridPane.add(new Label(method.invoke(object).toString()), 1, position);
+            break;
+
+          case IGNORE:
+            break;
+
+          default:
+            throw new IllegalArgumentException("Wrong argument -> " + parameterType.name());
         }
       }
-    }
-    return accordion;
+    );
+    worker.walk(object.getClass());
+    return new VBox(accordion, gridPane);
   }
 
   @Override
@@ -348,7 +421,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
           strTextField.textProperty().addListener(
             (observable, oldValue, newValue) -> {
               if(newValue != null && !newValue.isEmpty()) {
-                  filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ));
+                filter.put(field, new RestrictionValue<>(newValue, BasicOperator.EQ));
               } else {
                 System.err.println("Removing from " + field.getName());
                 filter.remove(field);
