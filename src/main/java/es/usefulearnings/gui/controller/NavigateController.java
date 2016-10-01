@@ -162,7 +162,7 @@ public class NavigateController implements Initializable {
 
   private Node getCompanyView(String symbol) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException {
     CompanyViewHelper companyViewHelper = CompanyViewHelper.getInstance();
-    return companyViewHelper.getViewFor(Core.getInstance().getCompanyFromSymbol(symbol));
+    return companyViewHelper.getViewForEntity(Core.getInstance().getCompanyFromSymbol(symbol));
   }
   /**
    * @return Listener that handle the press event on the main ListView (companies)

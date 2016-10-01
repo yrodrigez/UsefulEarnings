@@ -2,25 +2,23 @@ package es.usefulearnings.gui.controller;
 
 import es.usefulearnings.engine.Core;
 import es.usefulearnings.engine.filter.Filter;
-import es.usefulearnings.entities.Company;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.gui.view.CompanyViewHelper;
 import es.usefulearnings.gui.view.FilterView;
+import es.usefulearnings.gui.view.FilterViewHelper;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.Node;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
@@ -34,43 +32,32 @@ import java.util.ResourceBundle;
 public class FilterController implements Initializable {
   public BorderPane mainPane;
   private ListView<Filter> filterListView;
-  private ListView<Company> companyListView;
   public BorderPane rightPane;
-  // remove listeners here!!
-  private ChangeListener<Company> companyChangeListener;
-  private ChangeListener<Filter> filterChangeListener;
-  private VBox lists;
   private FilterView companyFilterView;
 
   @Override
   public void initialize(URL location, ResourceBundle resources){
 
     filterListView = new ListView<>();
-    filterListView.prefHeightProperty().bind(mainPane.heightProperty().multiply(0.5));
-    companyListView = new ListView<>();
-    companyListView.prefHeightProperty().bind(mainPane.heightProperty().multiply(0.5));
-
-    lists = new VBox();
-    lists.getChildren().addAll(filterListView, companyListView);
-
-    companyChangeListener = getCompanySelectedListener();
-    filterChangeListener = getFilterChangeListener(companyChangeListener);
+    filterListView.prefHeightProperty().bind(mainPane.heightProperty());
 
     ProgressIndicator progressIndicator = new ProgressIndicator(-1);
     progressIndicator.getStyleClass().add("default-progress-indicator");
     mainPane.setCenter(progressIndicator);
+    BorderPane centerPane = new BorderPane();
 
     new Thread(()-> {
       try {
-        companyFilterView = CompanyViewHelper.getInstance().getFilterView();
+        companyFilterView = CompanyViewHelper.getInstance().getEntityFilterView();
         Platform.runLater(() -> {
           Node filterView = companyFilterView.getView();
-          mainPane.setCenter(filterView);
+          centerPane.setCenter(filterView);
+          mainPane.setCenter(centerPane);
           Button filterButton = new Button("Filter");
           filterButton.getStyleClass().addAll("main-controller-button");
           HBox hBox = new HBox(filterButton);
           hBox.setAlignment(Pos.BASELINE_RIGHT);
-          mainPane.setBottom(hBox);
+          centerPane.setBottom(hBox);
           refreshFilterPane();
           filterButton.setOnAction(getFilterEvent(filterButton));
         });
@@ -84,14 +71,11 @@ public class FilterController implements Initializable {
 
   private void refreshFilterPane() {
     if(Core.getInstance().getAppliedFilters().size() > 0) {
-      rightPane.setCenter(lists);
-      filterListView.getSelectionModel().selectedItemProperty().removeListener(filterChangeListener);
+      rightPane.setCenter(filterListView);
       List<Filter> appliedFilters = Core.getInstance().getAppliedFilters();
       filterListView.setItems(FXCollections.observableArrayList(appliedFilters));
-      filterListView.getSelectionModel().selectedItemProperty().addListener(filterChangeListener);
-
       filterListView.setCellFactory(param -> {
-        ListCell<Filter> ret = new ListCell<>();
+        ListCell<Filter> filterListCell = new ListCell<>();
 
         ContextMenu filterContextMenu = new ContextMenu();
         MenuItem export = new MenuItem("Export to Excel", new ImageView(new Image(Main.class.getResourceAsStream("icons/export.png"), 12, 12, false, false)));
@@ -99,42 +83,28 @@ public class FilterController implements Initializable {
           AlertHelper.showAlert(
             Alert.AlertType.CONFIRMATION,
             "i will export data",
-            "i will export data some day hopefully" + " from this filter " + ret.getItem().toString()
+            "i will export data some day hopefully" + " from this filter " + filterListCell.getItem().toString()
           );
         });
-        filterContextMenu.getItems().addAll(export);
-        ret.setContextMenu(filterContextMenu);
+        MenuItem details = new MenuItem("Details", new ImageView(new Image(Main.class.getResourceAsStream("icons/export.png"), 12, 12, false, false)));
+        details.setOnAction(event -> {
+          FilterViewHelper.getInstance().showOnWindow(filterListCell.getItem());
+        });
+        filterContextMenu.getItems().addAll(export, details);
+        filterListCell.setContextMenu(filterContextMenu);
 
         // recover the *damn* text
-        ret.itemProperty().addListener((observable, oldValue, newValue) -> {
+        filterListCell.itemProperty().addListener((observable, oldValue, newValue) -> {
           if(newValue != null) {
-            ret.textProperty().bind(ret.itemProperty().asString());
+            filterListCell.textProperty().bind(filterListCell.itemProperty().asString());
           }
         });
 
-        return ret;
+        return filterListCell;
       });
     }
   }
 
-  @SuppressWarnings("unchecked")
-  private ChangeListener<Filter> getFilterChangeListener(ChangeListener<Company> companyChangeListener) {
-    return (observable, oldFilter, newFilter) -> {
-      if (newFilter != null && newFilter != oldFilter) {
-        companyListView.getSelectionModel().selectedItemProperty().removeListener(companyChangeListener);
-        companyListView.setItems(FXCollections.observableArrayList(newFilter.getEntities()));
-        companyListView.getSelectionModel().selectedItemProperty().addListener(companyChangeListener);
-      }
-    };
-  }
-
-  private ChangeListener<Company> getCompanySelectedListener() {
-    return (observable1, oldCompany, newCompany) -> {
-      if (newCompany != null && newCompany != oldCompany) {
-        CompanyViewHelper.getInstance().showEntityOnWindow(mainPane.getScene().getWindow(), newCompany);
-      }
-    };
-  }
 
   private EventHandler<ActionEvent> getFilterEvent(Button filterButton) {
     return event -> {

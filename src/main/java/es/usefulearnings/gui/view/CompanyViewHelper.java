@@ -27,7 +27,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * View manager of CompanyViewHelper's data
@@ -45,15 +44,14 @@ public class CompanyViewHelper implements ViewHelper<Company> {
   }
 
   @Override
-  public void showEntityOnWindow(Window window, Company company) {
+  public void showOnWindow(Company company) {
     Stage dialogStage = new Stage();
     dialogStage.setTitle(company.getSymbol());
     dialogStage.initModality(Modality.WINDOW_MODAL);
-    dialogStage.initOwner(window);
     Scene scene = null;
     try {
       BorderPane borderPane = new BorderPane();
-      borderPane.setCenter(CompanyViewHelper.getInstance().getViewFor(company));
+      borderPane.setCenter(CompanyViewHelper.getInstance().getViewForEntity(company));
       borderPane.setPrefSize(800, 600);
       scene = new Scene(borderPane);
     } catch (IntrospectionException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
@@ -66,8 +64,17 @@ public class CompanyViewHelper implements ViewHelper<Company> {
   }
 
   @Override
-  public Node getViewFor(Object object)
+  public Node getViewForEntity(Company object)
     throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    return getViewForObject(object);
+  }
+
+  @Override
+  public FilterView getEntityFilterView() throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    return new FilterView(Company.class);
+  }
+
+  private Node getViewForObject(Object object) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
     GridPane gridPane = new GridPane();
     gridPane.setHgap(20);
     gridPane.setPadding(new Insets(5, 5, 5, 5));
@@ -82,7 +89,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
           case INNER_CLASS:
             Object innerObject = method.invoke(object);
             ScrollPane pane = new ScrollPane(
-              getViewFor(innerObject)
+              getViewForObject(innerObject)
             );
             TitledPane titledPane = new TitledPane(entityName, pane);
             accordion.getPanes().add(titledPane);
@@ -96,7 +103,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
             for (Object objectLink : innerClassCollection) {
               TitledPane innerTittledPane = new TitledPane(
                 entityName,
-                new ScrollPane(getViewFor(objectLink))
+                new ScrollPane(getViewForObject(objectLink))
               );
               collectionAccordion.getPanes().add(innerTittledPane);
             }
@@ -107,8 +114,9 @@ public class CompanyViewHelper implements ViewHelper<Company> {
           case YAHOO_FIELD_NUMERIC:
             gridPane.add(entityNameLabel, 0, position);
             YahooField yahooField = (YahooField) method.invoke(object);
+            Label dateLabel = YahooFieldNodeRetriever.getInstance().getYahooDateLabel(yahooField);
             if (yahooField != null)
-              gridPane.add(new Label(yahooField.getFmt()), 1, position);
+              gridPane.add(dateLabel, 1, position);
             break;
 
           case YAHOO_LONG_FORMAT_FIELD:
@@ -121,19 +129,8 @@ public class CompanyViewHelper implements ViewHelper<Company> {
           case YAHOO_FIELD_DATE_COLLECTION:
             gridPane.add(entityNameLabel, 0, position);
             Collection<YahooField> collection = (Collection<YahooField>)method.invoke(object);
-            if (collection != null) {
-              Iterator<YahooField> it = collection.iterator();
-              Label datesLabel = new Label();
-              while (it.hasNext()) {
-                YahooField date = it.next();
-                if (it.hasNext()) {
-                  datesLabel.setText(datesLabel.getText() + date.getFmt() + " - ");
-                } else {
-                  datesLabel.setText(datesLabel.getText() + date.getFmt());
-                }
-              }
-              gridPane.add(datesLabel, 1, position);
-            }
+            Label datesLabel = YahooFieldNodeRetriever.getInstance().getYahooDateCollectionLabel(collection);
+            gridPane.add(datesLabel, 1, position);
             break;
 
           case URL:
@@ -178,10 +175,5 @@ public class CompanyViewHelper implements ViewHelper<Company> {
     );
     worker.walk(object.getClass());
     return new VBox(accordion, gridPane);
-  }
-
-  @Override
-  public FilterView getFilterView() throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
-    return new FilterView(Company.class);
   }
 }

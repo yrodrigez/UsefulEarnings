@@ -21,7 +21,7 @@ import java.io.Serializable;
 public class FinancialData extends CompanyData implements Serializable {
 
   @JsonProperty("currentPrice")
-  @EntityParameter(name = "Current price", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  @EntityParameter(name = "Current price", parameterType = ParameterType.YAHOO_FIELD_NUMERIC, isMaster = true)
   private YahooField currentPrice;
 
   @JsonProperty("targetHighPrice")

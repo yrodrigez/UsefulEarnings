@@ -17,19 +17,19 @@ import java.util.ArrayList;
 public class Company implements Serializable, Entity, Savable {
   public static final String EXTENSION = ".cpy";
 
-  @EntityParameter(name = "Symbol", parameterType = ParameterType.IGNORE)
+  @EntityParameter(name = "Symbol", parameterType = ParameterType.IGNORE, isMaster = true)
   private String symbol;
 
-  @EntityParameter(name = "Stock", parameterType = ParameterType.IGNORE)
+  @EntityParameter(name = "Stock", parameterType = ParameterType.IGNORE, isMaster = true)
   private String stockName;
 
-  @EntityParameter(name = "Profile", parameterType = ParameterType.INNER_CLASS)
+  @EntityParameter(name = "Profile", parameterType = ParameterType.INNER_CLASS, isMaster = true)
   private Profile profile;
-  @EntityParameter(name = "Calendar events", parameterType = ParameterType.INNER_CLASS)
+  @EntityParameter(name = "Calendar events", parameterType = ParameterType.INNER_CLASS, isMaster = true)
   private CalendarEvents calendarEvents;
-  @EntityParameter(name = "Financial data", parameterType = ParameterType.INNER_CLASS)
+  @EntityParameter(name = "Financial data", parameterType = ParameterType.INNER_CLASS, isMaster = true)
   private FinancialData financialData;
-  @EntityParameter(name = "Default key statistics", parameterType = ParameterType.INNER_CLASS)
+  @EntityParameter(name = "Default key statistics", parameterType = ParameterType.INNER_CLASS, isMaster = true)
   private DefaultKeyStatistics defaultKeyStatistics;
 
   @EntityParameter(name = "Cashflow statements", parameterType = ParameterType.INNER_CLASS_COLLECTION)

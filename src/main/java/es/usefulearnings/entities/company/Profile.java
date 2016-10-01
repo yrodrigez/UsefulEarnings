@@ -40,10 +40,10 @@ public class Profile extends CompanyData implements Serializable {
   @EntityParameter(name = "WebSite", parameterType = ParameterType.URL)
   private String website;
   @JsonProperty("industry")
-  @EntityParameter(name = "Industry", parameterType = ParameterType.RAW_STRING, allowedValues = IndustryAllowedValues.class)
+  @EntityParameter(name = "Industry", parameterType = ParameterType.RAW_STRING, allowedValues = IndustryAllowedValues.class, isMaster = true)
   private String industry;
   @JsonProperty("sector")
-  @EntityParameter(name = "Sector", parameterType = ParameterType.RAW_STRING, allowedValues = SectorAllowedValues.class)
+  @EntityParameter(name = "Sector", parameterType = ParameterType.RAW_STRING, allowedValues = SectorAllowedValues.class, isMaster = true)
   private String sector;
   @JsonProperty("fullTimeEmployees")
   @EntityParameter(name = "Employees", parameterType = ParameterType.RAW_NUMERIC)

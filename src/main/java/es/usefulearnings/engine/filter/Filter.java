@@ -32,7 +32,7 @@ public abstract class Filter<E> implements Serializable {
     return _filteredEntities;
   }
 
-  protected void removeCompany(E entity) {
+  protected void removeEntity(E entity) {
     _filteredEntities.remove(entity);
   }
 

@@ -29,7 +29,7 @@ public class DefaultKeyStatistics extends CompanyData implements Serializable {
   private YahooField forwardPE;
 
   @JsonProperty("profitMargins")
-  @EntityParameter(name = "Profit margins", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  @EntityParameter(name = "Profit margins", parameterType = ParameterType.YAHOO_FIELD_NUMERIC, isMaster = true)
   private YahooField profitMargins;
 
   @JsonProperty("heldPercentInsiders")

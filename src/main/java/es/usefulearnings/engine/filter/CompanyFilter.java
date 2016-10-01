@@ -75,17 +75,21 @@ public class CompanyFilter extends Filter<Company> {
               case RAW_STRING:
                 if (!_parameters.containsKey(field)) break;
                 if (elementValue == null) {
-                  removeCompany(company);
+                  removeEntity(company);
                   break;
                 }
                 if (pd.getReadMethod().invoke(elementValue) == null) {
-                  removeCompany(company);                  break;
+                  removeEntity(company);                  break;
                 } else {
                   RestrictionValue restrictionValue = _parameters.get(field);
                   String string = (String) pd.getReadMethod().invoke(elementValue);
+                  if(string.equals("")){
+                    removeEntity(company); // nothing to eval
+                    break;
+                  }
                   String toEval = (String) restrictionValue.getValue();
-                  if (!evaluateString(string, restrictionValue.getOperator(), toEval)) {
-                    removeCompany(company);
+                  if (!evaluateString(string, restrictionValue.getOperator(), toEval) ) {
+                    removeEntity(company);
                   }
                 }
                 break;
@@ -94,18 +98,22 @@ public class CompanyFilter extends Filter<Company> {
               case YAHOO_LONG_FORMAT_FIELD:
                 if (!_parameters.containsKey(field)) break;
                 if (elementValue == null) {
-                  removeCompany(company);
+                  removeEntity(company);
                   break;
                 }
                 if (pd.getReadMethod().invoke(elementValue) == null) {
-                  removeCompany(company);
+                  removeEntity(company);
                   break;
                 } else {
                   RestrictionValue restrictionValue = _parameters.get(field);
                   double number = ((YahooField) pd.getReadMethod().invoke(elementValue)).getRaw();
+                  if (number == 0.0) {
+                    removeEntity(company); // nothing to eval?
+                    break;
+                  }
                   double toEval = ((double) restrictionValue.getValue());
                   if (!evaluateNumber(number, restrictionValue.getOperator(), toEval)) {
-                    removeCompany(company);
+                    removeEntity(company);
                   }
                 }
                 break;
@@ -113,18 +121,22 @@ public class CompanyFilter extends Filter<Company> {
               case RAW_NUMERIC:
                 if (!_parameters.containsKey(field)) break;
                 if (elementValue == null) {
-                  removeCompany(company);
+                  removeEntity(company);
                   break;
                 }
                 if (pd.getReadMethod().invoke(elementValue) == null) {
-                  removeCompany(company);
+                  removeEntity(company);
                   break;
                 } else {
                   RestrictionValue restrictionValue = _parameters.get(field);
                   double number = ((Number)(pd.getReadMethod().invoke(elementValue))).doubleValue();
+                  if (number == 0.0) {
+                    removeEntity(company); // nothing to eval?
+                    break;
+                  }
                   double toEval = (double) restrictionValue.getValue();
-                  if (!evaluateNumber(number, restrictionValue.getOperator(), toEval)) {
-                    removeCompany(company);
+                  if (!evaluateNumber(number, restrictionValue.getOperator(), toEval) ) {
+                    removeEntity(company);
                   }
                 }
                 break;
@@ -132,18 +144,22 @@ public class CompanyFilter extends Filter<Company> {
               case YAHOO_FIELD_DATE:
                 if (!_parameters.containsKey(field)) break;
                 if (elementValue == null) {
-                  removeCompany(company);
+                  removeEntity(company);
                   break;
                 }
                 if (pd.getReadMethod().invoke(elementValue) == null) {
-                  removeCompany(company);
+                  removeEntity(company);
                   break;
                 } else {
                   RestrictionValue restrictionValue = _parameters.get(field);
                   long timeStamp = ((Number)(((YahooField) pd.getReadMethod().invoke(elementValue)).getRaw())).longValue();
+                  if (timeStamp == 0) {
+                    removeEntity(company); // nothing to eval
+                    break;
+                  }
                   long stampToEval = (long) restrictionValue.getValue();
-                  if (!evaluateTimeStamp(timeStamp, restrictionValue.getOperator(), stampToEval) || timeStamp == 0) {
-                    removeCompany(company);
+                  if (!evaluateTimeStamp(timeStamp, restrictionValue.getOperator(), stampToEval)) {
+                    removeEntity(company);
                   }
                 }
                 break;
@@ -151,16 +167,16 @@ public class CompanyFilter extends Filter<Company> {
               case YAHOO_FIELD_DATE_COLLECTION:
                 if (!_parameters.containsKey(field)) break;
                 if (elementValue == null) {
-                  removeCompany(company);
+                  removeEntity(company);
                   break;
                 }
                 if (pd.getReadMethod().invoke(elementValue) == null) {
-                  removeCompany(company);
+                  removeEntity(company);
                   break;
                 } else {
                   Collection<YahooField> yahooFieldCollection = (Collection<YahooField>) pd.getReadMethod().invoke(elementValue);
                   if (yahooFieldCollection == null) {
-                    removeCompany(company);
+                    removeEntity(company);
                     break;
                   }
                   RestrictionValue restrictionValue = _parameters.get(field);
@@ -168,10 +184,10 @@ public class CompanyFilter extends Filter<Company> {
                   for (YahooField yahooField : yahooFieldCollection) {
                     long timeStamp = new Double(yahooField.getRaw()).longValue();
                     long stampToEval = (long) restrictionValue.getValue();
-                    remove = remove && (!evaluateTimeStamp(timeStamp, restrictionValue.getOperator(), stampToEval) || timeStamp == 0);
+                    remove = remove && (!evaluateTimeStamp(timeStamp, restrictionValue.getOperator(), stampToEval) && timeStamp != 0);
                   }
                   if (remove) {
-                    removeCompany(company);
+                    removeEntity(company);
                   }
                 }
                 break;
