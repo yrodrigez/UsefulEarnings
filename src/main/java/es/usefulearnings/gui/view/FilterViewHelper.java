@@ -63,13 +63,13 @@ public class FilterViewHelper implements ViewHelper<Filter> {
       for (int j = 0; j < labels.size(); j++) {
         gridPane.add(labels.get(j), j, i);
 
-        if (labels.size() == j+1) {
+        if (labels.size() == j + 1) {
           Button detailsButton = new Button("details");
           detailsButton.setStyle(
             "-fx-background-color: #400090;"
-            + "-fx-text-fill: white;"
-            + "-fx-background-radius: 0%;"
-            + "-fx-border-color: transparent;"
+              + "-fx-text-fill: white;"
+              + "-fx-background-radius: 0%;"
+              + "-fx-border-color: transparent;"
           );
           detailsButton.setOnAction(
             event -> {
@@ -98,12 +98,12 @@ public class FilterViewHelper implements ViewHelper<Filter> {
     dialogStage.setTitle(filter.toString());
     dialogStage.initModality(Modality.WINDOW_MODAL);
     BorderPane borderPane = new BorderPane(new Label("Loading data..."));
-    borderPane.setPrefSize(700, 600);
+    borderPane.setPrefSize(1600, 600);
     Scene scene = new Scene(borderPane);
     new Thread(() -> {
       try {
         Node view = FilterViewHelper.getInstance().getViewForEntity(filter);
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
           ScrollPane scrollPane = new ScrollPane(view);
           scrollPane.setStyle("-fx-background-color: #ffffff;");
 
@@ -132,50 +132,68 @@ public class FilterViewHelper implements ViewHelper<Filter> {
         if (isMaster) {
           switch (parameterType) {
             case INNER_CLASS:
-              labels.addAll(getViewForObject(method.invoke(object)));
+              Object innerClass;
+              if ((innerClass = method.invoke(object)) != null)
+                labels.addAll(getViewForObject(innerClass));
               break;
 
             case INNER_CLASS_COLLECTION:
-              ArrayList<Object> innerClassCollection = (ArrayList<Object>) method.invoke(object);
-              for (Object anInnerClassCollection : innerClassCollection) {
-                Object innerObject = method.invoke(anInnerClassCollection);
-                labels.addAll(getViewForObject(innerObject));
+              ArrayList<Object> innerClassCollection;
+              if ((innerClassCollection = (ArrayList<Object>) method.invoke(object)) != null) {
+                for (Object anInnerClassCollection : innerClassCollection) {
+                  Object innerObject = method.invoke(anInnerClassCollection);
+                  labels.addAll(getViewForObject(innerObject));
+                }
               }
               break;
 
             case RAW_NUMERIC:
-              labels.add(new Label((method.invoke(object)).toString()));
+              Object rawNum;
+              if ((rawNum = method.invoke(object)) != null) {
+                labels.add(new Label(rawNum.toString()));
+              }
               break;
 
             case URL:
             case IGNORE:
             case RAW_STRING:
-              labels.add(new Label((String) method.invoke(object)));
+              String string;
+              if ((string = (String) method.invoke(object)) != null)
+                labels.add(new Label(string));
               break;
 
             case YAHOO_FIELD_DATE:
-              YahooField yahooField = (YahooField) method.invoke(object);
-              Label dateLabel = YahooFieldNodeRetriever.getInstance().getYahooDateLabel(yahooField);
-              if (yahooField != null)
+              YahooField yahooField;
+              if ((yahooField = (YahooField) method.invoke(object)) != null) {
+                Label dateLabel = YahooFieldNodeRetriever.getInstance().getYahooDateLabel(yahooField);
                 labels.add(dateLabel);
+              }
               break;
 
             case YAHOO_FIELD_DATE_COLLECTION:
-              Collection<YahooField> collection = (Collection<YahooField>) method.invoke(object);
-              Label datesLabel = YahooFieldNodeRetriever.getInstance().getYahooDateCollectionLabel(collection);
-              labels.add(datesLabel);
+              Collection<YahooField> collection;
+              if ((collection = (Collection<YahooField>) method.invoke(object)) != null) {
+                Label datesLabel = YahooFieldNodeRetriever.getInstance().getYahooDateCollectionLabel(collection);
+                labels.add(datesLabel);
+              }
               break;
 
             case YAHOO_FIELD_NUMERIC:
-              Label numericLabel =
-                YahooFieldNodeRetriever.getInstance().getYahooFieldNumericLabel((YahooField) method.invoke(object));
-              labels.add(numericLabel);
+              YahooField numericField;
+              if ((numericField = (YahooField) method.invoke(object)) != null) {
+                Label numericLabel =
+                  YahooFieldNodeRetriever.getInstance().getYahooFieldNumericLabel(numericField);
+                labels.add(numericLabel);
+              }
               break;
 
             case YAHOO_LONG_FORMAT_FIELD:
-              Label longFormatLabel =
-                YahooFieldNodeRetriever.getInstance().getYahooLongFormatLabel((YahooLongFormatField) method.invoke(object));
-              labels.add(longFormatLabel);
+              YahooLongFormatField longFormatField;
+              if ((longFormatField = (YahooLongFormatField) method.invoke(object)) != null) {
+                Label longFormatLabel =
+                  YahooFieldNodeRetriever.getInstance().getYahooLongFormatLabel(longFormatField);
+                labels.add(longFormatLabel);
+              }
               break;
 
 

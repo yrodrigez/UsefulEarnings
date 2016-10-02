@@ -20,6 +20,7 @@ public class YahooFinanceAPI {
   public static final String COMPANY_INCOME_STATEMENT_HISTORY   = "incomeStatementHistory";
   public static final String COMPANY_CASHFLOW_STATEMENT_HISTORY = "cashflowStatementHistory";
   public static final String COMPANY_BALANCE_SHEET_HISTORY      = "balanceSheetHistory";
+  public static final String COMPANY_SUMMARY_DETAIL             = "summaryDetail";
   //Options
   public static final String OPTION_PRICE          = "price";
   public static final String OPTION_SUMMARY_DETAIL = "summaryDetail";
@@ -39,6 +40,7 @@ public class YahooFinanceAPI {
     companyQuoteSummaryModules.add(COMPANY_FINANCIAL_DATA);
     companyQuoteSummaryModules.add(COMPANY_INCOME_STATEMENT_HISTORY);
     companyQuoteSummaryModules.add(COMPANY_CALENDAR_EVENTS);
+    companyQuoteSummaryModules.add(COMPANY_SUMMARY_DETAIL);
 
     optionQuoteSummaryModules.add(OPTION_SUMMARY_DETAIL);
     optionQuoteSummaryModules.add(OPTION_PRICE);

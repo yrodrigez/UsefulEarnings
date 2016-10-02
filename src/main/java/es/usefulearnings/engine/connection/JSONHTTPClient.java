@@ -13,36 +13,36 @@ import java.util.TreeMap;
  */
 public class JSONHTTPClient {
 
-  private Map<String, JsonNode> cache;
-  private ObjectMapper mapper;
+  private Map<String, JsonNode> _cache;
+  private ObjectMapper _mapper;
 
   private JSONHTTPClient() {
-    cache = Collections.synchronizedMap(new TreeMap<>());
-    mapper = new ObjectMapper();
+    _cache = Collections.synchronizedMap(new TreeMap<>());
+    _mapper = new ObjectMapper();
   }
 
-  private static JSONHTTPClient mInstance = new JSONHTTPClient();
+  private static JSONHTTPClient _instance = new JSONHTTPClient();
 
   public static JSONHTTPClient getInstance() {
-    return mInstance;
+    return _instance;
   }
 
   public JsonNode getJSON(URL url) throws Exception {
     synchronized (url.toString().intern()) { // for the same URL, only one thread at time
-      if (!cache.containsKey(url.toString())) {
+      if (!_cache.containsKey(url.toString())) {
         JsonNode jsonObject = getJsonFromJackson(url);
-        cache.put(url.toString(), jsonObject);
+        _cache.put(url.toString(), jsonObject);
       }
 
-      return cache.get(url.toString());
+      return _cache.get(url.toString());
     }
   }
 
   private JsonNode getJsonFromJackson(URL url) throws Exception {
-    return mapper.readTree(url);
+    return _mapper.readTree(url);
   }
 
   public void clearCache() {
-    cache.clear();
+    _cache.clear();
   }
 }

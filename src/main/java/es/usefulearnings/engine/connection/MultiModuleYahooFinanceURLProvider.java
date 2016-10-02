@@ -20,6 +20,7 @@ public class MultiModuleYahooFinanceURLProvider implements YahooFinanceURLProvid
     try {
       return YahooFinanceAPI.getInstance().getYahooQuoteSummaryLink(
         companySymbol,
+        YahooFinanceAPI.COMPANY_SUMMARY_DETAIL,
         YahooFinanceAPI.COMPANY_ASSET_PROFILE,
         YahooFinanceAPI.COMPANY_FINANCIAL_DATA,
         YahooFinanceAPI.COMPANY_DEFAULT_KEY_STATISTICS,

@@ -1,12 +1,10 @@
 package es.usefulearnings.engine;
 
-import es.usefulearnings.engine.connection.YahooFinanceAPI;
 import es.usefulearnings.engine.filter.CompanyFilter;
 import es.usefulearnings.engine.filter.Filter;
 import es.usefulearnings.engine.filter.RestrictionValue;
 import es.usefulearnings.engine.plugin.*;
 import es.usefulearnings.entities.*;
-import es.usefulearnings.entities.EntitiesPackage;
 import es.usefulearnings.utils.NoStocksFoundException;
 import es.usefulearnings.utils.ResourcesHelper;
 
@@ -46,6 +44,7 @@ public class Core {
     companiesPlugins.add(new DefaultKeyStatisticsPlugin());
     companiesPlugins.add(new IncomeStatmentsPlugin());
     companiesPlugins.add(new FinancialDataPlugin());
+    companiesPlugins.add(new CompanySummaryDetailPlugin());
 
     // get the available mStocks.
     try {
@@ -57,12 +56,6 @@ public class Core {
     appliedFilters = new LinkedList<>();
   }
 
-  /**
-   * @param symbol Company's symbol in the selected stock.
-   * @return a new Company with it's modules set.
-   * @see YahooFinanceAPI for modules.
-   * @see Company
-   */
   public Company getCompanyFromSymbol(String symbol) throws IllegalArgumentException {
     for (Stock stock : mStocks){
       if (stock.getCompanies().containsKey(symbol))

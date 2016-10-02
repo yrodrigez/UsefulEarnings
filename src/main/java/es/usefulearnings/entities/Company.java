@@ -23,6 +23,8 @@ public class Company implements Serializable, Entity, Savable {
   @EntityParameter(name = "Market", parameterType = ParameterType.IGNORE, isMaster = true)
   private String stockName;
 
+  @EntityParameter(name = "Summary detail", parameterType = ParameterType.INNER_CLASS, isMaster = true)
+  private SummaryDetail summaryDetail;
   @EntityParameter(name = "Profile", parameterType = ParameterType.INNER_CLASS, isMaster = true)
   private Profile profile;
   @EntityParameter(name = "Calendar events", parameterType = ParameterType.INNER_CLASS, isMaster = true)
@@ -46,6 +48,7 @@ public class Company implements Serializable, Entity, Savable {
     this.stockName = stockName;
 
     profile = new Profile();
+    summaryDetail = new SummaryDetail();
     calendarEvents = new CalendarEvents();
     financialData = new FinancialData();
     defaultKeyStatistics = new DefaultKeyStatistics();
@@ -125,6 +128,15 @@ public class Company implements Serializable, Entity, Savable {
   public void setBalanceSheetStatements(ArrayList<BalanceSheetStatement> balanceSheetStatements) {
     this.balanceSheetStatements = balanceSheetStatements;
     this.balanceSheetStatements.forEach(balanceSheetStatement -> balanceSheetStatement.set());
+  }
+
+  public void setSummaryDetail(SummaryDetail summaryDetail) {
+    this.summaryDetail = summaryDetail;
+    this.summaryDetail.set();
+  }
+
+  public SummaryDetail getSummaryDetail(){
+    return summaryDetail;
   }
 
   public Profile getProfile() {
