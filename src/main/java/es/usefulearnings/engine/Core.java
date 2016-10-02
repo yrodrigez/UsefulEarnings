@@ -1,6 +1,6 @@
 package es.usefulearnings.engine;
 
-import es.usefulearnings.engine.connection.YahooLinks;
+import es.usefulearnings.engine.connection.YahooFinanceAPI;
 import es.usefulearnings.engine.filter.CompanyFilter;
 import es.usefulearnings.engine.filter.Filter;
 import es.usefulearnings.engine.filter.RestrictionValue;
@@ -60,7 +60,7 @@ public class Core {
   /**
    * @param symbol Company's symbol in the selected stock.
    * @return a new Company with it's modules set.
-   * @see YahooLinks for modules.
+   * @see YahooFinanceAPI for modules.
    * @see Company
    */
   public Company getCompanyFromSymbol(String symbol) throws IllegalArgumentException {

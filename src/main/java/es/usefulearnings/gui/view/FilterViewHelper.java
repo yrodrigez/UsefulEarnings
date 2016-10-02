@@ -40,7 +40,8 @@ public class FilterViewHelper implements ViewHelper<Filter> {
 
   @Override
   public Node getViewForEntity(
-    Filter filter) throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    Filter filter
+  ) throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
     GridPane gridPane = new GridPane();
     gridPane.setHgap(20);
     gridPane.setStyle("-fx-background-color: white");
@@ -85,7 +86,9 @@ public class FilterViewHelper implements ViewHelper<Filter> {
   }
 
   @Override
-  public FilterView getEntityFilterView() throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
+  public FilterView getEntityFilterView(
+
+  ) throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
     return null;
   }
 
@@ -113,13 +116,13 @@ public class FilterViewHelper implements ViewHelper<Filter> {
       }
     }).start();
     dialogStage.setScene(scene);
-    // Show the dialog and wait until the user closes it
     dialogStage.showAndWait();
   }
 
-
   @SuppressWarnings("unchecked")
-  private ArrayList<Label> getViewForObject(Object object) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+  private ArrayList<Label> getViewForObject(
+    Object object
+  ) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
     ArrayList<Label> labels = new ArrayList<>();
     EntityParameterBeanWorker worker = new EntityParameterBeanWorker(
       (field, annotation, method, position) -> {
@@ -177,7 +180,9 @@ public class FilterViewHelper implements ViewHelper<Filter> {
 
 
             default:
-              throw new IllegalArgumentException("FilterViewHelper::getViewForEntity -> no case defined for " + parameterType.name());
+              throw new IllegalArgumentException(
+                "FilterViewHelper::getViewForEntity -> no case defined for " + parameterType.name()
+              );
           }
         }
       }
@@ -187,7 +192,9 @@ public class FilterViewHelper implements ViewHelper<Filter> {
     return labels;
   }
 
-  private ArrayList<Label> setHeader(Object entity) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+  private ArrayList<Label> setHeader(
+    Object entity
+  ) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
     ArrayList<Label> labels = new ArrayList<>();
     EntityParameterBeanWorker worker = new EntityParameterBeanWorker(
       (field, annotation, method, position) -> {

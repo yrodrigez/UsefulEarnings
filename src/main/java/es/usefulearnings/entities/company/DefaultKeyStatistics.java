@@ -29,7 +29,7 @@ public class DefaultKeyStatistics extends CompanyData implements Serializable {
   private YahooField forwardPE;
 
   @JsonProperty("profitMargins")
-  @EntityParameter(name = "Profit margins", parameterType = ParameterType.YAHOO_FIELD_NUMERIC, isMaster = true)
+  @EntityParameter(name = "Profit margins", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
   private YahooField profitMargins;
 
   @JsonProperty("heldPercentInsiders")
@@ -49,7 +49,7 @@ public class DefaultKeyStatistics extends CompanyData implements Serializable {
   private YahooField shortPercentOfFloat;
 
   @JsonProperty("beta")
-  @EntityParameter(name = "Beta", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
+  @EntityParameter(name = "Beta", parameterType = ParameterType.YAHOO_FIELD_NUMERIC, isMaster = true)
   private YahooField beta;
 
   @JsonProperty("bookValue")
@@ -121,11 +121,11 @@ public class DefaultKeyStatistics extends CompanyData implements Serializable {
   private YahooLongFormatField sharesShortPriorMonth;
 
   @JsonProperty("netIncomeToCommon")
-  @EntityParameter(name = "Net income to common", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  @EntityParameter(name = "ROE", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD, isMaster = true)
   private YahooLongFormatField netIncomeToCommon;
 
   @JsonProperty("enterpriseValue")
-  @EntityParameter(name = "Enterprise value", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
+  @EntityParameter(name = "Enterprise value", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD, isMaster = true)
   private YahooLongFormatField enterpriseValue;
 
   public String getLastSplitFactor() {

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class Earnings extends CompanyData implements Serializable {
 
   @JsonProperty("earningsDate")
-  @EntityParameter(name = "Earnings date", parameterType = ParameterType.YAHOO_FIELD_DATE_COLLECTION)
+  @EntityParameter(name = "Earnings date", parameterType = ParameterType.YAHOO_FIELD_DATE_COLLECTION, isMaster = true)
   private ArrayList<YahooField> earningsDate;
 
   @JsonProperty("earningsAverage")

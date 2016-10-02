@@ -18,15 +18,15 @@ public class MultiModuleYahooFinanceURLProvider implements YahooFinanceURLProvid
   @Override
   public URL getURLForModule(String companySymbol, String module) {
     try {
-      return YahooLinks.getInstance().getYahooQuoteSummaryLink(
+      return YahooFinanceAPI.getInstance().getYahooQuoteSummaryLink(
         companySymbol,
-        YahooLinks.COMPANY_ASSET_PROFILE,
-        YahooLinks.COMPANY_FINANCIAL_DATA,
-        YahooLinks.COMPANY_DEFAULT_KEY_STATISTICS,
-        YahooLinks.COMPANY_CALENDAR_EVENTS,
-        YahooLinks.COMPANY_INCOME_STATEMENT_HISTORY,
-        YahooLinks.COMPANY_CASHFLOW_STATEMENT_HISTORY,
-        YahooLinks.COMPANY_BALANCE_SHEET_HISTORY
+        YahooFinanceAPI.COMPANY_ASSET_PROFILE,
+        YahooFinanceAPI.COMPANY_FINANCIAL_DATA,
+        YahooFinanceAPI.COMPANY_DEFAULT_KEY_STATISTICS,
+        YahooFinanceAPI.COMPANY_CALENDAR_EVENTS,
+        YahooFinanceAPI.COMPANY_INCOME_STATEMENT_HISTORY,
+        YahooFinanceAPI.COMPANY_CASHFLOW_STATEMENT_HISTORY,
+        YahooFinanceAPI.COMPANY_BALANCE_SHEET_HISTORY
       );
     } catch (MalformedURLException e) {
       e.printStackTrace();

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.usefulearnings.engine.connection.JSONHTTPClient;
 import es.usefulearnings.engine.connection.MultiModuleYahooFinanceURLProvider;
-import es.usefulearnings.engine.connection.YahooLinks;
+import es.usefulearnings.engine.connection.YahooFinanceAPI;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.IncomeStatement;
 
@@ -22,7 +22,7 @@ public class IncomeStatmentsPlugin implements Plugin<Company> {
   private ObjectMapper mapper;
 
   private String mCompanySymbol;
-  private String mModule = YahooLinks.COMPANY_INCOME_STATEMENT_HISTORY;
+  private String mModule = YahooFinanceAPI.COMPANY_INCOME_STATEMENT_HISTORY;
 
   public IncomeStatmentsPlugin() {
     mapper = new ObjectMapper();

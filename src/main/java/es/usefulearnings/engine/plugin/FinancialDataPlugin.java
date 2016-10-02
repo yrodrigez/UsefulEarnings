@@ -1,15 +1,11 @@
 package es.usefulearnings.engine.plugin;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import es.usefulearnings.engine.connection.JSONHTTPClient;
-import es.usefulearnings.engine.connection.MultiModuleYahooFinanceURLProvider;
-import es.usefulearnings.engine.connection.YahooLinks;
+import es.usefulearnings.engine.connection.YahooFinanceAPI;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.company.FinancialData;
 
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * ${PATH}
@@ -23,7 +19,7 @@ public class FinancialDataPlugin extends YahooFinanceAPIPlugin{
 
   @Override
   protected String getModuleName() {
-    return YahooLinks.COMPANY_FINANCIAL_DATA;
+    return YahooFinanceAPI.COMPANY_FINANCIAL_DATA;
   }
 
   @Override

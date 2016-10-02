@@ -1,0 +1,156 @@
+{
+  "quoteSummary": {
+    "result": [
+      {
+        "summaryDetail": {
+          "maxAge": 1,
+          "previousClose": {
+            "raw": 100.0,
+            "fmt": "100.00"
+          },
+          "open": {
+            "raw": 112.47,
+            "fmt": "112.47"
+          },
+          "dayLow": {
+            "raw": 54.06,
+            "fmt": "54.06"
+          },
+          "dayHigh": {
+            "raw": 110.85,
+            "fmt": "110.85"
+          },
+          "regularMarketPreviousClose": {
+            "raw": 100.0,
+            "fmt": "100.00"
+          },
+          "regularMarketOpen": {
+            "raw": 112.47,
+            "fmt": "112.47"
+          },
+          "regularMarketDayLow": {
+            "raw": 54.06,
+            "fmt": "54.06"
+          },
+          "regularMarketDayHigh": {
+            "raw": 110.85,
+            "fmt": "110.85"
+          },
+          "dividendRate": {
+            "raw": 2.28,
+            "fmt": "2.28"
+          },
+          "dividendYield": {
+            "raw": 0.0202,
+            "fmt": "2.02%"
+          },
+          "exDividendDate": {
+            "raw": 1470268800,
+            "fmt": "2016-08-04"
+          },
+          "payoutRatio": {
+            "raw": 0.248,
+            "fmt": "24.80%"
+          },
+          "fiveYearAvgDividendYield": {},
+          "beta": {
+            "raw": 1.51744,
+            "fmt": "1.52"
+          },
+          "trailingPE": {
+            "raw": 13.182137,
+            "fmt": "13.18"
+          },
+          "forwardPE": {
+            "raw": 12.6171875,
+            "fmt": "12.62"
+          },
+          "volume": {
+            "raw": 110500,
+            "fmt": "110.5k",
+            "longFmt": "110,500"
+          },
+          "regularMarketVolume": {
+            "raw": 110500,
+            "fmt": "110.5k",
+            "longFmt": "110,500"
+          },
+          "averageVolume": {
+            "raw": 35837407,
+            "fmt": "35.84M",
+            "longFmt": "35,837,407"
+          },
+          "averageVolume10days": {
+            "raw": 34256957,
+            "fmt": "34.26M",
+            "longFmt": "34,256,957"
+          },
+          "averageDailyVolume10Day": {
+            "raw": 34256957,
+            "fmt": "34.26M",
+            "longFmt": "34,256,957"
+          },
+          "bid": {
+            "raw": 113.01,
+            "fmt": "113.01"
+          },
+          "ask": {
+            "raw": 113.05,
+            "fmt": "113.05"
+          },
+          "bidSize": {
+            "raw": 400,
+            "fmt": "400",
+            "longFmt": "400"
+          },
+          "askSize": {
+            "raw": 200,
+            "fmt": "200",
+            "longFmt": "200"
+          },
+          "marketCap": {
+            "raw": 609163149312,
+            "fmt": "609.16B",
+            "longFmt": "609,163,149,312"
+          },
+          "yield": {},
+          "ytdReturn": {},
+          "totalAssets": {},
+          "expireDate": {},
+          "strikePrice": {},
+          "openInterest": {},
+          "fiftyTwoWeekLow": {
+            "raw": 54.06,
+            "fmt": "54.06"
+          },
+          "fiftyTwoWeekHigh": {
+            "raw": 123.82,
+            "fmt": "123.82"
+          },
+          "priceToSalesTrailing12Months": {
+            "raw": 2.7653034,
+            "fmt": "2.77"
+          },
+          "fiftyDayAverage": {
+            "raw": 109.804115,
+            "fmt": "109.80"
+          },
+          "twoHundredDayAverage": {
+            "raw": 102.954315,
+            "fmt": "102.95"
+          },
+          "trailingAnnualDividendRate": {
+            "raw": 2.13,
+            "fmt": "2.13"
+          },
+          "trailingAnnualDividendYield": {
+            "raw": 0.021300001,
+            "fmt": "2.13%"
+          },
+          "navPrice": {}
+        }
+      }
+    ],
+    "error": null
+  }
+}

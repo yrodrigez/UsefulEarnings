@@ -1,58 +1,1177 @@
 {
-  "quoteSummary":
-  {
-    "result":
-    [
+  "quoteSummary": {
+    "result": [
       {
-        "recommendationTrend":
-        {
-          "trend":
-          [
-            {"period":"0w","strongBuy":0,"buy":0,"hold":0,"sell":0,"strongSell":0},
-            {"period":"-1w","strongBuy":0,"buy":0,"hold":0,"sell":0,"strongSell":0},
-            {"period":"0m","strongBuy":1,"buy":0,"hold":5,"sell":0,"strongSell":0},
-            {"period":"-1m","strongBuy":1,"buy":1,"hold":4,"sell":0,"strongSell":0},
-            {"period":"-2m","strongBuy":1,"buy":2,"hold":4,"sell":0,"strongSell":0},
-            {"period":"-3m","strongBuy":2,"buy":4,"hold":1,"sell":0,"strongSell":0}
-          ],"maxAge":86400},
+        "recommendationTrend": {
+          "trend": [
+            {
+              "period": "0w",
+              "strongBuy": 0,
+              "buy": 0,
+              "hold": 0,
+              "sell": 0,
+              "strongSell": 0
+            },
+            {
+              "period": "-1w",
+              "strongBuy": 0,
+              "buy": 0,
+              "hold": 0,
+              "sell": 0,
+              "strongSell": 0
+            },
+            {
+              "period": "0m",
+              "strongBuy": 1,
+              "buy": 0,
+              "hold": 5,
+              "sell": 0,
+              "strongSell": 0
+            },
+            {
+              "period": "-1m",
+              "strongBuy": 1,
+              "buy": 1,
+              "hold": 4,
+              "sell": 0,
+              "strongSell": 0
+            },
+            {
+              "period": "-2m",
+              "strongBuy": 1,
+              "buy": 2,
+              "hold": 4,
+              "sell": 0,
+              "strongSell": 0
+            },
+            {
+              "period": "-3m",
+              "strongBuy": 2,
+              "buy": 4,
+              "hold": 1,
+              "sell": 0,
+              "strongSell": 0
+            }
+          ],
+          "maxAge": 86400
+        },
         "calendarEvents": {
-          "maxAge":1,
-          "earnings":
-          {
-            "earningsDate":
-            [
-              {"raw":1477872000,"fmt":"2016-10-31"},
-              {"raw":1478217600,"fmt":"2016-11-04"}
-            ],
-            "earningsAverage":
-            {"raw":0.73,"fmt":"0.73"},
-            "earningsLow":
-            {"raw":0.63,"fmt":"0.63"},
-            "earningsHigh":
-            {"raw":0.77,"fmt":"0.77"},
-            "revenueAverage":
-            {"raw":119970000,"fmt":"119.97M","longFmt":"119,970,000"},
-            "revenueLow":
-            {"raw":113400000,"fmt":"113.4M","longFmt":"113,400,000"},
-            "revenueHigh":
-            {"raw":122800000,"fmt":"122.8M","longFmt":"122,800,000"}
-          },
-          "exDividendDate": {},
-          "dividendDate":{}
-        },// END CALENDAR EVENTS!
-        "earnings":
-        {
-          "maxAge":86400,
-          "earningsChart":
-          {
-            "quarterly":
-            [
+          "maxAge": 1,
+          "earnings": {
+            "earningsDate": [
               {
-                "date":"3Q2015",
-                "actual":
-                {"raw":0.51,"fmt":"0.51"},
-                "estimate":
-                {"raw":0.48,"fmt":"0.48"}
+                "raw": 1477872000,
+                "fmt": "2016-10-31"
               },
               {
-                "date":"4Q2015","actual":{"raw":0.32,"fmt":"0.32"},"estimate":{"raw":0.26,"fmt":"0.26"}},{"date":"1Q2016","actual":{"raw":0.56,"fmt":"0.56"},"estimate":{"raw":0.48,"fmt":"0.48"}},{"date":"2Q2016","actual":{"raw":0.73,"fmt":"0.73"},"estimate":{"raw":0.67,"fmt":"0.67"}}],"currentQuarterEstimate":{"raw":0.73,"fmt":"0.73"},"currentQuarterEstimateDate":"3Q","currentQuarterEstimateYear":2016},"financialsChart":{"yearly":[{"date":2013,"revenue":{"raw":299381000,"fmt":"299.38M","longFmt":"299,381,000"},"earnings":{"raw":32086000,"fmt":"32.09M","longFmt":"32,086,000"}},{"date":2014,"revenue":{"raw":367333000,"fmt":"367.33M","longFmt":"367,333,000"},"earnings":{"raw":46982000,"fmt":"46.98M","longFmt":"46,982,000"}},{"date":2015,"revenue":{"raw":414811000,"fmt":"414.81M","longFmt":"414,811,000"},"earnings":{"raw":-158486000,"fmt":"-158.49M","longFmt":"-158,486,000"}}],"quarterly":[{"date":"2Q2015","revenue":{"raw":168399000,"fmt":"168.4M","longFmt":"168,399,000"},"earnings":{"raw":-232459000,"fmt":"-232.46M","longFmt":"-232,459,000"}},{"date":"3Q2015","revenue":{"raw":130800000,"fmt":"130.8M","longFmt":"130,800,000"},"earnings":{"raw":16432000,"fmt":"16.43M","longFmt":"16,432,000"}},{"date":"4Q2015","revenue":{"raw":6102000,"fmt":"6.1M","longFmt":"6,102,000"},"earnings":{"raw":36265000,"fmt":"36.27M","longFmt":"36,265,000"}},{"date":"1Q2016","revenue":{"raw":103044000,"fmt":"103.04M","longFmt":"103,044,000"},"earnings":{"raw":22281000,"fmt":"22.28M","longFmt":"22,281,000"}}]}},"upgradeDowngradeHistory":{"history":[{"epochGradeDate":1468454400,"firm":"Raymond James","toGrade":"Mkt Perform","fromGrade":"Outperform","action":"down"},{"epochGradeDate":1461110400,"firm":"BofA/Merrill","toGrade":"Neutral","fromGrade":"Buy","action":"down"},{"epochGradeDate":1461024000,"firm":"Susquehanna","toGrade":"Neutral","fromGrade":"Positive","action":"down"},{"epochGradeDate":1460937600,"firm":"Needham","toGrade":"Hold","fromGrade":"Buy","action":"down"},{"epochGradeDate":1451952000,"firm":"Raymond James","toGrade":"Outperform","fromGrade":"Strong Buy","action":"down"},{"epochGradeDate":1438732800,"firm":"Susquehanna","toGrade":"Positive","fromGrade":"Neutral","action":"up"},{"epochGradeDate":1423008000,"firm":"Dougherty & Company","toGrade":"Buy","fromGrade":"Neutral","action":"up"},{"epochGradeDate":1420761600,"firm":"Needham","toGrade":"Buy","fromGrade":"Hold","action":"up"},{"epochGradeDate":1401753600,"firm":"Needham","toGrade":"Hold","fromGrade":"Buy","action":"down"},{"epochGradeDate":1383696000,"firm":"Dougherty & Company","toGrade":"Buy","fromGrade":"Neutral","action":"up"},{"epochGradeDate":1335916800,"firm":"Avian","toGrade":"Neutral","fromGrade":"Negative","action":"up"},{"epochGradeDate":1317600000,"firm":"Needham","toGrade":"Hold","fromGrade":"Buy","action":"down"},{"epochGradeDate":1311724800,"firm":"Barclays Capital","toGrade":"Equal Weight","fromGrade":"Overweight","action":"down"},{"epochGradeDate":1311292800,"firm":"Dougherty & Company","toGrade":"Neutral","fromGrade":"Buy","action":"down"},{"epochGradeDate":1296000000,"firm":"Dougherty & Company","toGrade":"Buy","fromGrade":"","action":"init"},{"epochGradeDate":1292889600,"firm":"Auriga U.S.A","toGrade":"Hold","fromGrade":"","action":"init"},{"epochGradeDate":1292544000,"firm":"Barclays Capital","toGrade":"Overweight","fromGrade":"Equal Weight","action":"up"},{"epochGradeDate":1273190400,"firm":"Merriman","toGrade":"Buy","fromGrade":"","action":"init"},{"epochGradeDate":1231977600,"firm":"Wunderlich","toGrade":"Hold","fromGrade":"","action":"init"},{"epochGradeDate":1210291200,"firm":"JP Morgan","toGrade":"Overweight","fromGrade":"Neutral","action":"up"},{"epochGradeDate":1177891200,"firm":"Matrix Research","toGrade":"Hold","fromGrade":"Buy","action":"down"},{"epochGradeDate":1173225600,"firm":"Matrix Research","toGrade":"Buy","fromGrade":"Sell","action":"up"},{"epochGradeDate":1153267200,"firm":"Stanford Research","toGrade":"Hold","fromGrade":"Sell","action":"up"},{"epochGradeDate":1148947200,"firm":"Stanford Research","toGrade":"Sell","fromGrade":"Hold","action":"down"},{"epochGradeDate":1148947200,"firm":"RBC Capital Mkts","toGrade":"Sector Perform","fromGrade":"Underperform","action":"up"},{"epochGradeDate":1146096000,"firm":"Soleil","toGrade":"Hold","fromGrade":"Buy","action":"down"},{"epochGradeDate":1144022400,"firm":"Goldman Sachs","toGrade":"In-Line","fromGrade":"Underperform","action":"up"},{"epochGradeDate":1140998400,"firm":"Citigroup","toGrade":"Hold","fromGrade":"Buy","action":"down"},{"epochGradeDate":1140134400,"firm":"Needham & Co","toGrade":"Buy","fromGrade":"Hold","action":"up"},{"epochGradeDate":1139356800,"firm":"Lehman Brothers","toGrade":"Equal-weight","fromGrade":"Underweight","action":"up"},{"epochGradeDate":1138060800,"firm":"RBC Capital Mkts","toGrade":"Underperform","fromGrade":"Sector Perform","action":"down"},{"epochGradeDate":1137456000,"firm":"Stanford Research","toGrade":"Hold","fromGrade":"Buy","action":"down"},{"epochGradeDate":1135296000,"firm":"Soleil","toGrade":"Buy","fromGrade":"","action":"init"},{"epochGradeDate":1129766400,"firm":"Needham & Co","toGrade":"Hold","fromGrade":"Buy","action":"down"},{"epochGradeDate":1128902400,"firm":"Citigroup","toGrade":"Buy","fromGrade":"","action":"init"},{"epochGradeDate":1127865600,"firm":"JP Morgan","toGrade":"Neutral","fromGrade":"Underweight","action":"up"},{"epochGradeDate":1124064000,"firm":"Stanford Research","toGrade":"Buy","fromGrade":"Hold","action":"up"},{"epochGradeDate":1114128000,"firm":"Needham & Co","toGrade":"Buy","fromGrade":"Hold","action":"up"},{"epochGradeDate":1112313600,"firm":"Fulcrum","toGrade":"Buy","fromGrade":"","action":"init"},{"epochGradeDate":1110240000,"firm":"Susquehanna Financial","toGrade":"Net Neutral","fromGrade":"Net Negative","action":"up"},{"epochGradeDate":1108684800,"firm":"CIBC Wrld Mkts","toGrade":"Sector Outperform","fromGrade":"Sector Underperform","action":"up"},{"epochGradeDate":1100822400,"firm":"Goldman Sachs","toGrade":"Underperform","fromGrade":"In-Line","action":"down"},{"epochGradeDate":1098403200,"firm":"CIBC Wrld Mkts","toGrade":"Sector Underperform","fromGrade":"Sector Perform","action":"down"},{"epochGradeDate":1096416000,"firm":"Lehman Brothers","toGrade":"Underweight","fromGrade":"Equal-weight","action":"down"},{"epochGradeDate":1095811200,"firm":"RBC Capital Mkts","toGrade":"Sector Perform","fromGrade":"Outperform","action":"down"},{"epochGradeDate":1089590400,"firm":"Merrill Lynch","toGrade":"Sell","fromGrade":"Neutral","action":"down"},{"epochGradeDate":1084838400,"firm":"RBC Capital Mkts","toGrade":"Outperform","fromGrade":"","action":"init"},{"epochGradeDate":1076976000,"firm":"Barrington Research","toGrade":"Outperform","fromGrade":"Mkt Perform","action":"up"},{"epochGradeDate":1076976000,"firm":"Needham & Co","toGrade":"Buy","fromGrade":"Hold","action":"up"},{"epochGradeDate":1075766400,"firm":"Goldman Sachs","toGrade":"In-Line","fromGrade":"Outperform","action":"down"},{"epochGradeDate":1067904000,"firm":"Goldman Sachs","toGrade":"Outperform","fromGrade":"In-Line","action":"up"},{"epochGradeDate":1064793600,"firm":"Adams Harkness","toGrade":"Strong Buy","fromGrade":"Mkt Perform","action":"up"},{"epochGradeDate":1059523200,"firm":"Barrington Research","toGrade":"Mkt Perform","fromGrade":"Outperform","action":"down"},{"epochGradeDate":1055203200,"firm":"Adams Harkness","toGrade":"Mkt Perform","fromGrade":"Buy","action":"down"},{"epochGradeDate":1050019200,"firm":"JP Morgan","toGrade":"Underweight","fromGrade":"Neutral","action":"down"},{"epochGradeDate":1046131200,"firm":"Barrington Research","toGrade":"Outperform","fromGrade":"Mkt Perform","action":"up"},{"epochGradeDate":1041984000,"firm":"Adams Harkness","toGrade":"Buy","fromGrade":"Mkt Perform","action":"up"},{"epochGradeDate":1036627200,"firm":"JP Morgan","toGrade":"Neutral","fromGrade":"","action":"init"},{"epochGradeDate":1035331200,"firm":"Thomas Weisel","toGrade":"Mkt Perform","fromGrade":"Attractive","action":"down"},{"epochGradeDate":1033689600,"firm":"Morgan Stanley","toGrade":"Underweight","fromGrade":"Equal-weight","action":"down"},{"epochGradeDate":1028851200,"firm":"Needham & Co","toGrade":"Hold","fromGrade":"","action":"init"},{"epochGradeDate":1027641600,"firm":"Goldman Sachs","toGrade":"Trading Buy","fromGrade":"Mkt Perform","action":"up"},{"epochGradeDate":1027036800,"firm":"Adams Harkness","toGrade":"Mkt Perform","fromGrade":"Buy","action":"down"},{"epochGradeDate":1026172800,"firm":"Merrill Lynch","toGrade":"NT Neutral","fromGrade":"NT Buy","action":"down"},{"epochGradeDate":1025136000,"firm":"Investec Inc","toGrade":"Buy","fromGrade":"Strong Buy","action":"down"},{"epochGradeDate":1022198400,"firm":"Goldman Sachs","toGrade":"Mkt Perform","fromGrade":"Mkt Outperform","action":"down"},{"epochGradeDate":1017964800,"firm":"Banc of America Sec","toGrade":"Mkt Perform","fromGrade":"","action":"init"},{"epochGradeDate":1017705600,"firm":"Investec PMG","toGrade":"Strong Buy","fromGrade":"","action":"init"},{"epochGradeDate":1012348800,"firm":"Thomas Weisel","toGrade":"Buy","fromGrade":"","action":"init"},{"epochGradeDate":1010707200,"firm":"Adams Harkness","toGrade":"Buy","fromGrade":"Strong Buy","action":"down"},{"epochGradeDate":1007337600,"firm":"Adams Harkness","toGrade":"Strong Buy","fromGrade":"Buy","action":"up"},{"epochGradeDate":996624000,"firm":"Merrill Lynch","toGrade":"NT Accum","fromGrade":"NT Neutral","action":"up"},{"epochGradeDate":991267200,"firm":"Barrington Research","toGrade":"LT Buy","fromGrade":"Hold","action":"up"},{"epochGradeDate":976665600,"firm":"Merrill Lynch","toGrade":"NT Neutral","fromGrade":"NT Accum","action":"down"},{"epochGradeDate":973036800,"firm":"Mrgn Stnly Dn Wttr","toGrade":"Outperform","fromGrade":"Strong Buy","action":"down"},{"epochGradeDate":971395200,"firm":"Merrill Lynch","toGrade":"NT Accum","fromGrade":"NT Buy","action":"down"},{"epochGradeDate":971395200,"firm":"PaineWebber","toGrade":"Attractive","fromGrade":"Buy","action":"down"},{"epochGradeDate":965088000,"firm":"PaineWebber","toGrade":"Buy","fromGrade":"","action":"init"},{"epochGradeDate":963273600,"firm":"William Blair","toGrade":"Buy","fromGrade":"","action":"init"},{"epochGradeDate":955929600,"firm":"Barrington Resch","toGrade":"Strong Buy","fromGrade":"Buy","action":"up"},{"epochGradeDate":955411200,"firm":"Advest Inc","toGrade":"Strong Buy","fromGrade":"Market Perform","action":"up"},{"epochGradeDate":954892800,"firm":"Adams Harkness","toGrade":"Accumulate","fromGrade":"Market Perform","action":"up"},{"epochGradeDate":933638400,"firm":"Bear Stearns","toGrade":"Buy","fromGrade":"","action":"init"},{"epochGradeDate":932083200,"firm":"Advest Inc","toGrade":"Market Perform","fromGrade":"Buy","action":"down"},{"epochGradeDate":927244800,"firm":"Advest Inc","toGrade":"Buy","fromGrade":"","action":"init"},{"epochGradeDate":920851200,"firm":"Mrgn Stnly Dn Wttr","toGrade":"Strong Buy","fromGrade":"","action":"init"},{"epochGradeDate":920332800,"firm":"CIBC Oppenheimer","toGrade":"Strong Buy","fromGrade":"","action":"init"},{"epochGradeDate":920246400,"firm":"DLJ","toGrade":"Buy","fromGrade":"","action":"init"},{"epochGradeDate":918432000,"firm":"Merrill Lynch","toGrade":"NT Accumulate","fromGrade":"NT Neutral","action":"up"},{"epochGradeDate":917568000,"firm":"BB Rbrtsn Stphns","toGrade":"Buy","fromGrade":"LT Attractive","action":"up"},{"epochGradeDate":917481600,"firm":"NB Montgomery","toGrade":"Buy","fromGrade":"","action":"init"},{"epochGradeDate":914198400,"firm":"Adams Harkness","toGrade":"Mkt Perform","fromGrade":"","action":"init"},{"epochGradeDate":913161600,"firm":"Merrill Lynch","toGrade":"NT Ntrl/LT Buy","fromGrade":"","action":"init"},{"epochGradeDate":890784000,"firm":"Goldman Sachs","toGrade":"Mkt Outperformer","fromGrade":"","action":"init"}],"maxAge":86400},"defaultKeyStatistics":{"maxAge":1,"enterpriseValue":{"raw":1394436096,"fmt":"1.39B","longFmt":"1,394,436,096"},"forwardPE":{"raw":14.285212,"fmt":"14.29"},"profitMargins":{"raw":0.25214002,"fmt":"25.21%"},"floatShares":{"raw":37470602,"fmt":"37.47M","longFmt":"37,470,602"},"sharesOutstanding":{"raw":39569800,"fmt":"39.57M","longFmt":"39,569,800"},"sharesShort":{"raw":835875,"fmt":"835.88k","longFmt":"835,875"},"sharesShortPriorMonth":{"raw":947599,"fmt":"947.6k","longFmt":"947,599"},"heldPercentInsiders":{"raw":0.00522,"fmt":"0.52%"},"heldPercentInstitutions":{"raw":0.975,"fmt":"97.50%"},"shortRatio":{"raw":3.26,"fmt":"3.26"},"shortPercentOfFloat":{"raw":0.023456,"fmt":"2.35%"},"beta":{"raw":1.13137,"fmt":"1.13"},"morningStarOverallRating":{},"morningStarRiskRating":{},"category":null,"bookValue":{"raw":8.112,"fmt":"8.11"},"priceToBook":{"raw":5.0012326,"fmt":"5.00"},"annualReportExpenseRatio":{},"ytdReturn":{},"beta3Year":{},"totalAssets":{},"yield":{},"fundFamily":null,"fundInceptionDate":{},"legalType":null,"ytdReturn":{},"threeYearAverageReturn":{},"fiveYearAverageReturn":{},"priceToSalesTrailing12Months":{},"lastFiscalYearEnd":{"raw":1451520000,"fmt":"2015-12-31"},"nextFiscalYearEnd":{"raw":1514678400,"fmt":"2017-12-31"},"mostRecentQuarter":{"raw":1467244800,"fmt":"2016-06-30"},"earningsQuarterlyGrowth":{},"revenueQuarterlyGrowth":{},"netIncomeToCommon":{"raw":82277000,"fmt":"82.28M","longFmt":"82,277,000"},"trailingEps":{"raw":2.609,"fmt":"2.61"},"forwardEps":{"raw":2.84,"fmt":"2.84"},"pegRatio":{"raw":0.31,"fmt":"0.31"},"lastSplitFactor":null,"lastSplitDate":{},"enterpriseToRevenue":{"raw":3.332,"fmt":"3.33"},"enterpriseToEbitda":{"raw":13.116,"fmt":"13.12"},"52WeekChange":{"raw":0.44758797,"fmt":"44.76%"},"SandP52WeekChange":{"raw":0.027235389,"fmt":"2.72%"},"lastDividendValue":{},"lastCapGain":{},"annualHoldingsTurnover":{}},"summaryProfile":{"address1":"1625 Sharp Point Drive","city":"Fort Collins","state":"CO","zip":"80525","country":"United States","phone":"970-221-4670","fax":"970-407-5296","website":"http://www.advanced-energy.com","industry":"Diversified Electronics","sector":"Technology","longBusinessSummary":"Advanced Energy Industries, Inc., together with its subsidiaries, designs, manufactures, sells, and supports power conversion products and solutions that transform power into various usable forms. The company offers thin film deposition power conversion systems, including direct current (DC), pulsed DC low frequency, high voltage, and radio frequency (RF) power supplies, as well as matching networks and remote plasma sources for reactive gas applications and RF instrumentation. Its power conversion systems are used by semiconductor, solar panel, and similar thin film manufacturers, including flat panel display, data storage, industrial hard coating and ophthalmic optical coating equipment makers, and architectural glass manufacturers. The company also provides power control modules and thermal instrumentation products for rapid thermal processing, chemical vapor deposition, crystal growing, and other semiconductor and solar applications, as well as in chemical processing, glass manufacturing, and other general industrial power applications. In addition, it offers repair, conversions, upgrades, and refurbishments services. The company markets and sells its products through direct sales force, independent sales representatives, and distributors in North America, Europe, and Asia. Advanced Energy Industries, Inc. was founded in 1981 and is headquartered in Fort Collins, Colorado.","fullTimeEmployees":1382,"companyOfficers":[],"maxAge":86400},"financialData":{"maxAge":86400,"currentPrice":{"raw":40.57,"fmt":"40.57"},"targetHighPrice":{"raw":46.0,"fmt":"46.00"},"targetLowPrice":{"raw":34.0,"fmt":"34.00"},"targetMeanPrice":{"raw":40.75,"fmt":"40.75"},"targetMedianPrice":{"raw":41.5,"fmt":"41.50"},"recommendationMean":{"raw":2.7,"fmt":"2.70"},"recommendationKey":"hold","numberOfAnalystOpinions":{"raw":4,"fmt":"4","longFmt":"4"},"totalCash":{"raw":215057008,"fmt":"215.06M","longFmt":"215,057,008"},"totalCashPerShare":{"raw":5.421,"fmt":"5.42"},"ebitda":{"raw":106318000,"fmt":"106.32M","longFmt":"106,318,000"},"totalDebt":{"raw":0,"fmt":null,"longFmt":"0"},"quickRatio":{"raw":2.869,"fmt":"2.87"},"currentRatio":{"raw":3.921,"fmt":"3.92"},"totalRevenue":{"raw":418456000,"fmt":"418.46M","longFmt":"418,456,000"},"debtToEquity":{},"revenuePerShare":{"raw":10.409,"fmt":"10.41"},"returnOnAssets":{"raw":0.123509996,"fmt":"12.35%"},"returnOnEquity":{"raw":0.28261,"fmt":"28.26%"},"grossProfits":{"raw":216870000,"fmt":"216.87M","longFmt":"216,870,000"},"freeCashflow":{},"operatingCashflow":{},"earningsGrowth":{},"revenueGrowth":{"raw":-0.132,"fmt":"-13.20%"},"grossMargins":{"raw":0.51792,"fmt":"51.79%"},"ebitdaMargins":{"raw":0.25406998,"fmt":"25.41%"},"operatingMargins":{"raw":0.24014999,"fmt":"24.01%"},"profitMargins":{"raw":0.25214002,"fmt":"25.21%"}}}],"error":null}}
+                "raw": 1478217600,
+                "fmt": "2016-11-04"
+              }
+            ],
+            "earningsAverage": {
+              "raw": 0.73,
+              "fmt": "0.73"
+            },
+            "earningsLow": {
+              "raw": 0.63,
+              "fmt": "0.63"
+            },
+            "earningsHigh": {
+              "raw": 0.77,
+              "fmt": "0.77"
+            },
+            "revenueAverage": {
+              "raw": 119970000,
+              "fmt": "119.97M",
+              "longFmt": "119,970,000"
+            },
+            "revenueLow": {
+              "raw": 113400000,
+              "fmt": "113.4M",
+              "longFmt": "113,400,000"
+            },
+            "revenueHigh": {
+              "raw": 122800000,
+              "fmt": "122.8M",
+              "longFmt": "122,800,000"
+            }
+          },
+          "exDividendDate": {},
+          "dividendDate": {}
+        },
+        // END CALENDAR EVENTS!
+        "earnings": {
+          "maxAge": 86400,
+          "earningsChart": {
+            "quarterly": [
+              {
+                "date": "3Q2015",
+                "actual": {
+                  "raw": 0.51,
+                  "fmt": "0.51"
+                },
+                "estimate": {
+                  "raw": 0.48,
+                  "fmt": "0.48"
+                }
+              },
+              {
+                "date": "4Q2015",
+                "actual": {
+                  "raw": 0.32,
+                  "fmt": "0.32"
+                },
+                "estimate": {
+                  "raw": 0.26,
+                  "fmt": "0.26"
+                }
+              },
+              {
+                "date": "1Q2016",
+                "actual": {
+                  "raw": 0.56,
+                  "fmt": "0.56"
+                },
+                "estimate": {
+                  "raw": 0.48,
+                  "fmt": "0.48"
+                }
+              },
+              {
+                "date": "2Q2016",
+                "actual": {
+                  "raw": 0.73,
+                  "fmt": "0.73"
+                },
+                "estimate": {
+                  "raw": 0.67,
+                  "fmt": "0.67"
+                }
+              }
+            ],
+            "currentQuarterEstimate": {
+              "raw": 0.73,
+              "fmt": "0.73"
+            },
+            "currentQuarterEstimateDate": "3Q",
+            "currentQuarterEstimateYear": 2016
+          },
+          "financialsChart": {
+            "yearly": [
+              {
+                "date": 2013,
+                "revenue": {
+                  "raw": 299381000,
+                  "fmt": "299.38M",
+                  "longFmt": "299,381,000"
+                },
+                "earnings": {
+                  "raw": 32086000,
+                  "fmt": "32.09M",
+                  "longFmt": "32,086,000"
+                }
+              },
+              {
+                "date": 2014,
+                "revenue": {
+                  "raw": 367333000,
+                  "fmt": "367.33M",
+                  "longFmt": "367,333,000"
+                },
+                "earnings": {
+                  "raw": 46982000,
+                  "fmt": "46.98M",
+                  "longFmt": "46,982,000"
+                }
+              },
+              {
+                "date": 2015,
+                "revenue": {
+                  "raw": 414811000,
+                  "fmt": "414.81M",
+                  "longFmt": "414,811,000"
+                },
+                "earnings": {
+                  "raw": -158486000,
+                  "fmt": "-158.49M",
+                  "longFmt": "-158,486,000"
+                }
+              }
+            ],
+            "quarterly": [
+              {
+                "date": "2Q2015",
+                "revenue": {
+                  "raw": 168399000,
+                  "fmt": "168.4M",
+                  "longFmt": "168,399,000"
+                },
+                "earnings": {
+                  "raw": -232459000,
+                  "fmt": "-232.46M",
+                  "longFmt": "-232,459,000"
+                }
+              },
+              {
+                "date": "3Q2015",
+                "revenue": {
+                  "raw": 130800000,
+                  "fmt": "130.8M",
+                  "longFmt": "130,800,000"
+                },
+                "earnings": {
+                  "raw": 16432000,
+                  "fmt": "16.43M",
+                  "longFmt": "16,432,000"
+                }
+              },
+              {
+                "date": "4Q2015",
+                "revenue": {
+                  "raw": 6102000,
+                  "fmt": "6.1M",
+                  "longFmt": "6,102,000"
+                },
+                "earnings": {
+                  "raw": 36265000,
+                  "fmt": "36.27M",
+                  "longFmt": "36,265,000"
+                }
+              },
+              {
+                "date": "1Q2016",
+                "revenue": {
+                  "raw": 103044000,
+                  "fmt": "103.04M",
+                  "longFmt": "103,044,000"
+                },
+                "earnings": {
+                  "raw": 22281000,
+                  "fmt": "22.28M",
+                  "longFmt": "22,281,000"
+                }
+              }
+            ]
+          }
+        },
+        "upgradeDowngradeHistory": {
+          "history": [
+            {
+              "epochGradeDate": 1468454400,
+              "firm": "Raymond James",
+              "toGrade": "Mkt Perform",
+              "fromGrade": "Outperform",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1461110400,
+              "firm": "BofA/Merrill",
+              "toGrade": "Neutral",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1461024000,
+              "firm": "Susquehanna",
+              "toGrade": "Neutral",
+              "fromGrade": "Positive",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1460937600,
+              "firm": "Needham",
+              "toGrade": "Hold",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1451952000,
+              "firm": "Raymond James",
+              "toGrade": "Outperform",
+              "fromGrade": "Strong Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1438732800,
+              "firm": "Susquehanna",
+              "toGrade": "Positive",
+              "fromGrade": "Neutral",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1423008000,
+              "firm": "Dougherty & Company",
+              "toGrade": "Buy",
+              "fromGrade": "Neutral",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1420761600,
+              "firm": "Needham",
+              "toGrade": "Buy",
+              "fromGrade": "Hold",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1401753600,
+              "firm": "Needham",
+              "toGrade": "Hold",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1383696000,
+              "firm": "Dougherty & Company",
+              "toGrade": "Buy",
+              "fromGrade": "Neutral",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1335916800,
+              "firm": "Avian",
+              "toGrade": "Neutral",
+              "fromGrade": "Negative",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1317600000,
+              "firm": "Needham",
+              "toGrade": "Hold",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1311724800,
+              "firm": "Barclays Capital",
+              "toGrade": "Equal Weight",
+              "fromGrade": "Overweight",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1311292800,
+              "firm": "Dougherty & Company",
+              "toGrade": "Neutral",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1296000000,
+              "firm": "Dougherty & Company",
+              "toGrade": "Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 1292889600,
+              "firm": "Auriga U.S.A",
+              "toGrade": "Hold",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 1292544000,
+              "firm": "Barclays Capital",
+              "toGrade": "Overweight",
+              "fromGrade": "Equal Weight",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1273190400,
+              "firm": "Merriman",
+              "toGrade": "Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 1231977600,
+              "firm": "Wunderlich",
+              "toGrade": "Hold",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 1210291200,
+              "firm": "JP Morgan",
+              "toGrade": "Overweight",
+              "fromGrade": "Neutral",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1177891200,
+              "firm": "Matrix Research",
+              "toGrade": "Hold",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1173225600,
+              "firm": "Matrix Research",
+              "toGrade": "Buy",
+              "fromGrade": "Sell",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1153267200,
+              "firm": "Stanford Research",
+              "toGrade": "Hold",
+              "fromGrade": "Sell",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1148947200,
+              "firm": "Stanford Research",
+              "toGrade": "Sell",
+              "fromGrade": "Hold",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1148947200,
+              "firm": "RBC Capital Mkts",
+              "toGrade": "Sector Perform",
+              "fromGrade": "Underperform",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1146096000,
+              "firm": "Soleil",
+              "toGrade": "Hold",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1144022400,
+              "firm": "Goldman Sachs",
+              "toGrade": "In-Line",
+              "fromGrade": "Underperform",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1140998400,
+              "firm": "Citigroup",
+              "toGrade": "Hold",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1140134400,
+              "firm": "Needham & Co",
+              "toGrade": "Buy",
+              "fromGrade": "Hold",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1139356800,
+              "firm": "Lehman Brothers",
+              "toGrade": "Equal-weight",
+              "fromGrade": "Underweight",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1138060800,
+              "firm": "RBC Capital Mkts",
+              "toGrade": "Underperform",
+              "fromGrade": "Sector Perform",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1137456000,
+              "firm": "Stanford Research",
+              "toGrade": "Hold",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1135296000,
+              "firm": "Soleil",
+              "toGrade": "Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 1129766400,
+              "firm": "Needham & Co",
+              "toGrade": "Hold",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1128902400,
+              "firm": "Citigroup",
+              "toGrade": "Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 1127865600,
+              "firm": "JP Morgan",
+              "toGrade": "Neutral",
+              "fromGrade": "Underweight",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1124064000,
+              "firm": "Stanford Research",
+              "toGrade": "Buy",
+              "fromGrade": "Hold",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1114128000,
+              "firm": "Needham & Co",
+              "toGrade": "Buy",
+              "fromGrade": "Hold",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1112313600,
+              "firm": "Fulcrum",
+              "toGrade": "Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 1110240000,
+              "firm": "Susquehanna Financial",
+              "toGrade": "Net Neutral",
+              "fromGrade": "Net Negative",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1108684800,
+              "firm": "CIBC Wrld Mkts",
+              "toGrade": "Sector Outperform",
+              "fromGrade": "Sector Underperform",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1100822400,
+              "firm": "Goldman Sachs",
+              "toGrade": "Underperform",
+              "fromGrade": "In-Line",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1098403200,
+              "firm": "CIBC Wrld Mkts",
+              "toGrade": "Sector Underperform",
+              "fromGrade": "Sector Perform",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1096416000,
+              "firm": "Lehman Brothers",
+              "toGrade": "Underweight",
+              "fromGrade": "Equal-weight",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1095811200,
+              "firm": "RBC Capital Mkts",
+              "toGrade": "Sector Perform",
+              "fromGrade": "Outperform",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1089590400,
+              "firm": "Merrill Lynch",
+              "toGrade": "Sell",
+              "fromGrade": "Neutral",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1084838400,
+              "firm": "RBC Capital Mkts",
+              "toGrade": "Outperform",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 1076976000,
+              "firm": "Barrington Research",
+              "toGrade": "Outperform",
+              "fromGrade": "Mkt Perform",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1076976000,
+              "firm": "Needham & Co",
+              "toGrade": "Buy",
+              "fromGrade": "Hold",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1075766400,
+              "firm": "Goldman Sachs",
+              "toGrade": "In-Line",
+              "fromGrade": "Outperform",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1067904000,
+              "firm": "Goldman Sachs",
+              "toGrade": "Outperform",
+              "fromGrade": "In-Line",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1064793600,
+              "firm": "Adams Harkness",
+              "toGrade": "Strong Buy",
+              "fromGrade": "Mkt Perform",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1059523200,
+              "firm": "Barrington Research",
+              "toGrade": "Mkt Perform",
+              "fromGrade": "Outperform",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1055203200,
+              "firm": "Adams Harkness",
+              "toGrade": "Mkt Perform",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1050019200,
+              "firm": "JP Morgan",
+              "toGrade": "Underweight",
+              "fromGrade": "Neutral",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1046131200,
+              "firm": "Barrington Research",
+              "toGrade": "Outperform",
+              "fromGrade": "Mkt Perform",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1041984000,
+              "firm": "Adams Harkness",
+              "toGrade": "Buy",
+              "fromGrade": "Mkt Perform",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1036627200,
+              "firm": "JP Morgan",
+              "toGrade": "Neutral",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 1035331200,
+              "firm": "Thomas Weisel",
+              "toGrade": "Mkt Perform",
+              "fromGrade": "Attractive",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1033689600,
+              "firm": "Morgan Stanley",
+              "toGrade": "Underweight",
+              "fromGrade": "Equal-weight",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1028851200,
+              "firm": "Needham & Co",
+              "toGrade": "Hold",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 1027641600,
+              "firm": "Goldman Sachs",
+              "toGrade": "Trading Buy",
+              "fromGrade": "Mkt Perform",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 1027036800,
+              "firm": "Adams Harkness",
+              "toGrade": "Mkt Perform",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1026172800,
+              "firm": "Merrill Lynch",
+              "toGrade": "NT Neutral",
+              "fromGrade": "NT Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1025136000,
+              "firm": "Investec Inc",
+              "toGrade": "Buy",
+              "fromGrade": "Strong Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1022198400,
+              "firm": "Goldman Sachs",
+              "toGrade": "Mkt Perform",
+              "fromGrade": "Mkt Outperform",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1017964800,
+              "firm": "Banc of America Sec",
+              "toGrade": "Mkt Perform",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 1017705600,
+              "firm": "Investec PMG",
+              "toGrade": "Strong Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 1012348800,
+              "firm": "Thomas Weisel",
+              "toGrade": "Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 1010707200,
+              "firm": "Adams Harkness",
+              "toGrade": "Buy",
+              "fromGrade": "Strong Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 1007337600,
+              "firm": "Adams Harkness",
+              "toGrade": "Strong Buy",
+              "fromGrade": "Buy",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 996624000,
+              "firm": "Merrill Lynch",
+              "toGrade": "NT Accum",
+              "fromGrade": "NT Neutral",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 991267200,
+              "firm": "Barrington Research",
+              "toGrade": "LT Buy",
+              "fromGrade": "Hold",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 976665600,
+              "firm": "Merrill Lynch",
+              "toGrade": "NT Neutral",
+              "fromGrade": "NT Accum",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 973036800,
+              "firm": "Mrgn Stnly Dn Wttr",
+              "toGrade": "Outperform",
+              "fromGrade": "Strong Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 971395200,
+              "firm": "Merrill Lynch",
+              "toGrade": "NT Accum",
+              "fromGrade": "NT Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 971395200,
+              "firm": "PaineWebber",
+              "toGrade": "Attractive",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 965088000,
+              "firm": "PaineWebber",
+              "toGrade": "Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 963273600,
+              "firm": "William Blair",
+              "toGrade": "Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 955929600,
+              "firm": "Barrington Resch",
+              "toGrade": "Strong Buy",
+              "fromGrade": "Buy",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 955411200,
+              "firm": "Advest Inc",
+              "toGrade": "Strong Buy",
+              "fromGrade": "Market Perform",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 954892800,
+              "firm": "Adams Harkness",
+              "toGrade": "Accumulate",
+              "fromGrade": "Market Perform",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 933638400,
+              "firm": "Bear Stearns",
+              "toGrade": "Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 932083200,
+              "firm": "Advest Inc",
+              "toGrade": "Market Perform",
+              "fromGrade": "Buy",
+              "action": "down"
+            },
+            {
+              "epochGradeDate": 927244800,
+              "firm": "Advest Inc",
+              "toGrade": "Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 920851200,
+              "firm": "Mrgn Stnly Dn Wttr",
+              "toGrade": "Strong Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 920332800,
+              "firm": "CIBC Oppenheimer",
+              "toGrade": "Strong Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 920246400,
+              "firm": "DLJ",
+              "toGrade": "Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 918432000,
+              "firm": "Merrill Lynch",
+              "toGrade": "NT Accumulate",
+              "fromGrade": "NT Neutral",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 917568000,
+              "firm": "BB Rbrtsn Stphns",
+              "toGrade": "Buy",
+              "fromGrade": "LT Attractive",
+              "action": "up"
+            },
+            {
+              "epochGradeDate": 917481600,
+              "firm": "NB Montgomery",
+              "toGrade": "Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 914198400,
+              "firm": "Adams Harkness",
+              "toGrade": "Mkt Perform",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 913161600,
+              "firm": "Merrill Lynch",
+              "toGrade": "NT Ntrl/LT Buy",
+              "fromGrade": "",
+              "action": "init"
+            },
+            {
+              "epochGradeDate": 890784000,
+              "firm": "Goldman Sachs",
+              "toGrade": "Mkt Outperformer",
+              "fromGrade": "",
+              "action": "init"
+            }
+          ],
+          "maxAge": 86400
+        },
+        "defaultKeyStatistics": {
+          "maxAge": 1,
+          "enterpriseValue": {
+            "raw": 1394436096,
+            "fmt": "1.39B",
+            "longFmt": "1,394,436,096"
+          },
+          "forwardPE": {
+            "raw": 14.285212,
+            "fmt": "14.29"
+          },
+          "profitMargins": {
+            "raw": 0.25214002,
+            "fmt": "25.21%"
+          },
+          "floatShares": {
+            "raw": 37470602,
+            "fmt": "37.47M",
+            "longFmt": "37,470,602"
+          },
+          "sharesOutstanding": {
+            "raw": 39569800,
+            "fmt": "39.57M",
+            "longFmt": "39,569,800"
+          },
+          "sharesShort": {
+            "raw": 835875,
+            "fmt": "835.88k",
+            "longFmt": "835,875"
+          },
+          "sharesShortPriorMonth": {
+            "raw": 947599,
+            "fmt": "947.6k",
+            "longFmt": "947,599"
+          },
+          "heldPercentInsiders": {
+            "raw": 0.00522,
+            "fmt": "0.52%"
+          },
+          "heldPercentInstitutions": {
+            "raw": 0.975,
+            "fmt": "97.50%"
+          },
+          "shortRatio": {
+            "raw": 3.26,
+            "fmt": "3.26"
+          },
+          "shortPercentOfFloat": {
+            "raw": 0.023456,
+            "fmt": "2.35%"
+          },
+          "beta": {
+            "raw": 1.13137,
+            "fmt": "1.13"
+          },
+          "morningStarOverallRating": {},
+          "morningStarRiskRating": {},
+          "category": null,
+          "bookValue": {
+            "raw": 8.112,
+            "fmt": "8.11"
+          },
+          "priceToBook": {
+            "raw": 5.0012326,
+            "fmt": "5.00"
+          },
+          "annualReportExpenseRatio": {},
+          "ytdReturn": {},
+          "beta3Year": {},
+          "totalAssets": {},
+          "yield": {},
+          "fundFamily": null,
+          "fundInceptionDate": {},
+          "legalType": null,
+          "ytdReturn": {},
+          "threeYearAverageReturn": {},
+          "fiveYearAverageReturn": {},
+          "priceToSalesTrailing12Months": {},
+          "lastFiscalYearEnd": {
+            "raw": 1451520000,
+            "fmt": "2015-12-31"
+          },
+          "nextFiscalYearEnd": {
+            "raw": 1514678400,
+            "fmt": "2017-12-31"
+          },
+          "mostRecentQuarter": {
+            "raw": 1467244800,
+            "fmt": "2016-06-30"
+          },
+          "earningsQuarterlyGrowth": {},
+          "revenueQuarterlyGrowth": {},
+          "netIncomeToCommon": {
+            "raw": 82277000,
+            "fmt": "82.28M",
+            "longFmt": "82,277,000"
+          },
+          "trailingEps": {
+            "raw": 2.609,
+            "fmt": "2.61"
+          },
+          "forwardEps": {
+            "raw": 2.84,
+            "fmt": "2.84"
+          },
+          "pegRatio": {
+            "raw": 0.31,
+            "fmt": "0.31"
+          },
+          "lastSplitFactor": null,
+          "lastSplitDate": {},
+          "enterpriseToRevenue": {
+            "raw": 3.332,
+            "fmt": "3.33"
+          },
+          "enterpriseToEbitda": {
+            "raw": 13.116,
+            "fmt": "13.12"
+          },
+          "52WeekChange": {
+            "raw": 0.44758797,
+            "fmt": "44.76%"
+          },
+          "SandP52WeekChange": {
+            "raw": 0.027235389,
+            "fmt": "2.72%"
+          },
+          "lastDividendValue": {},
+          "lastCapGain": {},
+          "annualHoldingsTurnover": {}
+        },
+        "summaryProfile": {
+          "address1": "1625 Sharp Point Drive",
+          "city": "Fort Collins",
+          "state": "CO",
+          "zip": "80525",
+          "country": "United States",
+          "phone": "970-221-4670",
+          "fax": "970-407-5296",
+          "website": "http://www.advanced-energy.com",
+          "industry": "Diversified Electronics",
+          "sector": "Technology",
+          "longBusinessSummary": "Advanced Energy Industries, Inc., together with its subsidiaries, designs, manufactures, sells, and supports power conversion products and solutions that transform power into various usable forms. The company offers thin film deposition power conversion systems, including direct current (DC), pulsed DC low frequency, high voltage, and radio frequency (RF) power supplies, as well as matching networks and remote plasma sources for reactive gas applications and RF instrumentation. Its power conversion systems are used by semiconductor, solar panel, and similar thin film manufacturers, including flat panel display, data storage, industrial hard coating and ophthalmic optical coating equipment makers, and architectural glass manufacturers. The company also provides power control modules and thermal instrumentation products for rapid thermal processing, chemical vapor deposition, crystal growing, and other semiconductor and solar applications, as well as in chemical processing, glass manufacturing, and other general industrial power applications. In addition, it offers repair, conversions, upgrades, and refurbishments services. The company markets and sells its products through direct sales force, independent sales representatives, and distributors in North America, Europe, and Asia. Advanced Energy Industries, Inc. was founded in 1981 and is headquartered in Fort Collins, Colorado.",
+          "fullTimeEmployees": 1382,
+          "companyOfficers": [],
+          "maxAge": 86400
+        },
+        "financialData": {
+          "maxAge": 86400,
+          "currentPrice": {
+            "raw": 40.57,
+            "fmt": "40.57"
+          },
+          "targetHighPrice": {
+            "raw": 46.0,
+            "fmt": "46.00"
+          },
+          "targetLowPrice": {
+            "raw": 34.0,
+            "fmt": "34.00"
+          },
+          "targetMeanPrice": {
+            "raw": 40.75,
+            "fmt": "40.75"
+          },
+          "targetMedianPrice": {
+            "raw": 41.5,
+            "fmt": "41.50"
+          },
+          "recommendationMean": {
+            "raw": 2.7,
+            "fmt": "2.70"
+          },
+          "recommendationKey": "hold",
+          "numberOfAnalystOpinions": {
+            "raw": 4,
+            "fmt": "4",
+            "longFmt": "4"
+          },
+          "totalCash": {
+            "raw": 215057008,
+            "fmt": "215.06M",
+            "longFmt": "215,057,008"
+          },
+          "totalCashPerShare": {
+            "raw": 5.421,
+            "fmt": "5.42"
+          },
+          "ebitda": {
+            "raw": 106318000,
+            "fmt": "106.32M",
+            "longFmt": "106,318,000"
+          },
+          "totalDebt": {
+            "raw": 0,
+            "fmt": null,
+            "longFmt": "0"
+          },
+          "quickRatio": {
+            "raw": 2.869,
+            "fmt": "2.87"
+          },
+          "currentRatio": {
+            "raw": 3.921,
+            "fmt": "3.92"
+          },
+          "totalRevenue": {
+            "raw": 418456000,
+            "fmt": "418.46M",
+            "longFmt": "418,456,000"
+          },
+          "debtToEquity": {},
+          "revenuePerShare": {
+            "raw": 10.409,
+            "fmt": "10.41"
+          },
+          "returnOnAssets": {
+            "raw": 0.123509996,
+            "fmt": "12.35%"
+          },
+          "returnOnEquity": {
+            "raw": 0.28261,
+            "fmt": "28.26%"
+          },
+          "grossProfits": {
+            "raw": 216870000,
+            "fmt": "216.87M",
+            "longFmt": "216,870,000"
+          },
+          "freeCashflow": {},
+          "operatingCashflow": {},
+          "earningsGrowth": {},
+          "revenueGrowth": {
+            "raw": -0.132,
+            "fmt": "-13.20%"
+          },
+          "grossMargins": {
+            "raw": 0.51792,
+            "fmt": "51.79%"
+          },
+          "ebitdaMargins": {
+            "raw": 0.25406998,
+            "fmt": "25.41%"
+          },
+          "operatingMargins": {
+            "raw": 0.24014999,
+            "fmt": "24.01%"
+          },
+          "profitMargins": {
+            "raw": 0.25214002,
+            "fmt": "25.21%"
+          }
+        }
+      }
+    ],
+    "error": null
+  }
+}

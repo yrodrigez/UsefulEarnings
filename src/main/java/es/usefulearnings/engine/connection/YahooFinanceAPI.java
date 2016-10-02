@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Yago.
  */
-public class YahooLinks {
+public class YahooFinanceAPI {
 
   //Company
   public static final String COMPANY_ASSET_PROFILE              = "assetProfile";
@@ -26,12 +26,12 @@ public class YahooLinks {
 
   private static final String DATE_QUERY = "?date=";
 
-  private static YahooLinks yahooLinks = new YahooLinks();
+  private static YahooFinanceAPI yahooLinks = new YahooFinanceAPI();
 
-  public static YahooLinks getInstance() {
+  public static YahooFinanceAPI getInstance() {
     return yahooLinks;
   }
-  private YahooLinks() {
+  private YahooFinanceAPI() {
     companyQuoteSummaryModules.add(COMPANY_CASHFLOW_STATEMENT_HISTORY);
     companyQuoteSummaryModules.add(COMPANY_ASSET_PROFILE);
     companyQuoteSummaryModules.add(COMPANY_BALANCE_SHEET_HISTORY);
@@ -60,12 +60,12 @@ public class YahooLinks {
 
 
   /**
-   * Generates a link to the Yahoo Finance API to get the specific modules on YahooLinks.companyQuoteSummaryModules Map
+   * Generates a link to the Yahoo Finance API to get the specific modules on YahooFinanceAPI.companyQuoteSummaryModules Map
    * @param companySymbol company's symbol to search in Yahoo! Finance
    * @param quoteSummaryModules Collection that contains the specific modules to generate the link
    * @return Link to quote summary with the specified modules in companyQuoteSummaryModules
    * @throws IllegalArgumentException if companyQuoteSummaryModules is empty or modules in that collection doesn't match with
-   * the modules on YahooLinks.companyQuoteSummaryModules Map
+   * the modules on YahooFinanceAPI.companyQuoteSummaryModules Map
    */
   public URL getYahooQuoteSummaryLink(String companySymbol, String ... quoteSummaryModules) throws IllegalArgumentException, MalformedURLException {
     if(quoteSummaryModules.length == 0) throw new IllegalArgumentException("Quote Summary modules cannot bew empty");
@@ -152,16 +152,16 @@ public class YahooLinks {
     companyQuoteSummaryModules.put("Balance Sheet History Quarterly", "balanceSheetHistoryQuarterly"); //igual al anterior pero qutrimestral
 
     // modules=earningsHistory.json,earningsTrend.json,industryTrend.json
-    companyQuoteSummaryModules.put("Earnings History", "earningsHistory.json"); // sin definir
-    companyQuoteSummaryModules.put("Earnings Trend", "earningsTrend.json"); // sin definir
-    companyQuoteSummaryModules.put("Industry Trend", "industryTrend.json"); // sin definir
+    companyQuoteSummaryModules.put("Earnings History", "earningsHistory"); // sin definir
+    companyQuoteSummaryModules.put("Earnings Trend", "earningsTrend"); // sin definir
+    companyQuoteSummaryModules.put("Industry Trend", "industryTrend"); // sin definir
 
     companyQuoteSummaryModules.put("Institution Ownership", "institutionOwnership.json"); // *** ¿Basura? ***
     companyQuoteSummaryModules.put("Major Direct Holders", "majorDirectHolders"); // *** ¿BASURA? ***
     companyQuoteSummaryModules.put("Major Holders Breakdown", "majorHoldersBreakdown");// *** ¿BASURA? ***
     companyQuoteSummaryModules.put("Insider Transactions", "insiderTransactions");// *** ¿BASURA? ***
-    companyQuoteSummaryModules.put("Insider Holders", "insiderHolders.json");// *** ¿BASURA? ***
-    companyQuoteSummaryModules.put("Net Share Purchase Activity", "netSharePurchaseActivity.json");// *** ¿BASURA? ***
+    companyQuoteSummaryModules.put("Insider Holders", "insiderHolders");// *** ¿BASURA? ***
+    companyQuoteSummaryModules.put("Net Share Purchase Activity", "netSharePurchaseActivity");// *** ¿BASURA? ***
 
     companyQuoteSummaryModules.put("Sec Filings", "secFilings"); // *** BASURA ***
     companyQuoteSummaryModules.put("Recommendation Trend", "recommendationTrend");// datos para los gráficos del sumario... *** BASURA de verdad ***

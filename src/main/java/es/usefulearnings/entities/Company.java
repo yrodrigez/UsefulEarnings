@@ -20,7 +20,7 @@ public class Company implements Serializable, Entity, Savable {
   @EntityParameter(name = "Symbol", parameterType = ParameterType.IGNORE, isMaster = true)
   private String symbol;
 
-  @EntityParameter(name = "Stock", parameterType = ParameterType.IGNORE, isMaster = true)
+  @EntityParameter(name = "Market", parameterType = ParameterType.IGNORE, isMaster = true)
   private String stockName;
 
   @EntityParameter(name = "Profile", parameterType = ParameterType.INNER_CLASS, isMaster = true)

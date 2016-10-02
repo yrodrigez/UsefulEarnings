@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class CalendarEvents extends CompanyData implements Serializable {
 
   @JsonProperty("earnings")
-  @EntityParameter(name = "Earnings", parameterType = ParameterType.INNER_CLASS)
+  @EntityParameter(name = "Earnings", parameterType = ParameterType.INNER_CLASS, isMaster = true)
   private Earnings earnings;
 
   @JsonProperty("exDividendDate")
