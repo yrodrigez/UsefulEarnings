@@ -48,7 +48,7 @@ public class FilterController implements Initializable {
 
     new Thread(()-> {
       try {
-        companyFilterView = CompanyViewHelper.getInstance().getEntityFilterView();
+        companyFilterView = CompanyViewHelper.getInstance().getFilterableView();
         Platform.runLater(() -> {
           Node filterView = companyFilterView.getView();
           centerPane.setCenter(filterView);

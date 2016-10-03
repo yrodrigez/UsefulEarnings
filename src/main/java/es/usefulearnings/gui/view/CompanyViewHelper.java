@@ -33,7 +33,7 @@ import java.util.Collection;
  *
  * @author Yago Rodríguez
  */
-public class CompanyViewHelper implements ViewHelper<Company> {
+public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
   private static CompanyViewHelper _instance = new CompanyViewHelper();
 
   public static CompanyViewHelper getInstance() {
@@ -70,7 +70,7 @@ public class CompanyViewHelper implements ViewHelper<Company> {
   }
 
   @Override
-  public FilterView getEntityFilterView() throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
+  public FilterView getFilterableView() throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
     return new FilterView(Company.class);
   }
 

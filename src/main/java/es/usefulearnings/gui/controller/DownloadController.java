@@ -11,7 +11,11 @@ import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.utils.NoStocksFoundException;
 import es.usefulearnings.utils.ResourcesHelper;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableIntegerValue;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -24,10 +28,7 @@ import javafx.scene.layout.VBox;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author Yago on 04/09/2016.
@@ -130,9 +131,13 @@ public class DownloadController implements Initializable {
     ScrollPane scrollPane = new ScrollPane(innerVBox);
     scrollPane.setStyle("-fx-background-color: white");
     Label activeCoresLabel = new Label();
-    activeCoresLabel.textProperty().bind(new SimpleIntegerProperty(downloadButtonLocker).asString());
+
+    ObservableValue<Integer> integerProperty = new ReadOnlyObjectWrapper<>(downloadButtonLocker);
+    integerProperty.addListener((observable, oldValue, newValue) -> System.out.println(newValue));
+    activeCoresLabel.textProperty().bind(Bindings.format("Active downloads: %o", integerProperty));
+
     HBox coresInfo = new HBox();
-    coresInfo.getChildren().addAll(new Label("Active downloads: "), activeCoresLabel);
+    coresInfo.getChildren().addAll(activeCoresLabel);
     innerVBox.getChildren().add(coresInfo);
     for (
       DownloaderTask task :
@@ -205,8 +210,10 @@ public class DownloadController implements Initializable {
   private void downloadAllCompaniesData(){
     Core.getInstance().setDataLoaded(false); // is Downloading!
     tasks = new ArrayList<>();
+    JSONHTTPClient.getInstance().clearCache();
 
     List<Entity> allCompanies = new ArrayList<>(Core.getInstance().getAllCompanies().values());
+
 
     for(int i = 0; i < MAX_THREADS; i++){
       int from = i * (Core.getInstance().getAllCompanies().values().size() / MAX_THREADS);
@@ -229,8 +236,8 @@ public class DownloadController implements Initializable {
 
   private void downloadCompleted(){
     if(--downloadButtonLocker == 0){
-       JSONHTTPClient.getInstance().clearCache();
         try {
+          JSONHTTPClient.getInstance().clearCache();
           downloadedData.save(new File(ResourcesHelper.getInstance().getSearchesPath()));
           System.out.println("Activating filter");
           Core.getInstance().setDataLoaded(true);
@@ -249,5 +256,6 @@ public class DownloadController implements Initializable {
         stopButton.setDisable(true);
       });
     }
+    System.out.println("Active downloads: " + downloadButtonLocker);
   }
 }

@@ -49,7 +49,7 @@ public class DefaultKeyStatistics extends CompanyData implements Serializable {
   private YahooField shortPercentOfFloat;
 
   @JsonProperty("beta")
-  @EntityParameter(name = "Beta", parameterType = ParameterType.YAHOO_FIELD_NUMERIC, isMaster = true)
+  @EntityParameter(name = "Beta", parameterType = ParameterType.YAHOO_FIELD_NUMERIC)
   private YahooField beta;
 
   @JsonProperty("bookValue")
@@ -121,7 +121,7 @@ public class DefaultKeyStatistics extends CompanyData implements Serializable {
   private YahooLongFormatField sharesShortPriorMonth;
 
   @JsonProperty("netIncomeToCommon")
-  @EntityParameter(name = "ROE", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD, isMaster = true)
+  @EntityParameter(name = "ROE", parameterType = ParameterType.YAHOO_LONG_FORMAT_FIELD)
   private YahooLongFormatField netIncomeToCommon;
 
   @JsonProperty("enterpriseValue")

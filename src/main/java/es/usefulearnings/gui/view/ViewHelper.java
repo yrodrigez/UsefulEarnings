@@ -11,6 +11,5 @@ import java.lang.reflect.InvocationTargetException;
  */
 interface ViewHelper<E>  {
  Node getViewForEntity(E entity) throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException;
- FilterView getEntityFilterView() throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException;
  void showOnWindow(E entity);
 }

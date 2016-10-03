@@ -42,19 +42,22 @@ public class FilterViewHelper implements ViewHelper<Filter> {
   public Node getViewForEntity(
     Filter filter
   ) throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
+
     GridPane gridPane = new GridPane();
     gridPane.setHgap(20);
     gridPane.setStyle("-fx-background-color: white");
 
     Iterator it = filter.getEntities().iterator();
     int i = 0;
-    while (it.hasNext()) {
+    final int MAX_COMPANIES_TO_SHOW = 200;
+    ArrayList<Label> header = null;
+    while (it.hasNext() && i < MAX_COMPANIES_TO_SHOW) {
       Object entity = it.next();
 
       if (i == 0) {
-        ArrayList<Label> labels = setHeader(entity);
-        for (int j = 0; j < labels.size(); j++) {
-          gridPane.add(labels.get(j), j, i);
+        header = setHeader(entity);
+        for (int j = 0; j < header.size(); j++) {
+          gridPane.add(header.get(j), j, i);
         }
         i++;
       }
@@ -77,19 +80,12 @@ public class FilterViewHelper implements ViewHelper<Filter> {
               event.consume();
             }
           );
-          gridPane.add(detailsButton, j + 1, i);
+          gridPane.add(detailsButton, header.size() + 1, i);
         }
       }
       i++;
     }
     return gridPane;
-  }
-
-  @Override
-  public FilterView getEntityFilterView(
-
-  ) throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
-    return null;
   }
 
   @Override
@@ -135,6 +131,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
               Object innerClass;
               if ((innerClass = method.invoke(object)) != null)
                 labels.addAll(getViewForObject(innerClass));
+              else labels.add(new Label(""));
               break;
 
             case INNER_CLASS_COLLECTION:
@@ -144,14 +141,14 @@ public class FilterViewHelper implements ViewHelper<Filter> {
                   Object innerObject = method.invoke(anInnerClassCollection);
                   labels.addAll(getViewForObject(innerObject));
                 }
-              }
+              } else labels.add(new Label(""));
               break;
 
             case RAW_NUMERIC:
               Object rawNum;
               if ((rawNum = method.invoke(object)) != null) {
                 labels.add(new Label(rawNum.toString()));
-              }
+              }  else labels.add(new Label(""));
               break;
 
             case URL:
@@ -160,6 +157,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
               String string;
               if ((string = (String) method.invoke(object)) != null)
                 labels.add(new Label(string));
+              else labels.add(new Label(""));
               break;
 
             case YAHOO_FIELD_DATE:
@@ -167,7 +165,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
               if ((yahooField = (YahooField) method.invoke(object)) != null) {
                 Label dateLabel = YahooFieldNodeRetriever.getInstance().getYahooDateLabel(yahooField);
                 labels.add(dateLabel);
-              }
+              }  else labels.add(new Label(""));
               break;
 
             case YAHOO_FIELD_DATE_COLLECTION:
@@ -175,7 +173,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
               if ((collection = (Collection<YahooField>) method.invoke(object)) != null) {
                 Label datesLabel = YahooFieldNodeRetriever.getInstance().getYahooDateCollectionLabel(collection);
                 labels.add(datesLabel);
-              }
+              }  else labels.add(new Label(""));
               break;
 
             case YAHOO_FIELD_NUMERIC:
@@ -184,7 +182,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
                 Label numericLabel =
                   YahooFieldNodeRetriever.getInstance().getYahooFieldNumericLabel(numericField);
                 labels.add(numericLabel);
-              }
+              }  else labels.add(new Label(""));
               break;
 
             case YAHOO_LONG_FORMAT_FIELD:
@@ -193,7 +191,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
                 Label longFormatLabel =
                   YahooFieldNodeRetriever.getInstance().getYahooLongFormatLabel(longFormatField);
                 labels.add(longFormatLabel);
-              }
+              }  else labels.add(new Label(""));
               break;
 
 
@@ -223,7 +221,9 @@ public class FilterViewHelper implements ViewHelper<Filter> {
         if (isMaster) {
           switch (parameterType) {
             case INNER_CLASS:
-              labels.addAll(setHeader(method.invoke(entity)));
+              Object innerClass;
+              if((innerClass = method.invoke(entity)) != null)
+                labels.addAll(setHeader(innerClass));
               break;
 
             case INNER_CLASS_COLLECTION:
