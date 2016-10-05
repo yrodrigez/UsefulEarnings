@@ -29,7 +29,9 @@ public class FilterView {
   private Map<Field, RestrictionValue> _filterParams;
   private Node _view;
 
-  public FilterView(Class<?> anyClass) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException {
+  public FilterView(
+    Class<?> anyClass
+  ) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException {
     _filterParams = new HashMap<>();
     _view = getFilterView(anyClass, _filterParams);
   }

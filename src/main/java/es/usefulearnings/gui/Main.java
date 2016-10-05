@@ -61,15 +61,13 @@ public class Main extends Application {
     stage.setTitle("UsefulEarnings");
     stage.setScene(createScene(loadMainPane()));
     stage.initStyle(StageStyle.UNDECORATED);
-    //stage.setMaximized(Boolean.TRUE);
     stage.show();
   }
 
 
   public static void main(String[] args) {
-
-    System.setProperty("sun.net.client.defaultConnectTimeout", "20000");
-    System.setProperty("sun.net.client.defaultReadTimeout", "20000");
+    System.setProperty("sun.net.client.defaultConnectTimeout", "60000");
+    System.setProperty("sun.net.client.defaultReadTimeout", "60000");
     launch(args);
   }
 }

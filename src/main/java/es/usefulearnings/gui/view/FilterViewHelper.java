@@ -4,25 +4,29 @@ import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.engine.EntityParameterBeanWorker;
 import es.usefulearnings.engine.filter.Filter;
-import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.YahooField;
 import es.usefulearnings.entities.YahooLongFormatField;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.beans.IntrospectionException;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * @author Yago on 01/10/2016.
@@ -43,49 +47,30 @@ public class FilterViewHelper implements ViewHelper<Filter> {
     Filter filter
   ) throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
 
-    GridPane gridPane = new GridPane();
-    gridPane.setHgap(20);
-    gridPane.setStyle("-fx-background-color: white");
+    TableView<Map<String, String>> tableView = new TableView<>();
+    tableView.setEditable(false);
+    tableView.setStyle("-fx-background-color: white");
 
-    Iterator it = filter.getEntities().iterator();
-    int i = 0;
-    final int MAX_COMPANIES_TO_SHOW = 200;
-    ArrayList<Label> header = null;
-    while (it.hasNext() && i < MAX_COMPANIES_TO_SHOW) {
-      Object entity = it.next();
-
-      if (i == 0) {
-        header = setHeader(entity);
-        for (int j = 0; j < header.size(); j++) {
-          gridPane.add(header.get(j), j, i);
-        }
-        i++;
-      }
-
-      ArrayList<Label> labels = getViewForObject(entity);
-      for (int j = 0; j < labels.size(); j++) {
-        gridPane.add(labels.get(j), j, i);
-
-        if (labels.size() == j + 1) {
-          Button detailsButton = new Button("details");
-          detailsButton.setStyle(
-            "-fx-background-color: #400090;"
-              + "-fx-text-fill: white;"
-              + "-fx-background-radius: 0%;"
-              + "-fx-border-color: transparent;"
-          );
-          detailsButton.setOnAction(
-            event -> {
-              CompanyViewHelper.getInstance().showOnWindow((Company) entity);
-              event.consume();
-            }
-          );
-          gridPane.add(detailsButton, header.size() + 1, i);
-        }
-      }
-      i++;
+    ArrayList<Map<String, String>> valuesArray = new ArrayList<>();
+    for(Object object : filter.getEntities()) {
+      Map<String, String> values = getValuesAsStringsForObject(object);
+      valuesArray.add(values);
     }
-    return gridPane;
+
+    for(Object o : filter.getEntities()){
+      List<String> headers = getHeaders(o);
+      for (String s :headers){
+        TableColumn<Map<String, String>, String> tableColumn = new TableColumn<>(s);
+        tableColumn.setId(s);
+        tableColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(s)));
+
+        tableView.getColumns().add(tableColumn);
+      }
+      break;
+    }
+
+    tableView.getItems().addAll(valuesArray);
+    return tableView;
   }
 
   @Override
@@ -94,7 +79,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
     dialogStage.setTitle(filter.toString());
     dialogStage.initModality(Modality.WINDOW_MODAL);
     BorderPane borderPane = new BorderPane(new Label("Loading data..."));
-    borderPane.setPrefSize(1600, 600);
+    borderPane.setPrefSize(1400, 768);
     Scene scene = new Scene(borderPane);
     new Thread(() -> {
       try {
@@ -102,9 +87,11 @@ public class FilterViewHelper implements ViewHelper<Filter> {
         Platform.runLater(() -> {
           ScrollPane scrollPane = new ScrollPane(view);
           scrollPane.setStyle("-fx-background-color: #ffffff;");
-
-          borderPane.setCenter(new ScrollPane(view));
-          borderPane.getCenter().autosize();
+          scrollPane.setFitToHeight(true);
+          scrollPane.setFitToWidth(true);
+          borderPane.setCenter(scrollPane);
+          borderPane.prefHeightProperty().bind(scene.heightProperty());
+          borderPane.prefWidthProperty().bind(scene.widthProperty());
         });
       } catch (IntrospectionException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
         AlertHelper.showExceptionAlert(e);
@@ -116,13 +103,14 @@ public class FilterViewHelper implements ViewHelper<Filter> {
   }
 
   @SuppressWarnings("unchecked")
-  private ArrayList<Label> getViewForObject(
+  private Map<String, String> getValuesAsStringsForObject(
     Object object
   ) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
-    ArrayList<Label> labels = new ArrayList<>();
+    Map<String, String> values = new HashMap<>();
     EntityParameterBeanWorker worker = new EntityParameterBeanWorker(
       (field, annotation, method, position) -> {
         EntityParameter parameter = (EntityParameter) annotation;
+        String header = parameter.name();
         boolean isMaster = parameter.isMaster();
         ParameterType parameterType = parameter.parameterType();
         if (isMaster) {
@@ -130,8 +118,8 @@ public class FilterViewHelper implements ViewHelper<Filter> {
             case INNER_CLASS:
               Object innerClass;
               if ((innerClass = method.invoke(object)) != null)
-                labels.addAll(getViewForObject(innerClass));
-              else labels.add(new Label(""));
+                values.putAll(getValuesAsStringsForObject(innerClass));
+              else values.put(header, "");
               break;
 
             case INNER_CLASS_COLLECTION:
@@ -139,16 +127,16 @@ public class FilterViewHelper implements ViewHelper<Filter> {
               if ((innerClassCollection = (ArrayList<Object>) method.invoke(object)) != null) {
                 for (Object anInnerClassCollection : innerClassCollection) {
                   Object innerObject = method.invoke(anInnerClassCollection);
-                  labels.addAll(getViewForObject(innerObject));
+                  values.putAll(getValuesAsStringsForObject(innerObject));
                 }
-              } else labels.add(new Label(""));
+              } else values.put(header, "");
               break;
 
             case RAW_NUMERIC:
               Object rawNum;
               if ((rawNum = method.invoke(object)) != null) {
-                labels.add(new Label(rawNum.toString()));
-              }  else labels.add(new Label(""));
+                values.put(header, rawNum.toString());
+              }  else values.put(header, "");
               break;
 
             case URL:
@@ -156,42 +144,38 @@ public class FilterViewHelper implements ViewHelper<Filter> {
             case RAW_STRING:
               String string;
               if ((string = (String) method.invoke(object)) != null)
-                labels.add(new Label(string));
-              else labels.add(new Label(""));
+                values.put(header, string);
+              else values.put(header, "");
               break;
 
             case YAHOO_FIELD_DATE:
               YahooField yahooField;
               if ((yahooField = (YahooField) method.invoke(object)) != null) {
-                Label dateLabel = YahooFieldNodeRetriever.getInstance().getYahooDateLabel(yahooField);
-                labels.add(dateLabel);
-              }  else labels.add(new Label(""));
+                String dateLabel = yahooField.getFmt();
+                values.put(header, dateLabel);
+              }  else values.put(header, "");
               break;
 
             case YAHOO_FIELD_DATE_COLLECTION:
               Collection<YahooField> collection;
               if ((collection = (Collection<YahooField>) method.invoke(object)) != null) {
                 Label datesLabel = YahooFieldNodeRetriever.getInstance().getYahooDateCollectionLabel(collection);
-                labels.add(datesLabel);
-              }  else labels.add(new Label(""));
+                values.put(header, datesLabel.getText());
+              }  else values.put(header, "");
               break;
 
             case YAHOO_FIELD_NUMERIC:
               YahooField numericField;
               if ((numericField = (YahooField) method.invoke(object)) != null) {
-                Label numericLabel =
-                  YahooFieldNodeRetriever.getInstance().getYahooFieldNumericLabel(numericField);
-                labels.add(numericLabel);
-              }  else labels.add(new Label(""));
+                values.put(header, numericField.getFmt());
+              }  else values.put(header, "");
               break;
 
             case YAHOO_LONG_FORMAT_FIELD:
               YahooLongFormatField longFormatField;
               if ((longFormatField = (YahooLongFormatField) method.invoke(object)) != null) {
-                Label longFormatLabel =
-                  YahooFieldNodeRetriever.getInstance().getYahooLongFormatLabel(longFormatField);
-                labels.add(longFormatLabel);
-              }  else labels.add(new Label(""));
+                values.put(header, longFormatField.getLongFmt());
+              }  else values.put(header, "");
               break;
 
 
@@ -205,13 +189,13 @@ public class FilterViewHelper implements ViewHelper<Filter> {
     );
 
     worker.walk(object.getClass());
-    return labels;
+    return values;
   }
 
-  private ArrayList<Label> setHeader(
+  private ArrayList<String> getHeaders(
     Object entity
   ) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
-    ArrayList<Label> labels = new ArrayList<>();
+    ArrayList<String> labels = new ArrayList<>();
     EntityParameterBeanWorker worker = new EntityParameterBeanWorker(
       (field, annotation, method, position) -> {
         EntityParameter parameter = (EntityParameter) annotation;
@@ -223,14 +207,14 @@ public class FilterViewHelper implements ViewHelper<Filter> {
             case INNER_CLASS:
               Object innerClass;
               if((innerClass = method.invoke(entity)) != null)
-                labels.addAll(setHeader(innerClass));
+                labels.addAll(getHeaders(innerClass));
               break;
 
             case INNER_CLASS_COLLECTION:
               break;
 
             default:
-              labels.add(new Label(header));
+              labels.add(header);
           }
         }
       });

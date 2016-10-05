@@ -195,7 +195,7 @@ public class MainController implements Initializable {
     ret.add(navigateButton);
 
     ImageView filterIcon = new ImageView(new Image(
-      Main.class.getResourceAsStream("icons/filter-white.png")
+      Main.class.getResourceAsStream("icons/filter-white.png"), 24, 24, true, true
     ));
     ToggleButton filterButton = new ToggleButton("", filterIcon);
     filterButton.getStyleClass().addAll("main-controller-button", "main-controller-right-button");
@@ -214,6 +214,8 @@ public class MainController implements Initializable {
       event.consume();
     });
     filterButton.setToggleGroup(group);
+    filterButton.maxWidthProperty().bind(navigateButton.widthProperty());
+    filterButton.maxHeightProperty().bind(navigateButton.heightProperty());
     ret.add(filterButton);
 
     ImageView downloadIcon = new ImageView(new Image(
