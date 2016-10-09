@@ -138,7 +138,7 @@ public class FilterView {
             numTextField.textProperty().addListener(
               (observable, oldValue, newValue) -> {
                 assert newValue != null;
-                if (newValue.matches("\\d*(\\.\\d*)?")) {
+                if (newValue.matches("\\d*(\\d+\\.\\d*)?")) {
                   numTextField.setStyle("");
                   if(numTextField.getTooltip() != null){
                     numTextField.getTooltip().hide();
