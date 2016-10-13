@@ -8,23 +8,17 @@ import es.usefulearnings.entities.YahooField;
 import es.usefulearnings.entities.YahooLongFormatField;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.beans.IntrospectionException;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -61,7 +55,6 @@ public class FilterViewHelper implements ViewHelper<Filter> {
       List<String> headers = getHeaders(o);
       for (String s :headers){
         TableColumn<Map<String, String>, String> tableColumn = new TableColumn<>(s);
-        tableColumn.setId(s);
         tableColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(s)));
 
         tableView.getColumns().add(tableColumn);
