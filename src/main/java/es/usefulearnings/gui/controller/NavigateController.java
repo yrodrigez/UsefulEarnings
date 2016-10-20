@@ -71,25 +71,7 @@ public class NavigateController implements Initializable {
     webEngine = webView.getEngine();
     webEngine.load("https://github.com/yrodrigez/UsefulEarnings/blob/master/README.md");
 
-    textFilter.textProperty().addListener(
-      (observable, oldSymbolEntry, newSymbolEntry) -> {
-        //remove the listener from the ListView so when it change don't crash
-        companies.getSelectionModel().selectedItemProperty().removeListener(stockListener);
-        if (oldSymbolEntry != null && (newSymbolEntry.length() < oldSymbolEntry.length())) {
-          companies.setItems(symbols);
-        }
-
-        String value = newSymbolEntry.toUpperCase();
-        ObservableList<String> filteredSymbols = FXCollections.observableArrayList();
-        companies.getItems().forEach(symbol -> {
-          if (symbol.toUpperCase().contains(value)) {
-            filteredSymbols.add(symbol);
-          }
-        });
-        companies.setItems(filteredSymbols);
-        // add again the listener this is really important!!!
-        companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
-      });
+    textFilter.textProperty().addListener(getSymbolsFilter());
 
     stockListener = getStockListener();
     companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
@@ -98,6 +80,27 @@ public class NavigateController implements Initializable {
 
     getStocks();
 
+  }
+
+  private ChangeListener<String> getSymbolsFilter(){
+    return (observable, oldSymbolEntry, newSymbolEntry) -> {
+      //remove the listener from the ListView so when it change don't crash
+      companies.getSelectionModel().selectedItemProperty().removeListener(stockListener);
+      if (oldSymbolEntry != null && (newSymbolEntry.length() < oldSymbolEntry.length())) {
+        companies.setItems(symbols);
+      }
+
+      String value = newSymbolEntry.toUpperCase();
+      ObservableList<String> filteredSymbols = FXCollections.observableArrayList();
+      companies.getItems().forEach(symbol -> {
+        if (symbol.toUpperCase().contains(value)) {
+          filteredSymbols.add(symbol);
+        }
+      });
+      companies.setItems(filteredSymbols);
+      // add again the listener this is really important!!!
+      companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
+    };
   }
 
 
@@ -160,12 +163,14 @@ public class NavigateController implements Initializable {
   }
 
 
-  private Node getCompanyView(String symbol) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException {
+  private Node getCompanyView(
+    String symbol
+  ) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException {
     CompanyViewHelper companyViewHelper = CompanyViewHelper.getInstance();
     return companyViewHelper.getViewForEntity(Core.getInstance().getCompanyFromSymbol(symbol));
   }
   /**
-   * @return Listener that handle the press event on the main ListView (companies)
+   * @return Listener to handle the 'press' event on the main ListView (companies)
    * it will add the content of the
    */
   private ChangeListener<String> getStockListener() {
@@ -188,15 +193,13 @@ public class NavigateController implements Initializable {
           try {
             Node companyData = getCompanyView(newSymbol);
             Platform.runLater(() -> cTab.setContent(companyData));
-          } catch (IllegalAccessException | IntrospectionException | InvocationTargetException e) {
+          } catch (IllegalAccessException | IntrospectionException | InvocationTargetException | InstantiationException e) {
             Platform.runLater(() -> AlertHelper.showExceptionAlert(e));
-            e.printStackTrace();
-          } catch (InstantiationException e) {
             e.printStackTrace();
           }
         }).start();
         tabPane.getTabs().add(cTab);
-      } // No data loaded
+      } //else No data loaded
     };
   }
 
