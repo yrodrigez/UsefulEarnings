@@ -4,12 +4,15 @@ import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.engine.EntityParameterBeanWorker;
 import es.usefulearnings.entities.Entity;
+import es.usefulearnings.entities.YahooField;
+import es.usefulearnings.entities.YahooLongFormatField;
 
 import java.beans.IntrospectionException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,29 +23,137 @@ public class CSVWriter {
   private String _filePath;
   private StringBuilder _csv;
 
-  public CSVWriter(
+
+  public CSVWriter (
     String filePath,
-    Class<? extends  Entity> entity
+    ArrayList<Entity> entities
   ) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
-    _csv = new StringBuilder();
-    setCSVHeaders(entity);
+    _csv = new StringBuilder("sep=," + System.lineSeparator());
     _filePath = filePath;
+
+    List<String> headers = getHeader(entities.get(0));
+    writeLine(headers);
+    for (Entity entity : entities){
+      List<String> line = lineCreator(entity);
+      writeLine(line);
+    }
   }
 
-  public void writeLine(String line){
-    _csv.append(line);
-    _csv.append(System.lineSeparator());
+  @Override
+  public String toString() {
+    return _csv.toString();
+  }
+
+  private void writeLine(List<String> line){
+    for (int i = 0; i < line.size() ; i++){
+      _csv.append(line.get(i));
+      if( i+1 == line.size()){
+        _csv.append(System.lineSeparator());
+      } else {
+        _csv.append(",");
+      }
+    }
   }
 
   public void save() throws IOException {
-    BufferedWriter bw = new BufferedWriter(new FileWriter(_filePath));
+    BufferedWriter bw = new BufferedWriter(new FileWriter(_filePath + ".csv"));
     bw.write(_csv.toString());
     bw.flush();
     bw.close();
   }
 
-  private List<String> getHeader(
-    Class<?> entity
+
+  private <E> List<String> lineCreator(
+    E entity
+  ) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    List<String> line = new LinkedList<>();
+
+    EntityParameterBeanWorker worker = new EntityParameterBeanWorker(
+      (field, annotation, method, position) -> {
+        EntityParameter parameter = (EntityParameter)annotation;
+        ParameterType type = parameter.parameterType();
+        switch (type){
+          case INNER_CLASS:
+            Object o = method.invoke(entity);
+            if (o != null)
+              line.addAll(lineCreator(o));
+            break;
+
+          case YAHOO_FIELD_DATE:
+            YahooField fieldDate = (YahooField)method.invoke(entity);
+            if (fieldDate != null)
+              line.add(fieldDate.getFmt());
+            else
+              line.add("");
+            break;
+
+          case IGNORE:
+            String ignore = (String)method.invoke(entity);
+            if (ignore != null)
+              line.add(ignore);
+            else
+              line.add("");
+            break;
+
+          case RAW_STRING:
+            String rawString = (String)method.invoke(entity);
+            if(rawString != null)
+              line.add(rawString);
+            break;
+
+          case RAW_NUMERIC:
+            Number number = (Number)method.invoke(entity);
+            if(number != null)
+              line.add(number.toString());
+            break;
+
+          case YAHOO_LONG_FORMAT_FIELD:
+            YahooLongFormatField yahooLongFormatField = (YahooLongFormatField)method.invoke(entity);
+            if(yahooLongFormatField != null)
+              line.add(yahooLongFormatField.getLongFmt());
+            else
+              line.add("");
+            break;
+
+          case URL:
+            String url = (String)method.invoke(entity);
+            if(url != null)
+              line.add(url);
+            else
+              line.add("");
+            break;
+
+
+          case YAHOO_FIELD_NUMERIC:
+            YahooField yahooField = (YahooField)method.invoke(entity);
+            if(yahooField != null)
+              line.add(yahooField.getFmt());
+            else
+              line.add("");
+            break;
+
+
+          case YAHOO_FIELD_DATE_COLLECTION:
+            String dates = "";
+            ArrayList<YahooField> fieldCollection = (ArrayList<YahooField>)method.invoke(entity);
+            if(fieldCollection != null && !fieldCollection.isEmpty()) {
+              dates += fieldCollection.remove(0).getFmt();
+              if (!fieldCollection.isEmpty()){
+                dates += " - " + fieldCollection.remove(0).getFmt();
+              }
+            }
+            line.add(dates);
+            break;
+        }
+
+      }
+    );
+    worker.walk(entity.getClass());
+    return line;
+  }
+
+  private <E> List<String> getHeader(
+    E entity
   ) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
     List<String> ret = new LinkedList<>();
     EntityParameterBeanWorker worker  = new EntityParameterBeanWorker(
@@ -52,22 +163,17 @@ public class CSVWriter {
         String header = parameter.name();
         switch (type){
           case INNER_CLASS:
-            ret.addAll(getHeader(method.getReturnType()));
+            ret.addAll(getHeader(method.invoke(entity)));
             break;
 
-          case IGNORE:
-            ret.add(header);
-            break;
-
-          case YAHOO_LONG_FORMAT_FIELD:
-            ret.add(header);
-            break;
-
-          case RAW_NUMERIC:
-            ret.add(header);
-            break;
-
+          case RAW_STRING:
           case YAHOO_FIELD_NUMERIC:
+          case RAW_NUMERIC:
+          case YAHOO_LONG_FORMAT_FIELD:
+          case URL:
+          case IGNORE:
+          case YAHOO_FIELD_DATE:
+          case YAHOO_FIELD_DATE_COLLECTION:
             ret.add(header);
             break;
 
@@ -76,21 +182,8 @@ public class CSVWriter {
         }
       }
     );
-    worker.walk(entity);
+    worker.walk(entity.getClass());
     return ret;
   }
 
-  private void setCSVHeaders(
-    Class<?> entity
-  ) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
-    List<String> headers = getHeader(entity.getClass());
-    for (int i = 0; i < headers.size() ; i++){
-      _csv.append(headers.get(i));
-      if( i+1 == headers.size()){
-        _csv.append(System.lineSeparator());
-      } else {
-        _csv.append(",");
-      }
-    }
-  }
 }

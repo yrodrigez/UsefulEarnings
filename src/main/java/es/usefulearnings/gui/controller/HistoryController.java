@@ -42,7 +42,6 @@ public class HistoryController implements Initializable {
 
   private List<DownloadedData> downloadedData;
 
-
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     downloadedData = new LinkedList<>();

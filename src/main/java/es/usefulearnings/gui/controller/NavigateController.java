@@ -107,7 +107,10 @@ public class NavigateController implements Initializable {
   private void getStocks() {
     try {
       resourcesHelper = ResourcesHelper.getInstance();
+
       List<Stock> stocks = resourcesHelper.getAvailableStocks();
+      Core.getInstance().setStocks(stocks);
+
       symbols = FXCollections.observableArrayList(stocks.get(0).getCompanies().keySet()).sorted();
       companies.setItems(symbols);
 

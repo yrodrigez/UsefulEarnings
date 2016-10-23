@@ -23,13 +23,16 @@ public class ResourcesHelper {
   private final String stocksPath;
   private final String serializationPath;
   private final String searchesPath;
+  private final String exportedDataPath;
 
   private final File stocksFile;
   private final File serializationFile;
   private final File searchesFile;
 
+  private final File exportedFile;
 
   private final List<Stock> stocks;
+
 
   private ResourcesHelper() throws NoStocksFoundException {
     resourcesPath = System.getProperty("user.home")
@@ -45,7 +48,15 @@ public class ResourcesHelper {
     searchesPath = serializationPath + File.separator + "searches";
     searchesFile = new File(searchesPath);
 
+    exportedDataPath = System.getProperty("user.home")
+      + File.separator
+      + "UsefulEarnings"
+      + File.separator
+      + "exported";
+    exportedFile = new File(exportedDataPath);
+
     createFiles();
+
     stocks = createAvailableStocksFromFolder();
   }
 
@@ -53,7 +64,7 @@ public class ResourcesHelper {
     return stocks;
   }
 
-  private  List<Stock> createAvailableStocksFromFolder() throws NoStocksFoundException {
+  private List<Stock> createAvailableStocksFromFolder() throws NoStocksFoundException {
     File stocksFile = new File(stocksPath);
     List<Stock> stocks = new ArrayList<>();
 
@@ -112,7 +123,12 @@ public class ResourcesHelper {
         System.out.printf("File successfully created at "+ searchesPath);
       else System.err.println("Could not create file at " + searchesFile);
 
-    // ENTITIES
+    // EXPORTED
+    if(!exportedFile.exists())
+      if(exportedFile.mkdir())
+        System.out.printf("File successfully created at "+ exportedFile);
+      else System.err.println("Could not create file at " + exportedFile);
+
   }
 
   public static ResourcesHelper getInstance() throws NoStocksFoundException {
@@ -146,6 +162,14 @@ public class ResourcesHelper {
 
   public String getSearchesPath() {
     return searchesPath;
+  }
+
+  public String getExportedDataPath() {
+    return exportedDataPath;
+  }
+
+  public File getExportedFile() {
+    return exportedFile;
   }
 
 }

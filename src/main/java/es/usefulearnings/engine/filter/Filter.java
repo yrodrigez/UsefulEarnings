@@ -16,8 +16,8 @@ import java.util.Set;
 public abstract class Filter<E> implements Serializable {
   protected Map<Field, RestrictionValue> _parameters;
   protected Set<E> _filteredEntities;
-  private long _filteredDate;
 
+  private long _filteredDate;
 
   public Filter(Set<E> entities, Map<Field, RestrictionValue> parameters) {
     _filteredEntities = entities;
@@ -26,10 +26,15 @@ public abstract class Filter<E> implements Serializable {
     _filteredDate = new Date().getTime() / 1000L;
   }
 
+
   protected abstract void filter() throws IllegalAccessException, IntrospectionException, InvocationTargetException;
 
   public Set<E> getEntities() {
     return _filteredEntities;
+  }
+
+  public long getFilteredDate() {
+    return _filteredDate;
   }
 
   protected void removeEntity(E entity) {

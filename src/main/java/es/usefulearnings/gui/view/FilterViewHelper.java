@@ -51,11 +51,11 @@ public class FilterViewHelper implements ViewHelper<Filter> {
       valuesArray.add(values);
     }
 
-    for(Object o : filter.getEntities()){
-      List<String> headers = getHeaders(o);
-      for (String s :headers){
-        TableColumn<Map<String, String>, String> tableColumn = new TableColumn<>(s);
-        tableColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(s)));
+    for(Object object : filter.getEntities()){
+      List<String> headers = getHeaders(object);
+      for (String header : headers){
+        TableColumn<Map<String, String>, String> tableColumn = new TableColumn<>(header);
+        tableColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().get(header)));
 
         tableView.getColumns().add(tableColumn);
       }

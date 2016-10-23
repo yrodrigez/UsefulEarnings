@@ -24,7 +24,7 @@ public class EntitiesPackage implements Serializable, Savable {
     _dateId = dateId;
   }
 
-  public Map<String, Company> get_companies() {return _companies;}
+  public Map<String, Company> getCompanies() {return _companies;}
   public Map<String, Option> getOptions() {return _options;}
 
   @Override

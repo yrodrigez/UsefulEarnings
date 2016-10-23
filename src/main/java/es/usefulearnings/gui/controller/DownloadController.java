@@ -13,8 +13,6 @@ import es.usefulearnings.utils.ResourcesHelper;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableIntegerValue;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -28,7 +26,10 @@ import javafx.scene.layout.VBox;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * @author Yago on 04/09/2016.
@@ -239,7 +240,6 @@ public class DownloadController implements Initializable {
         try {
           JSONHTTPClient.getInstance().clearCache();
           downloadedData.save(new File(ResourcesHelper.getInstance().getSearchesPath()));
-          System.out.println("Activating filter");
           Core.getInstance().setDataLoaded(true);
         } catch(IOException | NoStocksFoundException e) {
           e.printStackTrace();
@@ -256,6 +256,6 @@ public class DownloadController implements Initializable {
         stopButton.setDisable(true);
       });
     }
-    System.out.println("Active downloads: " + downloadButtonLocker);
+
   }
 }

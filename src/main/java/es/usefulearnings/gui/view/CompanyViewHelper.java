@@ -18,7 +18,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.awt.*;
 import java.beans.IntrospectionException;
@@ -74,7 +73,9 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
     return new FilterView(Company.class);
   }
 
-  private Node getViewForObject(Object object) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+  private Node getViewForObject(Object object)
+    throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException
+  {
     GridPane gridPane = new GridPane();
     gridPane.setHgap(20);
     gridPane.setPadding(new Insets(5, 5, 5, 5));

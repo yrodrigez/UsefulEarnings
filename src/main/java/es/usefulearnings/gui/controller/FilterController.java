@@ -7,6 +7,9 @@ import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.gui.view.CompanyViewHelper;
 import es.usefulearnings.gui.view.FilterView;
 import es.usefulearnings.gui.view.FilterViewHelper;
+import es.usefulearnings.utils.CSVWriter;
+import es.usefulearnings.utils.NoStocksFoundException;
+import es.usefulearnings.utils.ResourcesHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -21,8 +24,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 import java.beans.IntrospectionException;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -80,11 +88,18 @@ public class FilterController implements Initializable {
         ContextMenu filterContextMenu = new ContextMenu();
         MenuItem export = new MenuItem("Export to Excel", new ImageView(new Image(Main.class.getResourceAsStream("icons/export.png"), 12, 12, false, false)));
         export.setOnAction(event -> {
-          AlertHelper.showAlert(
-            Alert.AlertType.CONFIRMATION,
-            "i will export data",
-            "i will export data some day hopefully" + " from this filter " + filterListCell.getItem().toString()
-          );
+          try {
+            String dateString = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss").format(new Date( filterListCell.getItem().getFilteredDate() * 1000L));
+
+            CSVWriter writer = new CSVWriter(
+              ResourcesHelper.getInstance().getExportedDataPath() + File.separator +"exported at " + dateString,
+              new ArrayList<>(filterListCell.getItem().getEntities())
+            );
+            writer.save();
+          } catch (InvocationTargetException | NoStocksFoundException | IllegalAccessException | InstantiationException | IntrospectionException | IOException e) {
+            e.printStackTrace();
+          }
+          event.consume();
         });
         MenuItem details = new MenuItem("Details", new ImageView(new Image(Main.class.getResourceAsStream("icons/export.png"), 12, 12, false, false)));
         details.setOnAction(event -> {

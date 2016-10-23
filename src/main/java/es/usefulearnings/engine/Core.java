@@ -18,7 +18,7 @@ public class Core {
 
   private ArrayList<Plugin> companiesPlugins;
 
-  private List<Stock> mStocks;
+  private List<Stock> _stocks;
 
   public static Core getInstance() {
     return instance;
@@ -46,9 +46,9 @@ public class Core {
     companiesPlugins.add(new FinancialDataPlugin());
     companiesPlugins.add(new CompanySummaryDetailPlugin());
 
-    // get the available mStocks.
+    // get the available _stocks.
     try {
-      mStocks = ResourcesHelper.getInstance().getAvailableStocks();
+      _stocks = ResourcesHelper.getInstance().getAvailableStocks();
     } catch (NoStocksFoundException e) {
       throw new RuntimeException(e);
     }
@@ -57,7 +57,7 @@ public class Core {
   }
 
   public Company getCompanyFromSymbol(String symbol) throws IllegalArgumentException {
-    for (Stock stock : mStocks){
+    for (Stock stock : _stocks){
       if (stock.getCompanies().containsKey(symbol))
         return stock.getCompanies().get(symbol);
     }
@@ -68,7 +68,7 @@ public class Core {
   public Map<String, Company> getAllCompanies() {
     Map<String, Company> companies = new TreeMap<>();
 
-    for (Stock stock : mStocks) {
+    for (Stock stock : _stocks) {
       companies.putAll(stock.getCompanies());
     }
 
@@ -81,7 +81,7 @@ public class Core {
   }
 
   public Map<String, Company> getCompaniesFromStock(String stockName) throws IllegalArgumentException {
-    for (Stock stock : mStocks) {
+    for (Stock stock : _stocks) {
       if (stock.getName().equals(stockName)) {
         return stock.getCompanies();
       }
@@ -90,10 +90,10 @@ public class Core {
     throw new IllegalArgumentException("Can not find a stock named " + stockName);
   }
 
-
   public ArrayList<Plugin> getCompanyPlugins() {
     return this.companiesPlugins;
   }
+
 
   public <E> void setEntityData(E entity) {
     if (entity != null) {
@@ -112,7 +112,7 @@ public class Core {
   }
 
   private void setCompanyData(Company settedCompany){
-    mStocks.stream()
+    _stocks.stream()
       .filter(
         stock -> stock.getName().equals(settedCompany.getStockName())
       )
@@ -157,18 +157,18 @@ public class Core {
   public void setFromEntitiesPackage(EntitiesPackage entitiesPackage) {
     List<Stock> newStocks = new LinkedList<>();
 
-    for(Company company : entitiesPackage.get_companies().values()){
+    for(Company company : entitiesPackage.getCompanies().values()){
       List<Stock> stocks = newStocks.stream().filter(stock -> stock.getName().equals(company.getStockName())).collect(Collectors.toList());
       if(stocks.isEmpty()){
-        Map<String, Company> map = new TreeMap<>();
-        map.put(company.getSymbol(), company);
-        newStocks.add(new Stock(company.getStockName(), map));
+        Map<String, Company> companies = new TreeMap<>();
+        companies.put(company.getSymbol(), company);
+        newStocks.add(new Stock(company.getStockName(), companies));
       } else {
         stocks.forEach(s-> s.putCompany(company));
       }
     }
 
-    mStocks = newStocks;
+    _stocks = newStocks;
     _loadedPackageId = entitiesPackage.getdateId();
     setDataLoaded(true);
   }
@@ -179,10 +179,10 @@ public class Core {
     companyFilter.filter();
   }
 
-
   public boolean isDataLoaded() {
     return isDataLoaded;
   }
+
 
   public void setDataLoaded(boolean dataLoaded) {
     isDataLoaded = dataLoaded;
@@ -190,6 +190,10 @@ public class Core {
 
   public List<Filter> getAppliedFilters() {
     return appliedFilters;
+  }
+
+  public void setStocks(List<Stock> stocks) {
+    this._stocks = stocks;
   }
 }
 
