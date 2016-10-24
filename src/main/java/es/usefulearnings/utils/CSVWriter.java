@@ -22,13 +22,14 @@ import java.util.List;
 public class CSVWriter {
   private String _filePath;
   private StringBuilder _csv;
+  private final String separator = ";";
 
 
   public CSVWriter (
     String filePath,
     ArrayList<Entity> entities
   ) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
-    _csv = new StringBuilder("sep=," + System.lineSeparator());
+    _csv = new StringBuilder();
     _filePath = filePath;
 
     List<String> headers = getHeader(entities.get(0));
@@ -46,13 +47,16 @@ public class CSVWriter {
 
   private void writeLine(List<String> line){
     for (int i = 0; i < line.size() ; i++){
-      _csv.append(line.get(i));
-      if( i+1 == line.size()){
-        _csv.append(System.lineSeparator());
-      } else {
-        _csv.append(",");
+      String value = line.get(i);
+      if(value != null)
+        _csv.append(value.replaceAll(",", ""));
+      else
+        _csv.append("");
+      if( i+1 != line.size()){
+        _csv.append(separator);
       }
     }
+    _csv.append(System.lineSeparator());
   }
 
   public void save() throws IOException {

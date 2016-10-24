@@ -96,6 +96,7 @@ public class FilterController implements Initializable {
               new ArrayList<>(filterListCell.getItem().getEntities())
             );
             writer.save();
+            AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Success", "File exported succesfully at (" + dateString + ")");
           } catch (InvocationTargetException | NoStocksFoundException | IllegalAccessException | InstantiationException | IntrospectionException | IOException e) {
             e.printStackTrace();
           }
