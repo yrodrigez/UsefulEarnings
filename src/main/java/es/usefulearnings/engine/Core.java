@@ -75,10 +75,6 @@ public class Core {
     return companies;
   }
 
-  public Map<String, Option> getAllOptions(){
-    System.err.println("getAllOptions() -> not implemented yet...");
-    return new TreeMap<>();
-  }
 
   public Map<String, Company> getCompaniesFromStock(String stockName) throws IllegalArgumentException {
     for (Stock stock : _stocks) {
@@ -99,14 +95,6 @@ public class Core {
     if (entity != null) {
       if (entity instanceof Company) {
         setCompanyData((Company)entity);
-      }
-
-      if (entity instanceof Option) {
-        // TODO implement method setOptionsChainData()
-      }
-
-      if (entity instanceof OptionChain) {
-        // TODO implement method setOptionsChainData()
       }
     }
   }
@@ -129,12 +117,6 @@ public class Core {
     for (Entity e: entitiesToRemove) {
       if(e instanceof Company) {
         companies.add((Company)e);
-      }else if (e instanceof Option){
-        // options.add((Option)e);
-        System.err.println("Remove empty Options not implemented yet");
-      }else if(e instanceof OptionChain){
-        // optionChains.add((OptionChain)e);
-        System.err.println("Remove empty OptionChains not implemented yet");
       }
     }
     removeCompanies(companies);

@@ -26,14 +26,10 @@ public class DownloadedData implements Savable, Serializable, Comparable {
   private long _created;
 
   private long _totalSavedCompanies;
-  private long _totalSavedOptions;
-  private long _totalSavedOptionChains;
 
   public DownloadedData(long created) {
     _created = created;
     _totalSavedCompanies = 0;
-    _totalSavedOptionChains = 0;
-    _totalSavedOptions = 0;
   }
 
 
@@ -55,11 +51,9 @@ public class DownloadedData implements Savable, Serializable, Comparable {
       + EXTENSION;
 
     Map<String, Company> companiesToSave = Core.getInstance().getAllCompanies();
-    Map<String, Option> optionsToSave = Core.getInstance().getAllOptions();
 
 
     _totalSavedCompanies = companiesToSave.size();
-    _totalSavedOptions = optionsToSave.size();
 
     _entitiesFile = new File(
       fileToSave.getAbsolutePath()
@@ -69,12 +63,11 @@ public class DownloadedData implements Savable, Serializable, Comparable {
 
     if (!_entitiesFile.exists()) {
       if(!_entitiesFile.mkdirs())
-        throw new IOException(_entitiesFile.getAbsolutePath() + "can't be _created!");
+        throw new IOException(_entitiesFile.getAbsolutePath() + " can't be created!");
     }
 
     EntitiesPackage entitiesPackage = new EntitiesPackage(
       companiesToSave,
-      optionsToSave,
       _created
     );
     entitiesPackage.save(_entitiesFile);
@@ -91,13 +84,7 @@ public class DownloadedData implements Savable, Serializable, Comparable {
     return _totalSavedCompanies;
   }
 
-  public long get_totalSavedOptions() {
-    return _totalSavedOptions;
-  }
 
-  public long get_totalSavedOptionChains() {
-    return _totalSavedOptionChains;
-  }
 
   public File getEntitiesFile() {
     return _entitiesFile;

@@ -8,7 +8,6 @@ public class EntitiesPackage implements Serializable, Savable {
   public static String EXTENSION = ".epk";
 
   private Map<String, Company> _companies;
-  private Map<String, Option> _options;
 
   public long getdateId() {
     return _dateId;
@@ -17,23 +16,18 @@ public class EntitiesPackage implements Serializable, Savable {
   private long _dateId;
 
 
-
-  public EntitiesPackage(Map<String, Company> companies, Map<String, Option> options, long dateId) {
+  public EntitiesPackage(Map<String, Company> companies, long dateId) {
     _companies = companies;
-    _options = options;
     _dateId = dateId;
   }
 
   public Map<String, Company> getCompanies() {return _companies;}
-  public Map<String, Option> getOptions() {return _options;}
 
   @Override
   public void save(File fileToSave) throws IOException {
     String location = fileToSave.getAbsolutePath()
       + File.separator
       + _companies.size() + "C"
-      + "-"
-      + _options.size() + "O"
       + EXTENSION;
 
     FileOutputStream data = new FileOutputStream(location);
