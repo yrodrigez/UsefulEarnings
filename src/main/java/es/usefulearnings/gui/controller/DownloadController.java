@@ -48,6 +48,7 @@ public class DownloadController implements Initializable {
   private int downloadButtonLocker;
   private DownloadedData downloadedData;
   private final int MAX_THREADS = Runtime.getRuntime().availableProcessors() * 2;
+  private Label activeDownloadsLabel;
 
   private class DownloaderTask extends Task<Void> {
     private DownloadProcess process;
@@ -109,12 +110,12 @@ public class DownloadController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     stopButton.setDisable(true);
-    downloadButtonLocker = 0;
   }
 
   public void downloadAction(ActionEvent event) {
     // instance the DownloadedData object
     this.downloadedData = new DownloadedData(new Date().getTime() / 1000L);
+    downloadButtonLocker = 0;
 
     // start a download
     this.downloadAllCompaniesData();
@@ -131,14 +132,10 @@ public class DownloadController implements Initializable {
 
     ScrollPane scrollPane = new ScrollPane(innerVBox);
     scrollPane.setStyle("-fx-background-color: white");
-    Label activeCoresLabel = new Label();
-
-    ObservableValue<Integer> integerProperty = new ReadOnlyObjectWrapper<>(downloadButtonLocker);
-    integerProperty.addListener((observable, oldValue, newValue) -> System.out.println(newValue));
-    activeCoresLabel.textProperty().bind(Bindings.format("Active downloads: %o", integerProperty));
+    activeDownloadsLabel = new Label("Active downloads: " + downloadButtonLocker);
 
     HBox coresInfo = new HBox();
-    coresInfo.getChildren().addAll(activeCoresLabel);
+    coresInfo.getChildren().addAll(activeDownloadsLabel);
     innerVBox.getChildren().add(coresInfo);
     for (
       DownloaderTask task :
@@ -256,6 +253,7 @@ public class DownloadController implements Initializable {
         stopButton.setDisable(true);
       });
     }
+    Platform.runLater(()->activeDownloadsLabel.setText("Active downloads: " + downloadButtonLocker));
 
   }
 }
