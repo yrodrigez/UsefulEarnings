@@ -134,8 +134,6 @@ public class HistoryController implements Initializable {
       // Create the view for DownloadedData
       Label dateLabel = new Label(downloadedData.toString());
       Label companiesFound = new Label("Companies found: " + downloadedData.get_totalSavedCompanies());
-      Label optionsFound = new Label("Options found: " + downloadedData.get_totalSavedOptions());
-      Label optionChains = new Label("Option chains found: " + downloadedData.get_totalSavedOptionChains());
 
       Button delete = new Button("", new ImageView(new Image(Main.class.getResourceAsStream("icons/delete-forever-white.png"))));
       delete.getStyleClass().addAll("history-button");
@@ -203,7 +201,7 @@ public class HistoryController implements Initializable {
       // Paint it
       HBox buttonsBox = new HBox(reloadData, delete);
       buttonsBox.setSpacing(10);
-      downloadedSummary.getChildren().addAll(dateLabel, companiesFound, optionsFound, optionChains, buttonsBox);
+      downloadedSummary.getChildren().addAll(dateLabel, companiesFound, buttonsBox);
     });
   }
 
