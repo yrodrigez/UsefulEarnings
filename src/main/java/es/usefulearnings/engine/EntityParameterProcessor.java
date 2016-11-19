@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
  *
  * @author yago.
  */
+@FunctionalInterface
 public interface EntityParameterProcessor {
   void processParameter(Field field, Annotation annotation, Method method, int position)
     throws InvocationTargetException, IllegalAccessException, IntrospectionException, InstantiationException;

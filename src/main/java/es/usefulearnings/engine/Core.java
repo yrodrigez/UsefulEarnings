@@ -20,7 +20,7 @@ public class Core {
 
   private List<Stock> _stocks;
 
-  public static Core getInstance() {
+  public  static Core getInstance() {
     return instance;
   }
 

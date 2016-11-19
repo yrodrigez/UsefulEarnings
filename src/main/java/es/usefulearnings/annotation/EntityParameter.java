@@ -5,11 +5,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- *
- * @author Yago Rodríguez on 9/09/16.
- */
-@Target({ElementType.ANNOTATION_TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.LOCAL_VARIABLE})
+
+@Target({
+  ElementType.ANNOTATION_TYPE,
+  ElementType.FIELD,
+  ElementType.METHOD,
+  ElementType.PARAMETER,
+  ElementType.LOCAL_VARIABLE
+})
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface EntityParameter {
   String name();
@@ -17,3 +20,6 @@ public @interface EntityParameter {
   Class<? extends AllowedValuesRetriever> allowedValues() default DefaultAllowedValuesRetriever.class;
   boolean isMaster() default false;
 }
+
+
+

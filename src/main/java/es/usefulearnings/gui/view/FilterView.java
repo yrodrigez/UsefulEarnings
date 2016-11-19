@@ -3,7 +3,7 @@ package es.usefulearnings.gui.view;
 import es.usefulearnings.annotation.AllowedValuesRetriever;
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
-import es.usefulearnings.engine.EntityParameterBeanWorker;
+import es.usefulearnings.engine.EntityParameterBeanWalker;
 import es.usefulearnings.engine.filter.BasicOperator;
 import es.usefulearnings.engine.filter.RestrictionValue;
 import javafx.collections.FXCollections;
@@ -51,7 +51,7 @@ public class FilterView {
     GridPane gridPane = new GridPane();
     gridPane.setHgap(20);
     gridPane.setPadding(new Insets(5, 5, 5, 5));
-    EntityParameterBeanWorker worker = new EntityParameterBeanWorker(
+    EntityParameterBeanWalker worker = new EntityParameterBeanWalker(
       (field, annotation, method, position)->{
         EntityParameter parameter = (EntityParameter) annotation;
         String parameterName = parameter.name();

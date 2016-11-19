@@ -11,10 +11,10 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * @author yago.
  */
-public class EntityParameterBeanWorker {
+public class EntityParameterBeanWalker {
   private EntityParameterProcessor _processor;
 
-  public EntityParameterBeanWorker(EntityParameterProcessor processor){
+  public EntityParameterBeanWalker(EntityParameterProcessor processor){
     _processor = processor;
   }
 
