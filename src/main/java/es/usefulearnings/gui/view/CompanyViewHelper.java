@@ -2,7 +2,7 @@ package es.usefulearnings.gui.view;
 
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
-import es.usefulearnings.engine.EntityParameterBeanWorker;
+import es.usefulearnings.engine.EntityParameterBeanWalker;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.YahooField;
 import es.usefulearnings.entities.YahooLongFormatField;
@@ -80,7 +80,7 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
     gridPane.setHgap(20);
     gridPane.setPadding(new Insets(5, 5, 5, 5));
     Accordion accordion = new Accordion();
-    EntityParameterBeanWorker worker = new EntityParameterBeanWorker(
+    EntityParameterBeanWalker worker = new EntityParameterBeanWalker(
       (field, annotation, method, position) -> {
         EntityParameter parameterDescriptor = ((EntityParameter)annotation);
         ParameterType parameterType = parameterDescriptor.parameterType();

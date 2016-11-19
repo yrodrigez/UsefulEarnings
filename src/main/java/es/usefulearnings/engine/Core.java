@@ -26,7 +26,7 @@ public class Core {
 
   private static Core instance = new Core();
 
-  private List<Filter> appliedFilters;
+  private List<Filter> _appliedFilters;
 
   private boolean isDataLoaded;
 
@@ -53,7 +53,7 @@ public class Core {
       throw new RuntimeException(e);
     }
 
-    appliedFilters = new LinkedList<>();
+    _appliedFilters = new LinkedList<>();
   }
 
   public Company getCompanyFromSymbol(String symbol) throws IllegalArgumentException {
@@ -175,7 +175,7 @@ public class Core {
 
   public void applyFilter(Map<Field, RestrictionValue> parameters) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
     CompanyFilter companyFilter = new CompanyFilter(new HashSet<>(getAllCompanies().values()), parameters);
-    appliedFilters.add(companyFilter);
+    _appliedFilters.add(companyFilter);
     companyFilter.filter();
   }
 
@@ -189,7 +189,7 @@ public class Core {
   }
 
   public List<Filter> getAppliedFilters() {
-    return appliedFilters;
+    return _appliedFilters;
   }
 
   public void setStocks(List<Stock> stocks) {

@@ -2,7 +2,7 @@ package es.usefulearnings.gui.view;
 
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
-import es.usefulearnings.engine.EntityParameterBeanWorker;
+import es.usefulearnings.engine.EntityParameterBeanWalker;
 import es.usefulearnings.engine.filter.Filter;
 import es.usefulearnings.entities.YahooField;
 import es.usefulearnings.entities.YahooLongFormatField;
@@ -100,7 +100,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
     Object object
   ) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
     Map<String, String> values = new HashMap<>();
-    EntityParameterBeanWorker worker = new EntityParameterBeanWorker(
+    EntityParameterBeanWalker worker = new EntityParameterBeanWalker(
       (field, annotation, method, position) -> {
         EntityParameter parameter = (EntityParameter) annotation;
         String header = parameter.name();
@@ -189,7 +189,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
     Object entity
   ) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
     ArrayList<String> labels = new ArrayList<>();
-    EntityParameterBeanWorker worker = new EntityParameterBeanWorker(
+    EntityParameterBeanWalker worker = new EntityParameterBeanWalker(
       (field, annotation, method, position) -> {
         EntityParameter parameter = (EntityParameter) annotation;
         String header = parameter.name();

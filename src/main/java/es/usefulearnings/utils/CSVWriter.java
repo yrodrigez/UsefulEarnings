@@ -2,7 +2,7 @@ package es.usefulearnings.utils;
 
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
-import es.usefulearnings.engine.EntityParameterBeanWorker;
+import es.usefulearnings.engine.EntityParameterBeanWalker;
 import es.usefulearnings.entities.Entity;
 import es.usefulearnings.entities.YahooField;
 import es.usefulearnings.entities.YahooLongFormatField;
@@ -72,7 +72,7 @@ public class CSVWriter {
   ) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
     List<String> line = new LinkedList<>();
 
-    EntityParameterBeanWorker worker = new EntityParameterBeanWorker(
+    EntityParameterBeanWalker worker = new EntityParameterBeanWalker(
       (field, annotation, method, position) -> {
         EntityParameter parameter = (EntityParameter)annotation;
         ParameterType type = parameter.parameterType();
@@ -160,7 +160,7 @@ public class CSVWriter {
     E entity
   ) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
     List<String> ret = new LinkedList<>();
-    EntityParameterBeanWorker worker  = new EntityParameterBeanWorker(
+    EntityParameterBeanWalker worker  = new EntityParameterBeanWalker(
       (field, annotation, method, position) -> {
         EntityParameter parameter = (EntityParameter)annotation;
         ParameterType type = parameter.parameterType();
