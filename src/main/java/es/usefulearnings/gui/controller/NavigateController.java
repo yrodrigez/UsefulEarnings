@@ -5,8 +5,7 @@ import es.usefulearnings.entities.Stock;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.gui.view.CompanyViewHelper;
-import es.usefulearnings.utils.NoStocksFoundException;
-import es.usefulearnings.utils.ResourcesHelper;
+import es.usefulearnings.utils.OverwatchLoader;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -21,16 +20,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
-import java.awt.*;
 import java.beans.IntrospectionException;
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -59,9 +56,10 @@ public class NavigateController implements Initializable {
 
   private ObservableList<String> symbols;
   private ChangeListener<String> stockListener;
-  private ResourcesHelper resourcesHelper;
 
   public void initialize(URL location, ResourceBundle resources) {
+    stocksChoiceBox.getStyleClass().addAll("ue-choice-box");
+
     ImageView refreshIcon = new ImageView(new javafx.scene.image.Image(Main.class.getResourceAsStream("icons/refresh.png"), 20, 20, true, true));
     refresh.setGraphic(refreshIcon);
 
@@ -79,7 +77,6 @@ public class NavigateController implements Initializable {
     tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
 
     getStocks();
-
   }
 
   private ChangeListener<String> getSymbolsFilter(){
@@ -105,20 +102,17 @@ public class NavigateController implements Initializable {
 
 
   private void getStocks() {
-    try {
-      resourcesHelper = ResourcesHelper.getInstance();
 
-      List<Stock> stocks = resourcesHelper.getAvailableStocks();
-      Core.getInstance().setStocks(stocks);
+    Core.getInstance().setStocksFromFolder();
+    List<Stock> stocks = Core.getInstance().getStocks();
 
-      symbols = FXCollections.observableArrayList(stocks.get(0).getCompanies().keySet()).sorted();
-      companies.setItems(symbols);
+    symbols = FXCollections.observableArrayList(stocks.get(0).getCompanies().keySet()).sorted();
 
-      ObservableList<String> stocksNames = FXCollections.observableArrayList();
-      stocks.forEach(stock -> stocksNames.add(stock.getName()));
-      stocksChoiceBox.setItems(stocksNames);
-      stocksChoiceBox.getSelectionModel().select(0);
-      stocksChoiceBox.getSelectionModel().selectedItemProperty().addListener(
+    ObservableList<String> stocksNames = FXCollections.observableArrayList();
+    stocks.forEach(stock -> stocksNames.add(stock.getName()));
+    stocksChoiceBox.setItems(stocksNames);
+    stocksChoiceBox.getSelectionModel().select(0);
+    stocksChoiceBox.getSelectionModel().selectedItemProperty().addListener(
         (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
           companies.getSelectionModel().selectedItemProperty().removeListener(stockListener);
           symbols = FXCollections.observableArrayList();
@@ -130,33 +124,9 @@ public class NavigateController implements Initializable {
           companies.setItems(symbols);
           companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
         }
-      );
-      stocksChoiceBox.getStyleClass().addAll("ue-choice-box");
-    } catch (NoStocksFoundException e) {
-      stocksChoiceBox.getItems().add("No Stocks found");
-      stocksChoiceBox.getSelectionModel().select(0);
-      // ALERT SHOW ALERT!
-      Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-      alert.setTitle("UsefulEarnings | No stocks found at your folder!");
-      alert.setHeaderText("No stocks found at your stocks folder");
-      alert.setContentText("Choose your option.");
-      ButtonType openFolderButton = new ButtonType("Open stock Folder");
-      ButtonType buttonTypeCancel = new ButtonType("I don't care!", ButtonBar.ButtonData.CANCEL_CLOSE);
-      alert.getButtonTypes().setAll(openFolderButton, buttonTypeCancel);
-      Optional<ButtonType> result = alert.showAndWait();
-      if (result.isPresent() && result.get() == openFolderButton) {
-        if (Desktop.isDesktopSupported()) {
-          try {
-            File resourcesFile = new File(resourcesHelper.getResourcesPath());
-            Desktop.getDesktop().open(resourcesFile.getAbsoluteFile());
-          } catch (Exception e1) {
-            AlertHelper.showExceptionAlert(e1);
-          }
-        }
-      }
-    }
-
-
+    );
+    companies.setItems(symbols);
+    companies.refresh();
   }
 
   @FXML
@@ -167,7 +137,7 @@ public class NavigateController implements Initializable {
 
 
   private Node getCompanyView(
-    String symbol
+      String symbol
   ) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException {
     CompanyViewHelper companyViewHelper = CompanyViewHelper.getInstance();
     return companyViewHelper.getViewForEntity(Core.getInstance().getCompanyFromSymbol(symbol));
@@ -188,9 +158,8 @@ public class NavigateController implements Initializable {
       }
       if(Core.getInstance().isDataLoaded()) {
         Tab cTab = new Tab(newSymbol);
-        ProgressIndicator progressIndicator = new ProgressIndicator(-1);
-        progressIndicator.getStyleClass().addAll("default-progress-indicator");
-        cTab.setContent(progressIndicator);
+
+        cTab.setContent(new OverwatchLoader(Color.web("#400090")).getLoader());
 
         new Thread(() -> {
           try {

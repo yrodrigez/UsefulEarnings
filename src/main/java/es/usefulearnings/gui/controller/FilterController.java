@@ -51,8 +51,6 @@ public class FilterController implements Initializable {
     filterListView = new ListView<>();
     filterListView.prefHeightProperty().bind(mainPane.heightProperty());
 
-    ProgressIndicator progressIndicator = new ProgressIndicator(-1);
-    progressIndicator.getStyleClass().add("default-progress-indicator");
     mainPane.setCenter(new OverwatchLoader(Color.web("#400090")).getLoader());
     BorderPane centerPane = new BorderPane();
 

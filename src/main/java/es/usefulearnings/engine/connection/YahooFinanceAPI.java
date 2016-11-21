@@ -21,6 +21,7 @@ public class YahooFinanceAPI {
   public static final String COMPANY_CASHFLOW_STATEMENT_HISTORY = "cashflowStatementHistory";
   public static final String COMPANY_BALANCE_SHEET_HISTORY      = "balanceSheetHistory";
   public static final String COMPANY_SUMMARY_DETAIL             = "summaryDetail";
+
   //Options
   public static final String OPTION_PRICE          = "price";
   public static final String OPTION_SUMMARY_DETAIL = "summaryDetail";
@@ -135,36 +136,3 @@ public class YahooFinanceAPI {
   }
 
 }
-/*
-    companyQuoteSummaryModules.put("Asset Profile", "assetProfile"); // solo para info específica...
-    companyQuoteSummaryModules.put("Financial Data", "financialData"); // *** IMPORTANTE ***
-    companyQuoteSummaryModules.put("Default Key Statistics", "defaultKeyStatistics"); // *** IMPORTANTE ***
-    companyQuoteSummaryModules.put("Calendar Events", "calendarEvents"); // *** IMPORTANTE ***
-    companyQuoteSummaryModules.put("Income Statement History", "incomeStatementHistory"); // *** IMPORTANTE ***
-    companyQuoteSummaryModules.put("Cashflow Statement History", "cashflowStatementHistory");// *** IMPORTANTE ***
-    companyQuoteSummaryModules.put("Balance Sheet History", "balanceSheetHistory");// *** IMPORTANTE ***
-
-     ***REVISAR DESPUES***
-    companyQuoteSummaryModules.put("Upgrade Downgrade History", "upgradeDowngradeHistory");// datos para los gráficos del sumario...
-    companyQuoteSummaryModules.put("Earnings", "earnings");// datos para los gráficos del sumario...
-    companyQuoteSummaryModules.put("Summary Profile", "summaryProfile"); // como assetsProfile.json pero menos extenso....
-
-    companyQuoteSummaryModules.put("Income Statement History Quarterly", "incomeStatementHistoryQuarterly"); //igual al anterior pero qutrimestral
-    companyQuoteSummaryModules.put("Cashflow Statement History Quarterly", "cashflowStatementHistoryQuarterly"); //igual al anterior pero qutrimestral
-    companyQuoteSummaryModules.put("Balance Sheet History Quarterly", "balanceSheetHistoryQuarterly"); //igual al anterior pero qutrimestral
-
-    // modules=earningsHistory.json,earningsTrend.json,industryTrend.json
-    companyQuoteSummaryModules.put("Earnings History", "earningsHistory"); // sin definir
-    companyQuoteSummaryModules.put("Earnings Trend", "earningsTrend"); // sin definir
-    companyQuoteSummaryModules.put("Industry Trend", "industryTrend"); // sin definir
-
-    companyQuoteSummaryModules.put("Institution Ownership", "institutionOwnership.json"); // *** ¿Basura? ***
-    companyQuoteSummaryModules.put("Major Direct Holders", "majorDirectHolders"); // *** ¿BASURA? ***
-    companyQuoteSummaryModules.put("Major Holders Breakdown", "majorHoldersBreakdown");// *** ¿BASURA? ***
-    companyQuoteSummaryModules.put("Insider Transactions", "insiderTransactions");// *** ¿BASURA? ***
-    companyQuoteSummaryModules.put("Insider Holders", "insiderHolders");// *** ¿BASURA? ***
-    companyQuoteSummaryModules.put("Net Share Purchase Activity", "netSharePurchaseActivity");// *** ¿BASURA? ***
-
-    companyQuoteSummaryModules.put("Sec Filings", "secFilings"); // *** BASURA ***
-    companyQuoteSummaryModules.put("Recommendation Trend", "recommendationTrend");// datos para los gráficos del sumario... *** BASURA de verdad ***
-*/

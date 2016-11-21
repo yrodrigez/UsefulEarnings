@@ -46,12 +46,7 @@ public class Core {
     companiesPlugins.add(new FinancialDataPlugin());
     companiesPlugins.add(new CompanySummaryDetailPlugin());
 
-    // get the available _stocks.
-    try {
-      _stocks = ResourcesHelper.getInstance().getAvailableStocks();
-    } catch (NoStocksFoundException e) {
-      throw new RuntimeException(e);
-    }
+    setStocksFromFolder();
 
     _appliedFilters = new LinkedList<>();
   }
@@ -75,7 +70,6 @@ public class Core {
     return companies;
   }
 
-
   public Map<String, Company> getCompaniesFromStock(String stockName) throws IllegalArgumentException {
     for (Stock stock : _stocks) {
       if (stock.getName().equals(stockName)) {
@@ -86,10 +80,10 @@ public class Core {
     throw new IllegalArgumentException("Can not find a stock named " + stockName);
   }
 
+
   public ArrayList<Plugin> getCompanyPlugins() {
     return this.companiesPlugins;
   }
-
 
   public <E> void setEntityData(E entity) {
     if (entity != null) {
@@ -99,13 +93,14 @@ public class Core {
     }
   }
 
-  private void setCompanyData(Company settedCompany){
+
+  private void setCompanyData(Company setCompany){
     _stocks.stream()
       .filter(
-        stock -> stock.getName().equals(settedCompany.getStockName())
+        stock -> stock.getName().equals(setCompany.getStockName())
       )
       .forEach(
-        stock -> stock.getCompanies().replace(settedCompany.getSymbol(), settedCompany)
+        stock -> stock.getCompanies().replace(setCompany.getSymbol(), setCompany)
       );
   }
 
@@ -165,10 +160,10 @@ public class Core {
     return isDataLoaded;
   }
 
-
   public void setDataLoaded(boolean dataLoaded) {
     isDataLoaded = dataLoaded;
   }
+
 
   public List<Filter> getAppliedFilters() {
     return _appliedFilters;
@@ -176,6 +171,18 @@ public class Core {
 
   public void setStocks(List<Stock> stocks) {
     this._stocks = stocks;
+  }
+
+  public void setStocksFromFolder() {
+    try {
+      _stocks = ResourcesHelper.getInstance().getAvailableStocks();
+    } catch (NoStocksFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public List<Stock> getStocks() {
+    return _stocks;
   }
 }
 

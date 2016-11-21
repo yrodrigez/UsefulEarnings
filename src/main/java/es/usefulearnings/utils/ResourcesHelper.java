@@ -31,7 +31,7 @@ public class ResourcesHelper {
 
   private final File exportedFile;
 
-  private final List<Stock> stocks;
+  private List<Stock> stocks;
 
 
   private ResourcesHelper() throws NoStocksFoundException {
@@ -60,7 +60,8 @@ public class ResourcesHelper {
     stocks = createAvailableStocksFromFolder();
   }
 
-  public List<Stock> getAvailableStocks(){
+  public List<Stock> getAvailableStocks() throws NoStocksFoundException {
+    stocks = createAvailableStocksFromFolder();
     return stocks;
   }
 
