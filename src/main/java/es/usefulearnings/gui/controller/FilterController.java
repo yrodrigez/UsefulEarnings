@@ -9,6 +9,7 @@ import es.usefulearnings.gui.view.FilterView;
 import es.usefulearnings.gui.view.FilterViewHelper;
 import es.usefulearnings.utils.CSVWriter;
 import es.usefulearnings.utils.NoStocksFoundException;
+import es.usefulearnings.utils.OverwatchLoader;
 import es.usefulearnings.utils.ResourcesHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -22,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 import java.beans.IntrospectionException;
 import java.io.File;
@@ -51,7 +53,7 @@ public class FilterController implements Initializable {
 
     ProgressIndicator progressIndicator = new ProgressIndicator(-1);
     progressIndicator.getStyleClass().add("default-progress-indicator");
-    mainPane.setCenter(progressIndicator);
+    mainPane.setCenter(new OverwatchLoader(Color.web("#400090")).getLoader());
     BorderPane centerPane = new BorderPane();
 
     new Thread(()-> {
