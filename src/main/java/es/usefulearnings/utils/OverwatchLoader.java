@@ -4,9 +4,9 @@ import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -183,9 +183,10 @@ public class OverwatchLoader {
 
     VBox vbox = new VBox(topHbox, midHbox, botHbox);
     vbox.setSpacing(MAX_SPACING * -0.7);
-    Pane pane = new Pane(vbox);
-    pane.setMaxSize(hexagonSize * 6, hexagonSize * 6);
-    view = pane;
+
+    vbox.setAlignment(Pos.CENTER);
+    vbox.setMaxSize(((sqrt(3) / 2) * hexagonSize)*6, ((sqrt(3) / 2) * hexagonSize)*6);
+    view = vbox;
 
   }
 
