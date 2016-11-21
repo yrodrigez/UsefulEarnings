@@ -9,7 +9,7 @@ import es.usefulearnings.gui.view.FilterView;
 import es.usefulearnings.gui.view.FilterViewHelper;
 import es.usefulearnings.utils.CSVWriter;
 import es.usefulearnings.utils.NoStocksFoundException;
-import es.usefulearnings.utils.OverwatchLoader;
+import es.usefulearnings.utils.OverWatchLoader;
 import es.usefulearnings.utils.ResourcesHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -51,7 +51,7 @@ public class FilterController implements Initializable {
     filterListView = new ListView<>();
     filterListView.prefHeightProperty().bind(mainPane.heightProperty());
 
-    mainPane.setCenter(new OverwatchLoader(Color.web("#400090")).getLoader());
+    mainPane.setCenter(new OverWatchLoader(Color.web("#400090")).getLoader());
     BorderPane centerPane = new BorderPane();
 
     new Thread(()-> {

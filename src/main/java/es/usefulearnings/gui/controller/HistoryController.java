@@ -5,7 +5,7 @@ import es.usefulearnings.entities.DownloadedData;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.entities.EntitiesPackage;
-import es.usefulearnings.utils.OverwatchLoader;
+import es.usefulearnings.utils.OverWatchLoader;
 import es.usefulearnings.utils.ResourcesHelper;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
@@ -159,7 +159,7 @@ public class HistoryController implements Initializable {
         Tooltip tooltip = new Tooltip("Uploading data to system...");
         reloadData.setTooltip(tooltip);
         reloadData.setDisable(true);
-        reloadData.setGraphic(new OverwatchLoader(5.0, Color.WHITE).getLoader());
+        reloadData.setGraphic(new OverWatchLoader(5.0, Color.WHITE).getLoader());
 
         delete.setDisable(true);
 

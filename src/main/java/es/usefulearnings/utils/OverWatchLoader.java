@@ -12,6 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.Math.sqrt;
@@ -20,9 +22,9 @@ import static java.lang.Math.sqrt;
  * Overwatch - Like loader animation JavaFx
  * @author Yago Rodriguez
  */
-public class OverwatchLoader {
+public class OverWatchLoader {
   private Node view;
-  private AnimatedHexagon[] animatedHexagons;
+  private AnimatedHexagon hexagonChain;
 
   private class Hexagon {
     double[] points;
@@ -59,7 +61,10 @@ public class OverwatchLoader {
     private Polygon hexagon;
     private ScaleTransition scaleTransition;
     private ParallelTransition parallelTransition;
+    private FadeTransition fadeTransition;
     private boolean wasPaused;
+    private AnimatedHexagon _successor;
+    private Duration currentTime;
 
     AnimatedHexagon(double side, Color color) {
       wasPaused = false;
@@ -73,7 +78,7 @@ public class OverwatchLoader {
       scaleTransition.setCycleCount(2);
       scaleTransition.setAutoReverse(true);
 
-      FadeTransition fadeTransition = new FadeTransition(duration, hexagon);
+      fadeTransition = new FadeTransition(duration, hexagon);
       fadeTransition.setFromValue(1.0f);
       fadeTransition.setToValue(0.0f);
       fadeTransition.setCycleCount(2);
@@ -85,6 +90,28 @@ public class OverwatchLoader {
         fadeTransition
       );
       parallelTransition.setCycleCount(Timeline.INDEFINITE);
+
+      scaleTransition
+          .currentRateProperty()
+          .addListener(
+              (observable, oldValue, newValue) -> {
+                if (newValue.intValue() <= 0 && !wasPaused()) {
+                  pause();
+                  setWasPaused();
+
+                  _successor.play();
+                  _successor.resetWasPaused();
+                }
+              }
+          );
+    }
+
+    private void saveTime(Duration currentTime) {
+      this.currentTime = currentTime;
+    }
+
+    void setSuccessor(AnimatedHexagon successor){
+      this._successor = successor;
     }
 
     Node getAnimatedHexagon() {
@@ -92,11 +119,15 @@ public class OverwatchLoader {
     }
 
     void play() {
-      parallelTransition.play();
+      if(wasPaused)
+        parallelTransition.playFrom(currentTime);
+      else
+        parallelTransition.play();
     }
 
     void pause() {
       parallelTransition.pause();
+      saveTime(this.parallelTransition.getCurrentTime());
     }
 
     ScaleTransition getScaleTransition() {
@@ -120,7 +151,7 @@ public class OverwatchLoader {
    * Creates a loader with a default 20.0 hexagonSize
    * @param color color to fill the hexagon
    */
-  public OverwatchLoader(Color color){
+  public OverWatchLoader(Color color){
     this(20.0, color);
   }
 
@@ -129,41 +160,23 @@ public class OverwatchLoader {
    * @param hexagonSize size for each hexagon's side
    * @param color color to fill the hexagon
    */
-  public OverwatchLoader(double hexagonSize, Color color){
+  public OverWatchLoader(double hexagonSize, Color color){
     final int MAX_HEXAGONS = 7;
 
     Node[] animatedNodes = new Node[MAX_HEXAGONS];
-    animatedHexagons = new AnimatedHexagon[MAX_HEXAGONS];
+    AnimatedHexagon [] animatedHexagons = new AnimatedHexagon[MAX_HEXAGONS];
 
-    for (int i = 0; i < 7; i++) {
+    hexagonChain = new AnimatedHexagon(hexagonSize, color);
+    animatedNodes[0] = hexagonChain.getAnimatedHexagon();
+    animatedHexagons[0] = hexagonChain;
+
+    for (int i = 1; i < MAX_HEXAGONS; i++) {
       AnimatedHexagon animatedHexagon = new AnimatedHexagon(hexagonSize, color);
       animatedNodes[i] = animatedHexagon.getAnimatedHexagon();
       animatedHexagons[i] = animatedHexagon;
+      animatedHexagons[i-1].setSuccessor(animatedHexagon);
     }
-
-    final AtomicInteger i = new AtomicInteger(0);
-    for (; i.get() < 7; i.getAndIncrement()) {
-      final int myPos = i.get();
-      animatedHexagons[i.get()]
-        .getScaleTransition()
-        .currentRateProperty()
-        .addListener(
-          (observable, oldValue, newValue) -> {
-            if (newValue.intValue() <= 0 && !animatedHexagons[myPos].wasPaused()) {
-              animatedHexagons[myPos].pause();
-              animatedHexagons[myPos].setWasPaused();
-
-              if (myPos == 6) {
-                animatedHexagons[0].play();
-                animatedHexagons[0].resetWasPaused();
-              } else {
-                animatedHexagons[myPos + 1].play();
-                animatedHexagons[myPos + 1].resetWasPaused();
-              }
-            }
-          }
-        );
-    }
+    animatedHexagons[MAX_HEXAGONS-1].setSuccessor(hexagonChain);
 
     Polygon filler1 = new Polygon(new Hexagon(((sqrt(3) / 2) * hexagonSize / 2)).getPoints());
     filler1.setFill(Color.TRANSPARENT);
@@ -195,7 +208,7 @@ public class OverwatchLoader {
    * @return the node that contains the animation
    */
   public Node getLoader(){
-    animatedHexagons[0].play();
+    hexagonChain.play();
     return view;
   }
 }

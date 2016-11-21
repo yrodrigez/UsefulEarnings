@@ -5,7 +5,7 @@ import es.usefulearnings.entities.Stock;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.gui.view.CompanyViewHelper;
-import es.usefulearnings.utils.OverwatchLoader;
+import es.usefulearnings.utils.OverWatchLoader;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -159,7 +159,7 @@ public class NavigateController implements Initializable {
       if(Core.getInstance().isDataLoaded()) {
         Tab cTab = new Tab(newSymbol);
 
-        cTab.setContent(new OverwatchLoader(Color.web("#400090")).getLoader());
+        cTab.setContent(new OverWatchLoader(Color.web("#400090")).getLoader());
 
         new Thread(() -> {
           try {
