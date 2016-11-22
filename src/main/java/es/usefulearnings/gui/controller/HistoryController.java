@@ -5,7 +5,7 @@ import es.usefulearnings.entities.DownloadedData;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.entities.EntitiesPackage;
-import es.usefulearnings.utils.OverWatchLoader;
+import es.usefulearnings.gui.animation.OverWatchLoader;
 import es.usefulearnings.utils.ResourcesHelper;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;

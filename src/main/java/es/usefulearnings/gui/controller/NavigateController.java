@@ -5,7 +5,7 @@ import es.usefulearnings.entities.Stock;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.gui.view.CompanyViewHelper;
-import es.usefulearnings.utils.OverWatchLoader;
+import es.usefulearnings.gui.animation.OverWatchLoader;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

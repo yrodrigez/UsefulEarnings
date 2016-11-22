@@ -9,7 +9,7 @@ import es.usefulearnings.gui.view.FilterView;
 import es.usefulearnings.gui.view.FilterViewHelper;
 import es.usefulearnings.utils.CSVWriter;
 import es.usefulearnings.utils.NoStocksFoundException;
-import es.usefulearnings.utils.OverWatchLoader;
+import es.usefulearnings.gui.animation.OverWatchLoader;
 import es.usefulearnings.utils.ResourcesHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -106,7 +106,11 @@ public class FilterController implements Initializable {
         details.setOnAction(event -> {
           FilterViewHelper.getInstance().showOnWindow(filterListCell.getItem());
         });
-        filterContextMenu.getItems().addAll(export, details);
+
+        MenuItem historicalPrices = new MenuItem("Get Historical Prices");
+        historicalPrices.setOnAction(event -> filterListCell.getItem().createHistoricalPrices());
+
+        filterContextMenu.getItems().addAll(export, details, historicalPrices);
         filterListCell.setContextMenu(filterContextMenu);
 
         // recover the *damn* text

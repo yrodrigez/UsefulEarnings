@@ -1,6 +1,8 @@
 package es.usefulearnings.engine.filter;
 
 
+import javafx.event.ActionEvent;
+
 import java.beans.IntrospectionException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -88,5 +90,9 @@ public abstract class Filter<E> implements Serializable {
     return "Filtered at: "
       + new SimpleDateFormat("hh:mm:ss").format(new Date(_filteredDate * 1000L))
       + " companies found: " + _filteredEntities.size();
+  }
+
+  public void createHistoricalPrices() {
+
   }
 }

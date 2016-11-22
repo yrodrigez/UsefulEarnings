@@ -1,12 +1,18 @@
-package es.usefulearnings.utils;
+package es.usefulearnings.gui.animation;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Control;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -22,7 +28,7 @@ import static java.lang.Math.sqrt;
  * Overwatch - Like loader animation JavaFx
  * @author Yago Rodriguez
  */
-public class OverWatchLoader {
+public class OverWatchLoader extends Control {
   private Node view;
   private AnimatedHexagon hexagonChain;
 
@@ -200,7 +206,6 @@ public class OverWatchLoader {
     vbox.setAlignment(Pos.CENTER);
     vbox.setMaxSize(((sqrt(3) / 2) * hexagonSize)*6, ((sqrt(3) / 2) * hexagonSize)*6);
     view = vbox;
-
   }
 
   /**
