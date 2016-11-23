@@ -28,11 +28,6 @@ public class IncomeStatmentsPlugin implements Plugin<Company> {
     mapper = new ObjectMapper();
   }
 
-  public String getCompanySymbol() {
-    return mCompanySymbol;
-  }
-
-
   @Override
   public void addInfo(Company company) throws PluginException {
     try {

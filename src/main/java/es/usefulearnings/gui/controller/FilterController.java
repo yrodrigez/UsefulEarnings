@@ -1,7 +1,12 @@
 package es.usefulearnings.gui.controller;
 
 import es.usefulearnings.engine.Core;
+import es.usefulearnings.engine.connection.DownloadProcess;
+import es.usefulearnings.engine.connection.ProcessHandler;
 import es.usefulearnings.engine.filter.Filter;
+import es.usefulearnings.engine.plugin.HistoricalDataPlugin;
+import es.usefulearnings.engine.plugin.Plugin;
+import es.usefulearnings.entities.Entity;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.gui.view.CompanyViewHelper;
@@ -13,17 +18,23 @@ import es.usefulearnings.gui.animation.OverWatchLoader;
 import es.usefulearnings.utils.ResourcesHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.beans.IntrospectionException;
 import java.io.File;
@@ -31,10 +42,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Yago on 04/09/2016.
@@ -108,7 +117,7 @@ public class FilterController implements Initializable {
         });
 
         MenuItem historicalPrices = new MenuItem("Get Historical Prices");
-        historicalPrices.setOnAction(event -> filterListCell.getItem().createHistoricalPrices());
+        historicalPrices.setOnAction(event -> createHistoricalPrices(filterListCell.getItem()));
 
         filterContextMenu.getItems().addAll(export, details, historicalPrices);
         filterListCell.setContextMenu(filterContextMenu);
@@ -122,6 +131,126 @@ public class FilterController implements Initializable {
 
         return filterListCell;
       });
+    }
+  }
+
+  private void createHistoricalPrices(Filter filter) {
+    Stage dialogStage = new Stage();
+    dialogStage.setTitle(filter.toString());
+    dialogStage.initModality(Modality.WINDOW_MODAL);
+
+    BorderPane borderPane = new BorderPane();
+    borderPane.setPrefSize(989 * .75 , 733 * .75);
+    Scene scene = new Scene(borderPane);
+    dialogStage.setScene(scene);
+    dialogStage.initStyle(StageStyle.UNDECORATED);
+    dialogStage.initOwner(rightPane.getScene().getWindow());
+    dialogStage.show();
+    new Thread(()->{
+      VBox vbox = new VBox(new OverWatchLoader(10.0, Color.web("#400090")).getLoader());
+      vbox.setAlignment(Pos.CENTER);
+      Platform.runLater(() -> borderPane.setCenter(vbox));
+      Label label = new Label("Creating tasks");
+      Platform.runLater(() -> vbox.getChildren().add(label));
+
+
+      final int MAX_THREADS = Runtime.getRuntime().availableProcessors() * 2;
+      final int totalCompanies = filter.getEntities().size();
+
+      DownloaderTask [] tasks = new DownloaderTask[MAX_THREADS < totalCompanies / MAX_THREADS ? MAX_THREADS : totalCompanies / MAX_THREADS];
+
+      int split = totalCompanies / tasks.length;
+
+      for (int i = 0; i< tasks.length ; i++) {
+        ArrayList<Plugin> plugins = new ArrayList<>();
+        plugins.add(new HistoricalDataPlugin(1448236800, 1479914252));
+
+        int from = i * split;
+        int to = from + split;
+        if(i == MAX_THREADS - 1) to = totalCompanies;
+        tasks[i] = new DownloaderTask(plugins, (new LinkedList<>(filter.getEntities())).subList(from, to));
+      }
+
+      Platform.runLater(() -> vbox.getChildren().remove(label));
+      for (DownloaderTask task : tasks){
+        new Thread(task).start();
+        Platform.runLater(() -> vbox.getChildren().add(task.getSkin()));
+      }
+    }).start();
+  }
+  private class DownloaderTask extends Task<Void> {
+    private DownloadProcess process;
+    private ProcessHandler handler;
+    private Node _skin;
+
+    DownloaderTask(ArrayList<Plugin> plugins, List<Entity> entities){
+      handler = new ProcessHandler() {
+        @Override
+        public void updateProgress(int workDone, int remaining) {
+          DownloaderTask.this.updateProgress(workDone, remaining);
+        }
+
+        @Override
+        public void updateMessage(String message) {
+          DownloaderTask.this.updateMessage(message);
+        }
+
+        @Override
+        public void onCancelled() {
+          cancel();
+        }
+
+        @Override
+        public void onError(Throwable err) {
+          Platform.runLater(()-> AlertHelper.showExceptionAlert(process.getError()));
+          failed();
+        }
+
+        @Override
+        public void onSuccess() {
+          updateMessage("Saving data");
+          updateMessage("Work done!");
+          succeeded();
+        }
+      };
+
+      process = new DownloadProcess(handler, plugins, entities);
+
+      ProgressIndicator indicator = new ProgressIndicator();
+      indicator.setPrefSize(35, 35);
+      indicator.setStyle("-fx-accent: #400090;");
+      indicator.progressProperty().bind(this.progressProperty());
+      ProgressBar bar = new ProgressBar();
+      bar.progressProperty().bind(indicator.progressProperty());
+      bar.setPrefWidth(280);
+      bar.styleProperty().bind(indicator.styleProperty());
+      Label label = new Label();
+      label.textProperty().bind(this.messageProperty());
+      HBox hBox = new HBox(bar, indicator);
+      hBox.setAlignment(Pos.CENTER);
+      VBox skin = new VBox(label, hBox);
+      skin.setAlignment(Pos.CENTER);
+      _skin = skin;
+    }
+
+
+    @Override
+    protected Void call() throws Exception {
+      process.run();
+      if(process.hasFailed()) {
+        this.failed();
+        super.failed();
+        throw process.getError();
+      }
+      return null;
+    }
+
+    void stop(){
+      this.process.stop();
+    }
+
+    Node getSkin(){
+      return _skin;
     }
   }
 

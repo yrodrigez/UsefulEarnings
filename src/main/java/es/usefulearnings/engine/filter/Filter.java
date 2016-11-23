@@ -87,8 +87,7 @@ public abstract class Filter<E> implements Serializable {
 
   @Override
   public String toString(){
-    return "Filtered at: "
-      + new SimpleDateFormat("hh:mm:ss").format(new Date(_filteredDate * 1000L))
+      return new SimpleDateFormat("hh:mm:ss").format(new Date(_filteredDate * 1000L))
       + " companies found: " + _filteredEntities.size();
   }
 

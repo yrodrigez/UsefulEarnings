@@ -70,7 +70,6 @@ public class MainController implements Initializable {
       ((Stage)mainPane.getScene().getWindow()).setIconified(true);
       event.consume();
     });
-    //topMenu.getChildren().add(minimize);
 
     maximizeIcon = new ImageView(new Image(Main.class.getResourceAsStream("icons/window-maximize.png")));
     restoreIcon = new ImageView(new Image(Main.class.getResourceAsStream("icons/window-restore.png")));
@@ -84,8 +83,6 @@ public class MainController implements Initializable {
       }
       event.consume();
     });
-    //topMenu.getChildren().add(maximizeRestore);
-
     ImageView closeIcon = new ImageView(new Image(Main.class.getResourceAsStream("icons/window-close.png")));
     Button closeButton = new Button("", closeIcon);
     closeButton.getStyleClass().addAll("main-controller-button", "close-button", "no-radius");
@@ -102,8 +99,6 @@ public class MainController implements Initializable {
 
     topMenu.getChildren().addAll(buttonBox);
     topMenu.setHgrow(buttonBox, Priority.ALWAYS);
-    //topMenu.setAlignment(Pos.TOP_RIGHT);
-
   }
 
   private void setTopPaneGesture() {

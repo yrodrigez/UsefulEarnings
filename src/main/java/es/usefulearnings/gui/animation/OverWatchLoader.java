@@ -125,15 +125,11 @@ public class OverWatchLoader extends Control {
     }
 
     void play() {
-      if(wasPaused)
-        parallelTransition.playFrom(currentTime);
-      else
         parallelTransition.play();
     }
 
     void pause() {
       parallelTransition.pause();
-      saveTime(this.parallelTransition.getCurrentTime());
     }
 
     ScaleTransition getScaleTransition() {

@@ -7,6 +7,7 @@ import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.Entity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,13 +25,13 @@ public class DownloadProcess extends Process implements Runnable {
 
   private ArrayList<Plugin> plugins;
 
-  private List<Entity> entities;
+  private Collection<Entity> entities;
   private List<Entity> emptyEntities;
 
   public DownloadProcess(
     ProcessHandler handler,
     ArrayList<Plugin> plugins,
-    List<Entity> entities
+    Collection<Entity> entities
   ) {
     super(handler);
     this.plugins = plugins;
@@ -100,7 +101,7 @@ public class DownloadProcess extends Process implements Runnable {
     return this.err;
   }
 
-  public List<Entity> getEntities() {
+  public Collection<Entity> getEntities() {
     return entities;
   }
   public List<Entity> getEmptyEntities() {

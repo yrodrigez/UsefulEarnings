@@ -47,7 +47,10 @@ public class YahooFinanceAPI {
     optionQuoteSummaryModules.add(OPTION_PRICE);
   }
 
-  public URL getHistoricalDataURL(String yql) throws MalformedURLException {
+  public URL getHistoricalDataURL(String symbol, String startDate , String endDate) throws MalformedURLException {
+    String yql = "select * from yahoo.finance.historicaldata where symbol = \""+ symbol +
+        "\" and startDate = \""+ startDate + "\" and endDate = \""+ endDate +"\"";
+
     yql = yql.replaceAll("\\s", "%20");
 
     return new URL(
