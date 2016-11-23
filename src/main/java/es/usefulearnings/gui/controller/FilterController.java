@@ -171,11 +171,13 @@ public class FilterController implements Initializable {
         tasks[i] = new DownloaderTask(plugins, (new LinkedList<>(filter.getEntities())).subList(from, to));
       }
 
-      Platform.runLater(() -> vbox.getChildren().remove(label));
+      Platform.runLater(() -> label.setText("Initializing downloads..."));
       for (DownloaderTask task : tasks){
         new Thread(task).start();
         Platform.runLater(() -> vbox.getChildren().add(task.getSkin()));
       }
+      Platform.runLater(()-> label.setText("Downloading...."));
+
     }).start();
   }
   private class DownloaderTask extends Task<Void> {
