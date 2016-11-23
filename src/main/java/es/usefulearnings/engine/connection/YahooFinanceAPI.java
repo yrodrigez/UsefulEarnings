@@ -1,7 +1,9 @@
 package es.usefulearnings.engine.connection;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -81,11 +83,11 @@ public class YahooFinanceAPI {
    * @throws IllegalArgumentException if companyQuoteSummaryModules is empty or modules in that collection doesn't match with
    * the modules on YahooFinanceAPI.companyQuoteSummaryModules Map
    */
-  public URL getYahooQuoteSummaryLink(String companySymbol, String ... quoteSummaryModules) throws IllegalArgumentException, MalformedURLException {
+  public URL getYahooQuoteSummaryLink(String companySymbol, String ... quoteSummaryModules) throws IllegalArgumentException, MalformedURLException, UnsupportedEncodingException {
     if(quoteSummaryModules.length == 0) throw new IllegalArgumentException("Quote Summary modules cannot bew empty");
     if(companySymbol.isEmpty() || companySymbol.equals("")) throw new IllegalArgumentException("Symbol can't be empty");
     StringBuilder sb = new StringBuilder("https://query2.finance.yahoo.com/v10/finance/quoteSummary/");
-    sb.append(companySymbol);
+    sb.append(URLEncoder.encode(companySymbol, "UTF-8"));
     sb.append("?formatted=true&modules=");
     for(String module : quoteSummaryModules){
       if(!companyQuoteSummaryModules.contains(module)) {

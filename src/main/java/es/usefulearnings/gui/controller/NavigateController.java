@@ -3,9 +3,9 @@ package es.usefulearnings.gui.controller;
 import es.usefulearnings.engine.Core;
 import es.usefulearnings.entities.Stock;
 import es.usefulearnings.gui.Main;
+import es.usefulearnings.gui.animation.OverWatchLoader;
 import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.gui.view.CompanyViewHelper;
-import es.usefulearnings.gui.animation.OverWatchLoader;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,10 +16,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -159,14 +158,17 @@ public class NavigateController implements Initializable {
       if(Core.getInstance().isDataLoaded()) {
         Tab cTab = new Tab(newSymbol);
 
-        cTab.setContent(new OverWatchLoader(Color.web("#400090")).getLoader());
+        cTab.setContent(new Pane(new OverWatchLoader(Color.web("#400090")).getLoader()));
 
         new Thread(() -> {
           try {
+            Thread.sleep(5000L);
             Node companyData = getCompanyView(newSymbol);
             Platform.runLater(() -> cTab.setContent(companyData));
           } catch (IllegalAccessException | IntrospectionException | InvocationTargetException | InstantiationException e) {
             Platform.runLater(() -> AlertHelper.showExceptionAlert(e));
+            e.printStackTrace();
+          } catch (InterruptedException e) {
             e.printStackTrace();
           }
         }).start();
