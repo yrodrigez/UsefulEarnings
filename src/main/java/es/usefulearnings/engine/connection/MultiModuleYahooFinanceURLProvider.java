@@ -1,5 +1,6 @@
 package es.usefulearnings.engine.connection;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -30,6 +31,10 @@ public class MultiModuleYahooFinanceURLProvider implements YahooFinanceURLProvid
         YahooFinanceAPI.COMPANY_BALANCE_SHEET_HISTORY
       );
     } catch (MalformedURLException e) {
+      e.printStackTrace();
+      return null;
+    } catch (UnsupportedEncodingException e){
+      System.err.println(e.getMessage());
       e.printStackTrace();
       return null;
     }

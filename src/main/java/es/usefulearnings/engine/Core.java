@@ -175,6 +175,7 @@ public class Core {
 
   public void setStocksFromFolder() {
     try {
+      isDataLoaded = false;
       _stocks = ResourcesHelper.getInstance().getAvailableStocks();
     } catch (NoStocksFoundException e) {
       throw new RuntimeException(e);
