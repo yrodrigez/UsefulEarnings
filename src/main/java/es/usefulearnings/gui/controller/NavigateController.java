@@ -59,7 +59,7 @@ public class NavigateController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     stocksChoiceBox.getStyleClass().addAll("ue-choice-box");
 
-    ImageView refreshIcon = new ImageView(new javafx.scene.image.Image(Main.class.getResourceAsStream("icons/refresh.png"), 20, 20, true, true));
+    ImageView refreshIcon = new ImageView(new javafx.scene.image.Image(Main.class.getResourceAsStream("icons/refresh.png"), 20, 20, false, true));
     refresh.setGraphic(refreshIcon);
 
     webTab.setClosable(false);

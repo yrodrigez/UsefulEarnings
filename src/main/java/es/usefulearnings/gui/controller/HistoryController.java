@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -22,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -177,6 +179,16 @@ public class HistoryController implements Initializable {
                   fileIn.close();
 
                   Core.getInstance().setFromEntitiesPackage(entitiesPackage);
+                  Platform.runLater(() -> {
+                      Notifications.create()
+                        .title("Upload Completed")
+                        .text("Successfully uploaded " + entitiesPackage.getCompanies().size() + " companies to the program! \nHappy filtering")
+                        .graphic(new ImageView(new Image(Main.class.getResourceAsStream("icons/ok-notification.png"), 48d, 48d, false, true)))
+                        .position(Pos.BOTTOM_RIGHT)
+                        .show();
+                    }
+                  );
+
                 }
               } catch (Exception e) {
                 e.printStackTrace();

@@ -8,15 +8,14 @@ import es.usefulearnings.engine.plugin.HistoricalDataPlugin;
 import es.usefulearnings.engine.plugin.Plugin;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.Entity;
-import es.usefulearnings.entities.company.HistoricalData;
 import es.usefulearnings.gui.Main;
+import es.usefulearnings.gui.animation.OverWatchLoader;
 import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.gui.view.CompanyViewHelper;
 import es.usefulearnings.gui.view.FilterView;
 import es.usefulearnings.gui.view.FilterViewHelper;
 import es.usefulearnings.utils.CSVWriter;
 import es.usefulearnings.utils.NoStocksFoundException;
-import es.usefulearnings.gui.animation.OverWatchLoader;
 import es.usefulearnings.utils.ResourcesHelper;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -37,6 +36,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.controlsfx.control.Notifications;
 
 import java.beans.IntrospectionException;
 import java.io.File;
@@ -56,7 +56,7 @@ public class FilterController implements Initializable {
   private FilterView companyFilterView;
 
   @Override
-  public void initialize(URL location, ResourceBundle resources){
+  public void initialize(URL location, ResourceBundle resources) {
 
     filterListView = new ListView<>();
     filterListView.prefHeightProperty().bind(mainPane.heightProperty());
@@ -64,7 +64,7 @@ public class FilterController implements Initializable {
     mainPane.setCenter(new OverWatchLoader(Color.web("#400090")).getLoader());
     BorderPane centerPane = new BorderPane();
 
-    new Thread(()-> {
+    new Thread(() -> {
       try {
         companyFilterView = CompanyViewHelper.getInstance().getFilterableView();
         Platform.runLater(() -> {
@@ -88,7 +88,7 @@ public class FilterController implements Initializable {
   }
 
   private void refreshFilterPane() {
-    if(Core.getInstance().getAppliedFilters().size() > 0) {
+    if (Core.getInstance().getAppliedFilters().size() > 0) {
       rightPane.setCenter(filterListView);
       List<Filter> appliedFilters = Core.getInstance().getAppliedFilters();
       filterListView.setItems(FXCollections.observableArrayList(appliedFilters));
@@ -99,11 +99,11 @@ public class FilterController implements Initializable {
         MenuItem export = new MenuItem("Export to Excel", new ImageView(new Image(Main.class.getResourceAsStream("icons/export.png"), 12, 12, false, false)));
         export.setOnAction(event -> {
           try {
-            String dateString = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss").format(new Date( filterListCell.getItem().getFilteredDate() * 1000L));
+            String dateString = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss").format(new Date(filterListCell.getItem().getFilteredDate() * 1000L));
 
             CSVWriter writer = new CSVWriter(
-                ResourcesHelper.getInstance().getExportedDataPath() + File.separator +"exported at " + dateString,
-                new ArrayList<>(filterListCell.getItem().getEntities())
+              ResourcesHelper.getInstance().getExportedDataPath() + File.separator + "exported at " + dateString,
+              new ArrayList<>(filterListCell.getItem().getEntities())
             );
             writer.save();
             AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Success", "File exported succesfully at (" + dateString + ")");
@@ -125,7 +125,7 @@ public class FilterController implements Initializable {
 
         // recover the *damn* text
         filterListCell.itemProperty().addListener((observable, oldValue, newValue) -> {
-          if(newValue != null) {
+          if (newValue != null) {
             filterListCell.textProperty().bind(filterListCell.itemProperty().asString());
           }
         });
@@ -141,13 +141,13 @@ public class FilterController implements Initializable {
     dialogStage.initModality(Modality.WINDOW_MODAL);
 
     BorderPane borderPane = new BorderPane();
-    borderPane.setPrefSize(989 * .75 , 733 * .75);
+    borderPane.setPrefSize(989 * .75, 733 * .75);
     Scene scene = new Scene(borderPane);
     dialogStage.setScene(scene);
     dialogStage.initStyle(StageStyle.UNDECORATED);
     dialogStage.initOwner(rightPane.getScene().getWindow());
     dialogStage.show();
-    new Thread(()->{
+    new Thread(() -> {
       VBox vbox = new VBox(new OverWatchLoader(10.0, Color.web("#400090")).getLoader());
       vbox.setAlignment(Pos.CENTER);
       Platform.runLater(() -> borderPane.setCenter(vbox));
@@ -162,37 +162,37 @@ public class FilterController implements Initializable {
 
       int split = totalCompanies / tasks.length;
 
-      for (int i = 0; i< tasks.length ; i++) {
+      for (int i = 0; i < tasks.length; i++) {
         ArrayList<Plugin> plugins = new ArrayList<>();
         plugins.add(new HistoricalDataPlugin(1448236800, 1479914252));
 
         int from = i * split;
         int to = from + split;
-        if(i == MAX_THREADS - 1) to = totalCompanies;
+        if (i == MAX_THREADS - 1) to = totalCompanies;
         tasks[i] = new HistoricalDataTask(
-            plugins,
-            (new LinkedList<>(filter.getEntities())).subList(from, to),
-            tasks,
-            dialogStage
+          plugins,
+          (new LinkedList<>(filter.getEntities())).subList(from, to),
+          tasks,
+          dialogStage
         );
       }
 
       Platform.runLater(() -> label.setText("Initializing downloads..."));
       VBox vboxForBars = new VBox();
       ScrollPane scrollPaneForBars = new ScrollPane(vboxForBars);
-      scrollPaneForBars.setMaxSize(318, borderPane.getPrefHeight() * 0.75);
+      scrollPaneForBars.setMaxSize(330, borderPane.getPrefHeight() * 0.75);
       scrollPaneForBars.setStyle("-fx-background-color:transparent;");
-      for (HistoricalDataTask task : tasks){
+      for (HistoricalDataTask task : tasks) {
         new Thread(task).start();
         Platform.runLater(() -> vboxForBars.getChildren().add(task.getSkin()));
       }
-      Platform.runLater(()-> {
+      Platform.runLater(() -> {
         label.setText("Downloading....");
         vbox.getChildren().add(scrollPaneForBars);
         vboxForBars.setAlignment(Pos.CENTER);
       });
 
-
+      System.out.println(tasks.length);
     }).start();
   }
 
@@ -201,7 +201,7 @@ public class FilterController implements Initializable {
     private ProcessHandler handler;
     private Node _skin;
 
-    HistoricalDataTask(ArrayList<Plugin> plugins, List<Entity> entities, HistoricalDataTask[] tasks, Stage dialogStage){
+    HistoricalDataTask(ArrayList<Plugin> plugins, List<Entity> entities, HistoricalDataTask[] tasks, Stage dialogStage) {
       handler = new ProcessHandler() {
         @Override
         public void updateProgress(int workDone, int remaining) {
@@ -220,7 +220,7 @@ public class FilterController implements Initializable {
 
         @Override
         public void onError(Throwable err) {
-          Platform.runLater(()-> AlertHelper.showExceptionAlert(process.getError()));
+          Platform.runLater(() -> AlertHelper.showExceptionAlert(process.getError()));
           failed();
         }
 
@@ -228,29 +228,39 @@ public class FilterController implements Initializable {
         public void onSuccess() {
           updateMessage("Exporting to csv");
           entities.forEach(entity ->
-              {
-                try {
-                  String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
-                  String path = ResourcesHelper.getInstance().getExportedDataPath() +
-                      File.separator + "HistoricalData "+ date + File.separator+
-                      ((Company)entity).getSymbol()+ date +".csv";
-                  new File(ResourcesHelper.getInstance().getExportedDataPath() +
-                      File.separator + "HistoricalData "+ date).mkdirs();
-                  new CSVWriter(path, ((Company)entity).getHistoricalDatas()).save();
-                } catch (InvocationTargetException | IntrospectionException | IllegalAccessException | InstantiationException | NoStocksFoundException | IOException e) {
-                  e.printStackTrace();
-                }
-              });
+          {
+            try {
+              String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+              String path = ResourcesHelper.getInstance().getExportedDataPath() +
+                File.separator + "HistoricalData " + date + File.separator +
+                ((Company) entity).getSymbol() + date;
+              new File(ResourcesHelper.getInstance().getExportedDataPath() +
+                File.separator + "HistoricalData " + date).mkdirs();
+              new CSVWriter(path, ((Company) entity).getHistoricalDatas()).save();
+            } catch (InvocationTargetException | IntrospectionException | IllegalAccessException | InstantiationException | NoStocksFoundException | IOException e) {
+              e.printStackTrace();
+            }
+          });
           updateMessage("Work done!");
           boolean canClose = false;
-          for (HistoricalDataTask t : tasks){
-            if(!t.equals(HistoricalDataTask.this)) {
-              canClose = t.isDone();
+          synchronized (tasks) {
+            for (HistoricalDataTask t : tasks) {
+              if (!t.equals(HistoricalDataTask.this)) {
+                canClose = t.isDone();
+              }
             }
           }
 
           if (canClose) {
-            Platform.runLater(dialogStage::close);
+            Platform.runLater(() -> {
+              Notifications.create()
+                .title("Historical data Completed")
+                .text("Historical data download is completed an successfully exported at your folder")
+                .graphic(new ImageView(new Image(Main.class.getResourceAsStream("icons/ok-notification.png"), 48d, 48d, false, true)))
+                .position(Pos.BOTTOM_RIGHT)
+                .show();
+              dialogStage.close();
+            });
           }
           succeeded();
         }
@@ -278,7 +288,7 @@ public class FilterController implements Initializable {
     @Override
     protected Void call() throws Exception {
       process.run();
-      if(process.hasFailed()) {
+      if (process.hasFailed()) {
         this.failed();
         super.failed();
         throw process.getError();
@@ -286,11 +296,11 @@ public class FilterController implements Initializable {
       return null;
     }
 
-    void stop(){
+    void stop() {
       this.process.stop();
     }
 
-    Node getSkin(){
+    Node getSkin() {
       return _skin;
     }
   }
