@@ -45,6 +45,7 @@ public class Core {
     companiesPlugins.add(new IncomeStatmentsPlugin());
     companiesPlugins.add(new FinancialDataPlugin());
     companiesPlugins.add(new CompanySummaryDetailPlugin());
+    companiesPlugins.add(new HistoricalDataPlugin(1448236800, 1479914252));
 
     setStocksFromFolder();
 

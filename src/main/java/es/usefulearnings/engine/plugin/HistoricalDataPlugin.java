@@ -48,7 +48,7 @@ public class HistoricalDataPlugin implements Plugin<Company> {
           quote.traverse(),
           new TypeReference<ArrayList<HistoricalData>>() {}
       );
-      company.setHistoricalDatas(_historicalDatas);
+      company.setHistoricalDatum(_historicalDatas);
     } catch (MalformedURLException e) {
       throw new RuntimeException(e);
     } catch (Exception anyException) {

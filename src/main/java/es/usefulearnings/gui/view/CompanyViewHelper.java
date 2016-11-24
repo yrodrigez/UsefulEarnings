@@ -6,10 +6,15 @@ import es.usefulearnings.engine.EntityParameterBeanWalker;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.YahooField;
 import es.usefulearnings.entities.YahooLongFormatField;
+import es.usefulearnings.entities.company.HistoricalData;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -25,6 +30,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -74,19 +80,18 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
   }
 
   private Node getViewForObject(Object object)
-    throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException
-  {
+    throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
     GridPane gridPane = new GridPane();
     gridPane.setHgap(20);
     gridPane.setPadding(new Insets(5, 5, 5, 5));
     Accordion accordion = new Accordion();
     EntityParameterBeanWalker worker = new EntityParameterBeanWalker(
       (field, annotation, method, position) -> {
-        EntityParameter parameterDescriptor = ((EntityParameter)annotation);
+        EntityParameter parameterDescriptor = ((EntityParameter) annotation);
         ParameterType parameterType = parameterDescriptor.parameterType();
         String entityName = parameterDescriptor.name();
         Label entityNameLabel = new Label(entityName + ": ");
-        switch (parameterType){
+        switch (parameterType) {
           case INNER_CLASS:
             Object innerObject = method.invoke(object);
             ScrollPane pane = new ScrollPane(
@@ -122,14 +127,14 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
 
           case YAHOO_LONG_FORMAT_FIELD:
             gridPane.add(entityNameLabel, 0, position);
-            YahooLongFormatField longFormatField = (YahooLongFormatField)method.invoke(object);
+            YahooLongFormatField longFormatField = (YahooLongFormatField) method.invoke(object);
             if (longFormatField != null)
               gridPane.add(new Label(longFormatField.getLongFmt()), 1, position);
             break;
 
           case YAHOO_FIELD_DATE_COLLECTION:
             gridPane.add(entityNameLabel, 0, position);
-            Collection<YahooField> collection = (Collection<YahooField>)method.invoke(object);
+            Collection<YahooField> collection = (Collection<YahooField>) method.invoke(object);
             Label datesLabel = YahooFieldNodeRetriever.getInstance().getYahooDateCollectionLabel(collection);
             gridPane.add(datesLabel, 1, position);
             break;
@@ -169,6 +174,112 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
           case IGNORE:
             break;
 
+          case HISTORICAL_DATA:
+            ArrayList<HistoricalData> historicalDatum = (ArrayList<HistoricalData>) method.invoke(object);
+            if (historicalDatum != null) {
+              final CategoryAxis xAxis = new CategoryAxis();
+              final NumberAxis yAxis = new NumberAxis();
+              xAxis.setLabel("Month");
+
+              final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
+              lineChart.setCreateSymbols(false);
+              lineChart.setAnimated(false);
+              lineChart.getStyleClass().add("thick-chart");
+              lineChart.setTitle(historicalDatum.get(0).getSymbol());
+
+              XYChart.Series adjClose = new XYChart.Series();
+              adjClose.setName("Adj Close");
+
+              XYChart.Series open = new XYChart.Series();
+              open.setName("Open");
+
+              XYChart.Series high = new XYChart.Series();
+              high.setName("High");
+
+              XYChart.Series low = new XYChart.Series();
+              low.setName("Low");
+
+              XYChart.Series close = new XYChart.Series();
+              close.setName("Close");
+
+              XYChart.Series volume = new XYChart.Series();
+              volume.setName("Volume");
+
+              historicalDatum.forEach(historicalData -> {
+
+                adjClose.getData().add(new XYChart.Data<>(
+                  historicalData.getDate(),
+                  Double.parseDouble(historicalData.getAdj_close())
+                ));
+
+                low.getData().add(
+                  new XYChart.Data<>(
+                    historicalData.getDate(),
+                    Double.parseDouble(historicalData.getLow())
+                  ));
+
+                high.getData().add(
+                  new XYChart.Data<>(
+                    historicalData.getDate(),
+                    Double.parseDouble(historicalData.getHigh())
+                  ));
+
+                close.getData().add(
+                  new XYChart.Data<>(
+                    historicalData.getDate(),
+                    Double.parseDouble(historicalData.getClose())
+                  ));
+
+                volume.getData().add(
+                  new XYChart.Data<>(
+                    historicalData.getDate(),
+                    Double.parseDouble(historicalData.getVolume())
+                  ));
+              });
+
+              lineChart.getData().addAll(adjClose, low, high, close/*, volume*/);
+              final double SCALE_DELTA = 1.1;
+              lineChart.setOnScroll(event -> {
+                event.consume();
+
+                if (event.getDeltaY() == 0) {
+                  return;
+                }
+
+                double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
+
+                lineChart.setScaleX(lineChart.getScaleX() * scaleFactor);
+                lineChart.setScaleY(lineChart.getScaleY() * scaleFactor);
+              });
+              Events events = new Events();
+              lineChart.setOnMousePressed(event -> {
+                if (event.getClickCount() == 2) {
+                  lineChart.setScaleX(1.0);
+                  lineChart.setScaleY(1.0);
+                } else {
+                  events.orgSceneX = event.getSceneX();
+                  events.orgSceneY = event.getSceneY();
+
+                  events.orgTranslateX = lineChart.getTranslateX();
+                  events.orgTranslateY = lineChart.getTranslateY();
+                }
+              });
+              lineChart.setOnMouseDragged(event -> {
+                double offsetX = event.getSceneX() - events.orgSceneX;
+                double offsetY = event.getSceneY() - events.orgSceneY;
+                double newTranslateX = events.orgTranslateX + offsetX;
+                double newTranslateY = events.orgTranslateY + offsetY;
+
+                lineChart.setTranslateX(newTranslateX);
+                lineChart.setTranslateY(newTranslateY);
+              });
+
+
+              TitledPane titledPaneForChart = new TitledPane(entityName, lineChart);
+              accordion.getPanes().add(titledPaneForChart);
+            }
+            break;
+
           default:
             throw new IllegalArgumentException("Wrong argument -> " + parameterType.name());
         }
@@ -176,5 +287,10 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
     );
     worker.walk(object.getClass());
     return new VBox(accordion, gridPane);
+  }
+
+  private class Events {
+    public double orgSceneX, orgSceneY;
+    public double orgTranslateX, orgTranslateY;
   }
 }

@@ -41,8 +41,8 @@ public class Company implements Serializable, Entity, Savable {
   @EntityParameter(name = "Balance sheet statement" , parameterType = ParameterType.INNER_CLASS_COLLECTION)
   private ArrayList<BalanceSheetStatement> balanceSheetStatements;
 
-  @EntityParameter(name = "Historical Data", parameterType = ParameterType.INNER_CLASS_COLLECTION)
-  private ArrayList<HistoricalData> historicalDatas;
+  @EntityParameter(name = "Historical Data", parameterType = ParameterType.HISTORICAL_DATA)
+  private ArrayList<HistoricalData> historicalDatum;
 
   public Company(String symbol, String stockName){
     this.symbol = symbol;
@@ -63,8 +63,8 @@ public class Company implements Serializable, Entity, Savable {
     balanceSheetStatements = new ArrayList<>();
     balanceSheetStatements.add(new BalanceSheetStatement());
 
-    historicalDatas = new ArrayList<>();
-    historicalDatas.add(new HistoricalData());
+    historicalDatum = new ArrayList<>();
+    historicalDatum.add(new HistoricalData());
   }
 
 
@@ -159,12 +159,12 @@ public class Company implements Serializable, Entity, Savable {
     return this.symbol;
   }
 
-  public ArrayList<HistoricalData> getHistoricalDatas() {
-    return historicalDatas;
+  public ArrayList<HistoricalData> getHistoricalDatum() {
+    return historicalDatum;
   }
 
-  public void setHistoricalDatas(ArrayList<HistoricalData> historicalDatas) {
-    this.historicalDatas = historicalDatas;
+  public void setHistoricalDatum(ArrayList<HistoricalData> historicalDatum) {
+    this.historicalDatum = historicalDatum;
   }
 
   public String getStockName() {
