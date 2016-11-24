@@ -3,9 +3,11 @@ package es.usefulearnings.utils;
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.engine.EntityParameterBeanWalker;
+import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.Entity;
 import es.usefulearnings.entities.YahooField;
 import es.usefulearnings.entities.YahooLongFormatField;
+import es.usefulearnings.entities.company.CompanyData;
 
 import java.beans.IntrospectionException;
 import java.io.BufferedWriter;
@@ -13,13 +15,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * @author Yago on 09/10/2016.
  */
-public class CSVWriter {
+public class CSVWriter <E> {
   private String _filePath;
   private StringBuilder _csv;
   private final String separator = ";";
@@ -27,14 +30,14 @@ public class CSVWriter {
 
   public CSVWriter (
     String filePath,
-    ArrayList<Entity> entities
+    ArrayList<E> entities
   ) throws InvocationTargetException, IntrospectionException, InstantiationException, IllegalAccessException {
     _csv = new StringBuilder();
     _filePath = filePath;
 
     List<String> headers = getHeader(entities.get(0));
     writeLine(headers);
-    for (Entity entity : entities){
+    for (E entity : entities){
       List<String> line = lineCreator(entity);
       writeLine(line);
     }

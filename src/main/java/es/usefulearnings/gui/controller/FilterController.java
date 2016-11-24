@@ -6,7 +6,9 @@ import es.usefulearnings.engine.connection.ProcessHandler;
 import es.usefulearnings.engine.filter.Filter;
 import es.usefulearnings.engine.plugin.HistoricalDataPlugin;
 import es.usefulearnings.engine.plugin.Plugin;
+import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.Entity;
+import es.usefulearnings.entities.company.HistoricalData;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
 import es.usefulearnings.gui.view.CompanyViewHelper;
@@ -43,7 +45,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Yago on 04/09/2016.
@@ -101,8 +102,8 @@ public class FilterController implements Initializable {
             String dateString = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss").format(new Date( filterListCell.getItem().getFilteredDate() * 1000L));
 
             CSVWriter writer = new CSVWriter(
-              ResourcesHelper.getInstance().getExportedDataPath() + File.separator +"exported at " + dateString,
-              new ArrayList<>(filterListCell.getItem().getEntities())
+                ResourcesHelper.getInstance().getExportedDataPath() + File.separator +"exported at " + dateString,
+                new ArrayList<>(filterListCell.getItem().getEntities())
             );
             writer.save();
             AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Success", "File exported succesfully at (" + dateString + ")");
@@ -157,7 +158,7 @@ public class FilterController implements Initializable {
       final int MAX_THREADS = Runtime.getRuntime().availableProcessors() * 2;
       final int totalCompanies = filter.getEntities().size();
 
-      DownloaderTask [] tasks = new DownloaderTask[MAX_THREADS < totalCompanies / MAX_THREADS ? MAX_THREADS : totalCompanies / MAX_THREADS];
+      HistoricalDataTask[] tasks = new HistoricalDataTask[MAX_THREADS < totalCompanies / MAX_THREADS ? MAX_THREADS : totalCompanies / MAX_THREADS];
 
       int split = totalCompanies / tasks.length;
 
@@ -168,33 +169,48 @@ public class FilterController implements Initializable {
         int from = i * split;
         int to = from + split;
         if(i == MAX_THREADS - 1) to = totalCompanies;
-        tasks[i] = new DownloaderTask(plugins, (new LinkedList<>(filter.getEntities())).subList(from, to));
+        tasks[i] = new HistoricalDataTask(
+            plugins,
+            (new LinkedList<>(filter.getEntities())).subList(from, to),
+            tasks,
+            dialogStage
+        );
       }
 
       Platform.runLater(() -> label.setText("Initializing downloads..."));
-      for (DownloaderTask task : tasks){
+      VBox vboxForBars = new VBox();
+      ScrollPane scrollPaneForBars = new ScrollPane(vboxForBars);
+      scrollPaneForBars.setMaxSize(318, borderPane.getPrefHeight() * 0.75);
+      scrollPaneForBars.setStyle("-fx-background-color:transparent;");
+      for (HistoricalDataTask task : tasks){
         new Thread(task).start();
-        Platform.runLater(() -> vbox.getChildren().add(task.getSkin()));
+        Platform.runLater(() -> vboxForBars.getChildren().add(task.getSkin()));
       }
-      Platform.runLater(()-> label.setText("Downloading...."));
+      Platform.runLater(()-> {
+        label.setText("Downloading....");
+        vbox.getChildren().add(scrollPaneForBars);
+        vboxForBars.setAlignment(Pos.CENTER);
+      });
+
 
     }).start();
   }
-  private class DownloaderTask extends Task<Void> {
+
+  private class HistoricalDataTask extends Task<Void> {
     private DownloadProcess process;
     private ProcessHandler handler;
     private Node _skin;
 
-    DownloaderTask(ArrayList<Plugin> plugins, List<Entity> entities){
+    HistoricalDataTask(ArrayList<Plugin> plugins, List<Entity> entities, HistoricalDataTask[] tasks, Stage dialogStage){
       handler = new ProcessHandler() {
         @Override
         public void updateProgress(int workDone, int remaining) {
-          DownloaderTask.this.updateProgress(workDone, remaining);
+          HistoricalDataTask.this.updateProgress(workDone, remaining);
         }
 
         @Override
         public void updateMessage(String message) {
-          DownloaderTask.this.updateMessage(message);
+          HistoricalDataTask.this.updateMessage(message);
         }
 
         @Override
@@ -210,8 +226,32 @@ public class FilterController implements Initializable {
 
         @Override
         public void onSuccess() {
-          updateMessage("Saving data");
+          updateMessage("Exporting to csv");
+          entities.forEach(entity ->
+              {
+                try {
+                  String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+                  String path = ResourcesHelper.getInstance().getExportedDataPath() +
+                      File.separator + "HistoricalData "+ date + File.separator+
+                      ((Company)entity).getSymbol()+ date +".csv";
+                  new File(ResourcesHelper.getInstance().getExportedDataPath() +
+                      File.separator + "HistoricalData "+ date).mkdirs();
+                  new CSVWriter(path, ((Company)entity).getHistoricalDatas()).save();
+                } catch (InvocationTargetException | IntrospectionException | IllegalAccessException | InstantiationException | NoStocksFoundException | IOException e) {
+                  e.printStackTrace();
+                }
+              });
           updateMessage("Work done!");
+          boolean canClose = false;
+          for (HistoricalDataTask t : tasks){
+            if(!t.equals(HistoricalDataTask.this)) {
+              canClose = t.isDone();
+            }
+          }
+
+          if (canClose) {
+            Platform.runLater(dialogStage::close);
+          }
           succeeded();
         }
       };
@@ -234,7 +274,6 @@ public class FilterController implements Initializable {
       skin.setAlignment(Pos.CENTER);
       _skin = skin;
     }
-
 
     @Override
     protected Void call() throws Exception {
