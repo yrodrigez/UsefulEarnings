@@ -16,6 +16,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -33,6 +34,7 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * View manager of CompanyViewHelper's data
@@ -206,41 +208,52 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
               XYChart.Series volume = new XYChart.Series();
               volume.setName("Volume");
 
-              for( int i = 0 ; i < historicalDatum.getDate().size(); i++){
+              for (int i = 0; i < historicalDatum.getDate().size(); i++) {
                 String fmtDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(historicalDatum.getDate().get(i) * 1000));
 
                 adjClose.getData().add(new XYChart.Data<>(
-                  fmtDate,
-                  historicalDatum.getAdj_close().get(i)
-                ));
+                    fmtDate,
+                    historicalDatum.getAdj_close().get(i)
+                  )
+                );
 
                 low.getData().add(
                   new XYChart.Data<>(
                     fmtDate,
                     historicalDatum.getLow().get(i)
-                  ));
+                  )
+                );
 
                 high.getData().add(
                   new XYChart.Data<>(
                     fmtDate,
                     historicalDatum.getHigh().get(i)
-                  ));
+                  )
+                );
 
                 close.getData().add(
                   new XYChart.Data<>(
                     fmtDate,
                     historicalDatum.getClose().get(i)
-                  ));
+                  )
+                );
 
                 volume.getData().add(
                   new XYChart.Data<>(
                     fmtDate,
                     historicalDatum.getVolume().get(i)
-                  ));
+                  )
+                );
+
+                open.getData().add(
+                  new XYChart.Data<>(
+                    fmtDate,
+                    historicalDatum.getOpen().get(i)
+                  )
+                );
               }
 
 
-              lineChart.getData().addAll(adjClose, low, high, close, volume);
               final double SCALE_DELTA = 1.1;
               lineChart.setOnScroll(event -> {
                 event.consume();
@@ -278,7 +291,23 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
               });
 
 
-              TitledPane titledPaneForChart = new TitledPane(entityName, lineChart);
+              Button addDataButton = new Button("addNext");
+              final XYChart.Series [] series = {open, high, low, close, volume, adjClose};
+              AtomicInteger i = new AtomicInteger(0);
+              addDataButton.setOnAction(event -> {
+                lineChart.getData().removeAll(series);
+
+                i.getAndIncrement();
+                if (i.get() > series.length - 1) i.set(0);
+
+                lineChart.getData().add(series[i.get()]);
+                lineChart.autosize();
+                System.out.println("Adding: " + i.get());
+              });
+
+              VBox vBox = new VBox(lineChart, addDataButton);
+
+              TitledPane titledPaneForChart = new TitledPane(entityName, vBox);
               accordion.getPanes().add(titledPaneForChart);
             }
             break;

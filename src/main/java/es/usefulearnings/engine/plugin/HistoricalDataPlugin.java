@@ -55,38 +55,38 @@ public class HistoricalDataPlugin implements Plugin<Company> {
         }
       );
 
-
-      JsonNode highs = root.findValue("open");
+      JsonNode highs = root.findValue("high");
       ArrayList<Double> high = _mapper.readValue(
         highs.traverse(),
         new TypeReference<ArrayList<Double>>() {
         }
       );
 
-      JsonNode lows = root.findValue("open");
+      _mapper = new ObjectMapper();
+      JsonNode lows = root.findValue("low");
       ArrayList<Double> low = _mapper.readValue(
         lows.traverse(),
         new TypeReference<ArrayList<Double>>() {
         }
       );
 
-      JsonNode closes = root.findValue("open");
+      _mapper = new ObjectMapper();
+      JsonNode closes = root.findValue("close");
       ArrayList<Double> close = _mapper.readValue(
         closes.traverse(),
         new TypeReference<ArrayList<Double>>() {
         }
       );
 
-
-      JsonNode volumes = root.findValue("open");
+      _mapper = new ObjectMapper();
+      JsonNode volumes = root.findValue("volume");
       ArrayList<Double> volume = _mapper.readValue(
         volumes.traverse(),
         new TypeReference<ArrayList<Double>>() {
         }
       );
 
-
-
+      _mapper = new ObjectMapper();
       JsonNode unadjclose = root.findValue("unadjclose");
       unadjclose = unadjclose.findValue("unadjclose");
       ArrayList<Double> adjClose = _mapper.readValue(

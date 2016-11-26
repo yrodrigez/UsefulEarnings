@@ -17,31 +17,31 @@ public class HistoricalData extends CompanyData implements Serializable {
   @EntityParameter(name = "Symbol", parameterType = ParameterType.RAW_STRING)
   private String symbol;
 
-  @JsonProperty("chart.result.timestamp")
+  @JsonProperty("timestamp")
   @EntityParameter(name = "Dates", parameterType = ParameterType.RAW_DATE_COLLECTION)
   private ArrayList<Long> date;
 
-  @JsonProperty("chart.result.indicators.quote.open")
+  @JsonProperty("open")
   @EntityParameter(name = "Open", parameterType = ParameterType.NUMBER_COLLECTION)
   private ArrayList<Double> open;
 
-  @JsonProperty("chart.result.indicators.quote.high")
+  @JsonProperty("high")
   @EntityParameter(name = "High", parameterType = ParameterType.NUMBER_COLLECTION)
   private ArrayList<Double> high;
 
-  @JsonProperty("chart.result.indicators.quote.low")
+  @JsonProperty("low")
   @EntityParameter(name = "Low", parameterType = ParameterType.NUMBER_COLLECTION)
   private ArrayList<Double> low;
 
-  @JsonProperty("chart.result.indicators.quote.close")
+  @JsonProperty("close")
   @EntityParameter(name = "Close", parameterType = ParameterType.NUMBER_COLLECTION)
   private ArrayList<Double> close;
 
-  @JsonProperty("chart.result.indicators.quote.volume")
+  @JsonProperty("volume")
   @EntityParameter(name = "Volume", parameterType = ParameterType.NUMBER_COLLECTION)
   private ArrayList<Double> volume;
 
-  @JsonProperty("chart.result.indicators.unadjquote.unadjclose")
+  @JsonProperty("unadjclose")
   @EntityParameter(name = "Adj Close", parameterType = ParameterType.NUMBER_COLLECTION)
   private ArrayList<Double> adj_close;
 
@@ -145,13 +145,13 @@ public class HistoricalData extends CompanyData implements Serializable {
   public String toString() {
     return "HistoricalData{" +
         "symbol='" + symbol + '\'' +
-        ", date='" + date.size() + '\'' +
-        ", open='" + open.size() + '\'' +
-        ", high='" + high.size() + '\'' +
-        ", low='" + low.size() + '\'' +
-        ", close='" + close.size() + '\'' +
-        ", volume='" + volume.size() + '\'' +
-        ", adj_close='" + adj_close.size() + '\'' +
+        ", date='" + date + '\n' +
+        ", open='" + open + '\n' +
+        ", high='" + high + '\n' +
+        ", low='" + low + '\n' +
+        ", close='" + close + '\n' +
+        ", volume='" + volume + '\n' +
+        ", adj_close='" + adj_close + '\'' +
         '}';
   }
 }
