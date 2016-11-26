@@ -161,7 +161,7 @@ public class HistoryController implements Initializable {
         Tooltip tooltip = new Tooltip("Uploading data to system...");
         reloadData.setTooltip(tooltip);
         reloadData.setDisable(true);
-        reloadData.setGraphic(new OverWatchLoader(5.0, Color.WHITE).getLoader());
+        reloadData.setGraphic(new OverWatchLoader(6d, Color.WHITE).getLoader());
 
         delete.setDisable(true);
 

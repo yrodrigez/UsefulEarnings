@@ -164,9 +164,18 @@ public class FilterView {
             gridPane.add(numTextField, 2, position);
             break;
 
-
+          case CLASS:
+          case HISTORICAL_DATA:
           case IGNORE:
+          case OPTION_TYPE:
+          case RAW_BOOLEAN:
+          case YAHOO_FIELD_COLLECTION:
+          case RAW_DATE:
+          case OPTION_LINK_COLLECTION:
+          case NUMBER_COLLECTION:
+          case RAW_DATE_COLLECTION:
             break;
+
           default:
             throw new IllegalArgumentException("I have no input for " + parameterType.name() + " class " + field.getName());
         }

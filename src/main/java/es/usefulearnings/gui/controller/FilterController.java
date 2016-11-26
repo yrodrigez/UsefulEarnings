@@ -236,8 +236,8 @@ public class FilterController implements Initializable {
                 ((Company) entity).getSymbol() + date;
               new File(ResourcesHelper.getInstance().getExportedDataPath() +
                 File.separator + "HistoricalData " + date).mkdirs();
-              new CSVWriter(path, ((Company) entity).getHistoricalDatum()).save();
-            } catch (InvocationTargetException | IntrospectionException | IllegalAccessException | InstantiationException | NoStocksFoundException | IOException e) {
+              //new CSVWriter(path, ((Company) entity).getHistoricalData()).save();
+            } catch (/*InvocationTargetException | IntrospectionException | IllegalAccessException | InstantiationException |*/ NoStocksFoundException /*| IOException*/ e) {
               e.printStackTrace();
             }
           });

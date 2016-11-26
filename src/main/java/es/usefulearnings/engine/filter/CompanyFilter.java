@@ -192,6 +192,15 @@ public class CompanyFilter extends Filter<Company> {
                 }
                 break;
 /*--------------------------------------------------------------------------------------------------------------------*/
+              case HISTORICAL_DATA:
+              case RAW_DATE_COLLECTION:
+              case YAHOO_FIELD_COLLECTION:
+              case RAW_DATE:
+              case RAW_BOOLEAN:
+              case NUMBER_COLLECTION:
+              case OPTION_LINK_COLLECTION:
+              case OPTION_TYPE:
+              case CLASS:
               case IGNORE:
                 break;
 /*--------------------------------------------------------------------------------------------------------------------*/

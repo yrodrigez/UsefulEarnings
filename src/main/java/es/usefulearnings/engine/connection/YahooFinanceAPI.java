@@ -4,8 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Contains methods that will generate links to the known Yahoo! finance API
@@ -13,6 +12,20 @@ import java.util.List;
  * @author Yago.
  */
 public class YahooFinanceAPI {
+
+  public enum Range {
+    ONE_DAY,
+    FIVE_DAYS,
+    ONE_MONTH,
+    THREE_MONTH,
+    SIX_MONTH,
+    ONE_YEAR,
+    TWO_YEARS,
+    FIVE_YEARS,
+    TEN_YEARS,
+    YEAR_TO_DATE,
+    MAX
+  }
 
   //Company
   public static final String COMPANY_ASSET_PROFILE              = "assetProfile";
@@ -24,41 +37,12 @@ public class YahooFinanceAPI {
   public static final String COMPANY_BALANCE_SHEET_HISTORY      = "balanceSheetHistory";
   public static final String COMPANY_SUMMARY_DETAIL             = "summaryDetail";
 
+
   //Options
   public static final String OPTION_PRICE          = "price";
   public static final String OPTION_SUMMARY_DETAIL = "summaryDetail";
 
   private static final String DATE_QUERY = "?date=";
-
-  private static YahooFinanceAPI yahooLinks = new YahooFinanceAPI();
-
-  public static YahooFinanceAPI getInstance() {
-    return yahooLinks;
-  }
-  private YahooFinanceAPI() {
-    companyQuoteSummaryModules.add(COMPANY_CASHFLOW_STATEMENT_HISTORY);
-    companyQuoteSummaryModules.add(COMPANY_ASSET_PROFILE);
-    companyQuoteSummaryModules.add(COMPANY_BALANCE_SHEET_HISTORY);
-    companyQuoteSummaryModules.add(COMPANY_DEFAULT_KEY_STATISTICS);
-    companyQuoteSummaryModules.add(COMPANY_FINANCIAL_DATA);
-    companyQuoteSummaryModules.add(COMPANY_INCOME_STATEMENT_HISTORY);
-    companyQuoteSummaryModules.add(COMPANY_CALENDAR_EVENTS);
-    companyQuoteSummaryModules.add(COMPANY_SUMMARY_DETAIL);
-
-    optionQuoteSummaryModules.add(OPTION_SUMMARY_DETAIL);
-    optionQuoteSummaryModules.add(OPTION_PRICE);
-  }
-
-  public URL getHistoricalDataURL(String symbol, String startDate , String endDate) throws MalformedURLException {
-    String yql = "select * from yahoo.finance.historicaldata where symbol = \""+ symbol +
-        "\" and startDate = \""+ startDate + "\" and endDate = \""+ endDate +"\"";
-
-    yql = yql.replaceAll("\\s", "%20");
-
-    return new URL(
-        "https://query.yahooapis.com/v1/public/yql?q=" + yql + "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"
-    );
-  }
 
   /**
    * companyQuoteSummaryModules
@@ -74,6 +58,48 @@ public class YahooFinanceAPI {
    */
   private List<String> optionQuoteSummaryModules = new LinkedList<>();
 
+  private Map<Range, String> historicalDataValidRanges = new HashMap<>();
+
+  private static YahooFinanceAPI yahooLinks = new YahooFinanceAPI();
+  public static YahooFinanceAPI getInstance() {
+    return yahooLinks;
+  }
+
+  private YahooFinanceAPI() {
+    companyQuoteSummaryModules.add(COMPANY_ASSET_PROFILE);
+    companyQuoteSummaryModules.add(COMPANY_SUMMARY_DETAIL);
+    companyQuoteSummaryModules.add(COMPANY_FINANCIAL_DATA);
+    companyQuoteSummaryModules.add(COMPANY_CALENDAR_EVENTS);
+    companyQuoteSummaryModules.add(COMPANY_BALANCE_SHEET_HISTORY);
+    companyQuoteSummaryModules.add(COMPANY_DEFAULT_KEY_STATISTICS);
+    companyQuoteSummaryModules.add(COMPANY_INCOME_STATEMENT_HISTORY);
+    companyQuoteSummaryModules.add(COMPANY_CASHFLOW_STATEMENT_HISTORY);
+
+    historicalDataValidRanges.put(Range.ONE_DAY,      "1d" );
+    historicalDataValidRanges.put(Range.FIVE_DAYS,    "5d" );
+    historicalDataValidRanges.put(Range.ONE_MONTH,    "1mo");
+    historicalDataValidRanges.put(Range.THREE_MONTH,  "3mo");
+    historicalDataValidRanges.put(Range.SIX_MONTH,    "6mo");
+    historicalDataValidRanges.put(Range.ONE_YEAR,     "1y" );
+    historicalDataValidRanges.put(Range.TWO_YEARS,    "2y" );
+    historicalDataValidRanges.put(Range.FIVE_YEARS,   "5y" );
+    historicalDataValidRanges.put(Range.TEN_YEARS,    "10y");
+    historicalDataValidRanges.put(Range.YEAR_TO_DATE, "ytd");
+    historicalDataValidRanges.put(Range.MAX,          "max");
+
+    optionQuoteSummaryModules.add(OPTION_PRICE);
+    optionQuoteSummaryModules.add(OPTION_SUMMARY_DETAIL);
+  }
+
+  public URL getHistoricalDataURL(String symbol, long startDate, long endDate, Range range) throws MalformedURLException {
+    if(symbol == null || symbol.length() == 0 || range == null) throw new IllegalArgumentException("Your params are null!!!");
+    return new URL(
+      "https://query1.finance.yahoo.com/v8/finance/chart/"+ symbol.toUpperCase() +
+        "?period1="+ startDate +
+        "&period2="+ endDate +
+        "&interval=" + historicalDataValidRanges.get(range)
+    );
+  }
 
   /**
    * Generates a link to the Yahoo Finance API to get the specific modules on YahooFinanceAPI.companyQuoteSummaryModules Map

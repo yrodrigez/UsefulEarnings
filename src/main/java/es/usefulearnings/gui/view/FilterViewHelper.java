@@ -170,6 +170,19 @@ public class FilterViewHelper implements ViewHelper<Filter> {
                 values.put(header, longFormatField.getLongFmt());
               }  else values.put(header, "");
               break;
+            /*
+             * Ignoring these
+             */
+            case HISTORICAL_DATA:
+            case CLASS:
+            case NUMBER_COLLECTION:
+            case OPTION_LINK_COLLECTION:
+            case OPTION_TYPE:
+            case RAW_BOOLEAN:
+            case RAW_DATE:
+            case RAW_DATE_COLLECTION:
+            case YAHOO_FIELD_COLLECTION:
+              break;
 
 
             default:

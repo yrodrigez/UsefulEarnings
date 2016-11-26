@@ -3,30 +3,34 @@ package es.usefulearnings.gui.animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Control;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import static java.lang.Math.sqrt;
 
-/**
- * Overwatch - Like loader animation JavaFx
- * @author Yago Rodriguez
+/*
+ * OverWatch - Like loader animation JavaFx
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Created by: Yago Rodriguez
+ * GitHub profile: https://github.com/yrodrigez
  */
 public class OverWatchLoader extends Control {
   private Node view;
@@ -35,22 +39,24 @@ public class OverWatchLoader extends Control {
   private class Hexagon {
     double[] points;
 
-    public double getCenter() {
-      return center;
-    }
-
     double center;
 
     Hexagon(double side) {
       center = getH(side);
       points = new double[12];
       //     X                          Y
-      points[0] =  center;      points[1] =  0.0;
-      points[2] =  center * 2;  points[3] =  side / 2;
-      points[4] =  center * 2;  points[5] =  side + side / 2;
-      points[6] =  center;      points[7] =  side * 2;
-      points[8] =  0.0;         points[9] =  side + side / 2;
-      points[10] = 0.0;         points[11] = side / 2;
+      points[0] = center;
+      points[1] = 0.0;
+      points[2] = center * 2;
+      points[3] = side / 2;
+      points[4] = center * 2;
+      points[5] = side + side / 2;
+      points[6] = center;
+      points[7] = side * 2;
+      points[8] = 0.0;
+      points[9] = side + side / 2;
+      points[10] = 0.0;
+      points[11] = side / 2;
     }
 
     private double getH(double side) {
@@ -65,58 +71,70 @@ public class OverWatchLoader extends Control {
   private class AnimatedHexagon {
 
     private Polygon hexagon;
+
     private ScaleTransition scaleTransition;
-    private ParallelTransition parallelTransition;
+    private ParallelTransition disappearTransition;
     private FadeTransition fadeTransition;
+
+    private ScaleTransition reScaleTransition;
+    private ParallelTransition reappearTransition;
+    private FadeTransition reFadeTransition;
+
+
+
     private boolean wasPaused;
     private AnimatedHexagon _successor;
-    private Duration currentTime;
-
     AnimatedHexagon(double side, Color color) {
       wasPaused = false;
       hexagon = new Polygon(new Hexagon(side).getPoints());
       hexagon.setFill(color);
 
-      Duration duration = Duration.millis(250d);
+      Duration duration = Duration.millis(225d);
+      createDisappearTransition(duration);
+      createReappearTransition(duration);
+    }
+
+    private void createReappearTransition(Duration duration) {
+      reScaleTransition = new ScaleTransition(duration, hexagon);
+      reScaleTransition.setFromX(0.0f);
+      reScaleTransition.setFromY(0.0f);
+      reScaleTransition.setToX(1.0f);
+      reScaleTransition.setToY(1.0f);
+      reScaleTransition.setCycleCount(1);
+
+      reFadeTransition = new FadeTransition(duration, hexagon);
+      reFadeTransition.setFromValue(0.0f);
+      reFadeTransition.setToValue(1.0f);
+      reFadeTransition.setCycleCount(1);
+
+      reappearTransition = new ParallelTransition();
+      reappearTransition.getChildren().addAll(
+        reScaleTransition,
+        reFadeTransition
+      );
+      reappearTransition.setOnFinished(e -> _successor.play());
+    }
+
+    private void createDisappearTransition(Duration duration) {
       scaleTransition = new ScaleTransition(duration, hexagon);
-      scaleTransition.setToY(0f);
-      scaleTransition.setToX(0f);
-      scaleTransition.setCycleCount(2);
-      scaleTransition.setAutoReverse(true);
+      scaleTransition.setToY(0.0f);
+      scaleTransition.setToX(0.0f);
+      scaleTransition.setCycleCount(1);
 
       fadeTransition = new FadeTransition(duration, hexagon);
       fadeTransition.setFromValue(1.0f);
       fadeTransition.setToValue(0.0f);
-      fadeTransition.setCycleCount(2);
-      fadeTransition.setAutoReverse(true);
+      fadeTransition.setCycleCount(1);
 
-      parallelTransition = new ParallelTransition();
-      parallelTransition.getChildren().addAll(
+      disappearTransition = new ParallelTransition();
+      disappearTransition.getChildren().addAll(
         scaleTransition,
         fadeTransition
       );
-      parallelTransition.setCycleCount(Timeline.INDEFINITE);
-
-      scaleTransition
-          .currentRateProperty()
-          .addListener(
-              (observable, oldValue, newValue) -> {
-                if (newValue.intValue() <= 0 && !wasPaused()) {
-                  pause();
-                  setWasPaused();
-
-                  _successor.play();
-                  _successor.resetWasPaused();
-                }
-              }
-          );
+      disappearTransition.setOnFinished(e -> _successor.play());
     }
 
-    private void saveTime(Duration currentTime) {
-      this.currentTime = currentTime;
-    }
-
-    void setSuccessor(AnimatedHexagon successor){
+    void setSuccessor(AnimatedHexagon successor) {
       this._successor = successor;
     }
 
@@ -125,48 +143,36 @@ public class OverWatchLoader extends Control {
     }
 
     void play() {
-        parallelTransition.play();
-    }
-
-    void pause() {
-      parallelTransition.pause();
-    }
-
-    ScaleTransition getScaleTransition() {
-      return scaleTransition;
-    }
-
-    boolean wasPaused() {
-      return wasPaused;
-    }
-
-    void setWasPaused() {
-      wasPaused = true;
-    }
-
-    void resetWasPaused() {
-      wasPaused = false;
+      if(!wasPaused) {
+        disappearTransition.play();
+        wasPaused = true;
+      } else {
+        reappearTransition.play();
+        wasPaused = false;
+      }
     }
   }
 
   /**
    * Creates a loader with a default 20.0 hexagonSize
+   *
    * @param color color to fill the hexagon
    */
-  public OverWatchLoader(Color color){
+  public OverWatchLoader(Color color) {
     this(20.0, color);
   }
 
   /**
    * Creates a loader
+   *
    * @param hexagonSize size for each hexagon's side
-   * @param color color to fill the hexagon
+   * @param color       color to fill the hexagon
    */
-  public OverWatchLoader(double hexagonSize, Color color){
+  public OverWatchLoader(double hexagonSize, Color color) {
     final int MAX_HEXAGONS = 7;
 
     Node[] animatedNodes = new Node[MAX_HEXAGONS];
-    AnimatedHexagon [] animatedHexagons = new AnimatedHexagon[MAX_HEXAGONS];
+    AnimatedHexagon[] animatedHexagons = new AnimatedHexagon[MAX_HEXAGONS];
 
     hexagonChain = new AnimatedHexagon(hexagonSize, color);
     animatedNodes[0] = hexagonChain.getAnimatedHexagon();
@@ -176,9 +182,9 @@ public class OverWatchLoader extends Control {
       AnimatedHexagon animatedHexagon = new AnimatedHexagon(hexagonSize, color);
       animatedNodes[i] = animatedHexagon.getAnimatedHexagon();
       animatedHexagons[i] = animatedHexagon;
-      animatedHexagons[i-1].setSuccessor(animatedHexagon);
+      animatedHexagons[i - 1].setSuccessor(animatedHexagon);
     }
-    animatedHexagons[MAX_HEXAGONS-1].setSuccessor(hexagonChain);
+    animatedHexagons[MAX_HEXAGONS - 1].setSuccessor(hexagonChain);
 
     Polygon filler1 = new Polygon(new Hexagon(((sqrt(3) / 2) * hexagonSize / 2)).getPoints());
     filler1.setFill(Color.TRANSPARENT);
@@ -200,15 +206,16 @@ public class OverWatchLoader extends Control {
     vbox.setSpacing(MAX_SPACING * -0.7);
 
     vbox.setAlignment(Pos.CENTER);
-    vbox.setMaxSize(((sqrt(3) / 2) * hexagonSize)*6, ((sqrt(3) / 2) * hexagonSize)*6);
+    vbox.setMaxSize(((sqrt(3) / 2) * hexagonSize) * 6, ((sqrt(3) / 2) * hexagonSize) * 6);
     view = vbox;
   }
 
   /**
    * start the animation
+   *
    * @return the node that contains the animation
    */
-  public Node getLoader(){
+  public Node getLoader() {
     hexagonChain.play();
     return view;
   }

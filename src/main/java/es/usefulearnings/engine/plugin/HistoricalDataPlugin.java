@@ -10,45 +10,102 @@ import es.usefulearnings.entities.company.HistoricalData;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class HistoricalDataPlugin implements Plugin<Company> {
 
-  private ArrayList<HistoricalData> _historicalDatas;
   private URL _Url;
   private ObjectMapper _mapper;
-  private Date _startDate;
-  private Date _endDate;
+  private long _startDate;
+  private long _endDate;
 
   public HistoricalDataPlugin(long startTimeStamp, long endTimeStamp) {
     _mapper = new ObjectMapper();
 
-    _startDate = Date.from(Instant.ofEpochSecond(startTimeStamp));
-    _endDate = Date.from(Instant.ofEpochSecond(endTimeStamp));
+    _startDate = startTimeStamp;
+    _endDate = endTimeStamp;
   }
 
   @Override
   public void addInfo(Company company) throws PluginException {
     try {
       _Url = YahooFinanceAPI
-          .getInstance()
-          .getHistoricalDataURL(
-              company.getSymbol(),
-              new SimpleDateFormat("yyyy-MM-dd").format(_startDate),
-              new SimpleDateFormat("yyyy-MM-dd").format(_endDate)
-          );
+        .getInstance()
+        .getHistoricalDataURL(
+          company.getSymbol(),
+          _startDate,
+          _endDate,
+          YahooFinanceAPI.Range.ONE_DAY
+        );
 
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(_Url);
-      JsonNode quote = root.findValue("quote");
-      _historicalDatas = _mapper.readValue(
-          quote.traverse(),
-          new TypeReference<ArrayList<HistoricalData>>() {}
+
+      JsonNode timestamp = root.findValue("timestamp");
+      ArrayList<Long> dates = _mapper.readValue(
+        timestamp.traverse(),
+        new TypeReference<ArrayList<Long>>() {
+        }
       );
-      company.setHistoricalDatum(_historicalDatas);
+
+      JsonNode opens = root.findValue("open");
+      ArrayList<Double> open = _mapper.readValue(
+        opens.traverse(),
+        new TypeReference<ArrayList<Double>>() {
+        }
+      );
+
+
+      JsonNode highs = root.findValue("open");
+      ArrayList<Double> high = _mapper.readValue(
+        highs.traverse(),
+        new TypeReference<ArrayList<Double>>() {
+        }
+      );
+
+      JsonNode lows = root.findValue("open");
+      ArrayList<Double> low = _mapper.readValue(
+        lows.traverse(),
+        new TypeReference<ArrayList<Double>>() {
+        }
+      );
+
+      JsonNode closes = root.findValue("open");
+      ArrayList<Double> close = _mapper.readValue(
+        closes.traverse(),
+        new TypeReference<ArrayList<Double>>() {
+        }
+      );
+
+
+      JsonNode volumes = root.findValue("open");
+      ArrayList<Double> volume = _mapper.readValue(
+        volumes.traverse(),
+        new TypeReference<ArrayList<Double>>() {
+        }
+      );
+
+
+
+      JsonNode unadjclose = root.findValue("unadjclose");
+      unadjclose = unadjclose.findValue("unadjclose");
+      ArrayList<Double> adjClose = _mapper.readValue(
+        unadjclose.traverse(),
+        new TypeReference<ArrayList<Double>>() {
+        }
+      );
+
+      HistoricalData data = new HistoricalData(
+        company.getSymbol(),
+        dates,
+        open,
+        high,
+        low,
+        close,
+        volume,
+        adjClose
+      );
+      company.setHistoricalData(data);
     } catch (MalformedURLException e) {
       throw new RuntimeException(e);
     } catch (Exception anyException) {

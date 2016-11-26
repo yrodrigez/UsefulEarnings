@@ -30,8 +30,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * View manager of CompanyViewHelper's data
@@ -175,7 +176,7 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
             break;
 
           case HISTORICAL_DATA:
-            ArrayList<HistoricalData> historicalDatum = (ArrayList<HistoricalData>) method.invoke(object);
+            HistoricalData historicalDatum = (HistoricalData) method.invoke(object);
             if (historicalDatum != null) {
               final CategoryAxis xAxis = new CategoryAxis();
               final NumberAxis yAxis = new NumberAxis();
@@ -185,7 +186,7 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
               lineChart.setCreateSymbols(false);
               lineChart.setAnimated(false);
               lineChart.getStyleClass().add("thick-chart");
-              lineChart.setTitle(historicalDatum.get(0).getSymbol());
+              lineChart.setTitle(historicalDatum.getSymbol());
 
               XYChart.Series adjClose = new XYChart.Series();
               adjClose.setName("Adj Close");
@@ -205,39 +206,41 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
               XYChart.Series volume = new XYChart.Series();
               volume.setName("Volume");
 
-              historicalDatum.forEach(historicalData -> {
+              for( int i = 0 ; i < historicalDatum.getDate().size(); i++){
+                String fmtDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(historicalDatum.getDate().get(i) * 1000));
 
                 adjClose.getData().add(new XYChart.Data<>(
-                  historicalData.getDate(),
-                  Double.parseDouble(historicalData.getAdj_close())
+                  fmtDate,
+                  historicalDatum.getAdj_close().get(i)
                 ));
 
                 low.getData().add(
                   new XYChart.Data<>(
-                    historicalData.getDate(),
-                    Double.parseDouble(historicalData.getLow())
+                    fmtDate,
+                    historicalDatum.getLow().get(i)
                   ));
 
                 high.getData().add(
                   new XYChart.Data<>(
-                    historicalData.getDate(),
-                    Double.parseDouble(historicalData.getHigh())
+                    fmtDate,
+                    historicalDatum.getHigh().get(i)
                   ));
 
                 close.getData().add(
                   new XYChart.Data<>(
-                    historicalData.getDate(),
-                    Double.parseDouble(historicalData.getClose())
+                    fmtDate,
+                    historicalDatum.getClose().get(i)
                   ));
 
                 volume.getData().add(
                   new XYChart.Data<>(
-                    historicalData.getDate(),
-                    Double.parseDouble(historicalData.getVolume())
+                    fmtDate,
+                    historicalDatum.getVolume().get(i)
                   ));
-              });
+              }
 
-              lineChart.getData().addAll(adjClose, low, high, close/*, volume*/);
+
+              lineChart.getData().addAll(adjClose, low, high, close, volume);
               final double SCALE_DELTA = 1.1;
               lineChart.setOnScroll(event -> {
                 event.consume();
