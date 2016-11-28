@@ -239,6 +239,20 @@ public class MainController implements Initializable {
     historyButton.setToggleGroup(group);
     ret.add(historyButton);
 
+    /*
+     * NEW HISTORY
+     */
+
+    ToggleButton newHistory = new ToggleButton("N");
+    newHistory.getStyleClass().addAll("main-controller-button", "main-controller-right-button");
+    newHistory.setTooltip(new Tooltip("New History"));
+    newHistory.setOnAction(event -> {
+      VistaNavigator.getInstance().loadVista(VistaNavigator.NEW_HISTORY);
+      event.consume();
+    });
+    newHistory.setToggleGroup(group);
+    ret.add(newHistory);
+
     return ret;
   }
 

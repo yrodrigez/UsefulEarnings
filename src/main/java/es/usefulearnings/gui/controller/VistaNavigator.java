@@ -21,6 +21,7 @@ public class VistaNavigator {
   static final String DOWNLOAD        = "fxml/download.fxml";
   static final String HISTORY         = "fxml/history.fxml";
   static final String OPTIONS         = "fxml/options.fxml";
+  static final String NEW_HISTORY     = "fxml/newDownloadPane.fxml";
 
   private static VistaNavigator singleton = new VistaNavigator();
 
@@ -66,6 +67,7 @@ public class VistaNavigator {
     vistas.put(DOWNLOAD, new Vista());
     vistas.put(HISTORY,  new Vista());
     vistas.put(OPTIONS,  new Vista());
+    vistas.put(NEW_HISTORY,  new Vista());
   }
 
   /** The main application layout controller. */
