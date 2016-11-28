@@ -3,11 +3,8 @@ package es.usefulearnings.utils;
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.engine.EntityParameterBeanWalker;
-import es.usefulearnings.entities.Company;
-import es.usefulearnings.entities.Entity;
 import es.usefulearnings.entities.YahooField;
 import es.usefulearnings.entities.YahooLongFormatField;
-import es.usefulearnings.entities.company.CompanyData;
 
 import java.beans.IntrospectionException;
 import java.io.BufferedWriter;
@@ -15,7 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,7 +22,6 @@ public class CSVWriter <E> {
   private String _filePath;
   private StringBuilder _csv;
   private final String separator = ";";
-
 
   public CSVWriter (
     String filePath,
@@ -109,9 +104,13 @@ public class CSVWriter <E> {
             break;
 
           case RAW_NUMERIC:
-            Number number = (Number)method.invoke(entity);
-            if(number != null)
-              line.add(number.toString());
+            Object o1 = method.invoke(entity);
+            if(o1 != null) {
+              double number = (double) o1;
+              line.add(Double.toString(number));
+            } else {
+              line.add("");
+            }
             break;
 
           case YAHOO_LONG_FORMAT_FIELD:

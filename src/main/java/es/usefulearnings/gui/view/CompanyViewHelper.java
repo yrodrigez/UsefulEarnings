@@ -7,6 +7,7 @@ import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.YahooField;
 import es.usefulearnings.entities.YahooLongFormatField;
 import es.usefulearnings.entities.company.HistoricalData;
+import es.usefulearnings.gui.animation.OverWatchLoader;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -21,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -34,7 +36,6 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * View manager of CompanyViewHelper's data
@@ -98,8 +99,17 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
           case INNER_CLASS:
             Object innerObject = method.invoke(object);
             ScrollPane pane = new ScrollPane(
-              getViewForObject(innerObject)
+              new OverWatchLoader(javafx.scene.paint.Color.web("#400090")).getLoader()
             );
+            new Thread(() -> {
+              try {
+                Node n = getViewForObject(innerObject);
+                Platform.runLater(()-> pane.setContent(n));
+              } catch (IntrospectionException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
+              }
+            }).start();
+
             TitledPane titledPane = new TitledPane(entityName, pane);
             accordion.getPanes().add(titledPane);
             break;
@@ -291,21 +301,80 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
               });
 
 
-              Button addDataButton = new Button("addNext");
+
               final XYChart.Series [] series = {open, high, low, close, volume, adjClose};
-              AtomicInteger i = new AtomicInteger(0);
-              addDataButton.setOnAction(event -> {
-                lineChart.getData().removeAll(series);
+              lineChart.getData().addAll(series);
 
-                i.getAndIncrement();
-                if (i.get() > series.length - 1) i.set(0);
-
-                lineChart.getData().add(series[i.get()]);
-                lineChart.autosize();
-                System.out.println("Adding: " + i.get());
+              Button openButton = new Button("X Open");
+              openButton.setOnAction(event -> {
+                if(lineChart.getData().contains(open)){
+                  lineChart.getData().remove(open);
+                  openButton.setText("add Open");
+                } else {
+                  lineChart.getData().add(open);
+                  openButton.setText("X Open");
+                }
               });
 
-              VBox vBox = new VBox(lineChart, addDataButton);
+              Button highButton = new Button("X High");
+              highButton.setOnAction(event -> {
+                if(lineChart.getData().contains(high)){
+                  lineChart.getData().remove(high);
+                  highButton.setText("add High");
+                } else {
+                  lineChart.getData().add(high);
+                  highButton.setText("X High");
+                }
+              });
+
+              Button lowButton = new Button("X Low");
+              lowButton.setOnAction(event -> {
+                if(lineChart.getData().contains(low)){
+                  lineChart.getData().remove(low);
+                  lowButton.setText("add Low");
+                } else {
+                  lineChart.getData().add(low);
+                  lowButton.setText("X Low");
+                }
+              });
+
+              Button closeButton = new Button("X Close");
+              closeButton.setOnAction(event -> {
+                if(lineChart.getData().contains(close)){
+                  lineChart.getData().remove(close);
+                  closeButton.setText("add Close");
+                } else {
+                  lineChart.getData().add(close);
+                  closeButton.setText("X Close");
+                }
+              });
+
+              Button volumeButton = new Button("X Volume");
+              volumeButton.setOnAction(event -> {
+                if(lineChart.getData().contains(volume)){
+                  lineChart.getData().remove(volume);
+                  volumeButton.setText("add Volume");
+                } else {
+                  lineChart.getData().add(volume);
+                  volumeButton.setText("X Volume");
+                }
+              });
+
+              Button adjButton = new Button("X AdjClose");
+              adjButton.setOnAction(event -> {
+                if(lineChart.getData().contains(adjClose)){
+                  lineChart.getData().remove(adjClose);
+                  adjButton.setText("add AdjClose");
+                } else {
+                  lineChart.getData().add(adjClose);
+                  adjButton.setText("X AdjClose");
+                }
+              });
+
+              HBox buttons = new HBox(openButton, highButton, lowButton, closeButton, volumeButton, adjButton);
+              buttons.setSpacing(20d);
+
+              VBox vBox = new VBox(lineChart, buttons);
 
               TitledPane titledPaneForChart = new TitledPane(entityName, vBox);
               accordion.getPanes().add(titledPaneForChart);

@@ -3,6 +3,7 @@ package es.usefulearnings.gui.controller;
 import es.usefulearnings.engine.Core;
 import es.usefulearnings.engine.connection.DownloadProcess;
 import es.usefulearnings.engine.connection.ProcessHandler;
+import es.usefulearnings.engine.connection.YahooFinanceAPI;
 import es.usefulearnings.engine.filter.Filter;
 import es.usefulearnings.engine.plugin.HistoricalDataPlugin;
 import es.usefulearnings.engine.plugin.Plugin;
@@ -22,6 +23,7 @@ import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -45,6 +47,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author Yago on 04/09/2016.
@@ -87,6 +90,7 @@ public class FilterController implements Initializable {
 
   }
 
+  @SuppressWarnings("unchecked")
   private void refreshFilterPane() {
     if (Core.getInstance().getAppliedFilters().size() > 0) {
       rightPane.setCenter(filterListView);
@@ -113,12 +117,10 @@ public class FilterController implements Initializable {
           event.consume();
         });
         MenuItem details = new MenuItem("Details", new ImageView(new Image(Main.class.getResourceAsStream("icons/export.png"), 12, 12, false, false)));
-        details.setOnAction(event -> {
-          FilterViewHelper.getInstance().showOnWindow(filterListCell.getItem());
-        });
+        details.setOnAction(event -> FilterViewHelper.getInstance().showOnWindow(filterListCell.getItem()));
 
         MenuItem historicalPrices = new MenuItem("Get Historical Prices");
-        historicalPrices.setOnAction(event -> createHistoricalPrices(filterListCell.getItem()));
+        historicalPrices.setOnAction(event -> showDialogforStartAndEndDates(filterListCell.getItem()));
 
         filterContextMenu.getItems().addAll(export, details, historicalPrices);
         filterListCell.setContextMenu(filterContextMenu);
@@ -135,18 +137,60 @@ public class FilterController implements Initializable {
     }
   }
 
-  private void createHistoricalPrices(Filter filter) {
+  private void showDialogforStartAndEndDates(Filter filter) {
+    Stage dialogStage = new Stage();
+    dialogStage.setTitle(filter.toString());
+    dialogStage.initModality(Modality.WINDOW_MODAL);
+
+    FXMLLoader fxmlLoader = new FXMLLoader();
+    fxmlLoader.setLocation(Main.class.getResource("fxml/start_end_date_picker.fxml"));
+    try {
+      fxmlLoader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    DatesPickerController controller = fxmlLoader.getController();
+    controller.send.setOnAction(event -> {
+      event.consume();
+      if(controller.validateDates()) {
+        dialogStage.close();
+        createHistoricalPrices(
+          filter,
+          controller.startDate.getValue().toEpochDay() * 86400L,
+          controller.endDate.getValue().toEpochDay() * 86400L,
+          controller.ranges.getValue()
+        );
+      } else {
+        Notifications
+          .create()
+          .title("Error")
+          .text("Start Date must be before End Date!")
+        .showError();
+      }
+    });
+
+    dialogStage.setScene(new Scene(fxmlLoader.getRoot()));
+    dialogStage.initStyle(StageStyle.UNDECORATED);
+    dialogStage.initOwner(rightPane.getScene().getWindow());
+    dialogStage.show();
+  }
+
+  @SuppressWarnings("unchecked")
+  private void createHistoricalPrices(Filter filter, long startDate, long endDate, YahooFinanceAPI.Range range) {
     Stage dialogStage = new Stage();
     dialogStage.setTitle(filter.toString());
     dialogStage.initModality(Modality.WINDOW_MODAL);
 
     BorderPane borderPane = new BorderPane();
     borderPane.setPrefSize(989 * .75, 733 * .75);
+    borderPane.setStyle("-fx-border-color: rgba(125,125,125,0.93); -fx-border-width: 1;");
     Scene scene = new Scene(borderPane);
     dialogStage.setScene(scene);
     dialogStage.initStyle(StageStyle.UNDECORATED);
     dialogStage.initOwner(rightPane.getScene().getWindow());
     dialogStage.show();
+
     new Thread(() -> {
       VBox vbox = new VBox(new OverWatchLoader(10.0, Color.web("#400090")).getLoader());
       vbox.setAlignment(Pos.CENTER);
@@ -154,26 +198,27 @@ public class FilterController implements Initializable {
       Label label = new Label("Creating tasks");
       Platform.runLater(() -> vbox.getChildren().add(label));
 
-
-      final int MAX_THREADS = Runtime.getRuntime().availableProcessors() * 2;
       final int totalCompanies = filter.getEntities().size();
+      final int MAX_THREADS = Runtime.getRuntime().availableProcessors() * 2 < totalCompanies ?
+        Runtime.getRuntime().availableProcessors() * 2 : totalCompanies;
 
-      HistoricalDataTask[] tasks = new HistoricalDataTask[MAX_THREADS < totalCompanies / MAX_THREADS ? MAX_THREADS : totalCompanies / MAX_THREADS];
+      Collection<HistoricalDataTask> tasks = new ConcurrentLinkedQueue<>();
+      int split = totalCompanies / MAX_THREADS;
 
-      int split = totalCompanies / tasks.length;
-
-      for (int i = 0; i < tasks.length; i++) {
+      for (int i = 0; i < MAX_THREADS; i++) {
         ArrayList<Plugin> plugins = new ArrayList<>();
-        plugins.add(new HistoricalDataPlugin(1448236800, 1479914252));
+        plugins.add(new HistoricalDataPlugin(startDate, endDate, range));
 
         int from = i * split;
         int to = from + split;
         if (i == MAX_THREADS - 1) to = totalCompanies;
-        tasks[i] = new HistoricalDataTask(
-          plugins,
-          (new LinkedList<>(filter.getEntities())).subList(from, to),
-          tasks,
-          dialogStage
+        tasks.add(
+          new HistoricalDataTask(
+            plugins,
+            new LinkedList<>(filter.getEntities()).subList(from, to),
+            tasks,
+            dialogStage
+          )
         );
       }
 
@@ -192,7 +237,6 @@ public class FilterController implements Initializable {
         vboxForBars.setAlignment(Pos.CENTER);
       });
 
-      System.out.println(tasks.length);
     }).start();
   }
 
@@ -201,7 +245,7 @@ public class FilterController implements Initializable {
     private ProcessHandler handler;
     private Node _skin;
 
-    HistoricalDataTask(ArrayList<Plugin> plugins, List<Entity> entities, HistoricalDataTask[] tasks, Stage dialogStage) {
+    HistoricalDataTask(ArrayList<Plugin> plugins, List<Entity> entities, Collection<HistoricalDataTask> tasks, Stage dialogStage) {
       handler = new ProcessHandler() {
         @Override
         public void updateProgress(int workDone, int remaining) {
@@ -225,43 +269,58 @@ public class FilterController implements Initializable {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public void onSuccess() {
           updateMessage("Exporting to csv");
           entities.forEach(entity ->
           {
             try {
               String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+
               String path = ResourcesHelper.getInstance().getExportedDataPath() +
                 File.separator + "HistoricalData " + date + File.separator +
                 ((Company) entity).getSymbol() + date;
+
               new File(ResourcesHelper.getInstance().getExportedDataPath() +
                 File.separator + "HistoricalData " + date).mkdirs();
-              //new CSVWriter(path, ((Company) entity).getHistoricalData()).save();
-            } catch (/*InvocationTargetException | IntrospectionException | IllegalAccessException | InstantiationException |*/ NoStocksFoundException /*| IOException*/ e) {
-              e.printStackTrace();
+
+              HistoricalDataTask.this.updateMessage("Exporting data from " + ((Company) entity).getSymbol());
+
+              new CSVWriter(path, ((Company) entity).getHistoricalData().getHistoricalDatum()).save();
+
+              HistoricalDataTask.this.updateMessage("Finished the exportation");
+
+            } catch (
+                InvocationTargetException
+                | IntrospectionException
+                | IllegalAccessException
+                | InstantiationException
+                | NoStocksFoundException
+                | IOException
+                exception
+              ) {
+              exception.printStackTrace();
             }
           });
           updateMessage("Work done!");
-          boolean canClose = false;
-          synchronized (tasks) {
+          boolean canClose = true;
             for (HistoricalDataTask t : tasks) {
               if (!t.equals(HistoricalDataTask.this)) {
                 canClose = t.isDone();
               }
             }
-          }
 
-          if (canClose) {
-            Platform.runLater(() -> {
-              Notifications.create()
-                .title("Historical data Completed")
-                .text("Historical data download is completed an successfully exported at your folder")
-                .graphic(new ImageView(new Image(Main.class.getResourceAsStream("icons/ok-notification.png"), 48d, 48d, false, true)))
-                .position(Pos.BOTTOM_RIGHT)
-                .show();
-              dialogStage.close();
-            });
-          }
+            if (canClose) {
+              Platform.runLater(() -> {
+                Notifications.create()
+                  .title("Historical data Completed")
+                  .text("Historical data download is completed an successfully exported at your folder")
+                  .graphic(new ImageView(new Image(Main.class.getResourceAsStream("icons/ok-notification.png"), 48d, 48d, false, true)))
+                  .position(Pos.BOTTOM_RIGHT)
+                  .show();
+                dialogStage.close();
+              });
+            }
           succeeded();
         }
       };

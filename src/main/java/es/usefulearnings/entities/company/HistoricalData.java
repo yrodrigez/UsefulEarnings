@@ -7,11 +7,116 @@ import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class HistoricalData extends CompanyData implements Serializable {
+
+  public class Historical implements Serializable {
+    @EntityParameter(name = "Symbol", parameterType = ParameterType.RAW_STRING)
+    private String symbol;
+
+    @EntityParameter(name = "Dates", parameterType = ParameterType.RAW_STRING)
+    private String date;
+
+    @EntityParameter(name = "Open", parameterType = ParameterType.RAW_NUMERIC)
+    private double open;
+
+    @EntityParameter(name = "High", parameterType = ParameterType.RAW_NUMERIC)
+    private double high;
+
+    @EntityParameter(name = "Low", parameterType = ParameterType.RAW_NUMERIC)
+    private double low;
+
+    @EntityParameter(name = "Close", parameterType = ParameterType.RAW_NUMERIC)
+    private double close;
+
+    @EntityParameter(name = "Volume", parameterType = ParameterType.RAW_NUMERIC)
+    private double volume;
+
+    @EntityParameter(name = "Adj Close", parameterType = ParameterType.RAW_NUMERIC)
+    private double adj_close;
+
+    @EntityParameter(name = "Average(Open, high, low, close)", parameterType = ParameterType.RAW_NUMERIC)
+    private double average;
+
+    Historical(
+      final String symbol,
+      final String date,
+      final double open,
+      final double high,
+      final double low,
+      final double close,
+      final double volume,
+      final double adj_close
+    ) {
+      this.symbol = symbol;
+      this.date = date;
+      this.open = open;
+      this.high = high;
+      this.low = low;
+      this.close = close;
+      this.volume = volume;
+      this.adj_close = adj_close;
+
+      this.average = (open+high+low+close) / 4;
+    }
+
+
+    @Override
+    public String toString() {
+      return "Historical{" +
+        "symbol='" + symbol + '\'' +
+        ", date='" + date + '\'' +
+        ", open=" + open +
+        ", high=" + high +
+        ", low=" + low +
+        ", close=" + close +
+        ", volume=" + volume +
+        ", adj_close=" + adj_close +
+        '}';
+    }
+
+    public String getSymbol() {
+      return symbol;
+    }
+
+    public String getDate() {
+      return date;
+    }
+
+    public Double getOpen() {
+      return open;
+    }
+
+    public Double getHigh() {
+      return high;
+    }
+
+    public Double getLow() {
+      return low;
+    }
+
+    public Double getClose() {
+      return close;
+    }
+
+    public Double getVolume() {
+      return volume;
+    }
+
+    public Double getAdj_close() {
+      return adj_close;
+    }
+
+    public double getAverage() {
+      return average;
+    }
+  }
+
+  private ArrayList<Historical> historicalDatum;
 
   @JsonProperty("Symbol")
   @EntityParameter(name = "Symbol", parameterType = ParameterType.RAW_STRING)
@@ -74,12 +179,27 @@ public class HistoricalData extends CompanyData implements Serializable {
     this.close = close;
     this.volume = volume;
     this.adj_close = adj_close;
-  }
 
+    historicalDatum = new ArrayList<>();
+
+    for(int i = 0; i< date.size() ; i++){
+      historicalDatum.add(new Historical(
+        symbol,
+        new SimpleDateFormat("yyyy-MM-dd").format(date.get(i)*1000),
+        open.get(i),
+        high.get(i),
+        low.get(i),
+        close.get(i),
+        volume.get(i),
+        adj_close.get(i)
+      ));
+    }
+  }
 
   public String getSymbol() {
     return symbol;
   }
+
 
   public void setSymbol(String symbol) {
     this.symbol = symbol;
@@ -139,6 +259,10 @@ public class HistoricalData extends CompanyData implements Serializable {
 
   public void setAdj_close(ArrayList<Double> adj_close) {
     this.adj_close = adj_close;
+  }
+
+  public ArrayList<Historical> getHistoricalDatum() {
+    return historicalDatum;
   }
 
   @Override

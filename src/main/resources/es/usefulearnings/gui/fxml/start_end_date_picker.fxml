@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:controller="es.usefulearnings.gui.controller.DatesPickerController" fx:id="datesPicker" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="109.0" prefWidth="345.0" style="-fx-border-color: rgba(125,125,125,0.93); -fx-border-width: 1;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <VBox alignment="CENTER" prefHeight="83.0" prefWidth="170.0">
+            <Label text="StartDate"/>
+            <DatePicker fx:id="startDate"/>
+         </VBox>
+         <VBox alignment="CENTER" prefHeight="83.0" prefWidth="170.0">
+            <Label text="EndDate"/>
+            <DatePicker fx:id="endDate"/>
+         </VBox>
+      </HBox>
+   </center>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="49.0" prefWidth="343.0" spacing="40.0" BorderPane.alignment="CENTER">
+         <VBox alignment="CENTER" prefHeight="54.0" prefWidth="100.0">
+            <Label text="Range"/>
+            <ComboBox fx:id="ranges" prefWidth="150.0"/>
+         </VBox>
+         <Button fx:id="send" mnemonicParsing="false" prefHeight="25.0" prefWidth="56.0" text="Send"/>
+      </HBox>
+   </bottom>
+</BorderPane>

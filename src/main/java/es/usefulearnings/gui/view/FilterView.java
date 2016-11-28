@@ -6,6 +6,8 @@ import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.engine.EntityParameterBeanWalker;
 import es.usefulearnings.engine.filter.BasicOperator;
 import es.usefulearnings.engine.filter.RestrictionValue;
+import es.usefulearnings.gui.animation.OverWatchLoader;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
@@ -14,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.Field;
@@ -61,9 +64,25 @@ public class FilterView {
         Label parameterNameLabel = new Label(parameterName+ ": ");
         switch (parameterType){
           case INNER_CLASS:
+            OverWatchLoader loader = new OverWatchLoader(Color.web("#400090"));
+            ScrollPane scrollPane = new ScrollPane(loader.getLoader());
+            new Thread(()->{
+              try {
+                Node view = getFilterView(method.getReturnType(), filterParams);
+                Platform.runLater(()->scrollPane.setContent(view));
+              } catch (
+                IllegalAccessException
+                  | IntrospectionException
+                  | InstantiationException
+                  | InvocationTargetException
+                  e
+                ) {
+                e.printStackTrace();
+              }
+            }).start();
             TitledPane innerTittledPane = new TitledPane(
               parameterName,
-              new ScrollPane(getFilterView(method.getReturnType(), filterParams))
+              scrollPane
             );
             accordion.getPanes().add(innerTittledPane);
             break;

@@ -18,12 +18,22 @@ public class HistoricalDataPlugin implements Plugin<Company> {
   private ObjectMapper _mapper;
   private long _startDate;
   private long _endDate;
+  private YahooFinanceAPI.Range _range;
 
   public HistoricalDataPlugin(long startTimeStamp, long endTimeStamp) {
     _mapper = new ObjectMapper();
 
     _startDate = startTimeStamp;
     _endDate = endTimeStamp;
+    _range = YahooFinanceAPI.Range.ONE_DAY;
+  }
+
+  public HistoricalDataPlugin(long startTimeStamp, long endTimeStamp, YahooFinanceAPI.Range range) {
+    _mapper = new ObjectMapper();
+
+    _startDate = startTimeStamp;
+    _endDate = endTimeStamp;
+    _range = range;
   }
 
   @Override
@@ -35,7 +45,7 @@ public class HistoricalDataPlugin implements Plugin<Company> {
           company.getSymbol(),
           _startDate,
           _endDate,
-          YahooFinanceAPI.Range.ONE_DAY
+          _range
         );
 
 
