@@ -120,7 +120,7 @@ public class FilterController implements Initializable {
         details.setOnAction(event -> FilterViewHelper.getInstance().showOnWindow(filterListCell.getItem()));
 
         MenuItem historicalPrices = new MenuItem("Get Historical Prices");
-        historicalPrices.setOnAction(event -> showDialogforStartAndEndDates(filterListCell.getItem()));
+        historicalPrices.setOnAction(event -> showDialogForStartAndEndDates(filterListCell.getItem()));
 
         filterContextMenu.getItems().addAll(export, details, historicalPrices);
         filterListCell.setContextMenu(filterContextMenu);
@@ -137,7 +137,7 @@ public class FilterController implements Initializable {
     }
   }
 
-  private void showDialogforStartAndEndDates(Filter filter) {
+  private void showDialogForStartAndEndDates(Filter filter) {
     Stage dialogStage = new Stage();
     dialogStage.setTitle(filter.toString());
     dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -205,9 +205,27 @@ public class FilterController implements Initializable {
       Collection<HistoricalDataTask> tasks = new ConcurrentLinkedQueue<>();
       int split = totalCompanies / MAX_THREADS;
 
-      for (int i = 0; i < MAX_THREADS; i++) {
+      String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+
+      File folderToSave = null;
+      try {
+        folderToSave = new File(ResourcesHelper.getInstance().getExportedDataPath() +
+          File.separator + "HistoricalData " + date);
+      } catch (NoStocksFoundException e) {
+        e.printStackTrace();
+      }
+      int i = 1;
+      while ( folderToSave != null && folderToSave.exists()){
+        System.out.printf(folderToSave.getPath());
+        folderToSave = new File(folderToSave.getPath() + "(" + i++ + ")");
+      }
+      if(folderToSave != null) folderToSave.mkdirs();
+
+
+      for (i = 0; i < MAX_THREADS; i++) {
         ArrayList<Plugin> plugins = new ArrayList<>();
         plugins.add(new HistoricalDataPlugin(startDate, endDate, range));
+
 
         int from = i * split;
         int to = from + split;
@@ -217,7 +235,8 @@ public class FilterController implements Initializable {
             plugins,
             new LinkedList<>(filter.getEntities()).subList(from, to),
             tasks,
-            dialogStage
+            dialogStage,
+            folderToSave
           )
         );
       }
@@ -245,7 +264,7 @@ public class FilterController implements Initializable {
     private ProcessHandler handler;
     private Node _skin;
 
-    HistoricalDataTask(ArrayList<Plugin> plugins, List<Entity> entities, Collection<HistoricalDataTask> tasks, Stage dialogStage) {
+    HistoricalDataTask(ArrayList<Plugin> plugins, List<Entity> entities, Collection<HistoricalDataTask> tasks, Stage dialogStage, File folderToSave) {
       handler = new ProcessHandler() {
         @Override
         public void updateProgress(int workDone, int remaining) {
@@ -277,12 +296,8 @@ public class FilterController implements Initializable {
             try {
               String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
 
-              String path = ResourcesHelper.getInstance().getExportedDataPath() +
-                File.separator + "HistoricalData " + date + File.separator +
+              String path = folderToSave.getPath() + File.separator +
                 ((Company) entity).getSymbol() + date;
-
-              new File(ResourcesHelper.getInstance().getExportedDataPath() +
-                File.separator + "HistoricalData " + date).mkdirs();
 
               HistoricalDataTask.this.updateMessage("Exporting data from " + ((Company) entity).getSymbol());
 
@@ -295,7 +310,6 @@ public class FilterController implements Initializable {
                 | IntrospectionException
                 | IllegalAccessException
                 | InstantiationException
-                | NoStocksFoundException
                 | IOException
                 exception
               ) {

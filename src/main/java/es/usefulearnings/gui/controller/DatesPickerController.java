@@ -36,6 +36,6 @@ public class DatesPickerController implements Initializable {
   }
 
   boolean validateDates () {
-    return startDate.getValue().isBefore(endDate.getValue()) && endDate.getValue().toEpochDay() - startDate.getValue().toEpochDay()  > DAYS_ON_A_YEAR;
+    return startDate.getValue().isBefore(endDate.getValue()) && endDate.getValue().toEpochDay() - startDate.getValue().toEpochDay()  <= DAYS_ON_A_YEAR;
   }
 }
