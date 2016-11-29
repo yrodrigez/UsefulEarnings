@@ -220,7 +220,7 @@ public class FilterView {
         event.consume();
       });
       items.add(item);
-      items.sort((o1, o2) -> o1.getText().compareTo(o2.getText()));
+      //items.sort(Comparator.comparing(MenuItem::getText));
       contextMenu.getItems().setAll(items);
     });
 

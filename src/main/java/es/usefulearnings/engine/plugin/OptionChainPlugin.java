@@ -16,18 +16,16 @@ import java.util.ArrayList;
 public class OptionChainPlugin implements Plugin<Company> {
   private URL mUrl;
   private ObjectMapper mapper;
-  private OptionChain optionChain;
 
 
   public OptionChainPlugin() {
-    optionChain = new OptionChain();
     mapper = new ObjectMapper();
   }
 
   @Override
   public void addInfo(Company company) throws PluginException {
     try {
-
+      OptionChain optionChain = new OptionChain();
       mUrl = YahooFinanceAPI.getInstance().getOptionChainURL(company.getSymbol());
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
@@ -56,6 +54,14 @@ public class OptionChainPlugin implements Plugin<Company> {
       );
       optionChain.setPuts(puts);
       company.setOptionChain(optionChain);
+
+      if(optionChain.getCalls().size() > 0){
+        System.out.println("setting on "+company.getSymbol() + " this contract " + optionChain.getCalls().get(0).getSymbol());
+      } else {
+        if (optionChain.getCalls().size() > 0){
+          System.out.println("setting on "+company.getSymbol() + " this contract " + optionChain.getPuts().get(0).getSymbol());
+        }
+      }
 
     } catch (Exception anyException) {
       throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);

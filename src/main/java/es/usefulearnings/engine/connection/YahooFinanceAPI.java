@@ -93,7 +93,7 @@ public class YahooFinanceAPI {
 
   public URL getOptionChainURL(String symbol) throws MalformedURLException {
     if(symbol == null || symbol.equals("")) throw new IllegalArgumentException("getOptionChainURL() -> symbol is null");
-    return new URL("https://query1.finance.yahoo.com/v7/finance/options/"+symbol.toUpperCase());
+    return new URL("https://query1.finance.yahoo.com/v7/finance/options/" + symbol);
   }
 
   public URL getHistoricalDataURL(String symbol, long startDate, long endDate, Range range) throws MalformedURLException {

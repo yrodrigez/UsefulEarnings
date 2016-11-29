@@ -165,18 +165,28 @@ public class Company implements Serializable, Entity, Savable {
   }
 
   public OptionChain getOptionChain() {
-    if(!this.optionChain.getCalls().get(0).getSymbol().substring(0, this.symbol.length()).equals(this.symbol)){
-      System.err.println("ERROR\nERROR\nERROR\nERROR\n"+this.optionChain.getCalls().get(0).getSymbol() + " no es de " +this.symbol +"\nERROR\nERROR\nERROR\n");
-    }
+
     return optionChain;
   }
 
   public void setOptionChain(OptionChain optionChain) {
+    if (optionChain.getCalls().size() > 0) {
+      optionChain.getCalls().forEach(optionLink -> {
+        if (!optionLink.getSymbol().substring(0, this.symbol.length()).equals(this.symbol))
+          throw new IllegalArgumentException("Contract " + optionLink.getSymbol() + " does not belong to " + this.symbol);
+      });
+
+    }
+
+    if (optionChain.getPuts().size() > 0) {
+      optionChain.getPuts().forEach(optionLink -> {
+        if (!optionLink.getSymbol().substring(0, this.symbol.length()).equals(this.symbol))
+          throw new IllegalArgumentException("Contract " + optionLink.getSymbol() + " does not belong to " + this.symbol);
+      });
+    }
+
     this.optionChain = optionChain;
     if (this.optionChain.getCalls().size() > 0 || this.optionChain.getPuts().size() > 0) {
-      if(!this.optionChain.getCalls().get(0).getSymbol().substring(0, this.symbol.length()).equals(this.symbol)){
-        System.err.println("ERROR\nERROR\nERROR\nERROR\n"+this.optionChain.getCalls().get(0).getSymbol() + " no es de " +this.symbol +"\nERROR\nERROR\nERROR\n");
-      }
       this.optionChain.set();
     }
   }

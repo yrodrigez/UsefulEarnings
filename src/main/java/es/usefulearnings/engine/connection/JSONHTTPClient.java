@@ -32,6 +32,7 @@ public class JSONHTTPClient {
       if (!_cache.containsKey(url.toString())) {
         JsonNode jsonObject = getJsonFromJackson(url);
         _cache.put(url.toString(), jsonObject);
+        return jsonObject;
       }
 
       return _cache.get(url.toString());
