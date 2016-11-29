@@ -91,7 +91,7 @@ public class OverWatchLoader extends Control {
       hexagon = new Polygon(new Hexagon(side).getPoints());
       hexagon.setFill(color);
 
-      Duration duration = Duration.millis(225d);
+      Duration duration = Duration.millis(180d);
       createDisappearTransition(duration);
       createReappearTransition(duration);
     }

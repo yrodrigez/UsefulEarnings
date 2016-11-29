@@ -54,15 +54,6 @@ public class OptionChainPlugin implements Plugin<Company> {
       );
       optionChain.setPuts(puts);
       company.setOptionChain(optionChain);
-
-      if(optionChain.getCalls().size() > 0){
-        System.out.println("setting on "+company.getSymbol() + " this contract " + optionChain.getCalls().get(0).getSymbol());
-      } else {
-        if (optionChain.getCalls().size() > 0){
-          System.out.println("setting on "+company.getSymbol() + " this contract " + optionChain.getPuts().get(0).getSymbol());
-        }
-      }
-
     } catch (Exception anyException) {
       throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);
     }

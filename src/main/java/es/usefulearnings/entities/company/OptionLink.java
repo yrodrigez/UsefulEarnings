@@ -20,7 +20,7 @@ public class OptionLink implements Serializable {
   private String symbol;
 
   @JsonProperty("strike")
-  @EntityParameter(name = "Contract Symbol", parameterType = ParameterType.RAW_NUMERIC)
+  @EntityParameter(name = "Strike", parameterType = ParameterType.RAW_NUMERIC)
   private double strike;
 
   @JsonProperty("currency")

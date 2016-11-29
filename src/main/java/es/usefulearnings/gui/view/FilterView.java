@@ -214,14 +214,16 @@ public class FilterView {
   ) {
     List<MenuItem> items = new ArrayList<>();
     allowedValues.forEach(value -> {
-      MenuItem item = new MenuItem(value);
-      item.setOnAction(event -> {
-        textField.setText(item.getText());
-        event.consume();
-      });
-      items.add(item);
-      //items.sort(Comparator.comparing(MenuItem::getText));
-      contextMenu.getItems().setAll(items);
+      if(value != null) {
+        MenuItem item = new MenuItem(value);
+        item.setOnAction(event -> {
+          textField.setText(item.getText());
+          event.consume();
+        });
+        items.add(item);
+        items.sort(Comparator.comparing(MenuItem::getText));
+        contextMenu.getItems().setAll(items);
+      }
     });
 
     textField.textProperty().addListener(
