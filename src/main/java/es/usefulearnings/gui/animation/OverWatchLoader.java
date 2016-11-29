@@ -6,6 +6,8 @@ import javafx.animation.ScaleTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
+import javafx.scene.control.Skin;
+import javafx.scene.control.Skinnable;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -210,6 +212,26 @@ public class OverWatchLoader extends Control {
     view = vbox;
   }
 
+  @Override
+  protected Skin<?> createDefaultSkin() {
+    hexagonChain.play();
+    return new Skin<Skinnable>() {
+      @Override
+      public Skinnable getSkinnable() {
+        return null;
+      }
+
+      @Override
+      public Node getNode() {
+        return view;
+      }
+
+      @Override
+      public void dispose() {
+        hexagonChain = null;
+      }
+    };
+  }
 
   /**
    * start the animation
