@@ -16,17 +16,17 @@ import java.util.stream.Collectors;
 
 public class Core {
 
-  private ArrayList<Plugin> companiesPlugins;
+  private final ArrayList<Plugin> companiesPlugins;
 
   private List<Stock> _stocks;
 
-  public  static Core getInstance() {
+  public static Core getInstance() {
     return instance;
   }
 
-  private static Core instance = new Core();
+  private final static Core instance = new Core();
 
-  private List<Filter> _appliedFilters;
+  private final List<Filter> _appliedFilters;
 
   private boolean isDataLoaded;
 
@@ -45,7 +45,7 @@ public class Core {
     companiesPlugins.add(new IncomeStatmentsPlugin());
     companiesPlugins.add(new FinancialDataPlugin());
     companiesPlugins.add(new CompanySummaryDetailPlugin());
-    companiesPlugins.add(new HistoricalDataPlugin(1448236800, 1479914252));
+    companiesPlugins.add(new OptionChainPlugin());
 
     setStocksFromFolder();
 

@@ -38,13 +38,16 @@ public class Company implements Serializable, Entity, Savable {
   private ArrayList<CashFlowStatement> cashFlowStatements;
   @EntityParameter(name = "Income statements", parameterType = ParameterType.INNER_CLASS_COLLECTION)
   private ArrayList<IncomeStatement> incomeStatements;
-  @EntityParameter(name = "Balance sheet statement" , parameterType = ParameterType.INNER_CLASS_COLLECTION)
+  @EntityParameter(name = "Balance sheet statement", parameterType = ParameterType.INNER_CLASS_COLLECTION)
   private ArrayList<BalanceSheetStatement> balanceSheetStatements;
 
   @EntityParameter(name = "Historical Data", parameterType = ParameterType.HISTORICAL_DATA)
   private HistoricalData historicalData;
 
-  public Company(String symbol, String stockName){
+  @EntityParameter(name = "Option Chain", parameterType = ParameterType.INNER_CLASS)
+  private OptionChain optionChain;
+
+  public Company(String symbol, String stockName) {
     this.symbol = symbol;
     this.stockName = stockName;
 
@@ -53,6 +56,8 @@ public class Company implements Serializable, Entity, Savable {
     calendarEvents = new CalendarEvents();
     financialData = new FinancialData();
     defaultKeyStatistics = new DefaultKeyStatistics();
+    optionChain = new OptionChain();
+    historicalData = new HistoricalData();
 
     cashFlowStatements = new ArrayList<>();
     cashFlowStatements.add(new CashFlowStatement());
@@ -62,11 +67,7 @@ public class Company implements Serializable, Entity, Savable {
 
     balanceSheetStatements = new ArrayList<>();
     balanceSheetStatements.add(new BalanceSheetStatement());
-
-    historicalData = new HistoricalData();
   }
-
-
 
   public String getSymbol() {
     return symbol;
@@ -76,6 +77,7 @@ public class Company implements Serializable, Entity, Savable {
   public void setSymbol(String symbol) {
     this.symbol = symbol;
   }
+
 
   public ArrayList<YahooField> getEarningsDates() {
     return this.calendarEvents.getEarningsDate();
@@ -123,7 +125,7 @@ public class Company implements Serializable, Entity, Savable {
 
   public void setIncomeStatements(ArrayList<IncomeStatement> incomeStatements) {
     this.incomeStatements = incomeStatements;
-    this.incomeStatements.forEach(incomeStatement -> incomeStatement.set());
+    this.incomeStatements.forEach(CompanyData::set);
   }
 
   public ArrayList<BalanceSheetStatement> getBalanceSheetStatements() {
@@ -132,7 +134,7 @@ public class Company implements Serializable, Entity, Savable {
 
   public void setBalanceSheetStatements(ArrayList<BalanceSheetStatement> balanceSheetStatements) {
     this.balanceSheetStatements = balanceSheetStatements;
-    this.balanceSheetStatements.forEach(balanceSheetStatement -> balanceSheetStatement.set());
+    this.balanceSheetStatements.forEach(CompanyData::set);
   }
 
   public void setSummaryDetail(SummaryDetail summaryDetail) {
@@ -140,7 +142,7 @@ public class Company implements Serializable, Entity, Savable {
     this.summaryDetail.set();
   }
 
-  public SummaryDetail getSummaryDetail(){
+  public SummaryDetail getSummaryDetail() {
     return summaryDetail;
   }
 
@@ -154,7 +156,7 @@ public class Company implements Serializable, Entity, Savable {
   }
 
   @Override
-  public String toString(){
+  public String toString() {
     return this.symbol;
   }
 
@@ -162,8 +164,27 @@ public class Company implements Serializable, Entity, Savable {
     return historicalData;
   }
 
+  public OptionChain getOptionChain() {
+    if(!this.optionChain.getCalls().get(0).getSymbol().substring(0, this.symbol.length()).equals(this.symbol)){
+      System.err.println("ERROR\nERROR\nERROR\nERROR\n"+this.optionChain.getCalls().get(0).getSymbol() + " no es de " +this.symbol +"\nERROR\nERROR\nERROR\n");
+    }
+    return optionChain;
+  }
+
+  public void setOptionChain(OptionChain optionChain) {
+    this.optionChain = optionChain;
+    if (this.optionChain.getCalls().size() > 0 || this.optionChain.getPuts().size() > 0) {
+      if(!this.optionChain.getCalls().get(0).getSymbol().substring(0, this.symbol.length()).equals(this.symbol)){
+        System.err.println("ERROR\nERROR\nERROR\nERROR\n"+this.optionChain.getCalls().get(0).getSymbol() + " no es de " +this.symbol +"\nERROR\nERROR\nERROR\n");
+      }
+      this.optionChain.set();
+    }
+  }
+
   public void setHistoricalData(HistoricalData historicalData) {
     this.historicalData = historicalData;
+    if (this.historicalData.getHistoricalDatum().size() > 0)
+      this.historicalData.set();
   }
 
   public String getStockName() {
@@ -179,9 +200,9 @@ public class Company implements Serializable, Entity, Savable {
   @Override
   public void save(File fileToSave) throws IOException {
     String location = fileToSave.getAbsolutePath()
-                      + File.separator
-                      + this.stockName + this.symbol
-                      + EXTENSION;
+      + File.separator
+      + this.stockName + this.symbol
+      + EXTENSION;
 
     FileOutputStream data = new FileOutputStream(location);
     ObjectOutputStream stream = new ObjectOutputStream(data);

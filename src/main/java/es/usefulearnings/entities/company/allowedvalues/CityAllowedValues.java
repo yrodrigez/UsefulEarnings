@@ -1,4 +1,4 @@
-package es.usefulearnings.entities.company;
+package es.usefulearnings.entities.company.allowedvalues;
 
 import es.usefulearnings.annotation.AllowedValuesRetriever;
 import es.usefulearnings.engine.Core;

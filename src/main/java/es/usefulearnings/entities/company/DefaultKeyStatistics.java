@@ -7,6 +7,7 @@ import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.entities.YahooLongFormatField;
 import es.usefulearnings.entities.YahooField;
+import es.usefulearnings.entities.company.allowedvalues.LastSplitFactorAllowedValues;
 
 import java.io.Serializable;
 

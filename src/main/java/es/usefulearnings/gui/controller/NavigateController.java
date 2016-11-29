@@ -162,13 +162,11 @@ public class NavigateController implements Initializable {
 
         new Thread(() -> {
           try {
-            Thread.sleep(5000L);
+            System.out.println(Core.getInstance().getCompanyFromSymbol(newSymbol).getOptionChain().toString());
             Node companyData = getCompanyView(newSymbol);
             Platform.runLater(() -> cTab.setContent(companyData));
           } catch (IllegalAccessException | IntrospectionException | InvocationTargetException | InstantiationException e) {
             Platform.runLater(() -> AlertHelper.showExceptionAlert(e));
-            e.printStackTrace();
-          } catch (InterruptedException e) {
             e.printStackTrace();
           }
         }).start();

@@ -7,7 +7,6 @@ import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.YahooField;
 import es.usefulearnings.entities.YahooLongFormatField;
 import es.usefulearnings.entities.company.HistoricalData;
-import es.usefulearnings.gui.animation.OverWatchLoader;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -98,18 +97,7 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
         switch (parameterType) {
           case INNER_CLASS:
             Object innerObject = method.invoke(object);
-            ScrollPane pane = new ScrollPane(
-              new OverWatchLoader(javafx.scene.paint.Color.web("#400090")).getLoader()
-            );
-            new Thread(() -> {
-              try {
-                Node n = getViewForObject(innerObject);
-                Platform.runLater(()-> pane.setContent(n));
-              } catch (IntrospectionException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                e.printStackTrace();
-              }
-            }).start();
-
+            ScrollPane pane = new ScrollPane(getViewForObject(innerObject));
             TitledPane titledPane = new TitledPane(entityName, pane);
             accordion.getPanes().add(titledPane);
             break;
@@ -184,8 +172,20 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
               gridPane.add(new Label(method.invoke(object).toString()), 1, position);
             break;
 
+          case RAW_DATE:
+            Object rawDate = method.invoke(object);
+            gridPane.add(entityNameLabel, 0, position);
+            if(rawDate != null) {
+              String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date((long) rawDate * 1000L));
+              gridPane.add(new Label(date), 1, position);
+            }
+            break;
+
+          case RAW_DATE_COLLECTION:
           case IGNORE:
             break;
+
+
 
           case HISTORICAL_DATA:
             HistoricalData historicalDatum = (HistoricalData) method.invoke(object);

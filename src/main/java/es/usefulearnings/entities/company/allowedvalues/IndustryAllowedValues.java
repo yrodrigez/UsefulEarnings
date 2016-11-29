@@ -1,4 +1,4 @@
-package es.usefulearnings.entities.company;
+package es.usefulearnings.entities.company.allowedvalues;
 
 import es.usefulearnings.annotation.AllowedValuesRetriever;
 import es.usefulearnings.engine.Core;
@@ -8,15 +8,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author yago.
+ * @author Yago on 26/09/2016.
  */
-public class RecommendationKeyAllowedValues implements AllowedValuesRetriever {
+public class IndustryAllowedValues implements AllowedValuesRetriever {
   @Override
   public Collection<String> getAllowedValues() {
+
     Set<String> values = new HashSet<>();
     Core.getInstance().getAllCompanies().values().forEach(company -> {
-      if(company.getFinancialData().getRecommendationKey() != null && !company.getFinancialData().getRecommendationKey().equals("")){
-        values.add(company.getFinancialData().getRecommendationKey());
+      if(company.getProfile().getIndustry() != null && !company.getProfile().getIndustry().equals("")){
+        values.add(company.getProfile().getIndustry());
       }
     });
 
