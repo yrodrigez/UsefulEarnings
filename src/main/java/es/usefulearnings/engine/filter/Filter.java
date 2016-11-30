@@ -1,8 +1,6 @@
 package es.usefulearnings.engine.filter;
 
 
-import javafx.event.ActionEvent;
-
 import java.beans.IntrospectionException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -43,18 +41,22 @@ public abstract class Filter<E> implements Serializable {
     _filteredEntities.remove(entity);
   }
 
-  protected boolean evaluateNumber(double number, BasicOperator operator, double toEval) {
+  private boolean evaluateNumber (Number number, BasicOperator operator, Number toEval){
     switch (operator) {
       case EQ:
-        return number == toEval;
+        return number.doubleValue() == toEval.doubleValue();
       case LT:
-        return number < toEval;
+        return number.doubleValue() < toEval.doubleValue();
       case GT:
-        return number > toEval;
+        return number.doubleValue() > toEval.doubleValue();
 
       default:
         return false;
     }
+  }
+
+  protected boolean evaluateDouble(double number, BasicOperator operator, double toEval) {
+    return evaluateNumber(number, operator, toEval);
   }
 
   protected boolean evaluateTimeStamp(long timeStamp, BasicOperator operator, long stampToEval) {

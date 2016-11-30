@@ -112,7 +112,7 @@ public class CompanyFilter extends Filter<Company> {
                     break;
                   }
                   double toEval = ((double) restrictionValue.getValue());
-                  if (!evaluateNumber(number, restrictionValue.getOperator(), toEval)) {
+                  if (!evaluateDouble(number, restrictionValue.getOperator(), toEval)) {
                     removeEntity(company);
                   }
                 }
@@ -129,13 +129,16 @@ public class CompanyFilter extends Filter<Company> {
                   break;
                 } else {
                   RestrictionValue restrictionValue = _parameters.get(field);
-                  double number = ((Number)(pd.getReadMethod().invoke(elementValue))).doubleValue();
-                  if (number == 0.0) {
+                  Double number = ((Double)(pd.getReadMethod().invoke(elementValue)));
+                  if (number == null) {
                     removeEntity(company); // nothing to eval?
                     break;
                   }
-                  double toEval = (double) restrictionValue.getValue();
-                  if (!evaluateNumber(number, restrictionValue.getOperator(), toEval) ) {
+                  Double toEval = (Double) restrictionValue.getValue();
+                  System.out.println(number +" " +  restrictionValue.getOperator()+" "+ toEval);
+                  System.out.println(evaluateDouble(number, restrictionValue.getOperator(), toEval));
+                  System.out.println(evaluateDouble(number, restrictionValue.getOperator(), toEval) ? company.getSymbol() +" se queda": company.getSymbol() + " se va");
+                  if (!evaluateDouble(number, restrictionValue.getOperator(), toEval)) {
                     removeEntity(company);
                   }
                 }
@@ -193,14 +196,8 @@ public class CompanyFilter extends Filter<Company> {
                 break;
 /*--------------------------------------------------------------------------------------------------------------------*/
               case HISTORICAL_DATA:
-              case RAW_DATE_COLLECTION:
-              case YAHOO_FIELD_COLLECTION:
-              case RAW_DATE:
-              case RAW_BOOLEAN:
-              case NUMBER_COLLECTION:
-              case OPTION_LINK_COLLECTION:
-              case OPTION_TYPE:
-              case CLASS:
+              case RAW_DATE_COLLECTION: //TODO THIS!
+              case RAW_DATE: //TODO THIS!
               case IGNORE:
                 break;
 /*--------------------------------------------------------------------------------------------------------------------*/

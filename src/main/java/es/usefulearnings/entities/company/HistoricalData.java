@@ -278,4 +278,8 @@ public class HistoricalData extends CompanyData implements Serializable {
         ", adj_close='" + adj_close + '\'' +
         '}';
   }
+
+  public boolean isEmpty(){
+    return historicalDatum == null || historicalDatum.isEmpty();
+  }
 }

@@ -180,8 +180,12 @@ public class CSVWriter <E> {
           case IGNORE:
           case YAHOO_FIELD_DATE:
           case YAHOO_FIELD_DATE_COLLECTION:
+          case RAW_DATE:
+          case RAW_DATE_COLLECTION:
+          case RAW_BOOLEAN:
             ret.add(header);
             break;
+
 
           default:
             break;

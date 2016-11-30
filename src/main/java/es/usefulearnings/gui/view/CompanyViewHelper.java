@@ -3,12 +3,20 @@ package es.usefulearnings.gui.view;
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.engine.EntityParameterBeanWalker;
+import es.usefulearnings.engine.connection.YahooFinanceAPI;
+import es.usefulearnings.engine.plugin.HistoricalDataPlugin;
+import es.usefulearnings.engine.plugin.PluginException;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.YahooField;
 import es.usefulearnings.entities.YahooLongFormatField;
 import es.usefulearnings.entities.company.HistoricalData;
+import es.usefulearnings.gui.animation.OverWatchLoader;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
@@ -33,6 +41,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 
@@ -189,196 +198,21 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
 
           case HISTORICAL_DATA:
             HistoricalData historicalDatum = (HistoricalData) method.invoke(object);
-            if (historicalDatum != null) {
-              final CategoryAxis xAxis = new CategoryAxis();
-              final NumberAxis yAxis = new NumberAxis();
-              xAxis.setLabel("Month");
-
-              final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
-              lineChart.setCreateSymbols(false);
-              lineChart.setAnimated(false);
-              lineChart.getStyleClass().add("thick-chart");
-              lineChart.setTitle(historicalDatum.getSymbol());
-
-              XYChart.Series adjClose = new XYChart.Series();
-              adjClose.setName("Adj Close");
-
-              XYChart.Series open = new XYChart.Series();
-              open.setName("Open");
-
-              XYChart.Series high = new XYChart.Series();
-              high.setName("High");
-
-              XYChart.Series low = new XYChart.Series();
-              low.setName("Low");
-
-              XYChart.Series close = new XYChart.Series();
-              close.setName("Close");
-
-              XYChart.Series volume = new XYChart.Series();
-              volume.setName("Volume");
-
-              for (int i = 0; i < historicalDatum.getDate().size(); i++) {
-                String fmtDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(historicalDatum.getDate().get(i) * 1000));
-
-                adjClose.getData().add(new XYChart.Data<>(
-                    fmtDate,
-                    historicalDatum.getAdj_close().get(i)
-                  )
-                );
-
-                low.getData().add(
-                  new XYChart.Data<>(
-                    fmtDate,
-                    historicalDatum.getLow().get(i)
-                  )
-                );
-
-                high.getData().add(
-                  new XYChart.Data<>(
-                    fmtDate,
-                    historicalDatum.getHigh().get(i)
-                  )
-                );
-
-                close.getData().add(
-                  new XYChart.Data<>(
-                    fmtDate,
-                    historicalDatum.getClose().get(i)
-                  )
-                );
-
-                volume.getData().add(
-                  new XYChart.Data<>(
-                    fmtDate,
-                    historicalDatum.getVolume().get(i)
-                  )
-                );
-
-                open.getData().add(
-                  new XYChart.Data<>(
-                    fmtDate,
-                    historicalDatum.getOpen().get(i)
-                  )
-                );
-              }
-
-
-              final double SCALE_DELTA = 1.1;
-              lineChart.setOnScroll(event -> {
-                event.consume();
-
-                if (event.getDeltaY() == 0) {
-                  return;
-                }
-
-                double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
-
-                lineChart.setScaleX(lineChart.getScaleX() * scaleFactor);
-                lineChart.setScaleY(lineChart.getScaleY() * scaleFactor);
-              });
-              Events events = new Events();
-              lineChart.setOnMousePressed(event -> {
-                if (event.getClickCount() == 2) {
-                  lineChart.setScaleX(1.0);
-                  lineChart.setScaleY(1.0);
-                } else {
-                  events.orgSceneX = event.getSceneX();
-                  events.orgSceneY = event.getSceneY();
-
-                  events.orgTranslateX = lineChart.getTranslateX();
-                  events.orgTranslateY = lineChart.getTranslateY();
-                }
-              });
-              lineChart.setOnMouseDragged(event -> {
-                double offsetX = event.getSceneX() - events.orgSceneX;
-                double offsetY = event.getSceneY() - events.orgSceneY;
-                double newTranslateX = events.orgTranslateX + offsetX;
-                double newTranslateY = events.orgTranslateY + offsetY;
-
-                lineChart.setTranslateX(newTranslateX);
-                lineChart.setTranslateY(newTranslateY);
-              });
-
-
-
-              final XYChart.Series [] series = {open, high, low, close, volume, adjClose};
-              lineChart.getData().addAll(series);
-
-              Button openButton = new Button("X Open");
-              openButton.setOnAction(event -> {
-                if(lineChart.getData().contains(open)){
-                  lineChart.getData().remove(open);
-                  openButton.setText("add Open");
-                } else {
-                  lineChart.getData().add(open);
-                  openButton.setText("X Open");
-                }
-              });
-
-              Button highButton = new Button("X High");
-              highButton.setOnAction(event -> {
-                if(lineChart.getData().contains(high)){
-                  lineChart.getData().remove(high);
-                  highButton.setText("add High");
-                } else {
-                  lineChart.getData().add(high);
-                  highButton.setText("X High");
-                }
-              });
-
-              Button lowButton = new Button("X Low");
-              lowButton.setOnAction(event -> {
-                if(lineChart.getData().contains(low)){
-                  lineChart.getData().remove(low);
-                  lowButton.setText("add Low");
-                } else {
-                  lineChart.getData().add(low);
-                  lowButton.setText("X Low");
-                }
-              });
-
-              Button closeButton = new Button("X Close");
-              closeButton.setOnAction(event -> {
-                if(lineChart.getData().contains(close)){
-                  lineChart.getData().remove(close);
-                  closeButton.setText("add Close");
-                } else {
-                  lineChart.getData().add(close);
-                  closeButton.setText("X Close");
-                }
-              });
-
-              Button volumeButton = new Button("X Volume");
-              volumeButton.setOnAction(event -> {
-                if(lineChart.getData().contains(volume)){
-                  lineChart.getData().remove(volume);
-                  volumeButton.setText("add Volume");
-                } else {
-                  lineChart.getData().add(volume);
-                  volumeButton.setText("X Volume");
-                }
-              });
-
-              Button adjButton = new Button("X AdjClose");
-              adjButton.setOnAction(event -> {
-                if(lineChart.getData().contains(adjClose)){
-                  lineChart.getData().remove(adjClose);
-                  adjButton.setText("add AdjClose");
-                } else {
-                  lineChart.getData().add(adjClose);
-                  adjButton.setText("X AdjClose");
-                }
-              });
-
-              HBox buttons = new HBox(openButton, highButton, lowButton, closeButton, volumeButton, adjButton);
-              buttons.setSpacing(20d);
-
-              VBox vBox = new VBox(lineChart, buttons);
-
-              TitledPane titledPaneForChart = new TitledPane(entityName, vBox);
-              accordion.getPanes().add(titledPaneForChart);
+            VBox vBox = new VBox(new OverWatchLoader(javafx.scene.paint.Color.web("#400090")));
+            vBox.setAlignment(Pos.CENTER);
+            if (historicalDatum != null && !historicalDatum.isEmpty()) {
+              new Thread(()->{
+                Node chart = getChart(historicalDatum);
+                Platform.runLater(()-> {
+                  vBox.getChildren().clear();
+                  vBox.getChildren().add(chart);
+                });
+              }).start();
+            } else {
+              setReloadHistoricalMiniView((Company)object, vBox);
             }
+            TitledPane titledPaneForChart = new TitledPane(entityName, vBox);
+            accordion.getPanes().add(titledPaneForChart);
             break;
 
           default:
@@ -390,8 +224,240 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
     return new VBox(accordion, gridPane);
   }
 
-  private class Events {
-    public double orgSceneX, orgSceneY;
-    public double orgTranslateX, orgTranslateY;
+  private void setReloadHistoricalMiniView(Company company, VBox vBox) {
+    Label label = new Label("No historical data was found or loaded...");
+    Button reloadHistoricalData = new Button("Retry");
+    DatePicker startDate = new DatePicker(LocalDate.ofEpochDay(LocalDate.now().toEpochDay() - 365));
+    DatePicker endDate = new DatePicker(LocalDate.now());
+    ComboBox<YahooFinanceAPI.Range> ranges = new ComboBox<>();
+    ranges.setItems(FXCollections.observableArrayList(YahooFinanceAPI.Range.values()));
+    ranges.setValue(ranges.getItems().get(0));
+    reloadHistoricalData.setOnAction(getReloadHistoricalEventHandler(company, vBox, startDate, endDate, ranges));
+    vBox.getChildren().clear();
+    HBox dates = new HBox(startDate, endDate);
+    dates.setAlignment(Pos.CENTER);
+    vBox.getChildren().addAll(label, dates, ranges, reloadHistoricalData);
+  }
+
+  private EventHandler<ActionEvent> getReloadHistoricalEventHandler(
+    Company company,
+    VBox vBox,
+    DatePicker startDate,
+    DatePicker endDate,
+    ComboBox<YahooFinanceAPI.Range> ranges
+  ) {
+    return event -> {
+      new Thread(()-> {
+        HistoricalDataPlugin plugin = new HistoricalDataPlugin(
+          startDate.getValue().toEpochDay()* 86400L,
+          endDate.getValue().toEpochDay() *  86400L,
+          ranges.getValue()
+        );
+        try {
+          plugin.addInfo(company);
+          Node chart = getChart(company.getHistoricalData());
+          Platform.runLater(()-> {
+            vBox.getChildren().clear();
+            vBox.getChildren().add(chart);
+          });
+        } catch (PluginException e) {
+          e.printStackTrace();
+        }
+      }).start();
+      vBox.getChildren().clear();
+      vBox.getChildren().add(new OverWatchLoader(javafx.scene.paint.Color.web("#400090")));
+    };
+  }
+
+  private VBox getChart(HistoricalData historicalDatum) {
+    final CategoryAxis xAxis = new CategoryAxis();
+    final NumberAxis yAxis = new NumberAxis();
+    xAxis.setLabel("Month");
+
+    final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
+    lineChart.setCreateSymbols(false);
+    lineChart.setAnimated(false);
+    lineChart.getStyleClass().add("thick-chart");
+    lineChart.setTitle(historicalDatum.getSymbol());
+
+    XYChart.Series adjClose = new XYChart.Series();
+    adjClose.setName("Adj Close");
+
+    XYChart.Series open = new XYChart.Series();
+    open.setName("Open");
+
+    XYChart.Series high = new XYChart.Series();
+    high.setName("High");
+
+    XYChart.Series low = new XYChart.Series();
+    low.setName("Low");
+
+    XYChart.Series close = new XYChart.Series();
+    close.setName("Close");
+
+    XYChart.Series volume = new XYChart.Series();
+    volume.setName("Volume");
+
+    for (int i = 0; i < historicalDatum.getDate().size(); i++) {
+      String fmtDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(historicalDatum.getDate().get(i) * 1000));
+
+      adjClose.getData().add(new XYChart.Data<>(
+          fmtDate,
+          historicalDatum.getAdj_close().get(i)
+        )
+      );
+
+      low.getData().add(
+        new XYChart.Data<>(
+          fmtDate,
+          historicalDatum.getLow().get(i)
+        )
+      );
+
+      high.getData().add(
+        new XYChart.Data<>(
+          fmtDate,
+          historicalDatum.getHigh().get(i)
+        )
+      );
+
+      close.getData().add(
+        new XYChart.Data<>(
+          fmtDate,
+          historicalDatum.getClose().get(i)
+        )
+      );
+
+      volume.getData().add(
+        new XYChart.Data<>(
+          fmtDate,
+          historicalDatum.getVolume().get(i)
+        )
+      );
+
+      open.getData().add(
+        new XYChart.Data<>(
+          fmtDate,
+          historicalDatum.getOpen().get(i)
+        )
+      );
+    }
+
+
+    final double SCALE_DELTA = 1.1;
+    lineChart.setOnScroll(event -> {
+      event.consume();
+
+      if (event.getDeltaY() == 0) {
+        return;
+      }
+
+      double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
+
+      lineChart.setScaleX(lineChart.getScaleX() * scaleFactor);
+      lineChart.setScaleY(lineChart.getScaleY() * scaleFactor);
+    });
+    Axis axis = new Axis();
+    lineChart.setOnMousePressed(event -> {
+      if (event.getClickCount() == 2) {
+        lineChart.setScaleX(1.0);
+        lineChart.setScaleY(1.0);
+      } else {
+        axis.orgSceneX = event.getSceneX();
+        axis.orgSceneY = event.getSceneY();
+
+        axis.orgTranslateX = lineChart.getTranslateX();
+        axis.orgTranslateY = lineChart.getTranslateY();
+      }
+    });
+    lineChart.setOnMouseDragged(event -> {
+      double offsetX = event.getSceneX() - axis.orgSceneX;
+      double offsetY = event.getSceneY() - axis.orgSceneY;
+      double newTranslateX = axis.orgTranslateX + offsetX;
+      double newTranslateY = axis.orgTranslateY + offsetY;
+
+      lineChart.setTranslateX(newTranslateX);
+      lineChart.setTranslateY(newTranslateY);
+    });
+
+
+    final XYChart.Series [] series = {open, high, low, close, volume, adjClose};
+    lineChart.getData().addAll(series);
+
+    Button openButton = new Button("X Open");
+    openButton.setOnAction(event -> {
+      if(lineChart.getData().contains(open)){
+        lineChart.getData().remove(open);
+        openButton.setText("add Open");
+      } else {
+        lineChart.getData().add(open);
+        openButton.setText("X Open");
+      }
+    });
+
+    Button highButton = new Button("X High");
+    highButton.setOnAction(event -> {
+      if(lineChart.getData().contains(high)){
+        lineChart.getData().remove(high);
+        highButton.setText("add High");
+      } else {
+        lineChart.getData().add(high);
+        highButton.setText("X High");
+      }
+    });
+
+    Button lowButton = new Button("X Low");
+    lowButton.setOnAction(event -> {
+      if(lineChart.getData().contains(low)){
+        lineChart.getData().remove(low);
+        lowButton.setText("add Low");
+      } else {
+        lineChart.getData().add(low);
+        lowButton.setText("X Low");
+      }
+    });
+
+    Button closeButton = new Button("X Close");
+    closeButton.setOnAction(event -> {
+      if(lineChart.getData().contains(close)){
+        lineChart.getData().remove(close);
+        closeButton.setText("add Close");
+      } else {
+        lineChart.getData().add(close);
+        closeButton.setText("X Close");
+      }
+    });
+
+    Button volumeButton = new Button("X Volume");
+    volumeButton.setOnAction(event -> {
+      if(lineChart.getData().contains(volume)){
+        lineChart.getData().remove(volume);
+        volumeButton.setText("add Volume");
+      } else {
+        lineChart.getData().add(volume);
+        volumeButton.setText("X Volume");
+      }
+    });
+
+    Button adjButton = new Button("X AdjClose");
+    adjButton.setOnAction(event -> {
+      if(lineChart.getData().contains(adjClose)){
+        lineChart.getData().remove(adjClose);
+        adjButton.setText("add AdjClose");
+      } else {
+        lineChart.getData().add(adjClose);
+        adjButton.setText("X AdjClose");
+      }
+    });
+
+    HBox buttons = new HBox(openButton, highButton, lowButton, closeButton, volumeButton, adjButton);
+    buttons.setSpacing(20d);
+
+    return new VBox(lineChart, buttons);
+  }
+
+  private class Axis {
+    double orgSceneX, orgSceneY;
+    double orgTranslateX, orgTranslateY;
   }
 }

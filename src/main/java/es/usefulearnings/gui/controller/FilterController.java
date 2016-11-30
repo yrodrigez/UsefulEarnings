@@ -9,6 +9,7 @@ import es.usefulearnings.engine.plugin.HistoricalDataPlugin;
 import es.usefulearnings.engine.plugin.Plugin;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.Entity;
+import es.usefulearnings.entities.company.HistoricalData;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.animation.OverWatchLoader;
 import es.usefulearnings.gui.view.AlertHelper;
@@ -300,8 +301,9 @@ public class FilterController implements Initializable {
                 ((Company) entity).getSymbol() + date;
 
               HistoricalDataTask.this.updateMessage("Exporting data from " + ((Company) entity).getSymbol());
-
-              new CSVWriter(path, ((Company) entity).getHistoricalData().getHistoricalDatum()).save();
+              ArrayList<HistoricalData.Historical> historicalData = ((Company) entity).getHistoricalData().getHistoricalDatum();
+              if(historicalData != null && !historicalData.isEmpty())
+                new CSVWriter(path, historicalData).save();
 
               HistoricalDataTask.this.updateMessage("Finished the exportation");
 

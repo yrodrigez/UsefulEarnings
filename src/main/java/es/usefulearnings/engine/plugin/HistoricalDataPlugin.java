@@ -97,6 +97,13 @@ public class HistoricalDataPlugin implements Plugin<Company> {
         }
       );
 
+      if(dates.isEmpty() && open.isEmpty() && high.isEmpty() && low.isEmpty() && close.isEmpty() && volume.isEmpty() && adjClose.isEmpty())
+        throw new PluginException(
+          company.getSymbol(),
+          this.getClass().getName(),
+          new IllegalArgumentException("data is empty for " + company.getSymbol()),
+          _Url
+        );
       HistoricalData data = new HistoricalData(
         company.getSymbol(),
         dates,
