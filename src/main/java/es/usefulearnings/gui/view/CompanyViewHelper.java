@@ -27,10 +27,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -42,6 +40,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -113,15 +112,27 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
 
           case INNER_CLASS_COLLECTION:
             Accordion collectionAccordion = new Accordion();
-            ScrollPane collectionScrollPane = new ScrollPane(collectionAccordion);
+            ScrollPane collectionScrollPane = new ScrollPane(new OverWatchLoader());
 
             Collection<Object> innerClassCollection = (Collection<Object>) method.invoke(object);
-            for (Object objectLink : innerClassCollection) {
-              TitledPane innerTittledPane = new TitledPane(
-                entityName,
-                new ScrollPane(getViewForObject(objectLink))
-              );
-              collectionAccordion.getPanes().add(innerTittledPane);
+            if (innerClassCollection != null && innerClassCollection.size() > 0) {
+              ArrayList<TitledPane> titledPanes = new ArrayList<>();
+              new Thread(() -> {
+                for (Object objectLink : innerClassCollection) {
+                  TitledPane innerTittledPane = null;
+                  try {
+                    innerTittledPane = new TitledPane(
+                      entityName,
+                      new ScrollPane(getViewForObject(objectLink))
+                    );
+                  } catch (IntrospectionException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                    e.printStackTrace();
+                  }
+                  if(innerTittledPane != null) titledPanes.add(innerTittledPane);
+                }
+                collectionAccordion.getPanes().addAll(titledPanes);
+                Platform.runLater(()-> collectionScrollPane.setContent(collectionAccordion));
+              }).start();
             }
             accordion.getPanes().add(new TitledPane(entityName, collectionScrollPane));
             break;
@@ -184,7 +195,7 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
           case RAW_DATE:
             Object rawDate = method.invoke(object);
             gridPane.add(entityNameLabel, 0, position);
-            if(rawDate != null) {
+            if (rawDate != null) {
               String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date((long) rawDate * 1000L));
               gridPane.add(new Label(date), 1, position);
             }
@@ -195,21 +206,18 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
             break;
 
 
-
           case HISTORICAL_DATA:
             HistoricalData historicalDatum = (HistoricalData) method.invoke(object);
-            VBox vBox = new VBox(new OverWatchLoader(javafx.scene.paint.Color.web("#400090")));
+            VBox vBox = new VBox(new OverWatchLoader());
             vBox.setAlignment(Pos.CENTER);
             if (historicalDatum != null && !historicalDatum.isEmpty()) {
-              new Thread(()->{
-                Node chart = getChart(historicalDatum);
-                Platform.runLater(()-> {
-                  vBox.getChildren().clear();
-                  vBox.getChildren().add(chart);
-                });
-              }).start();
+              Node chart = getChart(((Company) object).getHistoricalData());
+              vBox.getChildren().clear();
+              Button erase = new Button("retry");
+              erase.setOnAction(event -> setReloadHistoricalMiniView((Company) object, vBox));
+              vBox.getChildren().addAll(erase, chart);
             } else {
-              setReloadHistoricalMiniView((Company)object, vBox);
+              setReloadHistoricalMiniView((Company) object, vBox);
             }
             TitledPane titledPaneForChart = new TitledPane(entityName, vBox);
             accordion.getPanes().add(titledPaneForChart);
@@ -239,6 +247,32 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
     vBox.getChildren().addAll(label, dates, ranges, reloadHistoricalData);
   }
 
+  private String getWebCandleChart(HistoricalData historicalData) {
+    // ['Mon', 20, 28, 38, 45]
+    StringBuilder data = new StringBuilder();
+    historicalData.getHistoricalDatum().forEach(historical -> {
+      data.append('[');
+      data.append('\'');
+      data.append(historical.getDate());
+      data.append('\'');
+      data.append(',');
+      data.append(historical.getHigh());
+      data.append(',');
+      data.append(historical.getOpen());
+      data.append(',');
+      data.append(historical.getClose());
+      data.append(',');
+      data.append(historical.getLow());
+      data.append("],");
+    });
+
+    int size = historicalData.getDate().size() > 200 ? 8192 : 1900;
+    System.out.println(size);
+    return "<html><head><script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script><script type=\"text/javascript\">google.charts.load('current', {'packages':['corechart']});google.charts.setOnLoadCallback(drawChart);function drawChart() {var data = google.visualization.arrayToDataTable(["
+      + data.substring(0, data.length() - 1) +
+      "], true);var options = {legend:'none', candlestick: {fallingColor: { strokeWidth: 0, fill: '#ff0000' },risingColor: { strokeWidth: 0, fill: '#00ff00' }}};var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div'));chart.draw(data, options);}</script></head><body><div id=\"chart_div\" style=\"width: " + size + "px; height: 700px;\"></div></body></html>";
+  }
+
   private EventHandler<ActionEvent> getReloadHistoricalEventHandler(
     Company company,
     VBox vBox,
@@ -247,16 +281,16 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
     ComboBox<YahooFinanceAPI.Range> ranges
   ) {
     return event -> {
-      new Thread(()-> {
+      new Thread(() -> {
         HistoricalDataPlugin plugin = new HistoricalDataPlugin(
-          startDate.getValue().toEpochDay()* 86400L,
-          endDate.getValue().toEpochDay() *  86400L,
+          startDate.getValue().toEpochDay() * 86400L,
+          endDate.getValue().toEpochDay() * 86400L,
           ranges.getValue()
         );
         try {
           plugin.addInfo(company);
-          Node chart = getChart(company.getHistoricalData());
-          Platform.runLater(()-> {
+          Platform.runLater(() -> {
+            Node chart = getChart(company.getHistoricalData());
             vBox.getChildren().clear();
             vBox.getChildren().add(chart);
           });
@@ -269,191 +303,39 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
     };
   }
 
-  private VBox getChart(HistoricalData historicalDatum) {
-    final CategoryAxis xAxis = new CategoryAxis();
-    final NumberAxis yAxis = new NumberAxis();
-    xAxis.setLabel("Month");
+  private Node getChart(HistoricalData historicalDatum) {
+    WebView webView = new WebView();
 
-    final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
-    lineChart.setCreateSymbols(false);
-    lineChart.setAnimated(false);
-    lineChart.getStyleClass().add("thick-chart");
-    lineChart.setTitle(historicalDatum.getSymbol());
-
-    XYChart.Series adjClose = new XYChart.Series();
-    adjClose.setName("Adj Close");
-
-    XYChart.Series open = new XYChart.Series();
-    open.setName("Open");
-
-    XYChart.Series high = new XYChart.Series();
-    high.setName("High");
-
-    XYChart.Series low = new XYChart.Series();
-    low.setName("Low");
-
-    XYChart.Series close = new XYChart.Series();
-    close.setName("Close");
-
-    XYChart.Series volume = new XYChart.Series();
-    volume.setName("Volume");
-
-    for (int i = 0; i < historicalDatum.getDate().size(); i++) {
-      String fmtDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(historicalDatum.getDate().get(i) * 1000));
-
-      adjClose.getData().add(new XYChart.Data<>(
-          fmtDate,
-          historicalDatum.getAdj_close().get(i)
-        )
-      );
-
-      low.getData().add(
-        new XYChart.Data<>(
-          fmtDate,
-          historicalDatum.getLow().get(i)
-        )
-      );
-
-      high.getData().add(
-        new XYChart.Data<>(
-          fmtDate,
-          historicalDatum.getHigh().get(i)
-        )
-      );
-
-      close.getData().add(
-        new XYChart.Data<>(
-          fmtDate,
-          historicalDatum.getClose().get(i)
-        )
-      );
-
-      volume.getData().add(
-        new XYChart.Data<>(
-          fmtDate,
-          historicalDatum.getVolume().get(i)
-        )
-      );
-
-      open.getData().add(
-        new XYChart.Data<>(
-          fmtDate,
-          historicalDatum.getOpen().get(i)
-        )
-      );
-    }
-
-
+    final Axis axis = new Axis();
     final double SCALE_DELTA = 1.1;
-    lineChart.setOnScroll(event -> {
+    webView.setOnScroll(event -> {
       event.consume();
-
       if (event.getDeltaY() == 0) {
         return;
       }
 
       double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
 
-      lineChart.setScaleX(lineChart.getScaleX() * scaleFactor);
-      lineChart.setScaleY(lineChart.getScaleY() * scaleFactor);
+      webView.setZoom(webView.getZoom() * scaleFactor);
+      webView.setZoom(webView.getZoom() * scaleFactor);
     });
-    Axis axis = new Axis();
-    lineChart.setOnMousePressed(event -> {
+
+    webView.setOnMousePressed(event -> {
       if (event.getClickCount() == 2) {
-        lineChart.setScaleX(1.0);
-        lineChart.setScaleY(1.0);
+        webView.setZoom(0);
+        webView.setZoom(0);
       } else {
         axis.orgSceneX = event.getSceneX();
         axis.orgSceneY = event.getSceneY();
 
-        axis.orgTranslateX = lineChart.getTranslateX();
-        axis.orgTranslateY = lineChart.getTranslateY();
-      }
-    });
-    lineChart.setOnMouseDragged(event -> {
-      double offsetX = event.getSceneX() - axis.orgSceneX;
-      double offsetY = event.getSceneY() - axis.orgSceneY;
-      double newTranslateX = axis.orgTranslateX + offsetX;
-      double newTranslateY = axis.orgTranslateY + offsetY;
-
-      lineChart.setTranslateX(newTranslateX);
-      lineChart.setTranslateY(newTranslateY);
-    });
-
-
-    final XYChart.Series [] series = {open, high, low, close, volume, adjClose};
-    lineChart.getData().addAll(series);
-
-    Button openButton = new Button("X Open");
-    openButton.setOnAction(event -> {
-      if(lineChart.getData().contains(open)){
-        lineChart.getData().remove(open);
-        openButton.setText("add Open");
-      } else {
-        lineChart.getData().add(open);
-        openButton.setText("X Open");
+        axis.orgTranslateX = webView.getTranslateX();
+        axis.orgTranslateY = webView.getTranslateY();
       }
     });
 
-    Button highButton = new Button("X High");
-    highButton.setOnAction(event -> {
-      if(lineChart.getData().contains(high)){
-        lineChart.getData().remove(high);
-        highButton.setText("add High");
-      } else {
-        lineChart.getData().add(high);
-        highButton.setText("X High");
-      }
-    });
 
-    Button lowButton = new Button("X Low");
-    lowButton.setOnAction(event -> {
-      if(lineChart.getData().contains(low)){
-        lineChart.getData().remove(low);
-        lowButton.setText("add Low");
-      } else {
-        lineChart.getData().add(low);
-        lowButton.setText("X Low");
-      }
-    });
-
-    Button closeButton = new Button("X Close");
-    closeButton.setOnAction(event -> {
-      if(lineChart.getData().contains(close)){
-        lineChart.getData().remove(close);
-        closeButton.setText("add Close");
-      } else {
-        lineChart.getData().add(close);
-        closeButton.setText("X Close");
-      }
-    });
-
-    Button volumeButton = new Button("X Volume");
-    volumeButton.setOnAction(event -> {
-      if(lineChart.getData().contains(volume)){
-        lineChart.getData().remove(volume);
-        volumeButton.setText("add Volume");
-      } else {
-        lineChart.getData().add(volume);
-        volumeButton.setText("X Volume");
-      }
-    });
-
-    Button adjButton = new Button("X AdjClose");
-    adjButton.setOnAction(event -> {
-      if(lineChart.getData().contains(adjClose)){
-        lineChart.getData().remove(adjClose);
-        adjButton.setText("add AdjClose");
-      } else {
-        lineChart.getData().add(adjClose);
-        adjButton.setText("X AdjClose");
-      }
-    });
-
-    HBox buttons = new HBox(openButton, highButton, lowButton, closeButton, volumeButton, adjButton);
-    buttons.setSpacing(20d);
-
-    return new VBox(lineChart, buttons);
+    webView.getEngine().loadContent(getWebCandleChart(historicalDatum));
+    return webView;
   }
 
   private class Axis {

@@ -155,6 +155,10 @@ public class OverWatchLoader extends Control {
     }
   }
 
+  public OverWatchLoader(){
+    this(20.0, Color.web("#400090"));
+  }
+
   /**
    * Creates a loader with a default 20.0 hexagonSize
    *
