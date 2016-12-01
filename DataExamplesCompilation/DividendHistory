@@ -1,0 +1,343 @@
+{
+  "query": {
+    "count": 53,
+    "created": "2016-12-01T06:45:22Z",
+    "lang": "en-US",
+    "diagnostics": {
+      "url": [
+        {
+          "execution-start-time": "1",
+          "execution-stop-time": "7",
+          "execution-time": "6",
+          "content": "http://www.datatables.org/yahoo/finance/yahoo.finance.dividendhistory.xml"
+        },
+        {
+          "execution-start-time": "11",
+          "execution-stop-time": "107",
+          "execution-time": "96",
+          "content": "http://ichart.finance.yahoo.com/table.csv?a=0&b=1&e=31&g=v&c=1962&d=112&f=2014&s=AAPL"
+        },
+        {
+          "execution-start-time": "110",
+          "execution-stop-time": "112",
+          "execution-time": "2",
+          "content": "http://ichart.finance.yahoo.com/table.csv?a=0&b=1&e=31&g=v&c=1962&d=112&f=2014&s=AAPL"
+        }
+      ],
+      "publiclyCallable": "true",
+      "cache": [
+        {
+          "execution-start-time": "10",
+          "execution-stop-time": "11",
+          "execution-time": "1",
+          "method": "GET",
+          "type": "MEMCACHED",
+          "content": "9a2a896e14726d7f6313802f4f43c9d6"
+        },
+        {
+          "execution-start-time": "109",
+          "execution-stop-time": "110",
+          "execution-time": "1",
+          "method": "GET",
+          "type": "MEMCACHED",
+          "content": "95d7e3b5c682e46274b17f61b0a92e2f"
+        }
+      ],
+      "query": [
+        {
+          "execution-start-time": "11",
+          "execution-stop-time": "108",
+          "execution-time": "97",
+          "params": "{url=[http://ichart.finance.yahoo.com/table.csv?a=0&b=1&e=31&g=v&c=1962&d=112&f=2014&s=AAPL]}",
+          "content": "select * from csv(0,1) where url=@url"
+        },
+        {
+          "execution-start-time": "110",
+          "execution-stop-time": "112",
+          "execution-time": "2",
+          "params": "{columnsNames=[Date,Dividends], url=[http://ichart.finance.yahoo.com/table.csv?a=0&b=1&e=31&g=v&c=1962&d=112&f=2014&s=AAPL]}",
+          "content": "select * from csv(2,0) where url=@url and columns=@columnsNames"
+        }
+      ],
+      "javascript": {
+        "execution-start-time": "8",
+        "execution-stop-time": "137",
+        "execution-time": "129",
+        "instructions-used": "427704",
+        "table-name": "yahoo.finance.dividendhistory"
+      },
+      "user-time": "139",
+      "service-time": "106",
+      "build-version": "2.0.79"
+    },
+    "results": {
+      "quote": [
+        {
+          "Symbol": "AAPL",
+          "Date": "2016-11-03",
+          "Dividends": "0.570000"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2016-08-04",
+          "Dividends": "0.570000"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2016-05-05",
+          "Dividends": "0.570000"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2016-02-04",
+          "Dividends": "0.520000"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2015-11-05",
+          "Dividends": "0.520000"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2015-08-06",
+          "Dividends": "0.520000"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2015-05-07",
+          "Dividends": "0.520000"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2015-02-05",
+          "Dividends": "0.470000"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2014-11-06",
+          "Dividends": "0.470000"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2014-08-07",
+          "Dividends": "0.470000"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2014-05-08",
+          "Dividends": "0.470000"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2014-02-06",
+          "Dividends": "0.435710"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2013-11-06",
+          "Dividends": "0.435710"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2013-08-08",
+          "Dividends": "0.435710"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2013-05-09",
+          "Dividends": "0.435710"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2013-02-07",
+          "Dividends": "0.378570"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2012-11-07",
+          "Dividends": "0.378570"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "2012-08-09",
+          "Dividends": "0.378570"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1995-11-21",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1995-08-16",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1995-05-26",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1995-02-13",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1994-11-18",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1994-08-15",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1994-05-27",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1994-02-07",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1993-11-19",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1993-08-16",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1993-05-28",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1993-02-12",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1992-11-30",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1992-08-17",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1992-06-01",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1992-02-14",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1991-11-18",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1991-08-19",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1991-05-20",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1991-02-15",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1990-11-16",
+          "Dividends": "0.004290"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1990-08-20",
+          "Dividends": "0.003930"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1990-05-21",
+          "Dividends": "0.003930"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1990-02-16",
+          "Dividends": "0.003930"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1989-11-17",
+          "Dividends": "0.003930"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1989-08-21",
+          "Dividends": "0.003570"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1989-05-22",
+          "Dividends": "0.003570"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1989-02-17",
+          "Dividends": "0.003570"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1988-11-21",
+          "Dividends": "0.003570"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1988-08-15",
+          "Dividends": "0.002860"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1988-05-16",
+          "Dividends": "0.002860"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1988-02-12",
+          "Dividends": "0.002860"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1987-11-17",
+          "Dividends": "0.002860"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1987-08-10",
+          "Dividends": "0.002140"
+        },
+        {
+          "Symbol": "AAPL",
+          "Date": "1987-05-11",
+          "Dividends": "0.002140"
+        }
+      ]
+    }
+  }
+}
