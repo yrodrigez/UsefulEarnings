@@ -3,6 +3,7 @@ package es.usefulearnings.gui.controller;
 import es.usefulearnings.engine.Core;
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -87,9 +88,11 @@ public class MainController implements Initializable {
     Button closeButton = new Button("", closeIcon);
     closeButton.getStyleClass().addAll("main-controller-button", "close-button", "no-radius");
     closeButton.setOnAction(event -> {
+      event.consume();
       Stage stage = (Stage) closeButton.getScene().getWindow();
       stage.close();
-      event.consume();
+      Platform.exit();
+      System.exit(0);
     });
 
 

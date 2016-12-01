@@ -32,6 +32,6 @@ public class CashFlowStatementsPlugin extends YahooFinanceAPIPlugin {
       }
     );
 
-    company.setCashFlowStatements(cashflowStatements);
+    //company.setCashFlowStatements(cashflowStatements);
   }
 }

@@ -2,6 +2,7 @@ package es.usefulearnings.gui.view;
 
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
+import es.usefulearnings.engine.Core;
 import es.usefulearnings.engine.EntityParameterBeanWalker;
 import es.usefulearnings.engine.connection.YahooFinanceAPI;
 import es.usefulearnings.engine.plugin.HistoricalDataPlugin;
@@ -105,9 +106,21 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
         switch (parameterType) {
           case INNER_CLASS:
             Object innerObject = method.invoke(object);
-            ScrollPane pane = new ScrollPane(getViewForObject(innerObject));
-            TitledPane titledPane = new TitledPane(entityName, pane);
-            accordion.getPanes().add(titledPane);
+            if(innerObject != null) {
+              Core.getInstance().runLater(() -> {
+                ScrollPane pane = null;
+                try {
+                  pane = new ScrollPane(getViewForObject(innerObject));
+                } catch (IntrospectionException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                  e.printStackTrace();
+                }
+                if (pane != null) {
+                  TitledPane titledPane = new TitledPane(entityName, pane);
+                  //titledPane.onScrollFinishedProperty().setValue(event -> System.out.println("EOEOEOEOEOEO"));
+                  Platform.runLater(() -> accordion.getPanes().add(titledPane));
+                }
+              });
+            }
             break;
 
           case INNER_CLASS_COLLECTION:
@@ -116,23 +129,19 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
 
             Collection<Object> innerClassCollection = (Collection<Object>) method.invoke(object);
             if (innerClassCollection != null && innerClassCollection.size() > 0) {
-              ArrayList<TitledPane> titledPanes = new ArrayList<>();
-              new Thread(() -> {
-                for (Object objectLink : innerClassCollection) {
-                  TitledPane innerTittledPane = null;
+              for (Object objectLink : innerClassCollection) {
+                TitledPane innerTittledPane = new TitledPane();
+                Core.getInstance().runLater(() -> {
                   try {
-                    innerTittledPane = new TitledPane(
-                      entityName,
-                      new ScrollPane(getViewForObject(objectLink))
-                    );
+                    innerTittledPane.setText(entityName);
+                    innerTittledPane.setContent(new ScrollPane(getViewForObject(objectLink)));
                   } catch (IntrospectionException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
                     e.printStackTrace();
                   }
-                  if(innerTittledPane != null) titledPanes.add(innerTittledPane);
-                }
-                collectionAccordion.getPanes().addAll(titledPanes);
-                Platform.runLater(()-> collectionScrollPane.setContent(collectionAccordion));
-              }).start();
+                  if (innerTittledPane.getContent() != null) collectionAccordion.getPanes().add(innerTittledPane);
+                  Platform.runLater(() -> collectionScrollPane.setContent(collectionAccordion));
+                });
+              }
             }
             accordion.getPanes().add(new TitledPane(entityName, collectionScrollPane));
             break;

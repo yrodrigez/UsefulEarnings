@@ -32,24 +32,39 @@ public class Core {
 
   private long _loadedPackageId;
 
+  private ThreadPool _threadPool;
+
   private Core() {
     isDataLoaded = false;
     _loadedPackageId = 0;
     // Add companiesPlugins.
     companiesPlugins = new ArrayList<>();
     companiesPlugins.add(new ProfilePlugin());
-    companiesPlugins.add(new BalanceSheetStatementsPlugin());
     companiesPlugins.add(new CalendarEventsPlugin());
-    companiesPlugins.add(new CashFlowStatementsPlugin());
     companiesPlugins.add(new DefaultKeyStatisticsPlugin());
-    companiesPlugins.add(new IncomeStatmentsPlugin());
     companiesPlugins.add(new FinancialDataPlugin());
     companiesPlugins.add(new CompanySummaryDetailPlugin());
     companiesPlugins.add(new OptionChainPlugin());
+    //companiesPlugins.add(new BalanceSheetStatementsPlugin());
+    //companiesPlugins.add(new IncomeStatmentsPlugin());
+    //companiesPlugins.add(new CashFlowStatementsPlugin());
 
+    _threadPool = ThreadPool.get_instance();
     setStocksFromFolder();
 
     _appliedFilters = new LinkedList<>();
+  }
+
+  public void runLater(Runnable runnable){
+    _threadPool.execute(runnable);
+  }
+
+  public void poolShutDown(){
+    _threadPool.shutDown();
+  }
+
+  public int getMaxPoolSize(){
+    return _threadPool.getPoolSize();
   }
 
   public Company getCompanyFromSymbol(String symbol) throws IllegalArgumentException {

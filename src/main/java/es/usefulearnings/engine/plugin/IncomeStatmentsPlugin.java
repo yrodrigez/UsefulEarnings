@@ -44,7 +44,7 @@ public class IncomeStatmentsPlugin implements Plugin<Company> {
         }
       );
 
-      company.setIncomeStatements(mIncomeStatements);
+     // company.setIncomeStatements(mIncomeStatements);
     } catch (Exception anyException) {
       throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);
     }

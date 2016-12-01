@@ -35,6 +35,6 @@ public class BalanceSheetStatementsPlugin extends YahooFinanceAPIPlugin {
       new TypeReference<ArrayList<BalanceSheetStatement>>() {
       }
     );
-    company.setBalanceSheetStatements(mBalanceSheetStatements);
+   // company.setBalanceSheetStatements(mBalanceSheetStatements);
   }
 }

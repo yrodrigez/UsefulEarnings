@@ -33,14 +33,14 @@ public class Company implements Serializable, Entity, Savable {
   private FinancialData financialData;
   @EntityParameter(name = "Default key statistics", parameterType = ParameterType.INNER_CLASS, isMaster = true)
   private DefaultKeyStatistics defaultKeyStatistics;
-
+/*
   @EntityParameter(name = "Cashflow statements", parameterType = ParameterType.INNER_CLASS_COLLECTION)
   private ArrayList<CashFlowStatement> cashFlowStatements;
   @EntityParameter(name = "Income statements", parameterType = ParameterType.INNER_CLASS_COLLECTION)
   private ArrayList<IncomeStatement> incomeStatements;
   @EntityParameter(name = "Balance sheet statement", parameterType = ParameterType.INNER_CLASS_COLLECTION)
   private ArrayList<BalanceSheetStatement> balanceSheetStatements;
-
+*/
   @EntityParameter(name = "Historical Data", parameterType = ParameterType.HISTORICAL_DATA)
   private HistoricalData historicalData;
 
@@ -58,7 +58,7 @@ public class Company implements Serializable, Entity, Savable {
     defaultKeyStatistics = new DefaultKeyStatistics();
     optionChain = new OptionChain();
     historicalData = new HistoricalData();
-
+/*
     cashFlowStatements = new ArrayList<>();
     cashFlowStatements.add(new CashFlowStatement());
 
@@ -66,7 +66,7 @@ public class Company implements Serializable, Entity, Savable {
     incomeStatements.add(new IncomeStatement());
 
     balanceSheetStatements = new ArrayList<>();
-    balanceSheetStatements.add(new BalanceSheetStatement());
+    balanceSheetStatements.add(new BalanceSheetStatement());*/
   }
 
   public String getSymbol() {
@@ -109,7 +109,7 @@ public class Company implements Serializable, Entity, Savable {
     this.defaultKeyStatistics = defaultKeyStatistics;
     this.defaultKeyStatistics.set();
   }
-
+/*
   public ArrayList<CashFlowStatement> getCashFlowStatements() {
     return cashFlowStatements;
   }
@@ -136,7 +136,7 @@ public class Company implements Serializable, Entity, Savable {
     this.balanceSheetStatements = balanceSheetStatements;
     this.balanceSheetStatements.forEach(CompanyData::set);
   }
-
+*/
   public void setSummaryDetail(SummaryDetail summaryDetail) {
     this.summaryDetail = summaryDetail;
     this.summaryDetail.set();
@@ -203,8 +203,8 @@ public class Company implements Serializable, Entity, Savable {
 
   @Override
   public boolean isEmpty() {
-    return !(profile.isSet() || calendarEvents.isSet() || financialData.isSet() || defaultKeyStatistics.isSet()
-      || cashFlowStatements.isEmpty() || incomeStatements.isEmpty());
+    return !(profile.isSet() || calendarEvents.isSet() || financialData.isSet() || defaultKeyStatistics.isSet());
+      //|| cashFlowStatements.isEmpty() || incomeStatements.isEmpty());
   }
 
   @Override
