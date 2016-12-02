@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -32,6 +33,7 @@ import java.util.ResourceBundle;
 /**
  * First on the Vistas to be shown
  * it will contan
+ *
  * @author Yago on 04/09/2016.
  */
 public class NavigateController implements Initializable {
@@ -66,6 +68,8 @@ public class NavigateController implements Initializable {
     WebView webView = new WebView();
     webTab.setContent(webView);
     webEngine = webView.getEngine();
+    webView.setCache(true);
+    webView.setCacheHint(CacheHint.SPEED);
     webEngine.load("https://github.com/yrodrigez/UsefulEarnings/blob/master/README.md");
 
     textFilter.textProperty().addListener(getSymbolsFilter());
@@ -78,7 +82,7 @@ public class NavigateController implements Initializable {
     getStocks();
   }
 
-  private ChangeListener<String> getSymbolsFilter(){
+  private ChangeListener<String> getSymbolsFilter() {
     return (observable, oldSymbolEntry, newSymbolEntry) -> {
       //remove the listener from the ListView so when it change don't crash
       companies.getSelectionModel().selectedItemProperty().removeListener(stockListener);
@@ -112,17 +116,17 @@ public class NavigateController implements Initializable {
     stocksChoiceBox.setItems(stocksNames);
     stocksChoiceBox.getSelectionModel().select(0);
     stocksChoiceBox.getSelectionModel().selectedItemProperty().addListener(
-        (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-          companies.getSelectionModel().selectedItemProperty().removeListener(stockListener);
-          symbols = FXCollections.observableArrayList();
-          stocks.forEach(stock -> {
-            if (stock.getName().equals(newValue)) {
-              symbols.addAll(stock.getCompanies().keySet());
-            }
-          });
-          companies.setItems(symbols);
-          companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
-        }
+      (ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+        companies.getSelectionModel().selectedItemProperty().removeListener(stockListener);
+        symbols = FXCollections.observableArrayList();
+        stocks.forEach(stock -> {
+          if (stock.getName().equals(newValue)) {
+            symbols.addAll(stock.getCompanies().keySet());
+          }
+        });
+        companies.setItems(symbols);
+        companies.getSelectionModel().selectedItemProperty().addListener(stockListener);
+      }
     );
     companies.setItems(symbols);
     companies.refresh();
@@ -136,11 +140,12 @@ public class NavigateController implements Initializable {
 
 
   private Node getCompanyView(
-      String symbol
+    String symbol
   ) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException {
     CompanyViewHelper companyViewHelper = CompanyViewHelper.getInstance();
     return companyViewHelper.getViewForEntity(Core.getInstance().getCompanyFromSymbol(symbol));
   }
+
   /**
    * @return Listener to handle the 'press' event on the main ListView (companies)
    * it will add the content of the
@@ -155,18 +160,24 @@ public class NavigateController implements Initializable {
           webEngine.load("http://finance.yahoo.com/quote/" + newSymbol);
         }
       }
-      if(Core.getInstance().isDataLoaded()) {
+      if (Core.getInstance().isDataLoaded()) {
         Tab cTab = new Tab(newSymbol);
 
-        cTab.setContent(new Pane(new OverWatchLoader(Color.web("#400090")).getLoader()));
+        cTab.setContent(new Pane(new OverWatchLoader()));
 
         new Thread(() -> {
           try {
             Node companyData = getCompanyView(newSymbol);
+            companyData.setCache(true);
+            companyData.setCacheHint(CacheHint.SPEED);
             Platform.runLater(() -> cTab.setContent(companyData));
-          } catch (IllegalAccessException | IntrospectionException | InvocationTargetException | InstantiationException e) {
-            Platform.runLater(() -> AlertHelper.showExceptionAlert(e));
-            e.printStackTrace();
+          } catch (IllegalArgumentException | IllegalAccessException | IntrospectionException | InvocationTargetException | InstantiationException e) {
+            if (e instanceof IllegalArgumentException) {
+              Platform.runLater(() -> cTab.setContent(new Pane(new Label("No data found for this company"))));
+          } else {
+              Platform.runLater(() -> AlertHelper.showExceptionAlert(e));
+              e.printStackTrace();
+            }
           }
         }).start();
         tabPane.getTabs().add(cTab);

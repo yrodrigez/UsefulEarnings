@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
@@ -116,7 +117,8 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
                 }
                 if (pane != null) {
                   TitledPane titledPane = new TitledPane(entityName, pane);
-                  //titledPane.onScrollFinishedProperty().setValue(event -> System.out.println("EOEOEOEOEOEO"));
+                  titledPane.setCache(true);
+                  titledPane.setCacheHint(CacheHint.SPEED);
                   Platform.runLater(() -> accordion.getPanes().add(titledPane));
                 }
               });
@@ -314,36 +316,37 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
 
   private Node getChart(HistoricalData historicalDatum) {
     WebView webView = new WebView();
+    Platform.runLater(()-> {
+      final Axis axis = new Axis();
+      final double SCALE_DELTA = 1.1;
+      webView.setOnScroll(event -> {
+        event.consume();
+        if (event.getDeltaY() == 0) {
+          return;
+        }
 
-    final Axis axis = new Axis();
-    final double SCALE_DELTA = 1.1;
-    webView.setOnScroll(event -> {
-      event.consume();
-      if (event.getDeltaY() == 0) {
-        return;
-      }
+        double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
 
-      double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
+        webView.setZoom(webView.getZoom() * scaleFactor);
+        webView.setZoom(webView.getZoom() * scaleFactor);
+      });
 
-      webView.setZoom(webView.getZoom() * scaleFactor);
-      webView.setZoom(webView.getZoom() * scaleFactor);
+      webView.setOnMousePressed(event -> {
+        if (event.getClickCount() == 2) {
+          webView.setZoom(0);
+          webView.setZoom(0);
+        } else {
+          axis.orgSceneX = event.getSceneX();
+          axis.orgSceneY = event.getSceneY();
+
+          axis.orgTranslateX = webView.getTranslateX();
+          axis.orgTranslateY = webView.getTranslateY();
+        }
+      });
+
+
+      webView.getEngine().loadContent(getWebCandleChart(historicalDatum));
     });
-
-    webView.setOnMousePressed(event -> {
-      if (event.getClickCount() == 2) {
-        webView.setZoom(0);
-        webView.setZoom(0);
-      } else {
-        axis.orgSceneX = event.getSceneX();
-        axis.orgSceneY = event.getSceneY();
-
-        axis.orgTranslateX = webView.getTranslateX();
-        axis.orgTranslateY = webView.getTranslateY();
-      }
-    });
-
-
-    webView.getEngine().loadContent(getWebCandleChart(historicalDatum));
     return webView;
   }
 

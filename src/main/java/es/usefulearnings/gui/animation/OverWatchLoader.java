@@ -4,6 +4,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
@@ -90,6 +91,8 @@ public class OverWatchLoader extends Control {
       wasPaused = false;
       hexagon = new Polygon(new Hexagon(side).getPoints());
       hexagon.setFill(color);
+      hexagon.setCache(true);
+      hexagon.setCacheHint(CacheHint.SCALE_AND_ROTATE);
 
       Duration duration = Duration.millis(180d);
       createDisappearTransition(duration);
@@ -133,7 +136,9 @@ public class OverWatchLoader extends Control {
         scaleTransition,
         fadeTransition
       );
-      disappearTransition.setOnFinished(e -> _successor.play());
+      disappearTransition.setOnFinished(e -> {
+        _successor.play();
+      });
     }
 
     void setSuccessor(AnimatedHexagon successor) {
@@ -208,12 +213,23 @@ public class OverWatchLoader extends Control {
     HBox botHbox = new HBox(filler2, animatedNodes[4], animatedNodes[3]);
     botHbox.setSpacing(spacing);
 
+    topHbox.setCache(true);
+    topHbox.setCacheHint(CacheHint.SPEED);
+    midHbox.setCache(true);
+    midHbox.setCacheHint(CacheHint.SPEED);
+    botHbox.setCache(true);
+    botHbox.setCacheHint(CacheHint.SPEED);
+
+
     VBox vbox = new VBox(topHbox, midHbox, botHbox);
     vbox.setSpacing(MAX_SPACING * -0.7);
 
     vbox.setAlignment(Pos.CENTER);
     vbox.setMaxSize(((sqrt(3) / 2) * hexagonSize) * 6, ((sqrt(3) / 2) * hexagonSize) * 6);
     view = vbox;
+
+    view.setCache(true);
+    view.setCacheHint(CacheHint.SPEED);
   }
 
   @Override
