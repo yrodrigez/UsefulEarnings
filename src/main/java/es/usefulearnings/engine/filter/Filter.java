@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,12 +17,16 @@ import java.util.Set;
 public abstract class Filter<E> implements Serializable {
   protected Map<Field, RestrictionValue> _parameters;
   protected Set<E> _filteredEntities;
+  protected Set<E> _toKeep;
+  protected Set<E> _toDelete;
 
   private long _filteredDate;
 
   public Filter(Set<E> entities, Map<Field, RestrictionValue> parameters) {
     _filteredEntities = entities;
     _parameters = parameters;
+    _toKeep = new LinkedHashSet<>();
+    _toDelete= new LinkedHashSet<>();
 
     _filteredDate = new Date().getTime() / 1000L;
   }
@@ -38,7 +43,11 @@ public abstract class Filter<E> implements Serializable {
   }
 
   protected void removeEntity(E entity) {
-    _filteredEntities.remove(entity);
+    _toDelete.add(entity);
+  }
+
+  protected void keepEntity(E entity){
+    _toKeep.add(entity);
   }
 
   private boolean evaluateNumber (Number number, BasicOperator operator, Number toEval){
@@ -91,9 +100,5 @@ public abstract class Filter<E> implements Serializable {
   public String toString(){
       return new SimpleDateFormat("hh:mm:ss").format(new Date(_filteredDate * 1000L))
       + " companies found: " + _filteredEntities.size();
-  }
-
-  public void createHistoricalPrices() {
-
   }
 }

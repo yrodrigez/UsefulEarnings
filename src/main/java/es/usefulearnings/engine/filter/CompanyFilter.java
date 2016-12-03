@@ -90,6 +90,8 @@ public class CompanyFilter extends Filter<Company> {
                   String toEval = (String) restrictionValue.getValue();
                   if (!evaluateString(string, restrictionValue.getOperator(), toEval) ) {
                     removeEntity(company);
+                  } else {
+                    keepEntity(company);
                   }
                 }
                 break;
@@ -114,6 +116,8 @@ public class CompanyFilter extends Filter<Company> {
                   double toEval = ((double) restrictionValue.getValue());
                   if (!evaluateDouble(number, restrictionValue.getOperator(), toEval)) {
                     removeEntity(company);
+                  } else {
+                    keepEntity(company);
                   }
                 }
                 break;
@@ -137,6 +141,8 @@ public class CompanyFilter extends Filter<Company> {
                   Double toEval = (Double) restrictionValue.getValue();
                   if (!evaluateDouble(number, restrictionValue.getOperator(), toEval)) {
                     removeEntity(company);
+                  } else {
+                    keepEntity(company);
                   }
                 }
                 break;
@@ -160,6 +166,8 @@ public class CompanyFilter extends Filter<Company> {
                   long stampToEval = (long) restrictionValue.getValue();
                   if (!evaluateTimeStamp(timeStamp, restrictionValue.getOperator(), stampToEval)) {
                     removeEntity(company);
+                  } else {
+                    keepEntity(company);
                   }
                 }
                 break;
@@ -188,6 +196,8 @@ public class CompanyFilter extends Filter<Company> {
                   }
                   if (remove) {
                     removeEntity(company);
+                  } else {
+                    keepEntity(company);
                   }
                 }
                 break;
@@ -205,7 +215,7 @@ public class CompanyFilter extends Filter<Company> {
         } // for PropertyDescriptor
       } // if field.getAnnotation(EntityParameter.class) != null
     } // for Field field : elementType.getDeclaredFields()
+    _filteredEntities.removeAll(_toDelete);
+    _filteredEntities.addAll(_toKeep);
   }
-
-
 }
