@@ -92,7 +92,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
       }
     }).start();
     dialogStage.setScene(scene);
-    dialogStage.showAndWait();
+    dialogStage.show();
   }
 
   @SuppressWarnings("unchecked")

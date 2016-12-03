@@ -35,10 +35,16 @@ abstract class YahooFinanceAPIPlugin implements Plugin<Company> {
       mUrl = MultiModuleYahooFinanceURLProvider.getInstance().getURLForModule(mCompanySymbol, getModuleName());
 
       JsonNode root = JSONHTTPClient.getInstance().getJSON(mUrl);
-      JsonNode foundNode = root.findValue(getValueToSearch());
-     
-      processJsonNode(company, foundNode);
-    
+      if(root.findValue("error").isNull() && !root.findValue("result").isNull()) {
+        JsonNode foundNode = root.findValue(getValueToSearch());
+        processJsonNode(company, foundNode);
+      } /*else {
+        System.err.println(
+          "***ACTUALIZACION***\n"+
+        "Resultado de "+ mCompanySymbol +" es nulo para: " + getModuleName() + "\n"+ root.toString());
+        //System.exit(-1);
+
+      }*/
     } catch (Exception anyException) {
       throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, mUrl);
     }

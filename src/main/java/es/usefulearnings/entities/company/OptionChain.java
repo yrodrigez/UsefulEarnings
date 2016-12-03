@@ -25,11 +25,6 @@ public class OptionChain extends CompanyData implements Serializable {
   @EntityParameter(name = "Puts", parameterType = ParameterType.INNER_CLASS_COLLECTION)
   private ArrayList<OptionLink> puts;
 
-  public OptionChain() {
-    this.expirationDates = new ArrayList<>();
-    this.calls = new ArrayList<>();
-    this.puts = new ArrayList<>();
-  }
 
   public ArrayList<Long> getExpirationDates() {
     return expirationDates;

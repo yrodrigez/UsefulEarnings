@@ -6,7 +6,6 @@ import es.usefulearnings.annotation.ParameterType;
 import es.usefulearnings.entities.company.*;
 
 import java.io.*;
-import java.util.ArrayList;
 
 /**
  * Representation of a company in this application
@@ -78,10 +77,6 @@ public class Company implements Serializable, Entity, Savable {
     this.symbol = symbol;
   }
 
-
-  public ArrayList<YahooField> getEarningsDates() {
-    return this.calendarEvents.getEarningsDate();
-  }
 
   public CalendarEvents getCalendarEvents() {
     return calendarEvents;

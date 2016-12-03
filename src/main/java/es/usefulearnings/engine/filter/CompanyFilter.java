@@ -62,7 +62,7 @@ public class CompanyFilter extends Filter<Company> {
                 if (elementValue == null) collection = null;
                 else collection = ((Collection<E>) pd.getReadMethod().invoke(elementValue));
                 Class<?> newElementValue = (Class<?>) ((ParameterizedType) pd.getReadMethod().getGenericReturnType()).getActualTypeArguments()[0];
-                if (collection != null) {
+                if (collection != null && collection.size() > 0) {
                   for (E innerElement : collection) {
                     applyFilter(company, newElementValue, innerElement);
                   }
@@ -83,7 +83,7 @@ public class CompanyFilter extends Filter<Company> {
                 } else {
                   RestrictionValue restrictionValue = _parameters.get(field);
                   String string = (String) pd.getReadMethod().invoke(elementValue);
-                  if(string.equals("")){
+                  if(string == null || string.equals("")){
                     removeEntity(company); // nothing to eval
                     break;
                   }
@@ -135,9 +135,6 @@ public class CompanyFilter extends Filter<Company> {
                     break;
                   }
                   Double toEval = (Double) restrictionValue.getValue();
-                  System.out.println(number +" " +  restrictionValue.getOperator()+" "+ toEval);
-                  System.out.println(evaluateDouble(number, restrictionValue.getOperator(), toEval));
-                  System.out.println(evaluateDouble(number, restrictionValue.getOperator(), toEval) ? company.getSymbol() +" se queda": company.getSymbol() + " se va");
                   if (!evaluateDouble(number, restrictionValue.getOperator(), toEval)) {
                     removeEntity(company);
                   }

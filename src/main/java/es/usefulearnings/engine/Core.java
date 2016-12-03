@@ -45,9 +45,9 @@ public class Core {
     companiesPlugins.add(new FinancialDataPlugin());
     companiesPlugins.add(new CompanySummaryDetailPlugin());
     companiesPlugins.add(new OptionChainPlugin());
-    //companiesPlugins.add(new BalanceSheetStatementsPlugin());
-    //companiesPlugins.add(new IncomeStatmentsPlugin());
-    //companiesPlugins.add(new CashFlowStatementsPlugin());
+    // companiesPlugins.add(new BalanceSheetStatementsPlugin());
+    // companiesPlugins.add(new IncomeStatmentsPlugin());
+    // companiesPlugins.add(new CashFlowStatementsPlugin());
 
     _threadPool = ThreadPool.get_instance();
     setStocksFromFolder();

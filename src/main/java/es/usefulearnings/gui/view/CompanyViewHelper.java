@@ -10,6 +10,7 @@ import es.usefulearnings.engine.plugin.PluginException;
 import es.usefulearnings.entities.Company;
 import es.usefulearnings.entities.YahooField;
 import es.usefulearnings.entities.YahooLongFormatField;
+import es.usefulearnings.entities.company.CompanyData;
 import es.usefulearnings.entities.company.HistoricalData;
 import es.usefulearnings.gui.animation.OverWatchLoader;
 import javafx.application.Platform;
@@ -21,15 +22,14 @@ import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -42,7 +42,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -107,45 +106,50 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
         switch (parameterType) {
           case INNER_CLASS:
             Object innerObject = method.invoke(object);
-            if(innerObject != null) {
-              Core.getInstance().runLater(() -> {
-                ScrollPane pane = null;
-                try {
-                  pane = new ScrollPane(getViewForObject(innerObject));
-                } catch (IntrospectionException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                  e.printStackTrace();
-                }
-                if (pane != null) {
-                  TitledPane titledPane = new TitledPane(entityName, pane);
-                  titledPane.setCache(true);
-                  titledPane.setCacheHint(CacheHint.SPEED);
-                  Platform.runLater(() -> accordion.getPanes().add(titledPane));
-                }
-              });
+            if (innerObject != null && innerObject instanceof CompanyData) {
+              if (((CompanyData) innerObject).isSet()) {
+                Core.getInstance().runLater(() -> {
+                  ScrollPane pane = null;
+                  try {
+                    pane = new ScrollPane(getViewForObject(innerObject));
+                  } catch (IntrospectionException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                    e.printStackTrace();
+                  }
+                  if (pane != null) {
+                    TitledPane titledPane = new TitledPane(entityName, pane);
+                    titledPane.setCache(true);
+                    titledPane.setCacheHint(CacheHint.SPEED);
+                    Platform.runLater(() -> accordion.getPanes().add(titledPane));
+                  }
+                });
+              }
             }
             break;
 
           case INNER_CLASS_COLLECTION:
-            Accordion collectionAccordion = new Accordion();
-            ScrollPane collectionScrollPane = new ScrollPane(new OverWatchLoader());
-
             Collection<Object> innerClassCollection = (Collection<Object>) method.invoke(object);
             if (innerClassCollection != null && innerClassCollection.size() > 0) {
+              Accordion collectionAccordion = new Accordion();
+              ScrollPane collectionScrollPane = new ScrollPane(new Label("Loading..."));
               for (Object objectLink : innerClassCollection) {
-                TitledPane innerTittledPane = new TitledPane();
-                Core.getInstance().runLater(() -> {
-                  try {
-                    innerTittledPane.setText(entityName);
-                    innerTittledPane.setContent(new ScrollPane(getViewForObject(objectLink)));
-                  } catch (IntrospectionException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                    e.printStackTrace();
-                  }
-                  if (innerTittledPane.getContent() != null) collectionAccordion.getPanes().add(innerTittledPane);
-                  Platform.runLater(() -> collectionScrollPane.setContent(collectionAccordion));
-                });
+                if (objectLink != null) {
+                  TitledPane innerTittledPane = new TitledPane();
+                  Core.getInstance().runLater(() -> {
+                    try {
+                      innerTittledPane.setText(entityName);
+                      innerTittledPane.setContent(new ScrollPane(getViewForObject(objectLink)));
+                    } catch (IntrospectionException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                      e.printStackTrace();
+                    }
+                    if (innerTittledPane != null && innerTittledPane.getContent() != null) {
+                      collectionAccordion.getPanes().add(innerTittledPane);
+                    }
+                  });
+                }
               }
+              Platform.runLater(() -> collectionScrollPane.setContent(collectionAccordion));
+              accordion.getPanes().add(new TitledPane(entityName, collectionScrollPane));
             }
-            accordion.getPanes().add(new TitledPane(entityName, collectionScrollPane));
             break;
 
           case YAHOO_FIELD_DATE:
@@ -316,7 +320,7 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
 
   private Node getChart(HistoricalData historicalDatum) {
     WebView webView = new WebView();
-    Platform.runLater(()-> {
+    Platform.runLater(() -> {
       final Axis axis = new Axis();
       final double SCALE_DELTA = 1.1;
       webView.setOnScroll(event -> {
