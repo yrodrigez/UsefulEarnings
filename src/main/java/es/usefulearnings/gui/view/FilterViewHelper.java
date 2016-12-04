@@ -37,7 +37,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
   }
 
   @Override
-  public Node getViewForEntity(
+  public Node getView(
     Filter filter
   ) throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
 
@@ -76,7 +76,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
     Scene scene = new Scene(borderPane);
     new Thread(() -> {
       try {
-        Node view = FilterViewHelper.getInstance().getViewForEntity(filter);
+        Node view = FilterViewHelper.getInstance().getView(filter);
         Platform.runLater(() -> {
           ScrollPane scrollPane = new ScrollPane(view);
           scrollPane.setStyle("-fx-background-color: #ffffff;");
@@ -187,7 +187,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
 
             default:
               throw new IllegalArgumentException(
-                "FilterViewHelper::getViewForEntity -> no case defined for " + parameterType.name()
+                "FilterViewHelper::getView -> no case defined for " + parameterType.name()
               );
           }
         }

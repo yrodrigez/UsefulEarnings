@@ -10,6 +10,6 @@ import java.lang.reflect.InvocationTargetException;
  * @author Yago Rodríguez
  */
 interface ViewHelper<E>  {
- Node getViewForEntity(E entity) throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException;
- void showOnWindow(E entity);
+ Node getView(E entity) throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException;
+ void showOnWindow(E entity) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException;
 }

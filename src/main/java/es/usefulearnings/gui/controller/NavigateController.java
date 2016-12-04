@@ -20,7 +20,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -143,7 +142,7 @@ public class NavigateController implements Initializable {
     String symbol
   ) throws IllegalAccessException, IntrospectionException, InvocationTargetException, InstantiationException {
     CompanyViewHelper companyViewHelper = CompanyViewHelper.getInstance();
-    return companyViewHelper.getViewForEntity(Core.getInstance().getCompanyFromSymbol(symbol));
+    return companyViewHelper.getView(Core.getInstance().getCompanyFromSymbol(symbol));
   }
 
   /**

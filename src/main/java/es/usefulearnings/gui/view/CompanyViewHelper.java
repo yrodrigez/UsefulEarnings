@@ -30,7 +30,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -62,13 +61,13 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
 
   @Override
   public void showOnWindow(Company company) {
-    Stage dialogStage = new Stage();
+    final Stage dialogStage = new Stage();
     dialogStage.setTitle(company.getSymbol());
     dialogStage.initModality(Modality.WINDOW_MODAL);
     Scene scene = null;
     try {
       BorderPane borderPane = new BorderPane();
-      borderPane.setCenter(CompanyViewHelper.getInstance().getViewForEntity(company));
+      borderPane.setCenter(CompanyViewHelper.getInstance().getView(company));
       borderPane.setPrefSize(800, 600);
       scene = new Scene(borderPane);
     } catch (IntrospectionException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
@@ -77,11 +76,11 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
     }
     dialogStage.setScene(scene);
     // Show the dialog and wait until the user closes it
-    dialogStage.showAndWait();
+    dialogStage.show();
   }
 
   @Override
-  public Node getViewForEntity(Company object)
+  public Node getView(Company object)
     throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
     return getViewForObject(object);
   }
@@ -93,10 +92,10 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
 
   private Node getViewForObject(Object object)
     throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
-    GridPane gridPane = new GridPane();
+    final GridPane gridPane = new GridPane();
     gridPane.setHgap(20);
     gridPane.setPadding(new Insets(5, 5, 5, 5));
-    Accordion accordion = new Accordion();
+    final Accordion accordion = new Accordion();
     EntityParameterBeanWalker worker = new EntityParameterBeanWalker(
       (field, annotation, method, position) -> {
         EntityParameter parameterDescriptor = ((EntityParameter) annotation);
@@ -116,7 +115,7 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
                     e.printStackTrace();
                   }
                   if (pane != null) {
-                    TitledPane titledPane = new TitledPane(entityName, pane);
+                    final TitledPane titledPane = new TitledPane(entityName, pane);
                     titledPane.setCache(true);
                     titledPane.setCacheHint(CacheHint.SPEED);
                     Platform.runLater(() -> accordion.getPanes().add(titledPane));
@@ -129,8 +128,8 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
           case INNER_CLASS_COLLECTION:
             Collection<Object> innerClassCollection = (Collection<Object>) method.invoke(object);
             if (innerClassCollection != null && innerClassCollection.size() > 0) {
-              Accordion collectionAccordion = new Accordion();
-              ScrollPane collectionScrollPane = new ScrollPane(new Label("Loading..."));
+              Accordion accordionForCollection = new Accordion();
+              ScrollPane scrollPaneForAccordion = new ScrollPane(new Label("Loading..."));
               for (Object objectLink : innerClassCollection) {
                 if (objectLink != null) {
                   TitledPane innerTittledPane = new TitledPane();
@@ -141,14 +140,16 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
                     } catch (IntrospectionException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
                       e.printStackTrace();
                     }
-                    if (innerTittledPane != null && innerTittledPane.getContent() != null) {
-                      collectionAccordion.getPanes().add(innerTittledPane);
+                    if (innerTittledPane.getContent() != null) {
+                      synchronized (accordionForCollection) {
+                        accordionForCollection.getPanes().add(innerTittledPane);
+                      }
                     }
                   });
                 }
               }
-              Platform.runLater(() -> collectionScrollPane.setContent(collectionAccordion));
-              accordion.getPanes().add(new TitledPane(entityName, collectionScrollPane));
+              Platform.runLater(() -> scrollPaneForAccordion.setContent(accordionForCollection));
+              accordion.getPanes().add(new TitledPane(entityName, scrollPaneForAccordion));
             }
             break;
 
@@ -226,13 +227,13 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
             VBox vBox = new VBox(new OverWatchLoader());
             vBox.setAlignment(Pos.CENTER);
             if (historicalDatum != null && !historicalDatum.isEmpty()) {
-              Node chart = getChart(((Company) object).getHistoricalData());
+              Node chart = ChartHelper.getInstance().getView(((Company) object));
               vBox.getChildren().clear();
               Button erase = new Button("retry");
-              erase.setOnAction(event -> setReloadHistoricalMiniView((Company) object, vBox));
+              erase.setOnAction(event -> reloadHistoricalView((Company) object, vBox));
               vBox.getChildren().addAll(erase, chart);
             } else {
-              setReloadHistoricalMiniView((Company) object, vBox);
+              reloadHistoricalView((Company) object, vBox);
             }
             TitledPane titledPaneForChart = new TitledPane(entityName, vBox);
             accordion.getPanes().add(titledPaneForChart);
@@ -247,45 +248,42 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
     return new VBox(accordion, gridPane);
   }
 
-  private void setReloadHistoricalMiniView(Company company, VBox vBox) {
+  private void reloadHistoricalView(Company company, VBox vBox) {
     Label label = new Label("No historical data was found or loaded...");
-    Button reloadHistoricalData = new Button("Retry");
-    DatePicker startDate = new DatePicker(LocalDate.ofEpochDay(LocalDate.now().toEpochDay() - 365));
-    DatePicker endDate = new DatePicker(LocalDate.now());
-    ComboBox<YahooFinanceAPI.Range> ranges = new ComboBox<>();
+    final DatePicker startDate = new DatePicker(LocalDate.ofEpochDay(LocalDate.now().toEpochDay() - 365));
+    final DatePicker endDate = new DatePicker(LocalDate.now());
+    final ComboBox<YahooFinanceAPI.Range> ranges = new ComboBox<>();
     ranges.setItems(FXCollections.observableArrayList(YahooFinanceAPI.Range.values()));
     ranges.setValue(ranges.getItems().get(0));
-    reloadHistoricalData.setOnAction(getReloadHistoricalEventHandler(company, vBox, startDate, endDate, ranges));
-    vBox.getChildren().clear();
-    HBox dates = new HBox(startDate, endDate);
+    final Button showOnWindow = new Button("Show on window");
+    showOnWindow.setOnAction(event -> Core.getInstance().runLater(()->{
+      final HistoricalDataPlugin plugin = new HistoricalDataPlugin(
+          startDate.getValue().toEpochDay() * 86400L,
+          endDate.getValue().toEpochDay() * 86400L,
+          ranges.getValue()
+        );
+      try {
+        plugin.addInfo(company);
+        Platform.runLater(() -> {
+          try {
+            Node chart = ChartHelper.getInstance().getView(company);
+            vBox.getChildren().clear();
+            vBox.getChildren().add(chart);
+            ChartHelper.getInstance().showOnWindow(company);
+          } catch (IntrospectionException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+          }
+        });
+      } catch (PluginException e){e.printStackTrace();}
+    }));
+    final HBox dates = new HBox(startDate, endDate);
     dates.setAlignment(Pos.CENTER);
-    vBox.getChildren().addAll(label, dates, ranges, reloadHistoricalData);
-  }
-
-  private String getWebCandleChart(HistoricalData historicalData) {
-    // ['Mon', 20, 28, 38, 45]
-    StringBuilder data = new StringBuilder();
-    historicalData.getHistoricalDatum().forEach(historical -> {
-      data.append('[');
-      data.append('\'');
-      data.append(historical.getDate());
-      data.append('\'');
-      data.append(',');
-      data.append(historical.getHigh());
-      data.append(',');
-      data.append(historical.getOpen());
-      data.append(',');
-      data.append(historical.getClose());
-      data.append(',');
-      data.append(historical.getLow());
-      data.append("],");
-    });
-
-    int size = historicalData.getDate().size() > 200 ? 8192 : 1900;
-    System.out.println(size);
-    return "<html><head><script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script><script type=\"text/javascript\">google.charts.load('current', {'packages':['corechart']});google.charts.setOnLoadCallback(drawChart);function drawChart() {var data = google.visualization.arrayToDataTable(["
-      + data.substring(0, data.length() - 1) +
-      "], true);var options = {legend:'none', candlestick: {fallingColor: { strokeWidth: 0, fill: '#ff0000' },risingColor: { strokeWidth: 0, fill: '#00ff00' }}};var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div'));chart.draw(data, options);}</script></head><body><div id=\"chart_div\" style=\"width: " + size + "px; height: 700px;\"></div></body></html>";
+    final Button reloadChartButton = new Button("Retry");
+    reloadChartButton.setOnAction(getReloadHistoricalEventHandler(company, vBox, startDate, endDate, ranges));
+    final HBox buttons = new HBox(showOnWindow, reloadChartButton);
+    buttons.setAlignment(Pos.CENTER);
+    vBox.getChildren().clear();
+    vBox.getChildren().addAll(label, dates, ranges, buttons);
   }
 
   private EventHandler<ActionEvent> getReloadHistoricalEventHandler(
@@ -296,8 +294,11 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
     ComboBox<YahooFinanceAPI.Range> ranges
   ) {
     return event -> {
-      new Thread(() -> {
-        HistoricalDataPlugin plugin = new HistoricalDataPlugin(
+      vBox.getChildren().clear();
+      vBox.getChildren().add(new OverWatchLoader(javafx.scene.paint.Color.web("#400090")));
+
+      Core.getInstance().runLater(() -> {
+        final HistoricalDataPlugin plugin = new HistoricalDataPlugin(
           startDate.getValue().toEpochDay() * 86400L,
           endDate.getValue().toEpochDay() * 86400L,
           ranges.getValue()
@@ -305,57 +306,21 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
         try {
           plugin.addInfo(company);
           Platform.runLater(() -> {
-            Node chart = getChart(company.getHistoricalData());
-            vBox.getChildren().clear();
-            vBox.getChildren().add(chart);
+            try {
+              Node chart = ChartHelper.getInstance().getView(company);
+              vBox.getChildren().clear();
+              vBox.getChildren().add(chart);
+            } catch (IntrospectionException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+              e.printStackTrace();
+              vBox.getChildren().clear();
+              vBox.getChildren().addAll(new Label("Error loading historical data..."));
+            }
+
           });
         } catch (PluginException e) {
           e.printStackTrace();
         }
-      }).start();
-      vBox.getChildren().clear();
-      vBox.getChildren().add(new OverWatchLoader(javafx.scene.paint.Color.web("#400090")));
+      });
     };
-  }
-
-  private Node getChart(HistoricalData historicalDatum) {
-    WebView webView = new WebView();
-    Platform.runLater(() -> {
-      final Axis axis = new Axis();
-      final double SCALE_DELTA = 1.1;
-      webView.setOnScroll(event -> {
-        event.consume();
-        if (event.getDeltaY() == 0) {
-          return;
-        }
-
-        double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
-
-        webView.setZoom(webView.getZoom() * scaleFactor);
-        webView.setZoom(webView.getZoom() * scaleFactor);
-      });
-
-      webView.setOnMousePressed(event -> {
-        if (event.getClickCount() == 2) {
-          webView.setZoom(0);
-          webView.setZoom(0);
-        } else {
-          axis.orgSceneX = event.getSceneX();
-          axis.orgSceneY = event.getSceneY();
-
-          axis.orgTranslateX = webView.getTranslateX();
-          axis.orgTranslateY = webView.getTranslateY();
-        }
-      });
-
-
-      webView.getEngine().loadContent(getWebCandleChart(historicalDatum));
-    });
-    return webView;
-  }
-
-  private class Axis {
-    double orgSceneX, orgSceneY;
-    double orgTranslateX, orgTranslateY;
   }
 }
