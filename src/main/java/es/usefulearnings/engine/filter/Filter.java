@@ -16,17 +16,17 @@ import java.util.Set;
  */
 public abstract class Filter<E> implements Serializable {
   protected Map<Field, RestrictionValue> _parameters;
-  protected Set<E> _filteredEntities;
-  protected Set<E> _toKeep;
-  protected Set<E> _toDelete;
+  protected Set<E> _allEntities;
+  protected Set<E> _selected;
+  protected Set<E> _toBeRemoved;
 
   private long _filteredDate;
 
   public Filter(Set<E> entities, Map<Field, RestrictionValue> parameters) {
-    _filteredEntities = entities;
+    _allEntities = entities;
     _parameters = parameters;
-    _toKeep = new LinkedHashSet<>();
-    _toDelete= new LinkedHashSet<>();
+    _selected = new LinkedHashSet<>();
+    _toBeRemoved = new LinkedHashSet<>();
 
     _filteredDate = new Date().getTime() / 1000L;
   }
@@ -34,20 +34,22 @@ public abstract class Filter<E> implements Serializable {
 
   protected abstract void filter() throws IllegalAccessException, IntrospectionException, InvocationTargetException;
 
-  public Set<E> getEntities() {
-    return _filteredEntities;
+  public Set<E> getSelected() {
+    // this is going to be & and | !
+    _selected.removeAll(_toBeRemoved);
+    return _selected;
   }
 
   public long getFilteredDate() {
     return _filteredDate;
   }
 
-  protected void removeEntity(E entity) {
-    _toDelete.add(entity);
+  protected void select(E entity){
+    _selected.add(entity);
   }
 
-  protected void keepEntity(E entity){
-    _toKeep.add(entity);
+  protected void remove(E entity){
+    _toBeRemoved.add(entity);
   }
 
   private boolean evaluateNumber (Number number, BasicOperator operator, Number toEval){
@@ -98,7 +100,8 @@ public abstract class Filter<E> implements Serializable {
 
   @Override
   public String toString(){
-      return new SimpleDateFormat("hh:mm:ss").format(new Date(_filteredDate * 1000L))
-      + " companies found: " + _filteredEntities.size();
+      return "Found companies at "
+        + new SimpleDateFormat("hh:mm:ss").format(new Date(_filteredDate * 1000L)) +
+        ": " + getSelected().size();
   }
 }

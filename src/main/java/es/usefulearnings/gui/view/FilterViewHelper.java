@@ -46,12 +46,12 @@ public class FilterViewHelper implements ViewHelper<Filter> {
     tableView.setStyle("-fx-background-color: white");
 
     ArrayList<Map<String, String>> valuesArray = new ArrayList<>();
-    for(Object object : filter.getEntities()) {
+    for(Object object : filter.getSelected()) {
       Map<String, String> values = getValuesAsStringsForObject(object);
       valuesArray.add(values);
     }
 
-    for(Object object : filter.getEntities()){
+    for(Object object : filter.getSelected()){
       List<String> headers = getHeaders(object);
       for (String header : headers){
         TableColumn<Map<String, String>, String> tableColumn = new TableColumn<>(header);

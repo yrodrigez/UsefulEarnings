@@ -108,10 +108,10 @@ public class FilterController implements Initializable {
 
             CSVWriter writer = new CSVWriter(
               ResourcesHelper.getInstance().getExportedDataPath() + File.separator + "exported at " + dateString,
-              new ArrayList<>(filterListCell.getItem().getEntities())
+              new ArrayList<>(filterListCell.getItem().getSelected())
             );
             writer.save();
-            AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Success", "File exported succesfully at (" + dateString + ")");
+            AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Success", "File exported successfully at (" + dateString + ")");
           } catch (InvocationTargetException | NoStocksFoundException | IllegalAccessException | InstantiationException | IntrospectionException | IOException e) {
             e.printStackTrace();
           }
@@ -199,7 +199,7 @@ public class FilterController implements Initializable {
       Label label = new Label("Creating tasks");
       Platform.runLater(() -> vbox.getChildren().add(label));
 
-      final int totalCompanies = filter.getEntities().size();
+      final int totalCompanies = filter.getSelected().size();
       final int MAX_THREADS = Runtime.getRuntime().availableProcessors() * 2 < totalCompanies ?
         Runtime.getRuntime().availableProcessors() * 2 : totalCompanies;
 
@@ -234,7 +234,7 @@ public class FilterController implements Initializable {
         tasks.add(
           new HistoricalDataTask(
             plugins,
-            new LinkedList<>(filter.getEntities()).subList(from, to),
+            new LinkedList<>(filter.getSelected()).subList(from, to),
             tasks,
             dialogStage,
             folderToSave

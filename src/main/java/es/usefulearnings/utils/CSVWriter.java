@@ -106,8 +106,8 @@ public class CSVWriter <E> {
           case RAW_NUMERIC:
             Object o1 = method.invoke(entity);
             if(o1 != null) {
-              double number = (double) o1;
-              line.add(Double.toString(number));
+              Number number = (Number) o1;
+              line.add(Double.toString(number.doubleValue()));
             } else {
               line.add("");
             }
