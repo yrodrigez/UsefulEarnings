@@ -113,6 +113,16 @@ public class CSVWriter <E> {
             }
             break;
 
+          case UNIX_TIME_STAMP:
+            Object unixObject = method.invoke(entity);
+            if(unixObject != null) {
+              Number number = (Number) unixObject;
+              line.add(Long.toString(number.longValue()));
+            } else {
+              line.add("");
+            }
+          break;
+
           case YAHOO_LONG_FORMAT_FIELD:
             YahooLongFormatField yahooLongFormatField = (YahooLongFormatField)method.invoke(entity);
             if(yahooLongFormatField != null)
@@ -183,6 +193,7 @@ public class CSVWriter <E> {
           case RAW_DATE:
           case RAW_DATE_COLLECTION:
           case RAW_BOOLEAN:
+          case UNIX_TIME_STAMP:
             ret.add(header);
             break;
 

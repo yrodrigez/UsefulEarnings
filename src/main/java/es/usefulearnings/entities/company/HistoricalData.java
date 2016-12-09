@@ -7,6 +7,7 @@ import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -18,7 +19,7 @@ public class HistoricalData extends CompanyData implements Serializable {
     @EntityParameter(name = "Symbol", parameterType = ParameterType.RAW_STRING)
     private String symbol;
 
-    @EntityParameter(name = "Dates", parameterType = ParameterType.RAW_STRING)
+    @EntityParameter(name = "Dates", parameterType = ParameterType.UNIX_TIME_STAMP)
     private String date;
 
     @EntityParameter(name = "Open", parameterType = ParameterType.RAW_NUMERIC)
@@ -83,8 +84,16 @@ public class HistoricalData extends CompanyData implements Serializable {
       return symbol;
     }
 
-    public String getDate() {
-      return date;
+    public long getDate() {
+      long ret = 0;
+
+      try {
+        ret = new SimpleDateFormat("yyy-MM-dd").parse(date).getTime() / 1000;
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+
+      return ret;
     }
 
     public Double getOpen() {

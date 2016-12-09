@@ -73,7 +73,14 @@ public enum ParameterType {
    * **********************************************************************
    */
   RAW_DATE,
-  OPTION_LINK_COLLECTION, YAHOO_FIELD_DATE_COLLECTION, HISTORICAL_DATA, NUMBER_COLLECTION, RAW_DATE_COLLECTION, /**
+
+  OPTION_LINK_COLLECTION,
+  YAHOO_FIELD_DATE_COLLECTION,
+  HISTORICAL_DATA,
+  NUMBER_COLLECTION,
+  RAW_DATE_COLLECTION,
+  UNIX_TIME_STAMP,
+  /**
    * YahooField to be converted to an URL.
    */
   URL
