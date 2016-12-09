@@ -20,7 +20,7 @@ public class OptionLink implements Serializable {
   private String symbol;
 
   @JsonProperty("strike")
-  @EntityParameter(name = "Strike", parameterType = ParameterType.RAW_NUMERIC)
+  @EntityParameter(name = "Strike", parameterType = ParameterType.RAW_DOUBLE)
   private double strike;
 
   @JsonProperty("currency")
@@ -28,27 +28,27 @@ public class OptionLink implements Serializable {
   private String currency;
 
   @JsonProperty("lastPrice")
-  @EntityParameter(name = "Last price", parameterType = ParameterType.RAW_NUMERIC)
+  @EntityParameter(name = "Last price", parameterType = ParameterType.RAW_DOUBLE)
   private double lastPrice;
 
   @JsonProperty("change")
-  @EntityParameter(name = "Change", parameterType = ParameterType.RAW_NUMERIC)
+  @EntityParameter(name = "Change", parameterType = ParameterType.RAW_DOUBLE)
   private double change;
 
   @JsonProperty("volume")
-  @EntityParameter(name = "Volume", parameterType = ParameterType.RAW_NUMERIC)
+  @EntityParameter(name = "Volume", parameterType = ParameterType.RAW_DOUBLE)
   private double volume;
 
   @JsonProperty("openInterest")
-  @EntityParameter(name = "Open interest", parameterType = ParameterType.RAW_NUMERIC)
+  @EntityParameter(name = "Open interest", parameterType = ParameterType.RAW_DOUBLE)
   private double openInterest;
 
   @JsonProperty("bid")
-  @EntityParameter(name = "Bid", parameterType = ParameterType.RAW_NUMERIC)
+  @EntityParameter(name = "Bid", parameterType = ParameterType.RAW_DOUBLE)
   private double bid;
 
   @JsonProperty("ask")
-  @EntityParameter(name = "Ask", parameterType = ParameterType.RAW_NUMERIC)
+  @EntityParameter(name = "Ask", parameterType = ParameterType.RAW_DOUBLE)
   private double ask;
 
   @JsonProperty("contractSize")
@@ -64,7 +64,7 @@ public class OptionLink implements Serializable {
   private long lastTradeDate;
 
   @JsonProperty("impliedVolatility")
-  @EntityParameter(name = "Implied volatility", parameterType = ParameterType.RAW_NUMERIC)
+  @EntityParameter(name = "Implied volatility", parameterType = ParameterType.RAW_DOUBLE)
   private double impliedVolatility;
 
   public OptionLink() {

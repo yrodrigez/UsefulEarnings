@@ -22,25 +22,25 @@ public class HistoricalData extends CompanyData implements Serializable {
     @EntityParameter(name = "Dates", parameterType = ParameterType.UNIX_TIME_STAMP)
     private String date;
 
-    @EntityParameter(name = "Open", parameterType = ParameterType.RAW_NUMERIC)
+    @EntityParameter(name = "Open", parameterType = ParameterType.RAW_DOUBLE)
     private double open;
 
-    @EntityParameter(name = "High", parameterType = ParameterType.RAW_NUMERIC)
+    @EntityParameter(name = "High", parameterType = ParameterType.RAW_DOUBLE)
     private double high;
 
-    @EntityParameter(name = "Low", parameterType = ParameterType.RAW_NUMERIC)
+    @EntityParameter(name = "Low", parameterType = ParameterType.RAW_DOUBLE)
     private double low;
 
-    @EntityParameter(name = "Close", parameterType = ParameterType.RAW_NUMERIC)
+    @EntityParameter(name = "Close", parameterType = ParameterType.RAW_DOUBLE)
     private double close;
 
-    @EntityParameter(name = "Volume", parameterType = ParameterType.RAW_NUMERIC)
-    private double volume;
+    @EntityParameter(name = "Volume", parameterType = ParameterType.RAW_LONG)
+    private long volume;
 
-    @EntityParameter(name = "Adj Close", parameterType = ParameterType.RAW_NUMERIC)
+    @EntityParameter(name = "Adj Close", parameterType = ParameterType.RAW_DOUBLE)
     private double adj_close;
 
-    @EntityParameter(name = "Average(Open, high, low, close)", parameterType = ParameterType.RAW_NUMERIC)
+    @EntityParameter(name = "Average(Open, high, low, close)", parameterType = ParameterType.RAW_DOUBLE)
     private double average;
 
     Historical(
@@ -50,7 +50,7 @@ public class HistoricalData extends CompanyData implements Serializable {
       final double high,
       final double low,
       final double close,
-      final double volume,
+      final long volume,
       final double adj_close
     ) {
       this.symbol = symbol;
@@ -112,7 +112,7 @@ public class HistoricalData extends CompanyData implements Serializable {
       return close;
     }
 
-    public Double getVolume() {
+    public Long getVolume() {
       return volume;
     }
 
@@ -153,7 +153,7 @@ public class HistoricalData extends CompanyData implements Serializable {
 
   @JsonProperty("volume")
   @EntityParameter(name = "Volume", parameterType = ParameterType.NUMBER_COLLECTION)
-  private ArrayList<Double> volume;
+  private ArrayList<Long> volume;
 
   @JsonProperty("unadjclose")
   @EntityParameter(name = "Adj Close", parameterType = ParameterType.NUMBER_COLLECTION)
@@ -177,7 +177,7 @@ public class HistoricalData extends CompanyData implements Serializable {
     ArrayList<Double> high,
     ArrayList<Double> low,
     ArrayList<Double> close,
-    ArrayList<Double> volume,
+    ArrayList<Long> volume,
     ArrayList<Double> adj_close
   ) {
     this.symbol = symbol;
@@ -254,11 +254,11 @@ public class HistoricalData extends CompanyData implements Serializable {
     this.close = close;
   }
 
-  public ArrayList<Double> getVolume() {
+  public ArrayList<Long> getVolume() {
     return volume;
   }
 
-  public void setVolume(ArrayList<Double> volume) {
+  public void setVolume(ArrayList<Long> volume) {
     this.volume = volume;
   }
 

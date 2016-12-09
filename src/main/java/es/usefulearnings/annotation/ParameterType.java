@@ -35,7 +35,7 @@ public enum ParameterType {
   /**
    * To be treated as a Java Double type {@link Double}.
    */
-  RAW_NUMERIC,
+  RAW_DOUBLE,
 
   /**
    * to be treated as an Object
@@ -73,13 +73,12 @@ public enum ParameterType {
    * **********************************************************************
    */
   RAW_DATE,
-
-  OPTION_LINK_COLLECTION,
   YAHOO_FIELD_DATE_COLLECTION,
   HISTORICAL_DATA,
   NUMBER_COLLECTION,
   RAW_DATE_COLLECTION,
   UNIX_TIME_STAMP,
+  RAW_LONG,
   /**
    * YahooField to be converted to an URL.
    */

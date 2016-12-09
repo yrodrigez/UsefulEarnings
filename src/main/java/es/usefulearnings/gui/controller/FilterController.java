@@ -215,10 +215,12 @@ public class FilterController implements Initializable {
       } catch (NoStocksFoundException e) {
         e.printStackTrace();
       }
-      int i = 1;
+      int i = 0;
       while ( folderToSave != null && folderToSave.exists()){
-        System.out.printf(folderToSave.getPath());
-        folderToSave = new File(folderToSave.getPath() + "(" + i++ + ")");
+        if( !new File(folderToSave.getPath() + "(" + ++i + ")").exists()) {
+          folderToSave = new File(folderToSave.getPath() + "(" + i + ")");
+        }
+        System.out.println(folderToSave.getPath());
       }
       if(folderToSave != null) folderToSave.mkdirs();
 

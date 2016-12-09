@@ -142,7 +142,7 @@ public class FilterView {
             gridPane.add(datePicker, 2, position);
             break;
 
-          case RAW_NUMERIC:
+          case RAW_DOUBLE:
           case YAHOO_LONG_FORMAT_FIELD:
           case YAHOO_FIELD_NUMERIC:
             TextField numTextField = new TextField();
@@ -190,7 +190,6 @@ public class FilterView {
           case RAW_BOOLEAN:
           case YAHOO_FIELD_COLLECTION:
           case RAW_DATE:
-          case OPTION_LINK_COLLECTION:
           case NUMBER_COLLECTION:
           case RAW_DATE_COLLECTION:
             break;

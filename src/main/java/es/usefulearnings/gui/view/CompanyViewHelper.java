@@ -202,7 +202,7 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
             break;
 
           case RAW_STRING:
-          case RAW_NUMERIC:
+          case RAW_DOUBLE:
             gridPane.add(entityNameLabel, 0, position);
             if (method.invoke(object) != null)
               gridPane.add(new Label(method.invoke(object).toString()), 1, position);

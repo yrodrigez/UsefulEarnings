@@ -125,7 +125,7 @@ public class FilterViewHelper implements ViewHelper<Filter> {
               } else values.put(header, "");
               break;
 
-            case RAW_NUMERIC:
+            case RAW_DOUBLE:
               Object rawNum;
               if ((rawNum = method.invoke(object)) != null) {
                 values.put(header, rawNum.toString());
@@ -176,7 +176,6 @@ public class FilterViewHelper implements ViewHelper<Filter> {
             case HISTORICAL_DATA:
             case CLASS:
             case NUMBER_COLLECTION:
-            case OPTION_LINK_COLLECTION:
             case OPTION_TYPE:
             case RAW_BOOLEAN:
             case RAW_DATE:

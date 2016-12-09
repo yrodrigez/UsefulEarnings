@@ -82,9 +82,9 @@ public class HistoricalDataPlugin implements Plugin<Company> {
 
       _mapper = new ObjectMapper();
       JsonNode volumes = root.findValue("volume");
-      ArrayList<Double> volume = _mapper.readValue(
+      ArrayList<Long> volume = _mapper.readValue(
         volumes.traverse(),
-        new TypeReference<ArrayList<Double>>() {
+        new TypeReference<ArrayList<Long>>() {
         }
       );
 

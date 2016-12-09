@@ -105,7 +105,7 @@ public class CompanyFilter extends Filter<Company> {
                 remove(company);
                 break;
 /*--------------------------------------------------------------------------------------------------------------------*/
-              case RAW_NUMERIC:
+              case RAW_DOUBLE:
                 if (!_parameters.containsKey(field)) break;
                 if (elementValue != null && pd.getReadMethod().invoke(elementValue) != null) {
                   Double number = ((Number) (pd.getReadMethod().invoke(elementValue))).doubleValue();

@@ -103,7 +103,7 @@ public class CSVWriter <E> {
               line.add(rawString);
             break;
 
-          case RAW_NUMERIC:
+          case RAW_DOUBLE:
             Object o1 = method.invoke(entity);
             if(o1 != null) {
               Number number = (Number) o1;
@@ -113,6 +113,7 @@ public class CSVWriter <E> {
             }
             break;
 
+          case RAW_LONG:
           case UNIX_TIME_STAMP:
             Object unixObject = method.invoke(entity);
             if(unixObject != null) {
@@ -184,7 +185,7 @@ public class CSVWriter <E> {
 
           case RAW_STRING:
           case YAHOO_FIELD_NUMERIC:
-          case RAW_NUMERIC:
+          case RAW_DOUBLE:
           case YAHOO_LONG_FORMAT_FIELD:
           case URL:
           case IGNORE:
@@ -194,6 +195,7 @@ public class CSVWriter <E> {
           case RAW_DATE_COLLECTION:
           case RAW_BOOLEAN:
           case UNIX_TIME_STAMP:
+          case RAW_LONG:
             ret.add(header);
             break;
 
