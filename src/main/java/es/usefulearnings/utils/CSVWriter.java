@@ -11,7 +11,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -114,15 +116,24 @@ public class CSVWriter <E> {
             break;
 
           case RAW_LONG:
-          case UNIX_TIME_STAMP:
-            Object unixObject = method.invoke(entity);
-            if(unixObject != null) {
-              Number number = (Number) unixObject;
+            Object rawLong = method.invoke(entity);
+            if(rawLong != null) {
+              Number number = (Number) rawLong;
               line.add(Long.toString(number.longValue()));
             } else {
               line.add("");
             }
           break;
+
+          case UNIX_TIME_STAMP:
+            Object unixTimeStamp = method.invoke(entity);
+            if(unixTimeStamp != null) {
+              Number number = (Number) unixTimeStamp;
+              line.add(new SimpleDateFormat("dd/MM/yyyy").format(new Date(number.longValue() * 1000L)));
+            } else {
+              line.add("");
+            }
+            break;
 
           case YAHOO_LONG_FORMAT_FIELD:
             YahooLongFormatField yahooLongFormatField = (YahooLongFormatField)method.invoke(entity);

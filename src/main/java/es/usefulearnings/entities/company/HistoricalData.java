@@ -7,8 +7,6 @@ import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -20,7 +18,7 @@ public class HistoricalData extends CompanyData implements Serializable {
     private String symbol;
 
     @EntityParameter(name = "Dates", parameterType = ParameterType.UNIX_TIME_STAMP)
-    private String date;
+    private long date;
 
     @EntityParameter(name = "Open", parameterType = ParameterType.RAW_DOUBLE)
     private double open;
@@ -45,7 +43,7 @@ public class HistoricalData extends CompanyData implements Serializable {
 
     Historical(
       final String symbol,
-      final String date,
+      final long date,
       final double open,
       final double high,
       final double low,
@@ -85,15 +83,7 @@ public class HistoricalData extends CompanyData implements Serializable {
     }
 
     public long getDate() {
-      long ret = 0;
-
-      try {
-        ret = new SimpleDateFormat("yyy-MM-dd").parse(date).getTime() / 1000;
-      } catch (ParseException e) {
-        e.printStackTrace();
-      }
-
-      return ret;
+      return date;
     }
 
     public Double getOpen() {
@@ -194,7 +184,7 @@ public class HistoricalData extends CompanyData implements Serializable {
     for(int i = 0; i< date.size() ; i++){
       historicalDatum.add(new Historical(
         symbol,
-        new SimpleDateFormat("yyyy-MM-dd").format(date.get(i)*1000),
+        date.get(i),
         open.get(i),
         high.get(i),
         low.get(i),

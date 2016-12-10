@@ -10,7 +10,7 @@ class ThreadPool {
 
   private static ThreadPool _instance = new ThreadPool();
 
-  static ThreadPool get_instance(){
+  static ThreadPool getInstance(){
     return _instance;
   }
 

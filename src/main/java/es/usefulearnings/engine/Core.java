@@ -49,7 +49,7 @@ public class Core {
     // companiesPlugins.add(new IncomeStatmentsPlugin());
     // companiesPlugins.add(new CashFlowStatementsPlugin());
 
-    _threadPool = ThreadPool.get_instance();
+    _threadPool = ThreadPool.getInstance();
     setStocksFromFolder();
 
     _appliedFilters = new LinkedList<>();

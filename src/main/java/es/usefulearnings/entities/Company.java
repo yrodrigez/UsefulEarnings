@@ -133,8 +133,9 @@ public class Company implements Serializable, Entity, Savable {
   }
 */
   public void setSummaryDetail(SummaryDetail summaryDetail) {
+    if(summaryDetail != null)
+      this.summaryDetail.set();
     this.summaryDetail = summaryDetail;
-    this.summaryDetail.set();
   }
 
   public SummaryDetail getSummaryDetail() {
