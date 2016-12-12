@@ -138,10 +138,10 @@ public class YahooFinanceAPI {
    * @return link to the company's options
    * @throws IllegalArgumentException if companySymbol is empty
    */
-  public URL getYahooCompanysOptionChainLink(String companySymbol) throws IllegalArgumentException, MalformedURLException {
+  public URL getYahooCompanysOptionChainLink(String companySymbol) throws IllegalArgumentException, MalformedURLException, UnsupportedEncodingException {
     if(companySymbol.isEmpty()) throw new IllegalArgumentException("Company's symbol can't be empty");
 
-    return new URL("https://query2.finance.yahoo.com/v7/finance/options/" + companySymbol);
+    return new URL("https://query2.finance.yahoo.com/v7/finance/options/" + URLEncoder.encode(companySymbol, "UTF-8"));
   }
 
   /**
@@ -151,7 +151,7 @@ public class YahooFinanceAPI {
    * @throws IllegalArgumentException if company symbol is empty or date is not a valid unix timestamp
    * @return link to the company's options with the specified date
    */
-  public URL getYahooCompanysOptionChainLink(String companySymbol, long date) throws IllegalArgumentException, MalformedURLException {
+  public URL getYahooCompanysOptionChainLink(String companySymbol, long date) throws IllegalArgumentException, MalformedURLException, UnsupportedEncodingException {
     if (date > Integer.MAX_VALUE) throw new IllegalArgumentException("That's not a valid raw date");
 
     return new URL(getYahooCompanysOptionChainLink(companySymbol) + DATE_QUERY + date);

@@ -172,6 +172,8 @@ public class NavigateController implements Initializable {
             Platform.runLater(() -> cTab.setContent(companyData));
           } catch (IllegalArgumentException | IllegalAccessException | IntrospectionException | InvocationTargetException | InstantiationException e) {
             if (e instanceof IllegalArgumentException) {
+              ((IllegalArgumentException) e).printStackTrace();
+              Core.getInstance().getAllCompanies().forEach((s, company) -> System.out.println(s));
               Platform.runLater(() -> cTab.setContent(new Pane(new Label("No data found for this company"))));
           } else {
               Platform.runLater(() -> AlertHelper.showExceptionAlert(e));

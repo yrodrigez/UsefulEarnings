@@ -168,7 +168,7 @@ public class Company implements Serializable, Entity, Savable {
   public void setOptionChain(OptionChain optionChain) {
     if (optionChain.getCalls().size() > 0) {
       optionChain.getCalls().forEach(optionLink -> {
-        if (!optionLink.getSymbol().substring(0, this.symbol.length()).equals(this.symbol))
+        if (!optionLink.getSymbol().substring(0, this.symbol.replace("^", "").length()).equals(this.symbol.replace("^", "")))
           throw new IllegalArgumentException("Contract " + optionLink.getSymbol() + " does not belong to " + this.symbol);
       });
 
@@ -176,7 +176,7 @@ public class Company implements Serializable, Entity, Savable {
 
     if (optionChain.getPuts().size() > 0) {
       optionChain.getPuts().forEach(optionLink -> {
-        if (!optionLink.getSymbol().substring(0, this.symbol.length()).equals(this.symbol))
+        if (!optionLink.getSymbol().substring(0, this.symbol.replace("^", "").length()).equals(this.symbol.replace("^", "")))
           throw new IllegalArgumentException("Contract " + optionLink.getSymbol() + " does not belong to " + this.symbol);
       });
     }
@@ -199,8 +199,13 @@ public class Company implements Serializable, Entity, Savable {
 
   @Override
   public boolean isEmpty() {
-    return !(profile.isSet() || calendarEvents.isSet() || financialData.isSet() || defaultKeyStatistics.isSet());
-      //|| cashFlowStatements.isEmpty() || incomeStatements.isEmpty());
+    return !(
+      profile.isSet()
+      || calendarEvents.isSet()
+      || financialData.isSet()
+      || defaultKeyStatistics.isSet()
+      || optionChain.isSet()
+    );
   }
 
   @Override

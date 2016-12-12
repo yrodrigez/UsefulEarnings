@@ -62,12 +62,12 @@ public class DownloadProcess extends Process implements Runnable {
             plugin.addInfo(entity);
           } catch (PluginException e) {
             if (e.getCause().getClass().getName().startsWith("java.net")) {
-              System.err.println("java.net exception: "+e.getCause().getClass()+", message: "+e.getCause().getMessage());
+              System.err.println("java.net exception: " + e.getCause().getClass() + ", message: " + e.getCause().getMessage());
               throw e;
             }
           }
         }// end foreach plugin
-        if(!entity.isEmpty()){
+        if (!entity.isEmpty()) {
           emptyEntities.remove(entity);
         }
         updateProgress(++workDone, remainingWork);
@@ -104,6 +104,7 @@ public class DownloadProcess extends Process implements Runnable {
   public Collection<Entity> getEntities() {
     return entities;
   }
+
   public List<Entity> getEmptyEntities() {
     return emptyEntities;
   }
