@@ -267,7 +267,13 @@ public class FilterController implements Initializable {
     private ProcessHandler handler;
     private Node _skin;
 
-    HistoricalDataTask(ArrayList<Plugin> plugins, List<Entity> entities, Collection<HistoricalDataTask> tasks, Stage dialogStage, File folderToSave) {
+    HistoricalDataTask(
+      ArrayList<Plugin> plugins,
+      List<Entity> entities,
+      Collection<HistoricalDataTask> tasks,
+      Stage dialogStage,
+      File folderToSave
+    ) {
       handler = new ProcessHandler() {
         @Override
         public void updateProgress(int workDone, int remaining) {
@@ -304,17 +310,35 @@ public class FilterController implements Initializable {
 
               HistoricalDataTask.this.updateMessage("Exporting data from " + ((Company) entity).getSymbol());
               ArrayList<HistoricalData.Historical> historicalData = ((Company) entity).getHistoricalData().getHistoricalDatum();
-              if(historicalData != null && !historicalData.isEmpty())
-                new CSVWriter(path, historicalData).save();
+              if(historicalData != null && !historicalData.isEmpty()) {
+                /**
+                 *  coupling for Fran
+                 */
+                ArrayList<HistoricalData.Historical> historicalsAux = new ArrayList<>();
+                for (int i = historicalData.size()-1, h = 0; i > 0  ; i--, h++){
+                  if ( h >= 5 ) h = 0;
+                  if ( h == 0 ) {
+                    // System.err.println( historicalData.size() + " : " + i );
+
+                    HistoricalData.Historical historical = historicalData.get( i );
+                    if ( historical != null ) historicalsAux.add( historical );
+                  }
+                }
+                Collections.reverse( historicalsAux );
+
+                /*if(historicalsAux.isEmpty()) System.err.println("Historical empty: ");
+                else historicalsAux.forEach(historical -> {
+                  if(historical.getSymbol().equals("AAPL"))
+                  System.err.println(historical.toString());
+                });*/
+
+                new CSVWriter(path, historicalsAux).save();
+              }
 
               HistoricalDataTask.this.updateMessage("Finished the exportation");
 
             } catch (
-                InvocationTargetException
-                | IntrospectionException
-                | IllegalAccessException
-                | InstantiationException
-                | IOException
+               Exception
                 exception
               ) {
               exception.printStackTrace();
@@ -335,7 +359,7 @@ public class FilterController implements Initializable {
                   .text("Historical data download is completed an successfully exported at your folder")
                   .graphic(new ImageView(new Image(Main.class.getResourceAsStream("icons/ok-notification.png"), 48d, 48d, false, true)))
                   .position(Pos.BOTTOM_RIGHT)
-                  .show();
+                .show();
                 dialogStage.close();
               });
             }

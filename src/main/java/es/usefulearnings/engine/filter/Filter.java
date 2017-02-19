@@ -52,7 +52,11 @@ public abstract class Filter<E> implements Serializable {
     _toBeRemoved.add(entity);
   }
 
-  private boolean evaluateNumber (Number number, BasicOperator operator, Number toEval){
+  private boolean evaluateNumber (
+    Number number,
+    BasicOperator operator,
+    Number toEval
+  ) {
     switch (operator) {
       case EQ:
         return number.doubleValue() == toEval.doubleValue();
