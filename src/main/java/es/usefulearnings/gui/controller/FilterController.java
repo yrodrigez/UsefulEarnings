@@ -300,8 +300,7 @@ public class FilterController implements Initializable {
         @SuppressWarnings("unchecked")
         public void onSuccess() {
           updateMessage("Exporting to csv");
-          entities.forEach(entity ->
-          {
+          entities.forEach(entity -> {
             try {
               String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
 
@@ -311,26 +310,22 @@ public class FilterController implements Initializable {
               HistoricalDataTask.this.updateMessage("Exporting data from " + ((Company) entity).getSymbol());
               ArrayList<HistoricalData.Historical> historicalData = ((Company) entity).getHistoricalData().getHistoricalDatum();
               if(historicalData != null && !historicalData.isEmpty()) {
+
                 /**
                  *  coupling for Fran
                  */
                 ArrayList<HistoricalData.Historical> historicalsAux = new ArrayList<>();
                 for (int i = historicalData.size()-1, h = 0; i > 0  ; i--, h++){
-                  if ( h >= 5 ) h = 0;
-                  if ( h == 0 ) {
+                 // if ( h >= 5 ) h = 0;
+                 // if ( h == 0 ) {
                     // System.err.println( historicalData.size() + " : " + i );
 
                     HistoricalData.Historical historical = historicalData.get( i );
                     if ( historical != null ) historicalsAux.add( historical );
-                  }
+                 // }
                 }
                 Collections.reverse( historicalsAux );
 
-                /*if(historicalsAux.isEmpty()) System.err.println("Historical empty: ");
-                else historicalsAux.forEach(historical -> {
-                  if(historical.getSymbol().equals("AAPL"))
-                  System.err.println(historical.toString());
-                });*/
 
                 new CSVWriter(path, historicalsAux).save();
               }

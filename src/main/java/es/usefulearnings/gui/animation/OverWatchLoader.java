@@ -40,7 +40,7 @@ public class OverWatchLoader extends Control {
   private AnimatedHexagon hexagonChain;
 
   private class Hexagon {
-    double[] points;
+    double [] points;
 
     double center;
 

@@ -102,6 +102,8 @@ public abstract class Filter<E> implements Serializable {
     }
   }
 
+  abstract void save();
+
   @Override
   public String toString(){
       return "Found companies at "

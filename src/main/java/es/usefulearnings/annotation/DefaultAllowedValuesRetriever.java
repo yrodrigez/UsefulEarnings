@@ -11,5 +11,5 @@ public class DefaultAllowedValuesRetriever implements AllowedValuesRetriever {
   @Override
   public List<String> getAllowedValues()  {
     return null;
-  };
+  }
 }

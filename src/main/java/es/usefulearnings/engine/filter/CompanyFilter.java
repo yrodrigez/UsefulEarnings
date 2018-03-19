@@ -34,6 +34,11 @@ public class CompanyFilter extends Filter<Company> {
     }
   }
 
+  @Override
+  void save() {
+    
+  }
+
   @SuppressWarnings("unchecked")
   private <E> void applyFilter(
     Company company,

@@ -42,7 +42,6 @@ public class NewDownloadController implements Initializable {
     refreshList.setOnAction(event -> recoverData());
     historyList.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
       if(event.getButton().equals(MouseButton.SECONDARY)){
-        System.out.println("rgjrigr");
         contextMenu.show(historyList, event.getScreenX(),event.getScreenY());
         event.consume();
       }
