@@ -40,8 +40,10 @@ public class HistoricalDataPlugin implements Plugin<Company> {
           _range
         );
 
-
+      System.out.println(_Url);
       JsonNode root = JSONHTTPClient.getInstance().getJSON(_Url);
+
+
 
       JsonNode timestamp = root.findValue("timestamp");
       ArrayList<Long> dates = _mapper.readValue(
@@ -89,8 +91,8 @@ public class HistoricalDataPlugin implements Plugin<Company> {
       );
 
       _mapper = new ObjectMapper();
-      JsonNode unadjclose = root.findValue("unadjclose");
-      unadjclose = unadjclose.findValue("unadjclose");
+      JsonNode unadjclose = root.findValue("adjclose");
+      unadjclose = unadjclose.findValue("adjclose");
       ArrayList<Double> adjClose = _mapper.readValue(
         unadjclose.traverse(),
         new TypeReference<ArrayList<Double>>() {
@@ -115,9 +117,13 @@ public class HistoricalDataPlugin implements Plugin<Company> {
         adjClose
       );
       company.setHistoricalData(data);
+
+      System.out.println(data.toString());
+
     } catch (MalformedURLException e) {
       throw new RuntimeException(e);
     } catch (Exception anyException) {
+      System.err.println(anyException.getMessage());
       throw new PluginException(company.getSymbol(), this.getClass().getName(), anyException, _Url);
     }
   }
