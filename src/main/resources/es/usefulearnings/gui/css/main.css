@@ -124,3 +124,13 @@
      -fx-stroke: transparent;
      -fx-stroke-width: 0;
 }
+.overallProgressContainer {
+    -fx-pref-width: 100%;
+    -fx-pref-height: 25;
+     -fx-background-color: white;
+}
+ .overallProgressBar {
+     -fx-background-color: #400090;
+    -fx-pref-height: 100%;
+    -fx-pref-width: 25%;
+}

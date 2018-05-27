@@ -4,6 +4,7 @@ import es.usefulearnings.engine.connection.DownloadProcess;
 import es.usefulearnings.engine.connection.ProcessHandler;
 import es.usefulearnings.engine.plugin.Plugin;
 import es.usefulearnings.entities.Entity;
+import es.usefulearnings.gui.controller.DownloadController;
 import es.usefulearnings.gui.view.AlertHelper;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -93,30 +94,15 @@ public class EntityDownloaderTask extends Task<Void> {
     innerVBox.getChildren().add(hBox);
 
     this.setOnSucceeded(onSuccess -> {
-      bar.setStyle("-fx-accent: #00b900;");
-      progressIndicator.setStyle("-fx-accent: #00b900;");
-      bar.progressProperty().unbind();
-      progressIndicator.progressProperty().unbind();
-      onSuccess.consume();
+      DownloadController.setProgressBarStatus(bar, progressIndicator, onSuccess);
     });
 
     this.setOnCancelled(onCancelled -> {
-      bar.setStyle("-fx-accent: yellow;");
-      bar.progressProperty().unbind();
-      bar.setProgress(1);
-      progressIndicator.setStyle("-fx-accent: yellow;");
-      progressIndicator.progressProperty().unbind();
-      progressIndicator.setProgress(1);
-      onCancelled.consume();
+      DownloadController.setProgressBarOnCancelled(bar, progressIndicator, onCancelled);
     });
 
     this.setOnFailed(onFail -> {
-      bar.setStyle("-fx-accent: red;");
-      progressIndicator.setStyle("-fx-accent: red;");
-      bar.progressProperty().unbind();
-      progressIndicator.progressProperty().unbind();
-      bar.setProgress(1);
-      onFail.consume();
+      DownloadController.setProgressBarOnError(bar, progressIndicator, onFail);
     });
     return innerVBox;
   }
