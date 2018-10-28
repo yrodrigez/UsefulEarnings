@@ -30,7 +30,7 @@ public class CSVStockReader {
         String[] splittedLine = line.split(splitBy);
         if(!splittedLine[0].contains("-") && !splittedLine[0].contains(".")) { // YAHOO FINANCE DOES NOT HAVE
                                                                                // INFORMATION FOR THESE COMPANIES
-          String companySymbol = splittedLine[0];
+          final String companySymbol = splittedLine[0].replaceAll("\"", "").trim();
           companies.put(companySymbol, new Company(companySymbol, stockName));
         }
       }
