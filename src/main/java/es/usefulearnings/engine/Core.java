@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Core {
+public final class Core {
 
   private final ArrayList<Plugin> companiesPlugins;
 
@@ -32,7 +32,7 @@ public class Core {
 
   private long _loadedPackageId;
 
-  private ThreadPool _threadPool;
+  private final ThreadPool _threadPool;
 
   private Core() {
     isDataLoaded = false;
@@ -55,7 +55,7 @@ public class Core {
     _appliedFilters = new LinkedList<>();
   }
 
-  public void runLater(Runnable runnable){
+  public void runLater(final Runnable runnable){
     _threadPool.execute(runnable);
   }
 
@@ -67,7 +67,7 @@ public class Core {
     return _threadPool.getPoolSize();
   }
 
-  public Company getCompanyFromSymbol(String symbol) throws IllegalArgumentException {
+  public Company getCompanyFromSymbol(final String symbol) throws IllegalArgumentException {
     for (Stock stock : _stocks){
       if (stock.getCompanies().containsKey(symbol))
         return stock.getCompanies().get(symbol);
@@ -101,7 +101,7 @@ public class Core {
     return this.companiesPlugins;
   }
 
-  public <E> void setEntityData(E entity) {
+  public <E> void setEntityData(final E entity) {
     if (entity != null) {
       if (entity instanceof Company) {
         setCompanyData((Company)entity);
@@ -110,7 +110,7 @@ public class Core {
   }
 
 
-  private void setCompanyData(Company setCompany){
+  private void setCompanyData(final Company setCompany){
     _stocks.stream()
       .filter(
         stock -> stock.getName().equals(setCompany.getStockName())
@@ -120,7 +120,7 @@ public class Core {
       );
   }
 
-  public void removeEntities(Collection<Entity> entitiesToRemove) {
+  public void removeEntities(final Collection<Entity> entitiesToRemove) {
     //TODO: implement remove for options & options chains.
     Collection<Company> companies = new ArrayList<>();
     // Collection<Option> options = new ArrayList<>();
@@ -133,7 +133,7 @@ public class Core {
     removeCompanies(companies);
   }
 
-  public void removeCompanies(Collection<Company> companiesToRemove) {
+  public void removeCompanies(final Collection<Company> companiesToRemove) {
     companiesToRemove.forEach(company ->
       getCompaniesFromStock(company.getStockName()).remove(company.getSymbol())
     );
@@ -143,11 +143,11 @@ public class Core {
     return _loadedPackageId;
   }
 
-  public void setLoadedPackageId(long loadedPackageId) {
+  public void setLoadedPackageId(final long loadedPackageId) {
     _loadedPackageId = loadedPackageId;
   }
 
-  public void setFromEntitiesPackage(EntitiesPackage entitiesPackage) {
+  public void setFromEntitiesPackage(final EntitiesPackage entitiesPackage) {
     List<Stock> newStocks = new LinkedList<>();
 
     for(Company company : entitiesPackage.getCompanies().values()){
@@ -162,11 +162,11 @@ public class Core {
     }
 
     _stocks = newStocks;
-    _loadedPackageId = entitiesPackage.getdateId();
+    _loadedPackageId = entitiesPackage.getDateId();
     setDataLoaded(true);
   }
 
-  public void applyFilter(Map<Field, RestrictionValue> parameters) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+  public void applyFilter(final Map<Field, RestrictionValue> parameters) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
     CompanyFilter companyFilter = new CompanyFilter(new HashSet<>(getAllCompanies().values()), parameters);
     _appliedFilters.add(companyFilter);
     companyFilter.filter();

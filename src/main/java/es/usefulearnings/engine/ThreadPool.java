@@ -5,20 +5,20 @@ import java.util.concurrent.Executors;
 
 class ThreadPool {
 
-  private ExecutorService executor;
+  private final ExecutorService executor;
   private final int MAX_POOL_SIZE;
 
-  private static ThreadPool _instance = new ThreadPool();
+  private static final ThreadPool INSTANCE = new ThreadPool();
 
-  static ThreadPool getInstance(){
-    return _instance;
+  public static ThreadPool getInstance(){
+    return INSTANCE;
   }
 
   void shutDown() {
     executor.shutdown();
   }
 
-  void execute(Runnable runnable){
+  void execute(final Runnable runnable){
     executor.execute(runnable);
   }
 
@@ -26,7 +26,7 @@ class ThreadPool {
     return MAX_POOL_SIZE;
   }
 
-  private ThreadPool(){
+  private ThreadPool() {
     MAX_POOL_SIZE = Runtime.getRuntime().availableProcessors() * 2;
     executor = Executors.newFixedThreadPool(MAX_POOL_SIZE);
   }

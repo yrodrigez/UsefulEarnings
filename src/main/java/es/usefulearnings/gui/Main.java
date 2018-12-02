@@ -31,7 +31,7 @@ public class Main extends Application {
       )
     );
 
-    MainController mainController = loader.getController();
+    final MainController mainController = loader.getController();
 
     VistaNavigator.getInstance().setMainController(mainController);
     VistaNavigator.getInstance().loadVista(VistaNavigator.NAVIGATE);

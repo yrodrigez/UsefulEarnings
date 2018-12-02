@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>UsefulEarnings</groupId>
-    <artifactId>UsefulEarnings</artifactId>
+    <groupId>es.usefulearnings</groupId>
+    <artifactId>usefulearnings</artifactId>
     <version>1.0-SNAPSHOT</version>
-
+    <packaging>jar</packaging>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>
@@ -18,16 +18,24 @@
     <properties>
         <jdk.version>1.8</jdk.version>
         <jackson.version>2.8.2</jackson.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <build>
+
         <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
                 <configuration>
-                    <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>es.usefulearnings.gui.Main</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>
@@ -36,6 +44,7 @@
                 <version>8.5.0</version>
                 <configuration>
                     <mainClass>es.usefulearnings.gui.Main</mainClass>
+
                 </configuration>
             </plugin>
         </plugins>
@@ -48,6 +57,7 @@
             <artifactId>jsoup</artifactId>
             <version>1.9.2</version>
         </dependency>
+
 
         <!-- JUNIT -->
         <dependency>

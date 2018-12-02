@@ -88,9 +88,9 @@ public class VistaNavigator {
    *
    * @param fxml the fxml file to be loaded.
    */
-  public void loadVista(String fxml) {
+  public void loadVista(final String fxml) {
     try {
-      Vista vista = vistas.get(fxml);
+      final Vista vista = vistas.get(fxml);
       if(fxml.equals(FILTER)){
         mainController.setVista(vista.load(FXMLLoader.load(Main.class.getResource(fxml))));
       }else {

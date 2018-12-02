@@ -3,9 +3,14 @@ package es.usefulearnings.entities;
 
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
+import es.usefulearnings.engine.Observable;
+import es.usefulearnings.engine.Observer;
 import es.usefulearnings.entities.company.*;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Representation of a company in this application
@@ -13,7 +18,7 @@ import java.io.*;
  * @author Yago Rodríguez
  */
 
-public class Company implements Serializable, Entity, Savable {
+public class Company implements Serializable, Entity, Savable, Observable<Company> {
   public static final String EXTENSION = ".cpy";
 
   @EntityParameter(name = "Symbol", parameterType = ParameterType.IGNORE, isMaster = true)
@@ -32,6 +37,8 @@ public class Company implements Serializable, Entity, Savable {
   private FinancialData financialData;
   @EntityParameter(name = "Default key statistics", parameterType = ParameterType.INNER_CLASS, isMaster = true)
   private DefaultKeyStatistics defaultKeyStatistics;
+
+  private final List<Observer<Company>> observers;
 /*
   @EntityParameter(name = "Cashflow statements", parameterType = ParameterType.INNER_CLASS_COLLECTION)
   private ArrayList<CashFlowStatement> cashFlowStatements;
@@ -46,7 +53,7 @@ public class Company implements Serializable, Entity, Savable {
   @EntityParameter(name = "Option Chain", parameterType = ParameterType.INNER_CLASS)
   private OptionChain optionChain;
 
-  public Company(String symbol, String stockName) {
+  public Company(final String symbol, final String stockName, final Observer<Company> ... observers) {
     this.symbol = symbol;
     this.stockName = stockName;
 
@@ -57,7 +64,10 @@ public class Company implements Serializable, Entity, Savable {
     defaultKeyStatistics = new DefaultKeyStatistics();
     optionChain = new OptionChain();
     historicalData = new HistoricalData();
-/*
+
+    this.observers = new LinkedList<>(Arrays.asList(observers));
+
+    /*
     cashFlowStatements = new ArrayList<>();
     cashFlowStatements.add(new CashFlowStatement());
 
@@ -65,7 +75,8 @@ public class Company implements Serializable, Entity, Savable {
     incomeStatements.add(new IncomeStatement());
 
     balanceSheetStatements = new ArrayList<>();
-    balanceSheetStatements.add(new BalanceSheetStatement());*/
+    balanceSheetStatements.add(new BalanceSheetStatement());
+    */
   }
 
   public String getSymbol() {
@@ -73,7 +84,7 @@ public class Company implements Serializable, Entity, Savable {
   }
 
 
-  public void setSymbol(String symbol) {
+  public void setSymbol(final String symbol) {
     this.symbol = symbol;
   }
 
@@ -82,7 +93,7 @@ public class Company implements Serializable, Entity, Savable {
     return calendarEvents;
   }
 
-  public void setCalendarEvents(CalendarEvents calendarEvents) {
+  public void setCalendarEvents(final CalendarEvents calendarEvents) {
     this.calendarEvents = calendarEvents;
     this.calendarEvents.set();
   }
@@ -91,7 +102,7 @@ public class Company implements Serializable, Entity, Savable {
     return financialData;
   }
 
-  public void setFinancialData(FinancialData financialData) {
+  public void setFinancialData(final FinancialData financialData) {
     this.financialData = financialData;
     this.financialData.set();
   }
@@ -100,7 +111,7 @@ public class Company implements Serializable, Entity, Savable {
     return defaultKeyStatistics;
   }
 
-  public void setDefaultKeyStatistics(DefaultKeyStatistics defaultKeyStatistics) {
+  public void setDefaultKeyStatistics(final DefaultKeyStatistics defaultKeyStatistics) {
     this.defaultKeyStatistics = defaultKeyStatistics;
     this.defaultKeyStatistics.set();
   }
@@ -132,7 +143,7 @@ public class Company implements Serializable, Entity, Savable {
     this.balanceSheetStatements.forEach(CompanyData::set);
   }
 */
-  public void setSummaryDetail(SummaryDetail summaryDetail) {
+  public void setSummaryDetail(final SummaryDetail summaryDetail) {
     if(summaryDetail != null)
       this.summaryDetail.set();
     this.summaryDetail = summaryDetail;
@@ -209,16 +220,37 @@ public class Company implements Serializable, Entity, Savable {
   }
 
   @Override
-  public void save(File fileToSave) throws IOException {
-    String location = fileToSave.getAbsolutePath()
+  public void flush() {
+
+  }
+
+  @Override
+  public void restore() {
+
+  }
+
+  @Override
+  public void save(final File fileToSave) throws IOException {
+    final String location = fileToSave.getAbsolutePath()
       + File.separator
       + this.stockName + this.symbol
       + EXTENSION;
 
-    FileOutputStream data = new FileOutputStream(location);
+    final FileOutputStream data = new FileOutputStream(location);
     ObjectOutputStream stream = new ObjectOutputStream(data);
     stream.writeObject(this);
     stream.close();
     data.close();
+  }
+
+
+  @Override
+  public void onChange() {
+    this.observers.forEach(o -> o.onChange(this));
+  }
+
+  @Override
+  public void addListeners(final Observer<Company>... observer) {
+    this.observers.addAll(Arrays.asList(observer));
   }
 }

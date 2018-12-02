@@ -22,15 +22,15 @@ public class CSVStockReader {
 
     BufferedReader br = null;
     String line;
-    String splitBy = ",";
+    final String splitBy = ",";
 
     try {
       br = new BufferedReader(new FileReader(path));
       while ((line = br.readLine()) != null) {
-        String[] splittedLine = line.split(splitBy);
-        if(!splittedLine[0].contains("-") && !splittedLine[0].contains(".")) { // YAHOO FINANCE DOES NOT HAVE
+        final String[] splitLine = line.split(splitBy);
+        if(!splitLine[0].contains("-") && !splitLine[0].contains(".")) { // YAHOO FINANCE DOES NOT HAVE
                                                                                // INFORMATION FOR THESE COMPANIES
-          String companySymbol = splittedLine[0];
+          final String companySymbol = splitLine[0].trim().replaceAll("(\")|(&quot;)", "");
           companies.put(companySymbol, new Company(companySymbol, stockName));
         }
       }

@@ -5,4 +5,6 @@ package es.usefulearnings.entities;
  */
 public interface Entity {
   boolean isEmpty();
+  void flush();
+  void restore();
 }

@@ -5,35 +5,37 @@ import java.util.Map;
 
 public class EntitiesPackage implements Serializable, Savable {
 
-  public static String EXTENSION = ".epk";
+	public final static String EXTENSION = ".epk";
 
-  private Map<String, Company> _companies;
+	private final Map<String, Company> _companies;
 
-  public long getdateId() {
-    return _dateId;
-  }
+	public long getDateId() {
+		return _dateId;
+	}
 
-  private long _dateId;
+	private long _dateId;
 
 
-  public EntitiesPackage(Map<String, Company> companies, long dateId) {
-    _companies = companies;
-    _dateId = dateId;
-  }
+	EntitiesPackage(final Map<String, Company> companies, final long dateId) {
+		_companies = companies;
+		_dateId = dateId;
+	}
 
-  public Map<String, Company> getCompanies() {return _companies;}
+	public Map<String, Company> getCompanies() {
+		return _companies;
+	}
 
-  @Override
-  public void save(File fileToSave) throws IOException {
-    String location = fileToSave.getAbsolutePath()
-      + File.separator
-      + _companies.size() + "C"
-      + EXTENSION;
+	@Override
+	public void save(final File fileToSave) throws IOException {
+		final String location = fileToSave.getAbsolutePath()
+			+ File.separator
+			+ _companies.size() + "C"
+			+ EXTENSION;
 
-    FileOutputStream data = new FileOutputStream(location);
-    ObjectOutputStream stream = new ObjectOutputStream(data);
-    stream.writeObject(this);
-    stream.close();
-    data.close();
-  }
+		FileOutputStream data = new FileOutputStream(location);
+		ObjectOutputStream stream = new ObjectOutputStream(data);
+		stream.writeObject(this);
+		stream.close();
+		data.close();
+	}
 }

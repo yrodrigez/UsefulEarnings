@@ -17,7 +17,7 @@ public class DownloadedData implements Savable, Serializable, Comparable {
   // Serializable extension
   public static final String EXTENSION = ".metadata";
 
-  private File _entitiesFile; //1474537062.cdata (List<Company> serializado)
+  private File _entitiesFile;
 
   public long getCreated() {
     return _created;
@@ -44,13 +44,13 @@ public class DownloadedData implements Savable, Serializable, Comparable {
 
 
   @Override
-  public void save(File fileToSave) throws IOException {
-    String location = fileToSave.getAbsolutePath()
+  public void save(final File fileToSave) throws IOException {
+    final String location = fileToSave.getAbsolutePath()
       + File.separator
       + _created
       + EXTENSION;
 
-    Map<String, Company> companiesToSave = Core.getInstance().getAllCompanies();
+    final Map<String, Company> companiesToSave = Core.getInstance().getAllCompanies();
 
 
     _totalSavedCompanies = companiesToSave.size();
@@ -66,14 +66,14 @@ public class DownloadedData implements Savable, Serializable, Comparable {
         throw new IOException(_entitiesFile.getAbsolutePath() + " can't be created!");
     }
 
-    EntitiesPackage entitiesPackage = new EntitiesPackage(
+    final EntitiesPackage entitiesPackage = new EntitiesPackage(
       companiesToSave,
       _created
     );
     entitiesPackage.save(_entitiesFile);
 
 
-    FileOutputStream data = new FileOutputStream(location);
+    final FileOutputStream data = new FileOutputStream(location);
     ObjectOutputStream stream = new ObjectOutputStream(data);
     stream.writeObject(this);
     stream.close();

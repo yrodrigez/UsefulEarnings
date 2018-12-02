@@ -4,9 +4,9 @@ package es.usefulearnings.engine.connection;
  * @author yago.
  */
 public interface ProcessHandler {
-  void updateProgress(int workDone, int remaining);
-  void updateMessage(String message);
+  void updateProgress(final int workDone, final int remaining);
+  void updateMessage(final String message);
   void onCancelled();
-  void onError(Throwable err);
+  void onError(final Throwable err);
   void onSuccess();
 }

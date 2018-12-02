@@ -95,32 +95,32 @@ public class FilterController implements Initializable {
   private void refreshFilterPane() {
     if (Core.getInstance().getAppliedFilters().size() > 0) {
       rightPane.setCenter(filterListView);
-      List<Filter> appliedFilters = Core.getInstance().getAppliedFilters();
+      final List<Filter> appliedFilters = Core.getInstance().getAppliedFilters();
       filterListView.setItems(FXCollections.observableArrayList(appliedFilters));
       filterListView.setCellFactory(param -> {
         ListCell<Filter> filterListCell = new ListCell<>();
 
-        ContextMenu filterContextMenu = new ContextMenu();
+        final ContextMenu filterContextMenu = new ContextMenu();
         MenuItem export = new MenuItem("Export to Excel", new ImageView(new Image(Main.class.getResourceAsStream("icons/export.png"), 12, 12, false, false)));
         export.setOnAction(event -> {
           try {
-            String dateString = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss").format(new Date(filterListCell.getItem().getFilteredDate() * 1000L));
+            final String dateString = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss").format(new Date(filterListCell.getItem().getFilteredDate() * 1000L));
 
-            CSVWriter writer = new CSVWriter(
+            final CSVWriter writer = new CSVWriter(
               ResourcesHelper.getInstance().getExportedDataPath() + File.separator + "exported at " + dateString,
               new ArrayList<>(filterListCell.getItem().getSelected())
             );
             writer.save();
             AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Success", "File exported successfully at (" + dateString + ")");
-          } catch (InvocationTargetException | NoStocksFoundException | IllegalAccessException | InstantiationException | IntrospectionException | IOException e) {
+          } catch (final InvocationTargetException | NoStocksFoundException | IllegalAccessException | InstantiationException | IntrospectionException | IOException e) {
             e.printStackTrace();
           }
           event.consume();
         });
-        MenuItem details = new MenuItem("Details", new ImageView(new Image(Main.class.getResourceAsStream("icons/export.png"), 12, 12, false, false)));
+        final MenuItem details = new MenuItem("Details", new ImageView(new Image(Main.class.getResourceAsStream("icons/export.png"), 12, 12, false, false)));
         details.setOnAction(event -> FilterViewHelper.getInstance().showOnWindow(filterListCell.getItem()));
 
-        MenuItem historicalPrices = new MenuItem("Get Historical Prices");
+        final MenuItem historicalPrices = new MenuItem("Get Historical Prices");
         historicalPrices.setOnAction(event -> showDialogForStartAndEndDates(filterListCell.getItem()));
 
         filterContextMenu.getItems().addAll(export, details, historicalPrices);
@@ -143,8 +143,8 @@ public class FilterController implements Initializable {
     dialogStage.setTitle(filter.toString());
     dialogStage.initModality(Modality.WINDOW_MODAL);
 
-    FXMLLoader fxmlLoader = new FXMLLoader();
-    fxmlLoader.setLocation(Main.class.getResource("fxml/start_end_date_picker.fxml"));
+    final FXMLLoader fxmlLoader = new FXMLLoader();
+    fxmlLoader.setLocation(Main.class.getResource("start_end_date_picker.fxml"));
     try {
       fxmlLoader.load();
     } catch (IOException e) {
