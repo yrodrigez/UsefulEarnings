@@ -2,7 +2,6 @@ package es.usefulearnings.gui.view;
 
 import es.usefulearnings.annotation.EntityParameter;
 import es.usefulearnings.annotation.ParameterType;
-import es.usefulearnings.engine.Core;
 import es.usefulearnings.engine.EntityParameterBeanWalker;
 import es.usefulearnings.engine.connection.YahooFinanceAPI;
 import es.usefulearnings.engine.plugin.HistoricalDataPlugin;
@@ -22,10 +21,10 @@ import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -107,7 +106,7 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
             Object innerObject = method.invoke(object);
             if (innerObject != null && innerObject instanceof CompanyData) {
               if (((CompanyData) innerObject).isSet()) {
-                Core.getInstance().runLater(() -> {
+                Platform.runLater(() -> {
                   ScrollPane pane = null;
                   try {
                     pane = new ScrollPane(getViewForObject(innerObject));
@@ -133,7 +132,7 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
               for (Object objectLink : innerClassCollection) {
                 if (objectLink != null) {
                   TitledPane innerTittledPane = new TitledPane();
-                  Core.getInstance().runLater(() -> {
+                  Platform.runLater(() -> {
                     try {
                       innerTittledPane.setText(entityName);
                       innerTittledPane.setContent(new ScrollPane(getViewForObject(objectLink)));
@@ -256,7 +255,7 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
     ranges.setItems(FXCollections.observableArrayList(YahooFinanceAPI.Range.values()));
     ranges.setValue(ranges.getItems().get(0));
     final Button showOnWindow = new Button("Show on window");
-    showOnWindow.setOnAction(event -> Core.getInstance().runLater(()->{
+    showOnWindow.setOnAction(event -> Platform.runLater(()->{
       final HistoricalDataPlugin plugin = new HistoricalDataPlugin(
           startDate.getValue().toEpochDay() * 86400L,
           endDate.getValue().toEpochDay() * 86400L,
@@ -297,7 +296,7 @@ public class CompanyViewHelper implements ViewHelper<Company>, FilterableView {
       vBox.getChildren().clear();
       vBox.getChildren().add(new OverWatchLoader(javafx.scene.paint.Color.web("#400090")));
 
-      Core.getInstance().runLater(() -> {
+      Platform.runLater(() -> {
         final HistoricalDataPlugin plugin = new HistoricalDataPlugin(
           startDate.getValue().toEpochDay() * 86400L,
           endDate.getValue().toEpochDay() * 86400L,

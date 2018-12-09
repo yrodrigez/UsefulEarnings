@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
+<?import javafx.scene.control.Label?>
 <BorderPane fx:id="mainPane" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.usefulearnings.gui.controller.DownloadController">
    <right>
       <VBox fx:id="progressPane" prefHeight="707.0" prefWidth="339.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER" />
@@ -16,7 +17,7 @@
       <HBox prefHeight="26.0" prefWidth="600.0" style="-fx-background-color: WHITE;" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="downloadCompaniesButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#downloadAction" style="-fx-background-color: #400090; -fx-background-radius: 0%;" text="Download" textAlignment="CENTER" textFill="WHITE" />
-            <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stopAction" style="-fx-background-radius: 0%; -fx-background-color: #400090;" text="Stop" textFill="WHITE" />
+            <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stop" style="-fx-background-radius: 0%; -fx-background-color: #400090;" text="Stop" textFill="WHITE" />
             <CheckBox fx:id="showDebug" mnemonicParsing="false" prefHeight="26.0" prefWidth="131.0" text="Debugger" />
          </children>
       </HBox>
@@ -27,8 +28,11 @@
       </ScrollPane>
    </center>
    <bottom>
-      <VBox fx:id="overallProgressBarContainer" prefHeight="25.0" prefWidth="600.0" styleClass="overallProgressContainer" BorderPane.alignment="CENTER">
-         <Rectangle fx:id="overAllProgressbar" arcHeight="5.0" arcWidth="5.0" fill="#400090" height="25.0" stroke="BLACK" strokeType="INSIDE" width="0.0" />
+      <VBox fx:id="overallProgressBarContainer" prefHeight="25.0" prefWidth="600.0"
+            styleClass="overallProgressContainer" BorderPane.alignment="CENTER">
+         <Label fx:id="overAllProgressText" >0%</Label>
+         <Rectangle fx:id="overAllProgressbar" arcHeight="5.0" arcWidth="5.0" fill="#400090" height="25.0"
+                    stroke="BLACK" strokeType="INSIDE"/>
       </VBox>
    </bottom>
 </BorderPane>

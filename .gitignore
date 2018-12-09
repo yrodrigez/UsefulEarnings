@@ -1,5 +1,5 @@
-.*
-!/.gitignore
+*.iml
+*.log
 src/test/
 log
 target/

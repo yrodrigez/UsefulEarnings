@@ -4,7 +4,10 @@ import es.usefulearnings.engine.filter.CompanyFilter;
 import es.usefulearnings.engine.filter.Filter;
 import es.usefulearnings.engine.filter.RestrictionValue;
 import es.usefulearnings.engine.plugin.*;
-import es.usefulearnings.entities.*;
+import es.usefulearnings.entities.Company;
+import es.usefulearnings.entities.EntitiesPackage;
+import es.usefulearnings.entities.Entity;
+import es.usefulearnings.entities.Stock;
 import es.usefulearnings.utils.NoStocksFoundException;
 import es.usefulearnings.utils.ResourcesHelper;
 
@@ -55,20 +58,16 @@ public final class Core {
     _appliedFilters = new LinkedList<>();
   }
 
-  public void runLater(final Runnable runnable){
-    _threadPool.execute(runnable);
+  public void invokeAll(final Collection<? extends Runnable> callableCollection){
+    _threadPool.invokeAll(callableCollection);
   }
 
-  public void poolShutDown(){
-    _threadPool.shutDown();
-  }
-
-  public int getMaxPoolSize(){
+  public int getMaxPoolSize() {
     return _threadPool.getPoolSize();
   }
 
   public Company getCompanyFromSymbol(final String symbol) throws IllegalArgumentException {
-    for (Stock stock : _stocks){
+    for (Stock stock : _stocks) {
       if (stock.getCompanies().containsKey(symbol))
         return stock.getCompanies().get(symbol);
     }
@@ -104,13 +103,13 @@ public final class Core {
   public <E> void setEntityData(final E entity) {
     if (entity != null) {
       if (entity instanceof Company) {
-        setCompanyData((Company)entity);
+        setCompanyData((Company) entity);
       }
     }
   }
 
 
-  private void setCompanyData(final Company setCompany){
+  private void setCompanyData(final Company setCompany) {
     _stocks.stream()
       .filter(
         stock -> stock.getName().equals(setCompany.getStockName())
@@ -125,9 +124,9 @@ public final class Core {
     Collection<Company> companies = new ArrayList<>();
     // Collection<Option> options = new ArrayList<>();
 
-    for (Entity e: entitiesToRemove) {
-      if(e instanceof Company) {
-        companies.add((Company)e);
+    for (Entity e : entitiesToRemove) {
+      if (e instanceof Company) {
+        companies.add((Company) e);
       }
     }
     removeCompanies(companies);
@@ -148,16 +147,16 @@ public final class Core {
   }
 
   public void setFromEntitiesPackage(final EntitiesPackage entitiesPackage) {
-    List<Stock> newStocks = new LinkedList<>();
+    final List<Stock> newStocks = new LinkedList<>();
 
-    for(Company company : entitiesPackage.getCompanies().values()){
-      List<Stock> stocks = newStocks.stream().filter(stock -> stock.getName().equals(company.getStockName())).collect(Collectors.toList());
-      if(stocks.isEmpty()){
-        Map<String, Company> companies = new TreeMap<>();
+    for (Company company : entitiesPackage.getCompanies().values()) {
+      final List<Stock> stocks = newStocks.stream().filter(stock -> stock.getName().equals(company.getStockName())).collect(Collectors.toList());
+      if (stocks.isEmpty()) {
+        final Map<String, Company> companies = new TreeMap<>();
         companies.put(company.getSymbol(), company);
         newStocks.add(new Stock(company.getStockName(), companies));
       } else {
-        stocks.forEach(s-> s.putCompany(company));
+        stocks.forEach(s -> s.putCompany(company));
       }
     }
 
@@ -167,7 +166,7 @@ public final class Core {
   }
 
   public void applyFilter(final Map<Field, RestrictionValue> parameters) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
-    CompanyFilter companyFilter = new CompanyFilter(new HashSet<>(getAllCompanies().values()), parameters);
+    final CompanyFilter companyFilter = new CompanyFilter(new HashSet<>(getAllCompanies().values()), parameters);
     _appliedFilters.add(companyFilter);
     companyFilter.filter();
   }

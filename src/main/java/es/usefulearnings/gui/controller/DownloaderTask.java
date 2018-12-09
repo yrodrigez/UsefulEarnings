@@ -18,6 +18,7 @@ class DownloaderTask extends Task<Void> {
 	private DownloadProcess process;
 	private final String name;
 
+	private final DownloadController controller;
 	DownloaderTask(
 		final DownloadController downloadController,
 		final ArrayList<Plugin> plugins,
@@ -25,6 +26,7 @@ class DownloaderTask extends Task<Void> {
 		final OverallProgressBarHandler progressBarHandler,
 		final String name
 	) {
+		this.controller = downloadController;
 		this.name = name;
 		final ProcessHandler handler = new ProcessHandler() {
 			@Override
@@ -36,17 +38,19 @@ class DownloaderTask extends Task<Void> {
 			@Override
 			public void updateMessage(final String message) {
 				DownloaderTask.this.updateMessage(message);
-				Platform.runLater(() -> downloadController.debuggerBox.getChildren().add(0, new Text(new SimpleDateFormat("HH:mm:ss").format(new Date()) + " | " + message)));
+				Platform.runLater(() -> controller.debuggerBox.getChildren().add(0, new Text(new SimpleDateFormat("HH:mm:ss").format(new Date()) + " | " + message)));
 			}
 
 			@Override
 			public void onCancelled() {
+				downloadController.downloadCompleted();
 				cancel();
 			}
 
 			@Override
 			public void onError(Throwable err) {
 				Platform.runLater(() -> AlertHelper.showExceptionAlert(process.getError()));
+				downloadController.downloadCompleted();
 				failed();
 			}
 
@@ -74,6 +78,7 @@ class DownloaderTask extends Task<Void> {
 	}
 
 	void stop() {
+		controller.downloadCompleted();
 		this.process.stop();
 	}
 

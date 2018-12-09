@@ -2,7 +2,6 @@ package es.usefulearnings.gui.controller;
 
 import es.usefulearnings.gui.Main;
 import es.usefulearnings.gui.view.AlertHelper;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 
@@ -23,7 +22,7 @@ public class VistaNavigator {
   static final String OPTIONS         = "fxml/options.fxml";
   static final String NEW_HISTORY     = "fxml/newDownloadPane.fxml";
 
-  private static VistaNavigator singleton = new VistaNavigator();
+  private final static VistaNavigator singleton = new VistaNavigator();
 
   public static VistaNavigator getInstance() {
     return singleton;
@@ -39,7 +38,7 @@ public class VistaNavigator {
       isLoaded = false;
     }
 
-    Node load(Node node){
+    Node load(final Node node){
       this.node = node;
       isLoaded = true;
       return this.node;
@@ -67,7 +66,7 @@ public class VistaNavigator {
     vistas.put(DOWNLOAD, new Vista());
     vistas.put(HISTORY,  new Vista());
     vistas.put(OPTIONS,  new Vista());
-    vistas.put(NEW_HISTORY,  new Vista());
+    // vistas.put(NEW_HISTORY,  new Vista());
   }
 
   /** The main application layout controller. */

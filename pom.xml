@@ -17,13 +17,12 @@
 
     <properties>
         <jdk.version>1.8</jdk.version>
-        <jackson.version>2.8.2</jackson.version>
+        <jackson.version>2.9.7</jackson.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <build>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -44,21 +43,29 @@
                 <version>8.5.0</version>
                 <configuration>
                     <mainClass>es.usefulearnings.gui.Main</mainClass>
-
                 </configuration>
             </plugin>
         </plugins>
     </build>
     <dependencies>
-        <!-- JSOUP -->
-        <!-- jsoup HTML parser library @ http://jsoup.org/ -->
+
         <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.9.2</version>
+            <groupId> org.apache.cassandra</groupId>
+            <artifactId>cassandra-all</artifactId>
+            <version>0.8.1</version>
+
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+
         </dependency>
-
-
         <!-- JUNIT -->
         <dependency>
             <groupId>junit</groupId>
@@ -66,7 +73,6 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -86,6 +92,23 @@
             <groupId>org.controlsfx</groupId>
             <artifactId>controlsfx</artifactId>
             <version>8.40.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.0.6.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <version>2.0.2.RELEASE</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

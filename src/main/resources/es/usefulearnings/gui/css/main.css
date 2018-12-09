@@ -1,136 +1,156 @@
-*{
-     -fx-main-color: #400090;
+* {
+    -fx-main-color: #400090;
 }
+
 .main-controller-button, .button#refresh {
-     -fx-background-color: -fx-main-color;
-     -fx-text-fill: white;
-     -fx-background-radius: 0%;
-     -fx-border-width: 0 0 0 3;
-     -fx-border-color: transparent;
+    -fx-background-color: -fx-main-color;
+    -fx-text-fill: white;
+    -fx-background-radius: 0%;
+    -fx-border-width: 0 0 0 3;
+    -fx-border-color: transparent;
 }
 
-.main-controller-button:hover, .main-controller-button:selected{
-     -fx-background-color: #1a006c;
+.main-controller-button:hover, .main-controller-button:selected {
+    -fx-background-color: #1a006c;
 }
 
-.main-controller-right-button:hover, .main-controller-right-button:selected{
-     -fx-border-color: #160c33;
+.main-controller-right-button:hover, .main-controller-right-button:selected {
+    -fx-border-color: #160c33;
 }
 
 .close-button:hover {
-     -fx-background-color: #b20000;
+    -fx-background-color: #b20000;
 }
 
 .no-radius {
-     -fx-background-radius: 0%;
+    -fx-background-radius: 0%;
 }
 
-.default-progress-bar , .default-progress-indicator {
-     -fx-accent: -fx-main-color;
+.default-progress-bar, .default-progress-indicator {
+    -fx-accent: -fx-main-color;
 }
+
 .default-progress-indicator {
-     -fx-font-size: 0.8em;
+    -fx-font-size: 0.8em;
 }
 
 .list-cell:filled:selected:focused, .list-cell:filled:selected {
-     -fx-background-color: linear-gradient(#6b00ff 0%, #6400e0 25%, #4100c3 75%, #400090 100%);
-     -fx-text-fill: white;
+    -fx-background-color: linear-gradient(#6b00ff 0%, #6400e0 25%, #4100c3 75%, #400090 100%);
+    -fx-text-fill: white;
 }
 
 .list-cell:even { /* <=== changed to even */
-     -fx-background-color: white;
+    -fx-background-color: white;
 }
 
 .list-cell:filled:hover {
-     -fx-background-color: #6c00f9;
-     -fx-text-fill: white;
+    -fx-background-color: #6c00f9;
+    -fx-text-fill: white;
 }
 
 .choice-box .menu-item:focused {
-     -fx-background-color: #6c00f9 ;
-     -fx-text-fill: white;
+    -fx-background-color: #6c00f9;
+    -fx-text-fill: white;
 }
 
 .ue-choice-box .context-menu {
-     -fx-background-color: linear-gradient(#6b00ff 0%, #6400e0 25%, #4100c3 75%, #400090 100%);
-     -fx-text-fill: white;
+    -fx-background-color: linear-gradient(#6b00ff 0%, #6400e0 25%, #4100c3 75%, #400090 100%);
+    -fx-text-fill: white;
 }
 
 .ue-choice-box {
-     -fx-background-color: -fx-main-color;
-     -fx-background-radius: 0%;
+    -fx-background-color: -fx-main-color;
+    -fx-background-radius: 0%;
 }
 
-.ue-choice-box .label{
-     -fx-text-fill: white;
+.ue-choice-box .label {
+    -fx-text-fill: white;
 }
 
 .history-data-to-core-process {
-     -fx-progress-color: #ffffff;
+    -fx-progress-color: #ffffff;
 }
 
 .history-button {
-     -fx-background-color: -fx-main-color;
-     -fx-background-radius: 0%;
-     -fx-border-color: transparent;
+    -fx-background-color: -fx-main-color;
+    -fx-background-radius: 0%;
+    -fx-border-color: transparent;
 }
+
 .no-opacity {
     -fx-opacity: 1.0;
 }
 
 .chart {
-     -fx-padding: 1px;
+    -fx-padding: 1px;
 }
+
 .chart-content {
-     -fx-padding: 1px;
+    -fx-padding: 1px;
 }
+
 .thick-chart .chart-series-line {
-     -fx-stroke-width: 1px;
+    -fx-stroke-width: 1px;
 }
 
 .chart-title {
-     -fx-text-fill: #4682b4;
-     -fx-font-size: 1.6em;
+    -fx-text-fill: #4682b4;
+    -fx-font-size: 1.6em;
 }
 
 .axis-label {
-     -fx-text-fill: #4682b4;
+    -fx-text-fill: #4682b4;
 }
 
 .chart-legend {
-     -fx-background-color:  transparent;
-     -fx-padding: 20px;
+    -fx-background-color: transparent;
+    -fx-padding: 20px;
 }
 
-.chart-legend-item-symbol{
-     -fx-background-radius: 0;
+.chart-legend-item-symbol {
+    -fx-background-radius: 0;
 }
 
-.chart-legend-item{
-     -fx-text-fill: #191970;
+.chart-legend-item {
+    -fx-text-fill: #191970;
 }
 
 .chart-plot-background {
-     -fx-background-color: #e2ecfe;
+    -fx-background-color: #e2ecfe;
 }
+
 .chart-vertical-grid-lines {
-     -fx-stroke: transparent;
+    -fx-stroke: transparent;
 }
+
 .chart-horizontal-grid-lines {
-     -fx-stroke: transparent;
+    -fx-stroke: transparent;
 }
+
 .chart-alternative-row-fill {
-     -fx-fill: #99bcfd;
-     -fx-stroke: transparent;
-     -fx-stroke-width: 0;
+    -fx-fill: #99bcfd;
+    -fx-stroke: transparent;
+    -fx-stroke-width: 0;
 }
+
 .overallProgressContainer {
     -fx-pref-width: 100%;
     -fx-pref-height: 25;
-     -fx-background-color: white;
+    -fx-background-color: white;
 }
- .overallProgressBar {
-     -fx-background-color: #400090;
+
+.overallProgressBar {
+    -fx-background-color: #400090;
     -fx-pref-height: 100%;
     -fx-pref-width: 25%;
+}
+
+.overallProgressContainer {
+    -fx-text-alignment: center;
+}
+
+.overallProgressContainer#overAllProgressText{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
 }

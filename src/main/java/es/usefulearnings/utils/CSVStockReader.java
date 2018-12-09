@@ -10,15 +10,14 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class CSVStockReader {
-
-  public static Stock createStockFromPath(String path){
-    if (!path.substring(path.length() - 3, path.length()).equals("csv"))
+class CSVStockReader {
+  static Stock createStockFromPath(String path){
+    if (!path.substring(path.length() - 3).equals("csv"))
       throw new IllegalArgumentException("That's not a csv file");
 
-    String stockName = path.substring(path.lastIndexOf(File.separator) + 1, path.lastIndexOf(".csv"));
+    final String stockName = path.substring(path.lastIndexOf(File.separator) + 1, path.lastIndexOf(".csv"));
 
-    Map<String, Company> companies = new TreeMap<>();
+    final Map<String, Company> companies = new TreeMap<>();
 
     BufferedReader br = null;
     String line;
